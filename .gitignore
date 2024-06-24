@@ -1,0 +1,5 @@
+.gradle
+.idea
+build
+codegen.log
+kls_database.db
