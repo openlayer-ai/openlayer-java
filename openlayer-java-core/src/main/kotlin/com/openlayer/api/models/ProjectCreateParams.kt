@@ -25,9 +25,6 @@ constructor(
     private val taskType: TaskType,
     private val description: String?,
     private val gitRepo: GitRepo?,
-    private val slackChannelId: String?,
-    private val slackChannelName: String?,
-    private val slackChannelNotificationsEnabled: Boolean?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -41,13 +38,6 @@ constructor(
 
     fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo)
 
-    fun slackChannelId(): Optional<String> = Optional.ofNullable(slackChannelId)
-
-    fun slackChannelName(): Optional<String> = Optional.ofNullable(slackChannelName)
-
-    fun slackChannelNotificationsEnabled(): Optional<Boolean> =
-        Optional.ofNullable(slackChannelNotificationsEnabled)
-
     @JvmSynthetic
     internal fun getBody(): ProjectCreateBody {
         return ProjectCreateBody(
@@ -55,9 +45,6 @@ constructor(
             taskType,
             description,
             gitRepo,
-            slackChannelId,
-            slackChannelName,
-            slackChannelNotificationsEnabled,
             additionalBodyProperties,
         )
     }
@@ -74,9 +61,6 @@ constructor(
         private val taskType: TaskType?,
         private val description: String?,
         private val gitRepo: GitRepo?,
-        private val slackChannelId: String?,
-        private val slackChannelName: String?,
-        private val slackChannelNotificationsEnabled: Boolean?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -92,16 +76,6 @@ constructor(
         @JsonProperty("description") fun description(): String? = description
 
         @JsonProperty("gitRepo") fun gitRepo(): GitRepo? = gitRepo
-
-        /** The slack channel id connected to the project. */
-        @JsonProperty("slackChannelId") fun slackChannelId(): String? = slackChannelId
-
-        /** The slack channel connected to the project. */
-        @JsonProperty("slackChannelName") fun slackChannelName(): String? = slackChannelName
-
-        /** Whether slack channel notifications are enabled for the project. */
-        @JsonProperty("slackChannelNotificationsEnabled")
-        fun slackChannelNotificationsEnabled(): Boolean? = slackChannelNotificationsEnabled
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -119,9 +93,6 @@ constructor(
                 this.taskType == other.taskType &&
                 this.description == other.description &&
                 this.gitRepo == other.gitRepo &&
-                this.slackChannelId == other.slackChannelId &&
-                this.slackChannelName == other.slackChannelName &&
-                this.slackChannelNotificationsEnabled == other.slackChannelNotificationsEnabled &&
                 this.additionalProperties == other.additionalProperties
         }
 
@@ -133,9 +104,6 @@ constructor(
                         taskType,
                         description,
                         gitRepo,
-                        slackChannelId,
-                        slackChannelName,
-                        slackChannelNotificationsEnabled,
                         additionalProperties,
                     )
             }
@@ -143,7 +111,7 @@ constructor(
         }
 
         override fun toString() =
-            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, gitRepo=$gitRepo, slackChannelId=$slackChannelId, slackChannelName=$slackChannelName, slackChannelNotificationsEnabled=$slackChannelNotificationsEnabled, additionalProperties=$additionalProperties}"
+            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -156,9 +124,6 @@ constructor(
             private var taskType: TaskType? = null
             private var description: String? = null
             private var gitRepo: GitRepo? = null
-            private var slackChannelId: String? = null
-            private var slackChannelName: String? = null
-            private var slackChannelNotificationsEnabled: Boolean? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -167,10 +132,6 @@ constructor(
                 this.taskType = projectCreateBody.taskType
                 this.description = projectCreateBody.description
                 this.gitRepo = projectCreateBody.gitRepo
-                this.slackChannelId = projectCreateBody.slackChannelId
-                this.slackChannelName = projectCreateBody.slackChannelName
-                this.slackChannelNotificationsEnabled =
-                    projectCreateBody.slackChannelNotificationsEnabled
                 additionalProperties(projectCreateBody.additionalProperties)
             }
 
@@ -187,25 +148,6 @@ constructor(
 
             @JsonProperty("gitRepo")
             fun gitRepo(gitRepo: GitRepo) = apply { this.gitRepo = gitRepo }
-
-            /** The slack channel id connected to the project. */
-            @JsonProperty("slackChannelId")
-            fun slackChannelId(slackChannelId: String) = apply {
-                this.slackChannelId = slackChannelId
-            }
-
-            /** The slack channel connected to the project. */
-            @JsonProperty("slackChannelName")
-            fun slackChannelName(slackChannelName: String) = apply {
-                this.slackChannelName = slackChannelName
-            }
-
-            /** Whether slack channel notifications are enabled for the project. */
-            @JsonProperty("slackChannelNotificationsEnabled")
-            fun slackChannelNotificationsEnabled(slackChannelNotificationsEnabled: Boolean) =
-                apply {
-                    this.slackChannelNotificationsEnabled = slackChannelNotificationsEnabled
-                }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -227,9 +169,6 @@ constructor(
                     checkNotNull(taskType) { "`taskType` is required but was not set" },
                     description,
                     gitRepo,
-                    slackChannelId,
-                    slackChannelName,
-                    slackChannelNotificationsEnabled,
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -251,9 +190,6 @@ constructor(
             this.taskType == other.taskType &&
             this.description == other.description &&
             this.gitRepo == other.gitRepo &&
-            this.slackChannelId == other.slackChannelId &&
-            this.slackChannelName == other.slackChannelName &&
-            this.slackChannelNotificationsEnabled == other.slackChannelNotificationsEnabled &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
             this.additionalBodyProperties == other.additionalBodyProperties
@@ -265,9 +201,6 @@ constructor(
             taskType,
             description,
             gitRepo,
-            slackChannelId,
-            slackChannelName,
-            slackChannelNotificationsEnabled,
             additionalQueryParams,
             additionalHeaders,
             additionalBodyProperties,
@@ -275,7 +208,7 @@ constructor(
     }
 
     override fun toString() =
-        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, gitRepo=$gitRepo, slackChannelId=$slackChannelId, slackChannelName=$slackChannelName, slackChannelNotificationsEnabled=$slackChannelNotificationsEnabled, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, gitRepo=$gitRepo, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -291,9 +224,6 @@ constructor(
         private var taskType: TaskType? = null
         private var description: String? = null
         private var gitRepo: GitRepo? = null
-        private var slackChannelId: String? = null
-        private var slackChannelName: String? = null
-        private var slackChannelNotificationsEnabled: Boolean? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -304,10 +234,6 @@ constructor(
             this.taskType = projectCreateParams.taskType
             this.description = projectCreateParams.description
             this.gitRepo = projectCreateParams.gitRepo
-            this.slackChannelId = projectCreateParams.slackChannelId
-            this.slackChannelName = projectCreateParams.slackChannelName
-            this.slackChannelNotificationsEnabled =
-                projectCreateParams.slackChannelNotificationsEnabled
             additionalQueryParams(projectCreateParams.additionalQueryParams)
             additionalHeaders(projectCreateParams.additionalHeaders)
             additionalBodyProperties(projectCreateParams.additionalBodyProperties)
@@ -323,19 +249,6 @@ constructor(
         fun description(description: String) = apply { this.description = description }
 
         fun gitRepo(gitRepo: GitRepo) = apply { this.gitRepo = gitRepo }
-
-        /** The slack channel id connected to the project. */
-        fun slackChannelId(slackChannelId: String) = apply { this.slackChannelId = slackChannelId }
-
-        /** The slack channel connected to the project. */
-        fun slackChannelName(slackChannelName: String) = apply {
-            this.slackChannelName = slackChannelName
-        }
-
-        /** Whether slack channel notifications are enabled for the project. */
-        fun slackChannelNotificationsEnabled(slackChannelNotificationsEnabled: Boolean) = apply {
-            this.slackChannelNotificationsEnabled = slackChannelNotificationsEnabled
-        }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -397,9 +310,6 @@ constructor(
                 checkNotNull(taskType) { "`taskType` is required but was not set" },
                 description,
                 gitRepo,
-                slackChannelId,
-                slackChannelName,
-                slackChannelNotificationsEnabled,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
