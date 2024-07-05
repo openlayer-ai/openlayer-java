@@ -30,7 +30,7 @@ jobs:
 
       - name: Publish to Sonatype
         run: |
-          ./gradlew publishAndReleaseToMavenCentral --stacktrace -PmavenCentralUsername="$SONATYPE_USERNAME" -PmavenCentralPassword="$SONATYPE_PASSWORD"
+          ./gradlew --parallel --no-daemon publish
         env:
           SONATYPE_USERNAME: ${{ secrets.OPENLAYER_SONATYPE_USERNAME || secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.OPENLAYER_SONATYPE_PASSWORD || secrets.SONATYPE_PASSWORD }}
