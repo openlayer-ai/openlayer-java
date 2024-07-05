@@ -307,7 +307,6 @@ private constructor(
         private val dateCreated: JsonField<OffsetDateTime>,
         private val dateUpdated: JsonField<OffsetDateTime>,
         private val description: JsonField<String>,
-        private val sample: JsonField<Boolean>,
         private val source: JsonField<Source>,
         private val taskType: JsonField<TaskType>,
         private val versionCount: JsonField<Long>,
@@ -315,11 +314,7 @@ private constructor(
         private val goalCount: JsonField<Long>,
         private val developmentGoalCount: JsonField<Long>,
         private val monitoringGoalCount: JsonField<Long>,
-        private val unreadNotificationCount: JsonField<Long>,
         private val links: JsonField<Links>,
-        private val slackChannelNotificationsEnabled: JsonField<Boolean>,
-        private val slackChannelName: JsonField<String>,
-        private val slackChannelId: JsonField<String>,
         private val gitRepo: JsonField<GitRepo>,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
@@ -351,9 +346,6 @@ private constructor(
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** Whether the project is a sample project or a user-created project. */
-        fun sample(): Boolean = sample.getRequired("sample")
-
         /** The source of the project. */
         fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
 
@@ -376,26 +368,8 @@ private constructor(
         /** The number of tests in the monitoring mode of the project. */
         fun monitoringGoalCount(): Long = monitoringGoalCount.getRequired("monitoringGoalCount")
 
-        /** The number of unread notifications in the project. */
-        fun unreadNotificationCount(): Optional<Long> =
-            Optional.ofNullable(unreadNotificationCount.getNullable("unreadNotificationCount"))
-
         /** Links to the project. */
         fun links(): Links = links.getRequired("links")
-
-        /** Whether slack channel notifications are enabled for the project. */
-        fun slackChannelNotificationsEnabled(): Optional<Boolean> =
-            Optional.ofNullable(
-                slackChannelNotificationsEnabled.getNullable("slackChannelNotificationsEnabled")
-            )
-
-        /** The slack channel connected to the project. */
-        fun slackChannelName(): Optional<String> =
-            Optional.ofNullable(slackChannelName.getNullable("slackChannelName"))
-
-        /** The slack channel id connected to the project. */
-        fun slackChannelId(): Optional<String> =
-            Optional.ofNullable(slackChannelId.getNullable("slackChannelId"))
 
         fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
 
@@ -419,9 +393,6 @@ private constructor(
 
         /** The project description. */
         @JsonProperty("description") @ExcludeMissing fun _description() = description
-
-        /** Whether the project is a sample project or a user-created project. */
-        @JsonProperty("sample") @ExcludeMissing fun _sample() = sample
 
         /** The source of the project. */
         @JsonProperty("source") @ExcludeMissing fun _source() = source
@@ -450,24 +421,8 @@ private constructor(
         @ExcludeMissing
         fun _monitoringGoalCount() = monitoringGoalCount
 
-        /** The number of unread notifications in the project. */
-        @JsonProperty("unreadNotificationCount")
-        @ExcludeMissing
-        fun _unreadNotificationCount() = unreadNotificationCount
-
         /** Links to the project. */
         @JsonProperty("links") @ExcludeMissing fun _links() = links
-
-        /** Whether slack channel notifications are enabled for the project. */
-        @JsonProperty("slackChannelNotificationsEnabled")
-        @ExcludeMissing
-        fun _slackChannelNotificationsEnabled() = slackChannelNotificationsEnabled
-
-        /** The slack channel connected to the project. */
-        @JsonProperty("slackChannelName") @ExcludeMissing fun _slackChannelName() = slackChannelName
-
-        /** The slack channel id connected to the project. */
-        @JsonProperty("slackChannelId") @ExcludeMissing fun _slackChannelId() = slackChannelId
 
         @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo() = gitRepo
 
@@ -484,7 +439,6 @@ private constructor(
                 dateCreated()
                 dateUpdated()
                 description()
-                sample()
                 source()
                 taskType()
                 versionCount()
@@ -492,11 +446,7 @@ private constructor(
                 goalCount()
                 developmentGoalCount()
                 monitoringGoalCount()
-                unreadNotificationCount()
                 links().validate()
-                slackChannelNotificationsEnabled()
-                slackChannelName()
-                slackChannelId()
                 gitRepo().map { it.validate() }
                 validated = true
             }
@@ -517,7 +467,6 @@ private constructor(
                 this.dateCreated == other.dateCreated &&
                 this.dateUpdated == other.dateUpdated &&
                 this.description == other.description &&
-                this.sample == other.sample &&
                 this.source == other.source &&
                 this.taskType == other.taskType &&
                 this.versionCount == other.versionCount &&
@@ -525,11 +474,7 @@ private constructor(
                 this.goalCount == other.goalCount &&
                 this.developmentGoalCount == other.developmentGoalCount &&
                 this.monitoringGoalCount == other.monitoringGoalCount &&
-                this.unreadNotificationCount == other.unreadNotificationCount &&
                 this.links == other.links &&
-                this.slackChannelNotificationsEnabled == other.slackChannelNotificationsEnabled &&
-                this.slackChannelName == other.slackChannelName &&
-                this.slackChannelId == other.slackChannelId &&
                 this.gitRepo == other.gitRepo &&
                 this.additionalProperties == other.additionalProperties
         }
@@ -545,7 +490,6 @@ private constructor(
                         dateCreated,
                         dateUpdated,
                         description,
-                        sample,
                         source,
                         taskType,
                         versionCount,
@@ -553,11 +497,7 @@ private constructor(
                         goalCount,
                         developmentGoalCount,
                         monitoringGoalCount,
-                        unreadNotificationCount,
                         links,
-                        slackChannelNotificationsEnabled,
-                        slackChannelName,
-                        slackChannelId,
                         gitRepo,
                         additionalProperties,
                     )
@@ -566,7 +506,7 @@ private constructor(
         }
 
         override fun toString() =
-            "Item{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, sample=$sample, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, unreadNotificationCount=$unreadNotificationCount, links=$links, slackChannelNotificationsEnabled=$slackChannelNotificationsEnabled, slackChannelName=$slackChannelName, slackChannelId=$slackChannelId, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
+            "Item{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, links=$links, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -582,7 +522,6 @@ private constructor(
             private var dateCreated: JsonField<OffsetDateTime> = JsonMissing.of()
             private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
             private var description: JsonField<String> = JsonMissing.of()
-            private var sample: JsonField<Boolean> = JsonMissing.of()
             private var source: JsonField<Source> = JsonMissing.of()
             private var taskType: JsonField<TaskType> = JsonMissing.of()
             private var versionCount: JsonField<Long> = JsonMissing.of()
@@ -590,11 +529,7 @@ private constructor(
             private var goalCount: JsonField<Long> = JsonMissing.of()
             private var developmentGoalCount: JsonField<Long> = JsonMissing.of()
             private var monitoringGoalCount: JsonField<Long> = JsonMissing.of()
-            private var unreadNotificationCount: JsonField<Long> = JsonMissing.of()
             private var links: JsonField<Links> = JsonMissing.of()
-            private var slackChannelNotificationsEnabled: JsonField<Boolean> = JsonMissing.of()
-            private var slackChannelName: JsonField<String> = JsonMissing.of()
-            private var slackChannelId: JsonField<String> = JsonMissing.of()
             private var gitRepo: JsonField<GitRepo> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -607,7 +542,6 @@ private constructor(
                 this.dateCreated = item.dateCreated
                 this.dateUpdated = item.dateUpdated
                 this.description = item.description
-                this.sample = item.sample
                 this.source = item.source
                 this.taskType = item.taskType
                 this.versionCount = item.versionCount
@@ -615,11 +549,7 @@ private constructor(
                 this.goalCount = item.goalCount
                 this.developmentGoalCount = item.developmentGoalCount
                 this.monitoringGoalCount = item.monitoringGoalCount
-                this.unreadNotificationCount = item.unreadNotificationCount
                 this.links = item.links
-                this.slackChannelNotificationsEnabled = item.slackChannelNotificationsEnabled
-                this.slackChannelName = item.slackChannelName
-                this.slackChannelId = item.slackChannelId
                 this.gitRepo = item.gitRepo
                 additionalProperties(item.additionalProperties)
             }
@@ -688,14 +618,6 @@ private constructor(
                 this.description = description
             }
 
-            /** Whether the project is a sample project or a user-created project. */
-            fun sample(sample: Boolean) = sample(JsonField.of(sample))
-
-            /** Whether the project is a sample project or a user-created project. */
-            @JsonProperty("sample")
-            @ExcludeMissing
-            fun sample(sample: JsonField<Boolean>) = apply { this.sample = sample }
-
             /** The source of the project. */
             fun source(source: Source) = source(JsonField.of(source))
 
@@ -763,17 +685,6 @@ private constructor(
                 this.monitoringGoalCount = monitoringGoalCount
             }
 
-            /** The number of unread notifications in the project. */
-            fun unreadNotificationCount(unreadNotificationCount: Long) =
-                unreadNotificationCount(JsonField.of(unreadNotificationCount))
-
-            /** The number of unread notifications in the project. */
-            @JsonProperty("unreadNotificationCount")
-            @ExcludeMissing
-            fun unreadNotificationCount(unreadNotificationCount: JsonField<Long>) = apply {
-                this.unreadNotificationCount = unreadNotificationCount
-            }
-
             /** Links to the project. */
             fun links(links: Links) = links(JsonField.of(links))
 
@@ -781,39 +692,6 @@ private constructor(
             @JsonProperty("links")
             @ExcludeMissing
             fun links(links: JsonField<Links>) = apply { this.links = links }
-
-            /** Whether slack channel notifications are enabled for the project. */
-            fun slackChannelNotificationsEnabled(slackChannelNotificationsEnabled: Boolean) =
-                slackChannelNotificationsEnabled(JsonField.of(slackChannelNotificationsEnabled))
-
-            /** Whether slack channel notifications are enabled for the project. */
-            @JsonProperty("slackChannelNotificationsEnabled")
-            @ExcludeMissing
-            fun slackChannelNotificationsEnabled(
-                slackChannelNotificationsEnabled: JsonField<Boolean>
-            ) = apply { this.slackChannelNotificationsEnabled = slackChannelNotificationsEnabled }
-
-            /** The slack channel connected to the project. */
-            fun slackChannelName(slackChannelName: String) =
-                slackChannelName(JsonField.of(slackChannelName))
-
-            /** The slack channel connected to the project. */
-            @JsonProperty("slackChannelName")
-            @ExcludeMissing
-            fun slackChannelName(slackChannelName: JsonField<String>) = apply {
-                this.slackChannelName = slackChannelName
-            }
-
-            /** The slack channel id connected to the project. */
-            fun slackChannelId(slackChannelId: String) =
-                slackChannelId(JsonField.of(slackChannelId))
-
-            /** The slack channel id connected to the project. */
-            @JsonProperty("slackChannelId")
-            @ExcludeMissing
-            fun slackChannelId(slackChannelId: JsonField<String>) = apply {
-                this.slackChannelId = slackChannelId
-            }
 
             fun gitRepo(gitRepo: GitRepo) = gitRepo(JsonField.of(gitRepo))
 
@@ -844,7 +722,6 @@ private constructor(
                     dateCreated,
                     dateUpdated,
                     description,
-                    sample,
                     source,
                     taskType,
                     versionCount,
@@ -852,11 +729,7 @@ private constructor(
                     goalCount,
                     developmentGoalCount,
                     monitoringGoalCount,
-                    unreadNotificationCount,
                     links,
-                    slackChannelNotificationsEnabled,
-                    slackChannelName,
-                    slackChannelId,
                     gitRepo,
                     additionalProperties.toUnmodifiable(),
                 )

@@ -31,9 +31,6 @@ class ProjectCreateParamsTest {
                     .rootDir("string")
                     .build()
             )
-            .slackChannelId("C01B2PZQX1Z")
-            .slackChannelName("#my-project")
-            .slackChannelNotificationsEnabled(true)
             .build()
     }
 
@@ -60,9 +57,6 @@ class ProjectCreateParamsTest {
                         .rootDir("string")
                         .build()
                 )
-                .slackChannelId("C01B2PZQX1Z")
-                .slackChannelName("#my-project")
-                .slackChannelNotificationsEnabled(true)
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -86,9 +80,6 @@ class ProjectCreateParamsTest {
                     .rootDir("string")
                     .build()
             )
-        assertThat(body.slackChannelId()).isEqualTo("C01B2PZQX1Z")
-        assertThat(body.slackChannelName()).isEqualTo("#my-project")
-        assertThat(body.slackChannelNotificationsEnabled()).isEqualTo(true)
     }
 
     @Test

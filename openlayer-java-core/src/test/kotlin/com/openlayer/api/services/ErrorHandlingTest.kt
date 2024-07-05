@@ -16,7 +16,6 @@ import com.google.common.collect.ListMultimap
 import com.openlayer.api.client.OpenlayerClient
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.core.JsonString
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.jsonMapper
 import com.openlayer.api.errors.BadRequestException
 import com.openlayer.api.errors.InternalServerException
@@ -29,6 +28,7 @@ import com.openlayer.api.errors.UnauthorizedException
 import com.openlayer.api.errors.UnexpectedStatusCodeException
 import com.openlayer.api.errors.UnprocessableEntityException
 import com.openlayer.api.models.*
+import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.InstanceOfAssertFactories
@@ -56,81 +56,99 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun dataStream200() {
+    fun projectsCreate200() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         val expected =
-            InferencePipelineDataStreamResponse.builder()
-                .success(InferencePipelineDataStreamResponse.Success.TRUE)
+            ProjectCreateResponse.builder()
+                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .developmentGoalCount(123L)
+                .goalCount(123L)
+                .inferencePipelineCount(123L)
+                .links(
+                    ProjectCreateResponse.Links.builder()
+                        .app(
+                            "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                        )
+                        .build()
+                )
+                .monitoringGoalCount(123L)
+                .name("My Project")
+                .source(ProjectCreateResponse.Source.WEB)
+                .taskType(ProjectCreateResponse.TaskType.LLM_BASE)
+                .versionCount(123L)
+                .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateResponse.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
+                )
                 .build()
 
         stubFor(post(anyUrl()).willReturn(ok().withBody(toJson(expected))))
 
-        assertThat(client.inferencePipelines().data().stream(params)).isEqualTo(expected)
+        assertThat(client.projects().create(params)).isEqualTo(expected)
     }
 
     @Test
-    fun dataStream400() {
+    fun projectsCreate400() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -138,44 +156,35 @@ class ErrorHandlingTest {
                 .willReturn(status(400).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of("Foo", "Bar"), OPENLAYER_ERROR)
             })
     }
 
     @Test
-    fun dataStream401() {
+    fun projectsCreate401() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -183,44 +192,35 @@ class ErrorHandlingTest {
                 .willReturn(status(401).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertUnauthorized(e, ImmutableListMultimap.of("Foo", "Bar"), OPENLAYER_ERROR)
             })
     }
 
     @Test
-    fun dataStream403() {
+    fun projectsCreate403() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -228,44 +228,35 @@ class ErrorHandlingTest {
                 .willReturn(status(403).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertPermissionDenied(e, ImmutableListMultimap.of("Foo", "Bar"), OPENLAYER_ERROR)
             })
     }
 
     @Test
-    fun dataStream404() {
+    fun projectsCreate404() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -273,44 +264,35 @@ class ErrorHandlingTest {
                 .willReturn(status(404).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertNotFound(e, ImmutableListMultimap.of("Foo", "Bar"), OPENLAYER_ERROR)
             })
     }
 
     @Test
-    fun dataStream422() {
+    fun projectsCreate422() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -318,7 +300,7 @@ class ErrorHandlingTest {
                 .willReturn(status(422).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertUnprocessableEntity(
                     e,
@@ -329,37 +311,28 @@ class ErrorHandlingTest {
     }
 
     @Test
-    fun dataStream429() {
+    fun projectsCreate429() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -367,44 +340,35 @@ class ErrorHandlingTest {
                 .willReturn(status(429).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertRateLimit(e, ImmutableListMultimap.of("Foo", "Bar"), OPENLAYER_ERROR)
             })
     }
 
     @Test
-    fun dataStream500() {
+    fun projectsCreate500() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -412,7 +376,7 @@ class ErrorHandlingTest {
                 .willReturn(status(500).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertInternalServer(e, ImmutableListMultimap.of("Foo", "Bar"), OPENLAYER_ERROR)
             })
@@ -421,35 +385,26 @@ class ErrorHandlingTest {
     @Test
     fun unexpectedStatusCode() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(
@@ -457,7 +412,7 @@ class ErrorHandlingTest {
                 .willReturn(status(999).withHeader("Foo", "Bar").withBody(toJson(OPENLAYER_ERROR)))
         )
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertUnexpectedStatusCodeException(
                     e,
@@ -471,40 +426,31 @@ class ErrorHandlingTest {
     @Test
     fun invalidBody() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(post(anyUrl()).willReturn(status(200).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertThat(e)
                     .isInstanceOf(OpenlayerException::class.java)
@@ -515,40 +461,31 @@ class ErrorHandlingTest {
     @Test
     fun invalidErrorBody() {
         val params =
-            InferencePipelineDataStreamParams.builder()
-                .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .config(
-                    InferencePipelineDataStreamParams.Config.ofLlmData(
-                        InferencePipelineDataStreamParams.Config.LlmData.builder()
-                            .outputColumnName("output")
-                            .contextColumnName("context")
-                            .costColumnName("cost")
-                            .groundTruthColumnName("ground_truth")
-                            .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
-                            .latencyColumnName("latency")
-                            .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
-                            .prompt(
-                                listOf(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
-                                        .content("{{ user_query }}")
-                                        .role("user")
-                                        .build()
-                                )
-                            )
-                            .questionColumnName("question")
-                            .timestampColumnName("timestamp")
-                            .build()
-                    )
+            ProjectCreateParams.builder()
+                .name("My Project")
+                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
+                .description("My project description.")
+                .gitRepo(
+                    ProjectCreateParams.GitRepo.builder()
+                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
+                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .gitId(123L)
+                        .name("string")
+                        .private_(true)
+                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .slug("string")
+                        .url("string")
+                        .branch("string")
+                        .rootDir("string")
+                        .build()
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .build()
 
         stubFor(post(anyUrl()).willReturn(status(400).withBody("Not JSON")))
 
-        assertThatThrownBy({ client.inferencePipelines().data().stream(params) })
+        assertThatThrownBy({ client.projects().create(params) })
             .satisfies({ e ->
                 assertBadRequest(e, ImmutableListMultimap.of(), OpenlayerError.builder().build())
             })

@@ -28,7 +28,6 @@ class ProjectCreateResponseTest {
                 )
                 .monitoringGoalCount(123L)
                 .name("My Project")
-                .sample(true)
                 .source(ProjectCreateResponse.Source.WEB)
                 .taskType(ProjectCreateResponse.TaskType.LLM_BASE)
                 .versionCount(123L)
@@ -50,10 +49,6 @@ class ProjectCreateResponseTest {
                         .rootDir("string")
                         .build()
                 )
-                .slackChannelId("C01B2PZQX1Z")
-                .slackChannelName("#my-project")
-                .slackChannelNotificationsEnabled(true)
-                .unreadNotificationCount(123L)
                 .build()
         assertThat(projectCreateResponse).isNotNull
         assertThat(projectCreateResponse.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -76,7 +71,6 @@ class ProjectCreateResponseTest {
             )
         assertThat(projectCreateResponse.monitoringGoalCount()).isEqualTo(123L)
         assertThat(projectCreateResponse.name()).isEqualTo("My Project")
-        assertThat(projectCreateResponse.sample()).isEqualTo(true)
         assertThat(projectCreateResponse.source()).contains(ProjectCreateResponse.Source.WEB)
         assertThat(projectCreateResponse.taskType())
             .isEqualTo(ProjectCreateResponse.TaskType.LLM_BASE)
@@ -101,9 +95,5 @@ class ProjectCreateResponseTest {
                     .rootDir("string")
                     .build()
             )
-        assertThat(projectCreateResponse.slackChannelId()).contains("C01B2PZQX1Z")
-        assertThat(projectCreateResponse.slackChannelName()).contains("#my-project")
-        assertThat(projectCreateResponse.slackChannelNotificationsEnabled()).contains(true)
-        assertThat(projectCreateResponse.unreadNotificationCount()).contains(123L)
     }
 }
