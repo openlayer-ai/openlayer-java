@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/org.openlayer/openlayer-java)](https://central.sonatype.com/artifact/org.openlayer/openlayer-java/0.1.0-alpha.1)
+[![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.1.0-alpha.1)
 
 <!-- x-release-please-end -->
 
@@ -27,14 +27,14 @@ The REST API documentation can be found [on openlayer.com](https://openlayer.co
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("org.openlayer:openlayer-java:0.1.0-alpha.1")
+implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.1")
 ```
 
 #### Maven
 
 ```xml
 <dependency>
-    <groupId>org.openlayer</groupId>
+    <groupId>com.openlayer.api</groupId>
     <artifactId>openlayer-java</artifactId>
     <version>0.1.0-alpha.1</version>
 </dependency>
@@ -72,9 +72,9 @@ To create a new inference pipeline data, first use the `InferencePipelineDataStr
 then pass that to the `stream` method of the `data` service.
 
 ```java
+import com.openlayer.api.models.InferencePipelineDataStreamParams;
+import com.openlayer.api.models.InferencePipelineDataStreamResponse;
 import java.util.List;
-import org.openlayer.models.InferencePipelineDataStreamParams;
-import org.openlayer.models.InferencePipelineDataStreamResponse;
 
 InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
     .rows(List.of(InferencePipelineDataStreamParams.Row.builder().build()))
