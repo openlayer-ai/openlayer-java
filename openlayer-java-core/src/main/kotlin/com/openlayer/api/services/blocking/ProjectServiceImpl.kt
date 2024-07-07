@@ -41,7 +41,7 @@ constructor(
     private val createHandler: Handler<ProjectCreateResponse> =
         jsonHandler<ProjectCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /** Create a project under the current workspace. */
+    /** Create a project in your workspace. */
     override fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions
@@ -70,7 +70,7 @@ constructor(
     private val listHandler: Handler<ProjectListResponse> =
         jsonHandler<ProjectListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
-    /** List the projects in a user's workspace. */
+    /** List your workspace's projects. */
     override fun list(
         params: ProjectListParams,
         requestOptions: RequestOptions
