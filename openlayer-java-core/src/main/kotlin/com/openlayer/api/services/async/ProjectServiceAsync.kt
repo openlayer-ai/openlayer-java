@@ -19,14 +19,14 @@ interface ProjectServiceAsync {
 
     fun inferencePipelines(): InferencePipelineServiceAsync
 
-    /** Create a project under the current workspace. */
+    /** Create a project in your workspace. */
     @JvmOverloads
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): CompletableFuture<ProjectCreateResponse>
 
-    /** List the projects in a user's workspace. */
+    /** List your workspace's projects. */
     @JvmOverloads
     fun list(
         params: ProjectListParams,
