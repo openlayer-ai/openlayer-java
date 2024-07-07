@@ -21,7 +21,6 @@ import com.openlayer.api.core.JsonString
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.jsonMapper
 import com.openlayer.api.models.*
-import java.time.OffsetDateTime
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -42,7 +41,7 @@ class ServiceParamsTest {
     }
 
     @Test
-    fun projectsCreateWithAdditionalParams() {
+    fun dataStreamWithAdditionalParams() {
         val additionalHeaders = mutableMapOf<String, List<String>>()
 
         additionalHeaders.put("x-test-header", listOf("abc1234"))
@@ -56,70 +55,43 @@ class ServiceParamsTest {
         additionalBodyProperties.put("testBodyProperty", JsonString.of("ghi890"))
 
         val params =
-            ProjectCreateParams.builder()
-                .name("My Project")
-                .taskType(ProjectCreateParams.TaskType.LLM_BASE)
-                .description("My project description.")
-                .gitRepo(
-                    ProjectCreateParams.GitRepo.builder()
-                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .gitId(123L)
-                        .name("string")
-                        .private_(true)
-                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .slug("string")
-                        .url("string")
-                        .branch("string")
-                        .rootDir("string")
-                        .build()
+            InferencePipelineDataStreamParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .config(
+                    InferencePipelineDataStreamParams.Config.ofLlmData(
+                        InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            .outputColumnName("output")
+                            .contextColumnName("context")
+                            .costColumnName("cost")
+                            .groundTruthColumnName("ground_truth")
+                            .inferenceIdColumnName("id")
+                            .inputVariableNames(listOf("string"))
+                            .latencyColumnName("latency")
+                            .metadata(JsonValue.from(mapOf<String, Any>()))
+                            .numOfTokenColumnName("num_tokens")
+                            .prompt(
+                                listOf(
+                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
+                                        .builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                            )
+                            .questionColumnName("question")
+                            .timestampColumnName("timestamp")
+                            .build()
+                    )
                 )
+                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
                 .additionalHeaders(additionalHeaders)
                 .additionalBodyProperties(additionalBodyProperties)
                 .additionalQueryParams(additionalQueryParams)
                 .build()
 
         val apiResponse =
-            ProjectCreateResponse.builder()
-                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .developmentGoalCount(123L)
-                .goalCount(123L)
-                .inferencePipelineCount(123L)
-                .links(
-                    ProjectCreateResponse.Links.builder()
-                        .app(
-                            "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                        )
-                        .build()
-                )
-                .monitoringGoalCount(123L)
-                .name("My Project")
-                .source(ProjectCreateResponse.Source.WEB)
-                .taskType(ProjectCreateResponse.TaskType.LLM_BASE)
-                .versionCount(123L)
-                .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
-                .description("My project description.")
-                .gitRepo(
-                    ProjectCreateResponse.GitRepo.builder()
-                        .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                        .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .gitId(123L)
-                        .name("string")
-                        .private_(true)
-                        .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                        .slug("string")
-                        .url("string")
-                        .branch("string")
-                        .rootDir("string")
-                        .build()
-                )
+            InferencePipelineDataStreamResponse.builder()
+                .success(InferencePipelineDataStreamResponse.Success.TRUE)
                 .build()
 
         stubFor(
@@ -130,7 +102,7 @@ class ServiceParamsTest {
                 .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.projects().create(params)
+        client.inferencePipelines().data().stream(params)
 
         verify(postRequestedFor(anyUrl()))
     }
