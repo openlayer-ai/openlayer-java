@@ -68,15 +68,25 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new project, first use the `ProjectCreateParams` builder to specify attributes,
-then pass that to the `create` method of the `projects` service.
+To create a new inference pipeline data, first use the `InferencePipelineDataStreamParams` builder to specify attributes,
+then pass that to the `stream` method of the `data` service.
 
 ```java
-import com.openlayer.api.models.ProjectCreateParams;
-import com.openlayer.api.models.ProjectCreateResponse;
+import com.openlayer.api.models.InferencePipelineDataStreamParams;
+import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import java.util.List;
 
-ProjectCreateParams params = ProjectCreateParams.builder().build();
-ProjectCreateResponse projectCreateResponse = client.projects().create(params);
+InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+    .rows(List.of(InferencePipelineDataStreamParams.Row.builder().build()))
+    .config(InferencePipelineDataStreamParams.Config.ofLlmData(InferencePipelineDataStreamParams.Config.LlmData.builder()
+        .outputColumnName("output")
+        .costColumnName("cost")
+        .inputVariableNames(List.of("user_query"))
+        .numOfTokenColumnName("tokens")
+        .timestampColumnName("timestamp")
+        .build()))
+    .build();
+InferencePipelineDataStreamResponse inferencePipelineDataStreamResponse = client.inferencePipelines().data().stream(params);
 ```
 
 ---
@@ -87,14 +97,14 @@ ProjectCreateResponse projectCreateResponse = client.projects().create(params);
 
 To make a request to the Openlayer API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `ProjectCreateParams.builder()` to pass to
-the `create` method of the `projects` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `InferencePipelineDataStreamParams.builder()` to pass to
+the `stream` method of the `data` service.
 
 Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
 you can attach them using the `putAdditionalProperty` method.
 
 ```java
-ProjectCreateParams params = ProjectCreateParams.builder()
+InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", "4242")
     .build();
@@ -107,7 +117,7 @@ ProjectCreateParams params = ProjectCreateParams.builder()
 When receiving a response, the Openlayer Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `OpenlayerInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-ProjectCreateResponse projectCreateResponse = client.projects().create().validate();
+InferencePipelineDataStreamResponse inferencePipelineDataStreamResponse = client.inferencePipelines().data().stream().validate();
 ```
 
 ### Response properties as JSON
@@ -137,7 +147,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
-JsonValue secret = projectCreateResponse._additionalProperties().get("secret_field");
+JsonValue secret = inferencePipelineDataStreamResponse._additionalProperties().get("secret_field");
 ```
 
 ---
