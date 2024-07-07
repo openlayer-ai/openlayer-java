@@ -4,4 +4,17 @@
 
 package com.openlayer.api.services.async.inferencePipelines
 
-interface DataServiceAsync
+import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.models.InferencePipelineDataStreamParams
+import com.openlayer.api.models.InferencePipelineDataStreamResponse
+import java.util.concurrent.CompletableFuture
+
+interface DataServiceAsync {
+
+    /** Stream production data to an inference pipeline. */
+    @JvmOverloads
+    fun stream(
+        params: InferencePipelineDataStreamParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<InferencePipelineDataStreamResponse>
+}

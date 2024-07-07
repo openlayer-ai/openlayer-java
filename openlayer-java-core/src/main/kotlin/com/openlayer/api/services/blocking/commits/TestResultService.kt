@@ -4,4 +4,16 @@
 
 package com.openlayer.api.services.blocking.commits
 
-interface TestResultService
+import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.models.CommitTestResultListParams
+import com.openlayer.api.models.CommitTestResultListResponse
+
+interface TestResultService {
+
+    /** List the test results for a project commit (project version). */
+    @JvmOverloads
+    fun list(
+        params: CommitTestResultListParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CommitTestResultListResponse
+}

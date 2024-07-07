@@ -4,4 +4,17 @@
 
 package com.openlayer.api.services.async.commits
 
-interface TestResultServiceAsync
+import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.models.CommitTestResultListParams
+import com.openlayer.api.models.CommitTestResultListResponse
+import java.util.concurrent.CompletableFuture
+
+interface TestResultServiceAsync {
+
+    /** List the test results for a project commit (project version). */
+    @JvmOverloads
+    fun list(
+        params: CommitTestResultListParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): CompletableFuture<CommitTestResultListResponse>
+}
