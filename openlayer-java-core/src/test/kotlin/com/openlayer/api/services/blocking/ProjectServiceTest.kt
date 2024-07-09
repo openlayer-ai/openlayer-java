@@ -5,7 +5,6 @@ package com.openlayer.api.services.blocking
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.models.*
-import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -26,22 +25,6 @@ class ProjectServiceTest {
                     .name("My Project")
                     .taskType(ProjectCreateParams.TaskType.LLM_BASE)
                     .description("My project description.")
-                    .gitRepo(
-                        ProjectCreateParams.GitRepo.builder()
-                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-                            .gitAccountId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .gitId(123L)
-                            .name("string")
-                            .private_(true)
-                            .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                            .slug("string")
-                            .url("string")
-                            .branch("string")
-                            .rootDir("string")
-                            .build()
-                    )
                     .build()
             )
         println(projectCreateResponse)

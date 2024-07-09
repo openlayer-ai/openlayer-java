@@ -24,7 +24,6 @@ constructor(
     private val name: String,
     private val taskType: TaskType,
     private val description: String?,
-    private val gitRepo: GitRepo?,
     private val additionalQueryParams: Map<String, List<String>>,
     private val additionalHeaders: Map<String, List<String>>,
     private val additionalBodyProperties: Map<String, JsonValue>,
@@ -36,15 +35,12 @@ constructor(
 
     fun description(): Optional<String> = Optional.ofNullable(description)
 
-    fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo)
-
     @JvmSynthetic
     internal fun getBody(): ProjectCreateBody {
         return ProjectCreateBody(
             name,
             taskType,
             description,
-            gitRepo,
             additionalBodyProperties,
         )
     }
@@ -60,7 +56,6 @@ constructor(
         private val name: String?,
         private val taskType: TaskType?,
         private val description: String?,
-        private val gitRepo: GitRepo?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
@@ -74,8 +69,6 @@ constructor(
 
         /** The project description. */
         @JsonProperty("description") fun description(): String? = description
-
-        @JsonProperty("gitRepo") fun gitRepo(): GitRepo? = gitRepo
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -92,7 +85,6 @@ constructor(
                 this.name == other.name &&
                 this.taskType == other.taskType &&
                 this.description == other.description &&
-                this.gitRepo == other.gitRepo &&
                 this.additionalProperties == other.additionalProperties
         }
 
@@ -103,7 +95,6 @@ constructor(
                         name,
                         taskType,
                         description,
-                        gitRepo,
                         additionalProperties,
                     )
             }
@@ -111,7 +102,7 @@ constructor(
         }
 
         override fun toString() =
-            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
+            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -123,7 +114,6 @@ constructor(
             private var name: String? = null
             private var taskType: TaskType? = null
             private var description: String? = null
-            private var gitRepo: GitRepo? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -131,7 +121,6 @@ constructor(
                 this.name = projectCreateBody.name
                 this.taskType = projectCreateBody.taskType
                 this.description = projectCreateBody.description
-                this.gitRepo = projectCreateBody.gitRepo
                 additionalProperties(projectCreateBody.additionalProperties)
             }
 
@@ -145,9 +134,6 @@ constructor(
             /** The project description. */
             @JsonProperty("description")
             fun description(description: String) = apply { this.description = description }
-
-            @JsonProperty("gitRepo")
-            fun gitRepo(gitRepo: GitRepo) = apply { this.gitRepo = gitRepo }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -168,7 +154,6 @@ constructor(
                     checkNotNull(name) { "`name` is required but was not set" },
                     checkNotNull(taskType) { "`taskType` is required but was not set" },
                     description,
-                    gitRepo,
                     additionalProperties.toUnmodifiable(),
                 )
         }
@@ -189,7 +174,6 @@ constructor(
             this.name == other.name &&
             this.taskType == other.taskType &&
             this.description == other.description &&
-            this.gitRepo == other.gitRepo &&
             this.additionalQueryParams == other.additionalQueryParams &&
             this.additionalHeaders == other.additionalHeaders &&
             this.additionalBodyProperties == other.additionalBodyProperties
@@ -200,7 +184,6 @@ constructor(
             name,
             taskType,
             description,
-            gitRepo,
             additionalQueryParams,
             additionalHeaders,
             additionalBodyProperties,
@@ -208,7 +191,7 @@ constructor(
     }
 
     override fun toString() =
-        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, gitRepo=$gitRepo, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -223,7 +206,6 @@ constructor(
         private var name: String? = null
         private var taskType: TaskType? = null
         private var description: String? = null
-        private var gitRepo: GitRepo? = null
         private var additionalQueryParams: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalHeaders: MutableMap<String, MutableList<String>> = mutableMapOf()
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -233,7 +215,6 @@ constructor(
             this.name = projectCreateParams.name
             this.taskType = projectCreateParams.taskType
             this.description = projectCreateParams.description
-            this.gitRepo = projectCreateParams.gitRepo
             additionalQueryParams(projectCreateParams.additionalQueryParams)
             additionalHeaders(projectCreateParams.additionalHeaders)
             additionalBodyProperties(projectCreateParams.additionalBodyProperties)
@@ -247,8 +228,6 @@ constructor(
 
         /** The project description. */
         fun description(description: String) = apply { this.description = description }
-
-        fun gitRepo(gitRepo: GitRepo) = apply { this.gitRepo = gitRepo }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -309,7 +288,6 @@ constructor(
                 checkNotNull(name) { "`name` is required but was not set" },
                 checkNotNull(taskType) { "`taskType` is required but was not set" },
                 description,
-                gitRepo,
                 additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
                 additionalBodyProperties.toUnmodifiable(),
