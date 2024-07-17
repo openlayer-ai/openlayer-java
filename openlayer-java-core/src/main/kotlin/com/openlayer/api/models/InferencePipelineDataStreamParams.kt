@@ -76,7 +76,7 @@ constructor(
         /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
         @JsonProperty("config") fun config(): Config? = config
 
-        /** A list of entries that represent rows of a csv file */
+        /** A list of inference data points with inputs and outputs */
         @JsonProperty("rows") fun rows(): List<Row>? = rows
 
         @JsonAnyGetter
@@ -135,7 +135,7 @@ constructor(
              */
             @JsonProperty("config") fun config(config: Config) = apply { this.config = config }
 
-            /** A list of entries that represent rows of a csv file */
+            /** A list of inference data points with inputs and outputs */
             @JsonProperty("rows") fun rows(rows: List<Row>) = apply { this.rows = rows }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -248,13 +248,13 @@ constructor(
             this.config = Config.ofTextClassificationData(textClassificationData)
         }
 
-        /** A list of entries that represent rows of a csv file */
+        /** A list of inference data points with inputs and outputs */
         fun rows(rows: List<Row>) = apply {
             this.rows.clear()
             this.rows.addAll(rows)
         }
 
-        /** A list of entries that represent rows of a csv file */
+        /** A list of inference data points with inputs and outputs */
         fun addRow(row: Row) = apply { this.rows.add(row) }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
