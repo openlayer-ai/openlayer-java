@@ -7,15 +7,15 @@ import com.openlayer.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class InferencePipelineRowStreamParamsTest {
+class InferencePipelineRowUpdateParamsTest {
 
     @Test
-    fun createInferencePipelineRowStreamParams() {
-        InferencePipelineRowStreamParams.builder()
+    fun createInferencePipelineRowUpdateParams() {
+        InferencePipelineRowUpdateParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .row(JsonValue.from(mapOf<String, Any>()))
             .config(
-                InferencePipelineRowStreamParams.Config.builder()
+                InferencePipelineRowUpdateParams.Config.builder()
                     .groundTruthColumnName("ground_truth")
                     .humanFeedbackColumnName("human_feedback")
                     .inferenceIdColumnName("id")
@@ -30,11 +30,11 @@ class InferencePipelineRowStreamParamsTest {
     @Test
     fun getQueryParams() {
         val params =
-            InferencePipelineRowStreamParams.builder()
+            InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .config(
-                    InferencePipelineRowStreamParams.Config.builder()
+                    InferencePipelineRowUpdateParams.Config.builder()
                         .groundTruthColumnName("ground_truth")
                         .humanFeedbackColumnName("human_feedback")
                         .inferenceIdColumnName("id")
@@ -52,7 +52,7 @@ class InferencePipelineRowStreamParamsTest {
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params =
-            InferencePipelineRowStreamParams.builder()
+            InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .inferenceId("inferenceId")
@@ -65,11 +65,11 @@ class InferencePipelineRowStreamParamsTest {
     @Test
     fun getBody() {
         val params =
-            InferencePipelineRowStreamParams.builder()
+            InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .config(
-                    InferencePipelineRowStreamParams.Config.builder()
+                    InferencePipelineRowUpdateParams.Config.builder()
                         .groundTruthColumnName("ground_truth")
                         .humanFeedbackColumnName("human_feedback")
                         .inferenceIdColumnName("id")
@@ -84,7 +84,7 @@ class InferencePipelineRowStreamParamsTest {
         assertThat(body.row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.config())
             .isEqualTo(
-                InferencePipelineRowStreamParams.Config.builder()
+                InferencePipelineRowUpdateParams.Config.builder()
                     .groundTruthColumnName("ground_truth")
                     .humanFeedbackColumnName("human_feedback")
                     .inferenceIdColumnName("id")
@@ -97,7 +97,7 @@ class InferencePipelineRowStreamParamsTest {
     @Test
     fun getBodyWithoutOptionalFields() {
         val params =
-            InferencePipelineRowStreamParams.builder()
+            InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .inferenceId("inferenceId")
@@ -110,7 +110,7 @@ class InferencePipelineRowStreamParamsTest {
     @Test
     fun getPathParam() {
         val params =
-            InferencePipelineRowStreamParams.builder()
+            InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .inferenceId("inferenceId")
