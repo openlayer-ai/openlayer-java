@@ -7,6 +7,8 @@ import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.services.blocking.inferencePipelines.DataService
 import com.openlayer.api.services.blocking.inferencePipelines.DataServiceImpl
+import com.openlayer.api.services.blocking.inferencePipelines.RowService
+import com.openlayer.api.services.blocking.inferencePipelines.RowServiceImpl
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultServiceImpl
 import com.openlayer.api.services.errorHandler
@@ -20,9 +22,13 @@ constructor(
 
     private val data: DataService by lazy { DataServiceImpl(clientOptions) }
 
+    private val rows: RowService by lazy { RowServiceImpl(clientOptions) }
+
     private val testResults: TestResultService by lazy { TestResultServiceImpl(clientOptions) }
 
     override fun data(): DataService = data
+
+    override fun rows(): RowService = rows
 
     override fun testResults(): TestResultService = testResults
 }
