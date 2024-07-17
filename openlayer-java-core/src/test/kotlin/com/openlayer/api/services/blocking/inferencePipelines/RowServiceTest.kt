@@ -13,20 +13,20 @@ import org.junit.jupiter.api.extension.ExtendWith
 class RowServiceTest {
 
     @Test
-    fun callStream() {
+    fun callUpdate() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val rowService = client.inferencePipelines().rows()
-        val inferencePipelineRowStreamResponse =
-            rowService.stream(
-                InferencePipelineRowStreamParams.builder()
+        val inferencePipelineRowUpdateResponse =
+            rowService.update(
+                InferencePipelineRowUpdateParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .row(JsonValue.from(mapOf<String, Any>()))
                     .config(
-                        InferencePipelineRowStreamParams.Config.builder()
+                        InferencePipelineRowUpdateParams.Config.builder()
                             .groundTruthColumnName("ground_truth")
                             .humanFeedbackColumnName("human_feedback")
                             .inferenceIdColumnName("id")
@@ -37,7 +37,7 @@ class RowServiceTest {
                     .inferenceId("inferenceId")
                     .build()
             )
-        println(inferencePipelineRowStreamResponse)
-        inferencePipelineRowStreamResponse.validate()
+        println(inferencePipelineRowUpdateResponse)
+        inferencePipelineRowUpdateResponse.validate()
     }
 }
