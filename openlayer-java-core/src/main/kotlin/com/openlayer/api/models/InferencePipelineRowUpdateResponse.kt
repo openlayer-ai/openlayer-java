@@ -17,9 +17,9 @@ import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 
-@JsonDeserialize(builder = InferencePipelineRowStreamResponse.Builder::class)
+@JsonDeserialize(builder = InferencePipelineRowUpdateResponse.Builder::class)
 @NoAutoDetect
-class InferencePipelineRowStreamResponse
+class InferencePipelineRowUpdateResponse
 private constructor(
     private val success: JsonField<Success>,
     private val additionalProperties: Map<String, JsonValue>,
@@ -37,7 +37,7 @@ private constructor(
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
-    fun validate(): InferencePipelineRowStreamResponse = apply {
+    fun validate(): InferencePipelineRowUpdateResponse = apply {
         if (!validated) {
             success()
             validated = true
@@ -51,7 +51,7 @@ private constructor(
             return true
         }
 
-        return other is InferencePipelineRowStreamResponse &&
+        return other is InferencePipelineRowUpdateResponse &&
             this.success == other.success &&
             this.additionalProperties == other.additionalProperties
     }
@@ -64,7 +64,7 @@ private constructor(
     }
 
     override fun toString() =
-        "InferencePipelineRowStreamResponse{success=$success, additionalProperties=$additionalProperties}"
+        "InferencePipelineRowUpdateResponse{success=$success, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -77,10 +77,10 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(inferencePipelineRowStreamResponse: InferencePipelineRowStreamResponse) =
+        internal fun from(inferencePipelineRowUpdateResponse: InferencePipelineRowUpdateResponse) =
             apply {
-                this.success = inferencePipelineRowStreamResponse.success
-                additionalProperties(inferencePipelineRowStreamResponse.additionalProperties)
+                this.success = inferencePipelineRowUpdateResponse.success
+                additionalProperties(inferencePipelineRowUpdateResponse.additionalProperties)
             }
 
         fun success(success: Success) = success(JsonField.of(success))
@@ -103,8 +103,8 @@ private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): InferencePipelineRowStreamResponse =
-            InferencePipelineRowStreamResponse(success, additionalProperties.toUnmodifiable())
+        fun build(): InferencePipelineRowUpdateResponse =
+            InferencePipelineRowUpdateResponse(success, additionalProperties.toUnmodifiable())
     }
 
     class Success

@@ -14,7 +14,7 @@ import com.openlayer.api.models.*
 import java.util.Objects
 import java.util.Optional
 
-class InferencePipelineRowStreamParams
+class InferencePipelineRowUpdateParams
 constructor(
     private val inferencePipelineId: String,
     private val inferenceId: String,
@@ -34,8 +34,8 @@ constructor(
     fun config(): Optional<Config> = Optional.ofNullable(config)
 
     @JvmSynthetic
-    internal fun getBody(): InferencePipelineRowStreamBody {
-        return InferencePipelineRowStreamBody(
+    internal fun getBody(): InferencePipelineRowUpdateBody {
+        return InferencePipelineRowUpdateBody(
             row,
             config,
             additionalBodyProperties,
@@ -59,9 +59,9 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = InferencePipelineRowStreamBody.Builder::class)
+    @JsonDeserialize(builder = InferencePipelineRowUpdateBody.Builder::class)
     @NoAutoDetect
-    class InferencePipelineRowStreamBody
+    class InferencePipelineRowUpdateBody
     internal constructor(
         private val row: JsonValue?,
         private val config: Config?,
@@ -85,7 +85,7 @@ constructor(
                 return true
             }
 
-            return other is InferencePipelineRowStreamBody &&
+            return other is InferencePipelineRowUpdateBody &&
                 this.row == other.row &&
                 this.config == other.config &&
                 this.additionalProperties == other.additionalProperties
@@ -104,7 +104,7 @@ constructor(
         }
 
         override fun toString() =
-            "InferencePipelineRowStreamBody{row=$row, config=$config, additionalProperties=$additionalProperties}"
+            "InferencePipelineRowUpdateBody{row=$row, config=$config, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -118,11 +118,11 @@ constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(inferencePipelineRowStreamBody: InferencePipelineRowStreamBody) =
+            internal fun from(inferencePipelineRowUpdateBody: InferencePipelineRowUpdateBody) =
                 apply {
-                    this.row = inferencePipelineRowStreamBody.row
-                    this.config = inferencePipelineRowStreamBody.config
-                    additionalProperties(inferencePipelineRowStreamBody.additionalProperties)
+                    this.row = inferencePipelineRowUpdateBody.row
+                    this.config = inferencePipelineRowUpdateBody.config
+                    additionalProperties(inferencePipelineRowUpdateBody.additionalProperties)
                 }
 
             @JsonProperty("row") fun row(row: JsonValue) = apply { this.row = row }
@@ -143,8 +143,8 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): InferencePipelineRowStreamBody =
-                InferencePipelineRowStreamBody(
+            fun build(): InferencePipelineRowUpdateBody =
+                InferencePipelineRowUpdateBody(
                     checkNotNull(row) { "`row` is required but was not set" },
                     config,
                     additionalProperties.toUnmodifiable(),
@@ -163,7 +163,7 @@ constructor(
             return true
         }
 
-        return other is InferencePipelineRowStreamParams &&
+        return other is InferencePipelineRowUpdateParams &&
             this.inferencePipelineId == other.inferencePipelineId &&
             this.row == other.row &&
             this.config == other.config &&
@@ -186,7 +186,7 @@ constructor(
     }
 
     override fun toString() =
-        "InferencePipelineRowStreamParams{inferencePipelineId=$inferencePipelineId, row=$row, config=$config, inferenceId=$inferenceId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+        "InferencePipelineRowUpdateParams{inferencePipelineId=$inferencePipelineId, row=$row, config=$config, inferenceId=$inferenceId, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -207,15 +207,15 @@ constructor(
         private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(inferencePipelineRowStreamParams: InferencePipelineRowStreamParams) =
+        internal fun from(inferencePipelineRowUpdateParams: InferencePipelineRowUpdateParams) =
             apply {
-                this.inferencePipelineId = inferencePipelineRowStreamParams.inferencePipelineId
-                this.inferenceId = inferencePipelineRowStreamParams.inferenceId
-                this.row = inferencePipelineRowStreamParams.row
-                this.config = inferencePipelineRowStreamParams.config
-                additionalQueryParams(inferencePipelineRowStreamParams.additionalQueryParams)
-                additionalHeaders(inferencePipelineRowStreamParams.additionalHeaders)
-                additionalBodyProperties(inferencePipelineRowStreamParams.additionalBodyProperties)
+                this.inferencePipelineId = inferencePipelineRowUpdateParams.inferencePipelineId
+                this.inferenceId = inferencePipelineRowUpdateParams.inferenceId
+                this.row = inferencePipelineRowUpdateParams.row
+                this.config = inferencePipelineRowUpdateParams.config
+                additionalQueryParams(inferencePipelineRowUpdateParams.additionalQueryParams)
+                additionalHeaders(inferencePipelineRowUpdateParams.additionalHeaders)
+                additionalBodyProperties(inferencePipelineRowUpdateParams.additionalBodyProperties)
             }
 
         fun inferencePipelineId(inferencePipelineId: String) = apply {
@@ -283,8 +283,8 @@ constructor(
                 this.additionalBodyProperties.putAll(additionalBodyProperties)
             }
 
-        fun build(): InferencePipelineRowStreamParams =
-            InferencePipelineRowStreamParams(
+        fun build(): InferencePipelineRowUpdateParams =
+            InferencePipelineRowUpdateParams(
                 checkNotNull(inferencePipelineId) {
                     "`inferencePipelineId` is required but was not set"
                 },
