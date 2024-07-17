@@ -10,7 +10,7 @@ import com.openlayer.api.models.InferencePipelineDataStreamResponse
 
 interface DataService {
 
-    /** Stream production data to an inference pipeline. */
+    /** Create an inference data point in an inference pipeline. */
     @JvmOverloads
     fun stream(
         params: InferencePipelineDataStreamParams,

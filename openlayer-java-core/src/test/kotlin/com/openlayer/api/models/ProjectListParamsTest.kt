@@ -11,7 +11,7 @@ class ProjectListParamsTest {
     @Test
     fun createProjectListParams() {
         ProjectListParams.builder()
-            .name("string")
+            .name("name")
             .page(123L)
             .perPage(100L)
             .taskType(ProjectListParams.TaskType.LLM_BASE)
@@ -22,13 +22,13 @@ class ProjectListParamsTest {
     fun getQueryParams() {
         val params =
             ProjectListParams.builder()
-                .name("string")
+                .name("name")
                 .page(123L)
                 .perPage(100L)
                 .taskType(ProjectListParams.TaskType.LLM_BASE)
                 .build()
         val expected = mutableMapOf<String, List<String>>()
-        expected.put("name", listOf("string"))
+        expected.put("name", listOf("name"))
         expected.put("page", listOf("123"))
         expected.put("perPage", listOf("100"))
         expected.put("taskType", listOf(ProjectListParams.TaskType.LLM_BASE.toString()))
