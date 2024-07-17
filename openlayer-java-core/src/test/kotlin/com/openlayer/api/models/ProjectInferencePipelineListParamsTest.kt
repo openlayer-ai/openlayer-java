@@ -12,7 +12,7 @@ class ProjectInferencePipelineListParamsTest {
     fun createProjectInferencePipelineListParams() {
         ProjectInferencePipelineListParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .name("string")
+            .name("name")
             .page(123L)
             .perPage(100L)
             .build()
@@ -23,12 +23,12 @@ class ProjectInferencePipelineListParamsTest {
         val params =
             ProjectInferencePipelineListParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .name("string")
+                .name("name")
                 .page(123L)
                 .perPage(100L)
                 .build()
         val expected = mutableMapOf<String, List<String>>()
-        expected.put("name", listOf("string"))
+        expected.put("name", listOf("name"))
         expected.put("page", listOf("123"))
         expected.put("perPage", listOf("100"))
         assertThat(params.getQueryParams()).isEqualTo(expected)

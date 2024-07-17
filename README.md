@@ -14,7 +14,7 @@ It is generated with [Stainless](https://www.stainlessapi.com/).
 
 ## Documentation
 
-The REST API documentation can be found [on openlayer.com](https://openlayer.com/docs/api-reference/rest/overview).
+The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview).
 
 ---
 
@@ -250,3 +250,7 @@ This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) con
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
 We are keen for your feedback; please open an [issue](https://www.github.com/openlayer-ai/openlayer-java/issues) with questions, bugs, or suggestions.
+
+## Requirements
+
+This library requires Java 8 or later.
