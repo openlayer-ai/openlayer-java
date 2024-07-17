@@ -42,7 +42,7 @@ class ProjectServiceTest {
         val projectListResponse =
             projectService.list(
                 ProjectListParams.builder()
-                    .name("string")
+                    .name("name")
                     .page(123L)
                     .perPage(100L)
                     .taskType(ProjectListParams.TaskType.LLM_BASE)

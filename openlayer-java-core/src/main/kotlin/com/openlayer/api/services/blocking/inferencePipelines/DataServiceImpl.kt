@@ -26,7 +26,7 @@ constructor(
         jsonHandler<InferencePipelineDataStreamResponse>(clientOptions.jsonMapper)
             .withErrorHandler(errorHandler)
 
-    /** Stream production data to an inference pipeline. */
+    /** Create an inference data point in an inference pipeline. */
     override fun stream(
         params: InferencePipelineDataStreamParams,
         requestOptions: RequestOptions
