@@ -5,11 +5,14 @@
 package com.openlayer.api.services.blocking
 
 import com.openlayer.api.services.blocking.inferencePipelines.DataService
+import com.openlayer.api.services.blocking.inferencePipelines.RowService
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
 
 interface InferencePipelineService {
 
     fun data(): DataService
+
+    fun rows(): RowService
 
     fun testResults(): TestResultService
 }

@@ -5,11 +5,14 @@
 package com.openlayer.api.services.async
 
 import com.openlayer.api.services.async.inferencePipelines.DataServiceAsync
+import com.openlayer.api.services.async.inferencePipelines.RowServiceAsync
 import com.openlayer.api.services.async.inferencePipelines.TestResultServiceAsync
 
 interface InferencePipelineServiceAsync {
 
     fun data(): DataServiceAsync
+
+    fun rows(): RowServiceAsync
 
     fun testResults(): TestResultServiceAsync
 }
