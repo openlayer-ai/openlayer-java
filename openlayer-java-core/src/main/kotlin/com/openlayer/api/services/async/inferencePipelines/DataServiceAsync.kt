@@ -11,7 +11,7 @@ import java.util.concurrent.CompletableFuture
 
 interface DataServiceAsync {
 
-    /** Create an inference data point in an inference pipeline. */
+    /** Publish an inference data point to an inference pipeline. */
     @JvmOverloads
     fun stream(
         params: InferencePipelineDataStreamParams,
