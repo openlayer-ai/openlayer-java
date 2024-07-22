@@ -16,4 +16,6 @@ interface OpenlayerClientAsync {
     fun commits(): CommitServiceAsync
 
     fun inferencePipelines(): InferencePipelineServiceAsync
+
+    fun storage(): StorageServiceAsync
 }
