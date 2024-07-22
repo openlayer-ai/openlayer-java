@@ -16,4 +16,6 @@ interface OpenlayerClient {
     fun commits(): CommitService
 
     fun inferencePipelines(): InferencePipelineService
+
+    fun storage(): StorageService
 }
