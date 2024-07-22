@@ -31,7 +31,9 @@ private constructor(
             this.responseValidation = responseValidation
         }
 
-        fun timeout(timeout: Duration) = apply { this.timeout = timeout }
+        fun timeout(timeout: Duration) = apply {
+            this.timeout = timeout
+        }
 
         fun build(): RequestOptions {
             return RequestOptions(responseValidation, timeout)

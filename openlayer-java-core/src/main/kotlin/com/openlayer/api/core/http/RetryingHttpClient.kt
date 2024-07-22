@@ -3,8 +3,8 @@
 package com.openlayer.api.core.http
 
 import com.google.common.util.concurrent.MoreExecutors
-import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.errors.OpenlayerIoException
+import com.openlayer.api.core.RequestOptions
 import java.io.IOException
 import java.time.Clock
 import java.time.Duration
@@ -24,15 +24,15 @@ import kotlin.math.pow
 
 class RetryingHttpClient
 private constructor(
-    private val httpClient: HttpClient,
-    private val clock: Clock,
-    private val maxRetries: Int,
-    private val idempotencyHeader: String?,
+        private val httpClient: HttpClient,
+        private val clock: Clock,
+        private val maxRetries: Int,
+        private val idempotencyHeader: String?,
 ) : HttpClient {
 
     override fun execute(
-        request: HttpRequest,
-        requestOptions: RequestOptions,
+            request: HttpRequest,
+            requestOptions: RequestOptions,
     ): HttpResponse {
         if (!isRetryable(request) || maxRetries <= 0) {
             return httpClient.execute(request, requestOptions)
@@ -44,20 +44,20 @@ private constructor(
 
         while (true) {
             val response =
-                try {
-                    val response = httpClient.execute(request, requestOptions)
-                    if (++retries > maxRetries || !shouldRetry(response)) {
-                        return response
-                    }
+                    try {
+                        val response = httpClient.execute(request, requestOptions)
+                        if (++retries > maxRetries || !shouldRetry(response)) {
+                            return response
+                        }
 
-                    response
-                } catch (t: Throwable) {
-                    if (++retries > maxRetries || !shouldRetry(t)) {
-                        throw t
-                    }
+                        response
+                    } catch (t: Throwable) {
+                        if (++retries > maxRetries || !shouldRetry(t)) {
+                            throw t
+                        }
 
-                    null
-                }
+                        null
+                    }
 
             val backoffMillis = getRetryBackoffMillis(retries, response)
             Thread.sleep(backoffMillis.toMillis())
@@ -65,8 +65,8 @@ private constructor(
     }
 
     override fun executeAsync(
-        request: HttpRequest,
-        requestOptions: RequestOptions,
+            request: HttpRequest,
+            requestOptions: RequestOptions,
     ): CompletableFuture<HttpResponse> {
         if (!isRetryable(request) || maxRetries <= 0) {
             return httpClient.executeAsync(request, requestOptions)
@@ -78,31 +78,31 @@ private constructor(
 
         fun wrap(future: CompletableFuture<HttpResponse>): CompletableFuture<HttpResponse> {
             return future
-                .handleAsync(
-                    fun(
-                        response: HttpResponse?,
-                        throwable: Throwable?
-                    ): CompletableFuture<HttpResponse> {
-                        if (response != null) {
-                            if (++retries > maxRetries || !shouldRetry(response)) {
-                                return CompletableFuture.completedFuture(response)
-                            }
-                        } else {
-                            if (++retries > maxRetries || !shouldRetry(throwable!!)) {
-                                val failedFuture = CompletableFuture<HttpResponse>()
-                                failedFuture.completeExceptionally(throwable)
-                                return failedFuture
-                            }
-                        }
+                    .handleAsync(
+                            fun(
+                                    response: HttpResponse?,
+                                    throwable: Throwable?
+                            ): CompletableFuture<HttpResponse> {
+                                if (response != null) {
+                                    if (++retries > maxRetries || !shouldRetry(response)) {
+                                        return CompletableFuture.completedFuture(response)
+                                    }
+                                } else {
+                                    if (++retries > maxRetries || !shouldRetry(throwable!!)) {
+                                        val failedFuture = CompletableFuture<HttpResponse>()
+                                        failedFuture.completeExceptionally(throwable)
+                                        return failedFuture
+                                    }
+                                }
 
-                        val backoffMillis = getRetryBackoffMillis(retries, response)
-                        return sleepAsync(backoffMillis.toMillis()).thenCompose {
-                            wrap(httpClient.executeAsync(request, requestOptions))
-                        }
-                    },
-                    MoreExecutors.directExecutor()
-                )
-                .thenCompose(Function.identity())
+                                val backoffMillis = getRetryBackoffMillis(retries, response)
+                                return sleepAsync(backoffMillis.toMillis()).thenCompose {
+                                    wrap(httpClient.executeAsync(request, requestOptions))
+                                }
+                            },
+                            MoreExecutors.directExecutor()
+                    )
+                    .thenCompose(Function.identity())
         }
 
         return wrap(httpClient.executeAsync(request, requestOptions))
@@ -158,38 +158,30 @@ private constructor(
     private fun getRetryBackoffMillis(retries: Int, response: HttpResponse?): Duration {
         // About the Retry-After header:
         // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Retry-After
-        response
-            ?.headers()
-            ?.let { headers ->
-                headers
-                    .get("Retry-After-Ms")
-                    .getOrNull(0)
-                    ?.toFloatOrNull()
-                    ?.times(TimeUnit.MILLISECONDS.toNanos(1))
+        response?.headers()?.let { headers ->
+            headers.get("Retry-After-Ms").getOrNull(0)?.toFloatOrNull()?.times(TimeUnit.MILLISECONDS.toNanos(1))
                     ?: headers.get("Retry-After").getOrNull(0)?.let { retryAfter ->
                         retryAfter.toFloatOrNull()?.times(TimeUnit.SECONDS.toNanos(1))
-                            ?: try {
-                                ChronoUnit.MILLIS.between(
-                                    OffsetDateTime.now(clock),
-                                    OffsetDateTime.parse(
-                                        retryAfter,
-                                        DateTimeFormatter.RFC_1123_DATE_TIME
+                                ?: try {
+                                    ChronoUnit.MILLIS.between(
+                                            OffsetDateTime.now(clock),
+                                            OffsetDateTime.parse(
+                                                    retryAfter,
+                                                    DateTimeFormatter.RFC_1123_DATE_TIME
+                                            )
                                     )
-                                )
-                            } catch (e: DateTimeParseException) {
-                                null
-                            }
+                                } catch (e: DateTimeParseException) {
+                                    null
+                                }
                     }
+        }?.let { retryAfterNanos ->
+            // If the API asks us to wait a certain amount of time (and it's a reasonable amount), just
+            // do what it says.
+            val retryAfter = Duration.ofNanos(retryAfterNanos.toLong())
+            if (retryAfter in Duration.ofNanos(0)..Duration.ofMinutes(1)) {
+                return retryAfter
             }
-            ?.let { retryAfterNanos ->
-                // If the API asks us to wait a certain amount of time (and it's a reasonable
-                // amount), just
-                // do what it says.
-                val retryAfter = Duration.ofNanos(retryAfterNanos.toLong())
-                if (retryAfter in Duration.ofNanos(0)..Duration.ofMinutes(1)) {
-                    return retryAfter
-                }
-            }
+        }
 
         // Apply exponential backoff, but not more than the max.
         val backoffSeconds = min(0.5 * 2.0.pow(retries - 1), 8.0)
@@ -203,12 +195,12 @@ private constructor(
     private fun sleepAsync(millis: Long): CompletableFuture<Void> {
         val future = CompletableFuture<Void>()
         TIMER.schedule(
-            object : TimerTask() {
-                override fun run() {
-                    future.complete(null)
-                }
-            },
-            millis
+                object : TimerTask() {
+                    override fun run() {
+                        future.complete(null)
+                    }
+                },
+                millis
         )
         return future
     }
@@ -217,7 +209,8 @@ private constructor(
 
         private val TIMER = Timer("RetryingHttpClient", true)
 
-        @JvmStatic fun builder() = Builder()
+        @JvmStatic
+        fun builder() = Builder()
     }
 
     class Builder {
@@ -236,11 +229,11 @@ private constructor(
         fun idempotencyHeader(header: String) = apply { this.idempotencyHeader = header }
 
         fun build(): HttpClient =
-            RetryingHttpClient(
-                checkNotNull(httpClient) { "`httpClient` is required but was not set" },
-                clock,
-                maxRetries,
-                idempotencyHeader,
-            )
+                RetryingHttpClient(
+                        checkNotNull(httpClient) { "`httpClient` is required but was not set" },
+                        clock,
+                        maxRetries,
+                        idempotencyHeader,
+                )
     }
 }
