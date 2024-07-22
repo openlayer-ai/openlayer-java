@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.BeanProperty
@@ -16,6 +17,8 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.SerializerProvider
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.databind.deser.ContextualDeserializer
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import com.fasterxml.jackson.databind.node.JsonNodeType.ARRAY
 import com.fasterxml.jackson.databind.node.JsonNodeType.BINARY
 import com.fasterxml.jackson.databind.node.JsonNodeType.BOOLEAN
@@ -26,14 +29,15 @@ import com.fasterxml.jackson.databind.node.JsonNodeType.OBJECT
 import com.fasterxml.jackson.databind.node.JsonNodeType.POJO
 import com.fasterxml.jackson.databind.node.JsonNodeType.STRING
 import com.fasterxml.jackson.databind.ser.std.NullSerializer
-import com.openlayer.api.errors.OpenlayerInvalidDataException
-import java.nio.charset.Charset
-import java.util.Objects
 import java.util.Optional
+import java.util.Objects
+import java.io.ByteArrayOutputStream
 import org.apache.hc.core5.http.ContentType
+import java.nio.charset.Charset
+import com.openlayer.api.errors.OpenlayerInvalidDataException
 
 @JsonDeserialize(using = JsonField.Deserializer::class)
-sealed class JsonField<out T : Any> {
+sealed class JsonField<out T: Any> {
 
     fun isMissing(): Boolean = this is JsonMissing
 
@@ -46,9 +50,9 @@ sealed class JsonField<out T : Any> {
         }
 
     /**
-     * If the "known" value (i.e. matching the type that the SDK expects) is returned by the API
-     * then this method will return an empty `Optional`, otherwise the returned `Optional` is given
-     * a `JsonValue`.
+     * If the "known" value (i.e. matching the type that the SDK expects) is returned
+     * by the API then this method will return an empty `Optional`, otherwise the
+     * returned `Optional` is given a `JsonValue`.
      */
     fun asUnknown(): Optional<out JsonValue> =
         when (this) {
@@ -123,12 +127,13 @@ sealed class JsonField<out T : Any> {
             is JsonValue -> accept(visitor as JsonValue.Visitor<R>)
         }
 
-    interface Visitor<in T, out R> : JsonValue.Visitor<R> {
+    interface Visitor<in T, out R>: JsonValue.Visitor<R> {
         fun visitKnown(value: T): R = visitDefault()
     }
 
     companion object {
-        @JvmStatic fun <T : Any> of(value: T): JsonField<T> = KnownValue.of(value)
+        @JvmStatic
+        fun <T : Any> of(value: T): JsonField<T> = KnownValue.of(value)
 
         @JvmStatic
         fun <T : Any> ofNullable(value: T?): JsonField<T> =
@@ -155,8 +160,11 @@ sealed class JsonField<out T : Any> {
         }
 
         override fun ObjectCodec.deserialize(node: JsonNode): JsonField<*> {
-            return type?.let { tryDeserialize<Any>(node, type) }?.let { of(it) }
-                ?: JsonValue.fromJsonNode(node)
+            return type?.let {
+                tryDeserialize<Any>(node, type)
+            }?.let {
+                of(it)
+            } ?: JsonValue.fromJsonNode(node)
         }
 
         override fun getNullValue(context: DeserializationContext): JsonField<*> {
@@ -166,11 +174,11 @@ sealed class JsonField<out T : Any> {
 }
 
 @JsonDeserialize(using = JsonValue.Deserializer::class)
-sealed class JsonValue : JsonField<Nothing>() {
+sealed class JsonValue: JsonField<Nothing>() {
 
-    fun <R : Any> convert(type: TypeReference<R>): R? = JSON_MAPPER.convertValue(this, type)
+    fun <R: Any> convert(type: TypeReference<R>): R? = JSON_MAPPER.convertValue(this, type)
 
-    fun <R : Any> convert(type: Class<R>): R? = JSON_MAPPER.convertValue(this, type)
+    fun <R: Any> convert(type: Class<R>): R? = JSON_MAPPER.convertValue(this, type)
 
     fun <R> accept(visitor: Visitor<R>): R =
         when (this) {
@@ -185,19 +193,12 @@ sealed class JsonValue : JsonField<Nothing>() {
 
     interface Visitor<out R> {
         fun visitNull(): R = visitDefault()
-
         fun visitMissing(): R = visitDefault()
-
         fun visitBoolean(value: Boolean): R = visitDefault()
-
         fun visitNumber(value: Number): R = visitDefault()
-
         fun visitString(value: String): R = visitDefault()
-
         fun visitArray(values: List<JsonValue>): R = visitDefault()
-
         fun visitObject(values: Map<String, JsonValue>): R = visitDefault()
-
         fun visitDefault(): R {
             throw RuntimeException("Unexpected value")
         }
@@ -223,12 +224,8 @@ sealed class JsonValue : JsonField<Nothing>() {
                 BOOLEAN -> JsonBoolean.of(node.booleanValue())
                 NUMBER -> JsonNumber.of(node.numberValue())
                 STRING -> JsonString.of(node.textValue())
-                ARRAY ->
-                    JsonArray.of(node.elements().asSequence().map { fromJsonNode(it) }.toList())
-                OBJECT ->
-                    JsonObject.of(
-                        node.fields().asSequence().map { it.key to fromJsonNode(it.value) }.toMap()
-                    )
+                ARRAY -> JsonArray.of(node.elements().asSequence().map { fromJsonNode(it) }.toList())
+                OBJECT -> JsonObject.of(node.fields().asSequence().map { it.key to fromJsonNode(it.value) }.toMap())
                 BINARY,
                 POJO,
                 null -> throw IllegalStateException("Unexpected JsonNode type: ${node.nodeType}")
@@ -246,10 +243,7 @@ sealed class JsonValue : JsonField<Nothing>() {
     }
 }
 
-class KnownValue<T : Any>
-private constructor(
-    @com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: T
-) : JsonField<T>() {
+class KnownValue<T : Any> private constructor(@com.fasterxml.jackson.annotation.JsonValue @get:JvmName("value") val value: T) : JsonField<T>() {
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -264,7 +258,7 @@ private constructor(
     override fun toString() = value.toString()
 
     companion object {
-        @JsonCreator @JvmStatic fun <T : Any> of(value: T) = KnownValue(value)
+        @JsonCreator @JvmStatic fun <T: Any> of(value: T) = KnownValue(value)
     }
 }
 
@@ -279,14 +273,11 @@ class JsonMissing : JsonValue() {
         @JvmStatic fun of() = INSTANCE
     }
 
-    class Serializer : BaseSerializer<JsonMissing>(JsonMissing::class) {
-        override fun serialize(
-            value: JsonMissing,
-            generator: JsonGenerator,
-            provider: SerializerProvider
-        ) {
+    class Serializer: BaseSerializer<JsonMissing>(JsonMissing::class) {
+        override fun serialize(value: JsonMissing, generator: JsonGenerator, provider: SerializerProvider) {
             throw RuntimeException("JsonMissing cannot be serialized")
         }
+
     }
 }
 
@@ -387,7 +378,9 @@ private constructor(
     override fun toString() = values.toString()
 
     companion object {
-        @JsonCreator @JvmStatic fun of(values: List<JsonValue>) = JsonArray(values.toUnmodifiable())
+        @JsonCreator
+        @JvmStatic
+        fun of(values: List<JsonValue>) = JsonArray(values.toUnmodifiable())
     }
 }
 
@@ -424,18 +417,18 @@ private constructor(
 )
 annotation class ExcludeMissing
 
+
 @JacksonAnnotationsInside
 @JsonAutoDetect(
     getterVisibility = Visibility.NONE,
     isGetterVisibility = Visibility.NONE,
     setterVisibility = Visibility.NONE,
     creatorVisibility = Visibility.NONE,
-    fieldVisibility = Visibility.NONE
-)
+    fieldVisibility = Visibility.NONE)
 annotation class NoAutoDetect
 
-class MultipartFormValue<T>
-internal constructor(
+
+class MultipartFormValue<T> internal constructor(
     val name: String,
     val value: T,
     val contentType: ContentType,
@@ -446,20 +439,16 @@ internal constructor(
 
     override fun hashCode(): Int {
         if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    name,
-                    contentType,
-                    filename,
-                    when (value) {
-                        is ByteArray -> value.contentHashCode()
-                        is String -> value
-                        is Boolean -> value
-                        is Long -> value
-                        is Double -> value
-                        else -> value?.hashCode()
-                    }
-                )
+            hashCode = Objects.hash(
+                name, contentType, filename, when (value) {
+                    is ByteArray -> value.contentHashCode()
+                    is String -> value
+                    is Boolean -> value
+                    is Long -> value
+                    is Double -> value
+                    else -> value?.hashCode()
+                }
+            )
         }
         return hashCode
     }
@@ -470,8 +459,7 @@ internal constructor(
 
         other as MultipartFormValue<*>
 
-        if (name != other.name || contentType != other.contentType || filename != other.filename)
-            return false
+        if (name != other.name || contentType != other.contentType || filename != other.filename) return false
 
         return when {
             value is ByteArray && other.value is ByteArray -> value contentEquals other.value
@@ -483,11 +471,10 @@ internal constructor(
         return "MultipartFormValue(name='$name', contentType=$contentType, filename=$filename, value=${valueToString()})"
     }
 
-    private fun valueToString(): String =
-        when (value) {
-            is ByteArray -> "ByteArray of size ${value.size}"
-            else -> value.toString()
-        }
+    private fun valueToString(): String = when (value) {
+        is ByteArray -> "ByteArray of size ${value.size}"
+        else -> value.toString()
+    }
 
     companion object {
         internal fun fromString(
@@ -497,27 +484,27 @@ internal constructor(
         ): MultipartFormValue<String> = MultipartFormValue(name, value, contentType)
 
         internal fun fromBoolean(
-            name: String,
-            value: Boolean,
-            contentType: ContentType,
+                name: String,
+                value: Boolean,
+                contentType: ContentType,
         ): MultipartFormValue<Boolean> = MultipartFormValue(name, value, contentType)
 
         internal fun fromLong(
-            name: String,
-            value: Long,
-            contentType: ContentType,
+                name: String,
+                value: Long,
+                contentType: ContentType,
         ): MultipartFormValue<Long> = MultipartFormValue(name, value, contentType)
 
         internal fun fromDouble(
-            name: String,
-            value: Double,
-            contentType: ContentType,
+                name: String,
+                value: Double,
+                contentType: ContentType,
         ): MultipartFormValue<Double> = MultipartFormValue(name, value, contentType)
 
-        internal fun <T : Enum> fromEnum(
-            name: String,
-            value: T,
-            contentType: ContentType
+        internal fun <T: Enum> fromEnum(
+                name: String,
+                value: T,
+                contentType: ContentType
         ): MultipartFormValue<T> = MultipartFormValue(name, value, contentType)
 
         internal fun fromByteArray(
