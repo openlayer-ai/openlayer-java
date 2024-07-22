@@ -26,6 +26,8 @@ constructor(
         InferencePipelineServiceImpl(clientOptions)
     }
 
+    private val storage: StorageService by lazy { StorageServiceImpl(clientOptions) }
+
     override fun async(): OpenlayerClientAsync = async
 
     override fun projects(): ProjectService = projects
@@ -33,4 +35,6 @@ constructor(
     override fun commits(): CommitService = commits
 
     override fun inferencePipelines(): InferencePipelineService = inferencePipelines
+
+    override fun storage(): StorageService = storage
 }
