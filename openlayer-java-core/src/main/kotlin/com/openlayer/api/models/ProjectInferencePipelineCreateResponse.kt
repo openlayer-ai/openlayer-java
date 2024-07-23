@@ -5,54 +5,40 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.openlayer.api.core.BaseDeserializer
-import com.openlayer.api.core.BaseSerializer
-import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.JsonNull
-import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.Enum
-import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.Optional
 
 @JsonDeserialize(builder = ProjectInferencePipelineCreateResponse.Builder::class)
 @NoAutoDetect
-class ProjectInferencePipelineCreateResponse private constructor(
-  private val id: JsonField<String>,
-  private val projectId: JsonField<String>,
-  private val name: JsonField<String>,
-  private val dateCreated: JsonField<OffsetDateTime>,
-  private val dateUpdated: JsonField<OffsetDateTime>,
-  private val dateLastSampleReceived: JsonField<OffsetDateTime>,
-  private val description: JsonField<String>,
-  private val dateLastEvaluated: JsonField<OffsetDateTime>,
-  private val dateOfNextEvaluation: JsonField<OffsetDateTime>,
-  private val passingGoalCount: JsonField<Long>,
-  private val failingGoalCount: JsonField<Long>,
-  private val totalGoalCount: JsonField<Long>,
-  private val status: JsonField<Status>,
-  private val statusMessage: JsonField<String>,
-  private val links: JsonField<Links>,
-  private val additionalProperties: Map<String, JsonValue>,
-
+class ProjectInferencePipelineCreateResponse
+private constructor(
+    private val id: JsonField<String>,
+    private val projectId: JsonField<String>,
+    private val name: JsonField<String>,
+    private val dateCreated: JsonField<OffsetDateTime>,
+    private val dateUpdated: JsonField<OffsetDateTime>,
+    private val dateLastSampleReceived: JsonField<OffsetDateTime>,
+    private val description: JsonField<String>,
+    private val dateLastEvaluated: JsonField<OffsetDateTime>,
+    private val dateOfNextEvaluation: JsonField<OffsetDateTime>,
+    private val passingGoalCount: JsonField<Long>,
+    private val failingGoalCount: JsonField<Long>,
+    private val totalGoalCount: JsonField<Long>,
+    private val status: JsonField<Status>,
+    private val statusMessage: JsonField<String>,
+    private val links: JsonField<Links>,
+    private val additionalProperties: Map<String, JsonValue>,
 ) {
 
     private var validated: Boolean = false
@@ -75,16 +61,20 @@ class ProjectInferencePipelineCreateResponse private constructor(
     fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
     /** The last data sample received date. */
-    fun dateLastSampleReceived(): Optional<OffsetDateTime> = Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
+    fun dateLastSampleReceived(): Optional<OffsetDateTime> =
+        Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
 
     /** The inference pipeline description. */
-    fun description(): Optional<String> = Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> =
+        Optional.ofNullable(description.getNullable("description"))
 
     /** The last test evaluation date. */
-    fun dateLastEvaluated(): Optional<OffsetDateTime> = Optional.ofNullable(dateLastEvaluated.getNullable("dateLastEvaluated"))
+    fun dateLastEvaluated(): Optional<OffsetDateTime> =
+        Optional.ofNullable(dateLastEvaluated.getNullable("dateLastEvaluated"))
 
     /** The next test evaluation date. */
-    fun dateOfNextEvaluation(): Optional<OffsetDateTime> = Optional.ofNullable(dateOfNextEvaluation.getNullable("dateOfNextEvaluation"))
+    fun dateOfNextEvaluation(): Optional<OffsetDateTime> =
+        Optional.ofNullable(dateOfNextEvaluation.getNullable("dateOfNextEvaluation"))
 
     /** The number of tests passing. */
     fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
@@ -99,34 +89,25 @@ class ProjectInferencePipelineCreateResponse private constructor(
     fun status(): Status = status.getRequired("status")
 
     /** The status message of test evaluation for the inference pipeline. */
-    fun statusMessage(): Optional<String> = Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+    fun statusMessage(): Optional<String> =
+        Optional.ofNullable(statusMessage.getNullable("statusMessage"))
 
     fun links(): Links = links.getRequired("links")
 
     /** The inference pipeline id. */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
 
     /** The project id. */
-    @JsonProperty("projectId")
-    @ExcludeMissing
-    fun _projectId() = projectId
+    @JsonProperty("projectId") @ExcludeMissing fun _projectId() = projectId
 
     /** The inference pipeline name. */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name() = name
 
     /** The creation date. */
-    @JsonProperty("dateCreated")
-    @ExcludeMissing
-    fun _dateCreated() = dateCreated
+    @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
 
     /** The last updated date. */
-    @JsonProperty("dateUpdated")
-    @ExcludeMissing
-    fun _dateUpdated() = dateUpdated
+    @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
 
     /** The last data sample received date. */
     @JsonProperty("dateLastSampleReceived")
@@ -134,14 +115,10 @@ class ProjectInferencePipelineCreateResponse private constructor(
     fun _dateLastSampleReceived() = dateLastSampleReceived
 
     /** The inference pipeline description. */
-    @JsonProperty("description")
-    @ExcludeMissing
-    fun _description() = description
+    @JsonProperty("description") @ExcludeMissing fun _description() = description
 
     /** The last test evaluation date. */
-    @JsonProperty("dateLastEvaluated")
-    @ExcludeMissing
-    fun _dateLastEvaluated() = dateLastEvaluated
+    @JsonProperty("dateLastEvaluated") @ExcludeMissing fun _dateLastEvaluated() = dateLastEvaluated
 
     /** The next test evaluation date. */
     @JsonProperty("dateOfNextEvaluation")
@@ -149,33 +126,21 @@ class ProjectInferencePipelineCreateResponse private constructor(
     fun _dateOfNextEvaluation() = dateOfNextEvaluation
 
     /** The number of tests passing. */
-    @JsonProperty("passingGoalCount")
-    @ExcludeMissing
-    fun _passingGoalCount() = passingGoalCount
+    @JsonProperty("passingGoalCount") @ExcludeMissing fun _passingGoalCount() = passingGoalCount
 
     /** The number of tests failing. */
-    @JsonProperty("failingGoalCount")
-    @ExcludeMissing
-    fun _failingGoalCount() = failingGoalCount
+    @JsonProperty("failingGoalCount") @ExcludeMissing fun _failingGoalCount() = failingGoalCount
 
     /** The total number of tests. */
-    @JsonProperty("totalGoalCount")
-    @ExcludeMissing
-    fun _totalGoalCount() = totalGoalCount
+    @JsonProperty("totalGoalCount") @ExcludeMissing fun _totalGoalCount() = totalGoalCount
 
     /** The status of test evaluation for the inference pipeline. */
-    @JsonProperty("status")
-    @ExcludeMissing
-    fun _status() = status
+    @JsonProperty("status") @ExcludeMissing fun _status() = status
 
     /** The status message of test evaluation for the inference pipeline. */
-    @JsonProperty("statusMessage")
-    @ExcludeMissing
-    fun _statusMessage() = statusMessage
+    @JsonProperty("statusMessage") @ExcludeMissing fun _statusMessage() = statusMessage
 
-    @JsonProperty("links")
-    @ExcludeMissing
-    fun _links() = links
+    @JsonProperty("links") @ExcludeMissing fun _links() = links
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -183,81 +148,82 @@ class ProjectInferencePipelineCreateResponse private constructor(
 
     fun validate(): ProjectInferencePipelineCreateResponse = apply {
         if (!validated) {
-          id()
-          projectId()
-          name()
-          dateCreated()
-          dateUpdated()
-          dateLastSampleReceived()
-          description()
-          dateLastEvaluated()
-          dateOfNextEvaluation()
-          passingGoalCount()
-          failingGoalCount()
-          totalGoalCount()
-          status()
-          statusMessage()
-          links().validate()
-          validated = true
+            id()
+            projectId()
+            name()
+            dateCreated()
+            dateUpdated()
+            dateLastSampleReceived()
+            description()
+            dateLastEvaluated()
+            dateOfNextEvaluation()
+            passingGoalCount()
+            failingGoalCount()
+            totalGoalCount()
+            status()
+            statusMessage()
+            links().validate()
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ProjectInferencePipelineCreateResponse &&
-          this.id == other.id &&
-          this.projectId == other.projectId &&
-          this.name == other.name &&
-          this.dateCreated == other.dateCreated &&
-          this.dateUpdated == other.dateUpdated &&
-          this.dateLastSampleReceived == other.dateLastSampleReceived &&
-          this.description == other.description &&
-          this.dateLastEvaluated == other.dateLastEvaluated &&
-          this.dateOfNextEvaluation == other.dateOfNextEvaluation &&
-          this.passingGoalCount == other.passingGoalCount &&
-          this.failingGoalCount == other.failingGoalCount &&
-          this.totalGoalCount == other.totalGoalCount &&
-          this.status == other.status &&
-          this.statusMessage == other.statusMessage &&
-          this.links == other.links &&
-          this.additionalProperties == other.additionalProperties
+        return other is ProjectInferencePipelineCreateResponse &&
+            this.id == other.id &&
+            this.projectId == other.projectId &&
+            this.name == other.name &&
+            this.dateCreated == other.dateCreated &&
+            this.dateUpdated == other.dateUpdated &&
+            this.dateLastSampleReceived == other.dateLastSampleReceived &&
+            this.description == other.description &&
+            this.dateLastEvaluated == other.dateLastEvaluated &&
+            this.dateOfNextEvaluation == other.dateOfNextEvaluation &&
+            this.passingGoalCount == other.passingGoalCount &&
+            this.failingGoalCount == other.failingGoalCount &&
+            this.totalGoalCount == other.totalGoalCount &&
+            this.status == other.status &&
+            this.statusMessage == other.statusMessage &&
+            this.links == other.links &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            id,
-            projectId,
-            name,
-            dateCreated,
-            dateUpdated,
-            dateLastSampleReceived,
-            description,
-            dateLastEvaluated,
-            dateOfNextEvaluation,
-            passingGoalCount,
-            failingGoalCount,
-            totalGoalCount,
-            status,
-            statusMessage,
-            links,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    id,
+                    projectId,
+                    name,
+                    dateCreated,
+                    dateUpdated,
+                    dateLastSampleReceived,
+                    description,
+                    dateLastEvaluated,
+                    dateOfNextEvaluation,
+                    passingGoalCount,
+                    failingGoalCount,
+                    totalGoalCount,
+                    status,
+                    statusMessage,
+                    links,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "ProjectInferencePipelineCreateResponse{id=$id, projectId=$projectId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateLastSampleReceived=$dateLastSampleReceived, description=$description, dateLastEvaluated=$dateLastEvaluated, dateOfNextEvaluation=$dateOfNextEvaluation, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, status=$status, statusMessage=$statusMessage, links=$links, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "ProjectInferencePipelineCreateResponse{id=$id, projectId=$projectId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateLastSampleReceived=$dateLastSampleReceived, description=$description, dateLastEvaluated=$dateLastEvaluated, dateOfNextEvaluation=$dateOfNextEvaluation, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, status=$status, statusMessage=$statusMessage, links=$links, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -280,13 +246,16 @@ class ProjectInferencePipelineCreateResponse private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(projectInferencePipelineCreateResponse: ProjectInferencePipelineCreateResponse) = apply {
+        internal fun from(
+            projectInferencePipelineCreateResponse: ProjectInferencePipelineCreateResponse
+        ) = apply {
             this.id = projectInferencePipelineCreateResponse.id
             this.projectId = projectInferencePipelineCreateResponse.projectId
             this.name = projectInferencePipelineCreateResponse.name
             this.dateCreated = projectInferencePipelineCreateResponse.dateCreated
             this.dateUpdated = projectInferencePipelineCreateResponse.dateUpdated
-            this.dateLastSampleReceived = projectInferencePipelineCreateResponse.dateLastSampleReceived
+            this.dateLastSampleReceived =
+                projectInferencePipelineCreateResponse.dateLastSampleReceived
             this.description = projectInferencePipelineCreateResponse.description
             this.dateLastEvaluated = projectInferencePipelineCreateResponse.dateLastEvaluated
             this.dateOfNextEvaluation = projectInferencePipelineCreateResponse.dateOfNextEvaluation
@@ -303,11 +272,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** The inference pipeline id. */
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The project id. */
         fun projectId(projectId: String) = projectId(JsonField.of(projectId))
@@ -315,9 +280,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
         /** The project id. */
         @JsonProperty("projectId")
         @ExcludeMissing
-        fun projectId(projectId: JsonField<String>) = apply {
-            this.projectId = projectId
-        }
+        fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
         /** The inference pipeline name. */
         fun name(name: String) = name(JsonField.of(name))
@@ -325,9 +288,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
         /** The inference pipeline name. */
         @JsonProperty("name")
         @ExcludeMissing
-        fun name(name: JsonField<String>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** The creation date. */
         fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
@@ -350,7 +311,8 @@ class ProjectInferencePipelineCreateResponse private constructor(
         }
 
         /** The last data sample received date. */
-        fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime) = dateLastSampleReceived(JsonField.of(dateLastSampleReceived))
+        fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime) =
+            dateLastSampleReceived(JsonField.of(dateLastSampleReceived))
 
         /** The last data sample received date. */
         @JsonProperty("dateLastSampleReceived")
@@ -365,12 +327,11 @@ class ProjectInferencePipelineCreateResponse private constructor(
         /** The inference pipeline description. */
         @JsonProperty("description")
         @ExcludeMissing
-        fun description(description: JsonField<String>) = apply {
-            this.description = description
-        }
+        fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** The last test evaluation date. */
-        fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime) = dateLastEvaluated(JsonField.of(dateLastEvaluated))
+        fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime) =
+            dateLastEvaluated(JsonField.of(dateLastEvaluated))
 
         /** The last test evaluation date. */
         @JsonProperty("dateLastEvaluated")
@@ -380,7 +341,8 @@ class ProjectInferencePipelineCreateResponse private constructor(
         }
 
         /** The next test evaluation date. */
-        fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime) = dateOfNextEvaluation(JsonField.of(dateOfNextEvaluation))
+        fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime) =
+            dateOfNextEvaluation(JsonField.of(dateOfNextEvaluation))
 
         /** The next test evaluation date. */
         @JsonProperty("dateOfNextEvaluation")
@@ -390,7 +352,8 @@ class ProjectInferencePipelineCreateResponse private constructor(
         }
 
         /** The number of tests passing. */
-        fun passingGoalCount(passingGoalCount: Long) = passingGoalCount(JsonField.of(passingGoalCount))
+        fun passingGoalCount(passingGoalCount: Long) =
+            passingGoalCount(JsonField.of(passingGoalCount))
 
         /** The number of tests passing. */
         @JsonProperty("passingGoalCount")
@@ -400,7 +363,8 @@ class ProjectInferencePipelineCreateResponse private constructor(
         }
 
         /** The number of tests failing. */
-        fun failingGoalCount(failingGoalCount: Long) = failingGoalCount(JsonField.of(failingGoalCount))
+        fun failingGoalCount(failingGoalCount: Long) =
+            failingGoalCount(JsonField.of(failingGoalCount))
 
         /** The number of tests failing. */
         @JsonProperty("failingGoalCount")
@@ -425,9 +389,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
         /** The status of test evaluation for the inference pipeline. */
         @JsonProperty("status")
         @ExcludeMissing
-        fun status(status: JsonField<Status>) = apply {
-            this.status = status
-        }
+        fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The status message of test evaluation for the inference pipeline. */
         fun statusMessage(statusMessage: String) = statusMessage(JsonField.of(statusMessage))
@@ -443,9 +405,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
 
         @JsonProperty("links")
         @ExcludeMissing
-        fun links(links: JsonField<Links>) = apply {
-            this.links = links
-        }
+        fun links(links: JsonField<Links>) = apply { this.links = links }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -461,29 +421,34 @@ class ProjectInferencePipelineCreateResponse private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): ProjectInferencePipelineCreateResponse = ProjectInferencePipelineCreateResponse(
-            id,
-            projectId,
-            name,
-            dateCreated,
-            dateUpdated,
-            dateLastSampleReceived,
-            description,
-            dateLastEvaluated,
-            dateOfNextEvaluation,
-            passingGoalCount,
-            failingGoalCount,
-            totalGoalCount,
-            status,
-            statusMessage,
-            links,
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): ProjectInferencePipelineCreateResponse =
+            ProjectInferencePipelineCreateResponse(
+                id,
+                projectId,
+                name,
+                dateCreated,
+                dateUpdated,
+                dateLastSampleReceived,
+                description,
+                dateLastEvaluated,
+                dateOfNextEvaluation,
+                passingGoalCount,
+                failingGoalCount,
+                totalGoalCount,
+                status,
+                statusMessage,
+                links,
+                additionalProperties.toUnmodifiable(),
+            )
     }
 
     @JsonDeserialize(builder = Links.Builder::class)
     @NoAutoDetect
-    class Links private constructor(private val app: JsonField<String>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Links
+    private constructor(
+        private val app: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
@@ -491,9 +456,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
 
         fun app(): String = app.getRequired("app")
 
-        @JsonProperty("app")
-        @ExcludeMissing
-        fun _app() = app
+        @JsonProperty("app") @ExcludeMissing fun _app() = app
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -501,36 +464,35 @@ class ProjectInferencePipelineCreateResponse private constructor(
 
         fun validate(): Links = apply {
             if (!validated) {
-              app()
-              validated = true
+                app()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Links &&
-              this.app == other.app &&
-              this.additionalProperties == other.additionalProperties
+            return other is Links &&
+                this.app == other.app &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(app, additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(app, additionalProperties)
+            }
+            return hashCode
         }
 
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -548,9 +510,7 @@ class ProjectInferencePipelineCreateResponse private constructor(
 
             @JsonProperty("app")
             @ExcludeMissing
-            fun app(app: JsonField<String>) = apply {
-                this.app = app
-            }
+            fun app(app: JsonField<String>) = apply { this.app = app }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -570,18 +530,20 @@ class ProjectInferencePipelineCreateResponse private constructor(
         }
     }
 
-    class Status @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class Status
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Status &&
-              this.value == other.value
+            return other is Status && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -624,25 +586,27 @@ class ProjectInferencePipelineCreateResponse private constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            QUEUED -> Value.QUEUED
-            RUNNING -> Value.RUNNING
-            PAUSED -> Value.PAUSED
-            FAILED -> Value.FAILED
-            COMPLETED -> Value.COMPLETED
-            UNKNOWN -> Value.UNKNOWN
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                QUEUED -> Value.QUEUED
+                RUNNING -> Value.RUNNING
+                PAUSED -> Value.PAUSED
+                FAILED -> Value.FAILED
+                COMPLETED -> Value.COMPLETED
+                UNKNOWN -> Value.UNKNOWN
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            QUEUED -> Known.QUEUED
-            RUNNING -> Known.RUNNING
-            PAUSED -> Known.PAUSED
-            FAILED -> Known.FAILED
-            COMPLETED -> Known.COMPLETED
-            UNKNOWN -> Known.UNKNOWN
-            else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                QUEUED -> Known.QUEUED
+                RUNNING -> Known.RUNNING
+                PAUSED -> Known.PAUSED
+                FAILED -> Known.FAILED
+                COMPLETED -> Known.COMPLETED
+                UNKNOWN -> Known.UNKNOWN
+                else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
