@@ -4,6 +4,10 @@
 
 package com.openlayer.api.services.blocking
 
+import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.models.InferencePipelineDeleteParams
+import com.openlayer.api.models.InferencePipelineRetrieveParams
+import com.openlayer.api.models.InferencePipelineRetrieveResponse
 import com.openlayer.api.services.blocking.inferencePipelines.DataService
 import com.openlayer.api.services.blocking.inferencePipelines.RowService
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
@@ -15,4 +19,18 @@ interface InferencePipelineService {
     fun rows(): RowService
 
     fun testResults(): TestResultService
+
+    /** Retrieve inference pipeline. */
+    @JvmOverloads
+    fun retrieve(
+        params: InferencePipelineRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): InferencePipelineRetrieveResponse
+
+    /** Delete inference pipeline. */
+    @JvmOverloads
+    fun delete(
+        params: InferencePipelineDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    )
 }

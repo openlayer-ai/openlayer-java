@@ -3,15 +3,25 @@
 package com.openlayer.api.services.blocking
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.http.HttpMethod
+import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.errors.OpenlayerError
+import com.openlayer.api.models.InferencePipelineDeleteParams
+import com.openlayer.api.models.InferencePipelineRetrieveParams
+import com.openlayer.api.models.InferencePipelineRetrieveResponse
 import com.openlayer.api.services.blocking.inferencePipelines.DataService
 import com.openlayer.api.services.blocking.inferencePipelines.DataServiceImpl
 import com.openlayer.api.services.blocking.inferencePipelines.RowService
 import com.openlayer.api.services.blocking.inferencePipelines.RowServiceImpl
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultServiceImpl
+import com.openlayer.api.services.emptyHandler
 import com.openlayer.api.services.errorHandler
+import com.openlayer.api.services.json
+import com.openlayer.api.services.jsonHandler
+import com.openlayer.api.services.withErrorHandler
 
 class InferencePipelineServiceImpl
 constructor(
@@ -31,4 +41,52 @@ constructor(
     override fun rows(): RowService = rows
 
     override fun testResults(): TestResultService = testResults
+
+    private val retrieveHandler: Handler<InferencePipelineRetrieveResponse> =
+        jsonHandler<InferencePipelineRetrieveResponse>(clientOptions.jsonMapper)
+            .withErrorHandler(errorHandler)
+
+    /** Retrieve inference pipeline. */
+    override fun retrieve(
+        params: InferencePipelineRetrieveParams,
+        requestOptions: RequestOptions
+    ): InferencePipelineRetrieveResponse {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.GET)
+                .addPathSegments("inference-pipelines", params.getPathParam(0))
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .build()
+        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
+            response
+                .use { retrieveHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
+
+    private val deleteHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
+
+    /** Delete inference pipeline. */
+    override fun delete(params: InferencePipelineDeleteParams, requestOptions: RequestOptions) {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.DELETE)
+                .addPathSegments("inference-pipelines", params.getPathParam(0))
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .apply { params.getBody().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                .build()
+        clientOptions.httpClient.execute(request, requestOptions).let { response ->
+            response.use { deleteHandler.handle(it) }
+        }
+    }
 }
