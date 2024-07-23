@@ -8,6 +8,8 @@ import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.models.InferencePipelineDeleteParams
 import com.openlayer.api.models.InferencePipelineRetrieveParams
 import com.openlayer.api.models.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.InferencePipelineUpdateParams
+import com.openlayer.api.models.InferencePipelineUpdateResponse
 import com.openlayer.api.services.blocking.inferencePipelines.DataService
 import com.openlayer.api.services.blocking.inferencePipelines.RowService
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
@@ -26,6 +28,13 @@ interface InferencePipelineService {
         params: InferencePipelineRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none()
     ): InferencePipelineRetrieveResponse
+
+    /** Update inference pipeline. */
+    @JvmOverloads
+    fun update(
+        params: InferencePipelineUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none()
+    ): InferencePipelineUpdateResponse
 
     /** Delete inference pipeline. */
     @JvmOverloads

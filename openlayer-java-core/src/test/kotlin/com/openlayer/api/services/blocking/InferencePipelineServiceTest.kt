@@ -30,6 +30,27 @@ class InferencePipelineServiceTest {
     }
 
     @Test
+    fun callUpdate() {
+        val client =
+            OpenlayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val inferencePipelineService = client.inferencePipelines()
+        val inferencePipelineUpdateResponse =
+            inferencePipelineService.update(
+                InferencePipelineUpdateParams.builder()
+                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .description("This pipeline is used for production.")
+                    .name("production")
+                    .referenceDatasetUri("referenceDatasetUri")
+                    .build()
+            )
+        println(inferencePipelineUpdateResponse)
+        inferencePipelineUpdateResponse.validate()
+    }
+
+    @Test
     fun callDelete() {
         val client =
             OpenlayerOkHttpClient.builder()
