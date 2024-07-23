@@ -11,6 +11,8 @@ import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineDeleteParams
 import com.openlayer.api.models.InferencePipelineRetrieveParams
 import com.openlayer.api.models.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.InferencePipelineUpdateParams
+import com.openlayer.api.models.InferencePipelineUpdateResponse
 import com.openlayer.api.services.blocking.inferencePipelines.DataService
 import com.openlayer.api.services.blocking.inferencePipelines.DataServiceImpl
 import com.openlayer.api.services.blocking.inferencePipelines.RowService
@@ -63,6 +65,36 @@ constructor(
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response
                 .use { retrieveHandler.handle(it) }
+                .apply {
+                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                        validate()
+                    }
+                }
+        }
+    }
+
+    private val updateHandler: Handler<InferencePipelineUpdateResponse> =
+        jsonHandler<InferencePipelineUpdateResponse>(clientOptions.jsonMapper)
+            .withErrorHandler(errorHandler)
+
+    /** Update inference pipeline. */
+    override fun update(
+        params: InferencePipelineUpdateParams,
+        requestOptions: RequestOptions
+    ): InferencePipelineUpdateResponse {
+        val request =
+            HttpRequest.builder()
+                .method(HttpMethod.PUT)
+                .addPathSegments("inference-pipelines", params.getPathParam(0))
+                .putAllQueryParams(clientOptions.queryParams)
+                .putAllQueryParams(params.getQueryParams())
+                .putAllHeaders(clientOptions.headers)
+                .putAllHeaders(params.getHeaders())
+                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .build()
+        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
+            response
+                .use { updateHandler.handle(it) }
                 .apply {
                     if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
                         validate()
