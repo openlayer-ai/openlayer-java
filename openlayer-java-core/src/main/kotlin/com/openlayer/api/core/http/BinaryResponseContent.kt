@@ -1,9 +1,8 @@
 package com.openlayer.api.core.http
 
-import com.google.common.collect.ListMultimap
 import java.io.Closeable
-import java.io.InputStream
 import java.io.IOException
+import java.io.InputStream
 import java.io.OutputStream
 
 interface BinaryResponseContent : Closeable {

@@ -43,9 +43,13 @@ class TestServerExtension : BeforeAllCallback, ExecutionCondition {
 
     override fun evaluateExecutionCondition(context: ExtensionContext): ConditionEvaluationResult {
         return if (System.getenv(SKIP_TESTS_ENV).toBoolean()) {
-            ConditionEvaluationResult.disabled("Environment variable $SKIP_TESTS_ENV is set to true")
+            ConditionEvaluationResult.disabled(
+                "Environment variable $SKIP_TESTS_ENV is set to true"
+            )
         } else {
-            ConditionEvaluationResult.enabled("Environment variable $SKIP_TESTS_ENV is not set to true")
+            ConditionEvaluationResult.enabled(
+                "Environment variable $SKIP_TESTS_ENV is not set to true"
+            )
         }
     }
 

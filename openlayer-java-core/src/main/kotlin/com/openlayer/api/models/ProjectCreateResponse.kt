@@ -5,55 +5,41 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.openlayer.api.core.BaseDeserializer
-import com.openlayer.api.core.BaseSerializer
-import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.JsonNull
-import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.Enum
-import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.Optional
 
 @JsonDeserialize(builder = ProjectCreateResponse.Builder::class)
 @NoAutoDetect
-class ProjectCreateResponse private constructor(
-  private val id: JsonField<String>,
-  private val workspaceId: JsonField<String>,
-  private val creatorId: JsonField<String>,
-  private val name: JsonField<String>,
-  private val dateCreated: JsonField<OffsetDateTime>,
-  private val dateUpdated: JsonField<OffsetDateTime>,
-  private val description: JsonField<String>,
-  private val source: JsonField<Source>,
-  private val taskType: JsonField<TaskType>,
-  private val versionCount: JsonField<Long>,
-  private val inferencePipelineCount: JsonField<Long>,
-  private val goalCount: JsonField<Long>,
-  private val developmentGoalCount: JsonField<Long>,
-  private val monitoringGoalCount: JsonField<Long>,
-  private val links: JsonField<Links>,
-  private val gitRepo: JsonField<GitRepo>,
-  private val additionalProperties: Map<String, JsonValue>,
-
+class ProjectCreateResponse
+private constructor(
+    private val id: JsonField<String>,
+    private val workspaceId: JsonField<String>,
+    private val creatorId: JsonField<String>,
+    private val name: JsonField<String>,
+    private val dateCreated: JsonField<OffsetDateTime>,
+    private val dateUpdated: JsonField<OffsetDateTime>,
+    private val description: JsonField<String>,
+    private val source: JsonField<Source>,
+    private val taskType: JsonField<TaskType>,
+    private val versionCount: JsonField<Long>,
+    private val inferencePipelineCount: JsonField<Long>,
+    private val goalCount: JsonField<Long>,
+    private val developmentGoalCount: JsonField<Long>,
+    private val monitoringGoalCount: JsonField<Long>,
+    private val links: JsonField<Links>,
+    private val gitRepo: JsonField<GitRepo>,
+    private val additionalProperties: Map<String, JsonValue>,
 ) {
 
     private var validated: Boolean = false
@@ -64,7 +50,8 @@ class ProjectCreateResponse private constructor(
     fun id(): String = id.getRequired("id")
 
     /** The workspace id. */
-    fun workspaceId(): Optional<String> = Optional.ofNullable(workspaceId.getNullable("workspaceId"))
+    fun workspaceId(): Optional<String> =
+        Optional.ofNullable(workspaceId.getNullable("workspaceId"))
 
     /** The project creator id. */
     fun creatorId(): Optional<String> = Optional.ofNullable(creatorId.getNullable("creatorId"))
@@ -79,7 +66,8 @@ class ProjectCreateResponse private constructor(
     fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
     /** The project description. */
-    fun description(): Optional<String> = Optional.ofNullable(description.getNullable("description"))
+    fun description(): Optional<String> =
+        Optional.ofNullable(description.getNullable("description"))
 
     /** The source of the project. */
     fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
@@ -91,7 +79,8 @@ class ProjectCreateResponse private constructor(
     fun versionCount(): Long = versionCount.getRequired("versionCount")
 
     /** The number of inference pipelines in the project. */
-    fun inferencePipelineCount(): Long = inferencePipelineCount.getRequired("inferencePipelineCount")
+    fun inferencePipelineCount(): Long =
+        inferencePipelineCount.getRequired("inferencePipelineCount")
 
     /** The total number of tests in the project. */
     fun goalCount(): Long = goalCount.getRequired("goalCount")
@@ -108,54 +97,34 @@ class ProjectCreateResponse private constructor(
     fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
 
     /** The project id. */
-    @JsonProperty("id")
-    @ExcludeMissing
-    fun _id() = id
+    @JsonProperty("id") @ExcludeMissing fun _id() = id
 
     /** The workspace id. */
-    @JsonProperty("workspaceId")
-    @ExcludeMissing
-    fun _workspaceId() = workspaceId
+    @JsonProperty("workspaceId") @ExcludeMissing fun _workspaceId() = workspaceId
 
     /** The project creator id. */
-    @JsonProperty("creatorId")
-    @ExcludeMissing
-    fun _creatorId() = creatorId
+    @JsonProperty("creatorId") @ExcludeMissing fun _creatorId() = creatorId
 
     /** The project name. */
-    @JsonProperty("name")
-    @ExcludeMissing
-    fun _name() = name
+    @JsonProperty("name") @ExcludeMissing fun _name() = name
 
     /** The project creation date. */
-    @JsonProperty("dateCreated")
-    @ExcludeMissing
-    fun _dateCreated() = dateCreated
+    @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
 
     /** The project last updated date. */
-    @JsonProperty("dateUpdated")
-    @ExcludeMissing
-    fun _dateUpdated() = dateUpdated
+    @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
 
     /** The project description. */
-    @JsonProperty("description")
-    @ExcludeMissing
-    fun _description() = description
+    @JsonProperty("description") @ExcludeMissing fun _description() = description
 
     /** The source of the project. */
-    @JsonProperty("source")
-    @ExcludeMissing
-    fun _source() = source
+    @JsonProperty("source") @ExcludeMissing fun _source() = source
 
     /** The task type of the project. */
-    @JsonProperty("taskType")
-    @ExcludeMissing
-    fun _taskType() = taskType
+    @JsonProperty("taskType") @ExcludeMissing fun _taskType() = taskType
 
     /** The number of versions (commits) in the project. */
-    @JsonProperty("versionCount")
-    @ExcludeMissing
-    fun _versionCount() = versionCount
+    @JsonProperty("versionCount") @ExcludeMissing fun _versionCount() = versionCount
 
     /** The number of inference pipelines in the project. */
     @JsonProperty("inferencePipelineCount")
@@ -163,9 +132,7 @@ class ProjectCreateResponse private constructor(
     fun _inferencePipelineCount() = inferencePipelineCount
 
     /** The total number of tests in the project. */
-    @JsonProperty("goalCount")
-    @ExcludeMissing
-    fun _goalCount() = goalCount
+    @JsonProperty("goalCount") @ExcludeMissing fun _goalCount() = goalCount
 
     /** The number of tests in the development mode of the project. */
     @JsonProperty("developmentGoalCount")
@@ -178,13 +145,9 @@ class ProjectCreateResponse private constructor(
     fun _monitoringGoalCount() = monitoringGoalCount
 
     /** Links to the project. */
-    @JsonProperty("links")
-    @ExcludeMissing
-    fun _links() = links
+    @JsonProperty("links") @ExcludeMissing fun _links() = links
 
-    @JsonProperty("gitRepo")
-    @ExcludeMissing
-    fun _gitRepo() = gitRepo
+    @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo() = gitRepo
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -192,84 +155,85 @@ class ProjectCreateResponse private constructor(
 
     fun validate(): ProjectCreateResponse = apply {
         if (!validated) {
-          id()
-          workspaceId()
-          creatorId()
-          name()
-          dateCreated()
-          dateUpdated()
-          description()
-          source()
-          taskType()
-          versionCount()
-          inferencePipelineCount()
-          goalCount()
-          developmentGoalCount()
-          monitoringGoalCount()
-          links().validate()
-          gitRepo().map { it.validate() }
-          validated = true
+            id()
+            workspaceId()
+            creatorId()
+            name()
+            dateCreated()
+            dateUpdated()
+            description()
+            source()
+            taskType()
+            versionCount()
+            inferencePipelineCount()
+            goalCount()
+            developmentGoalCount()
+            monitoringGoalCount()
+            links().validate()
+            gitRepo().map { it.validate() }
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ProjectCreateResponse &&
-          this.id == other.id &&
-          this.workspaceId == other.workspaceId &&
-          this.creatorId == other.creatorId &&
-          this.name == other.name &&
-          this.dateCreated == other.dateCreated &&
-          this.dateUpdated == other.dateUpdated &&
-          this.description == other.description &&
-          this.source == other.source &&
-          this.taskType == other.taskType &&
-          this.versionCount == other.versionCount &&
-          this.inferencePipelineCount == other.inferencePipelineCount &&
-          this.goalCount == other.goalCount &&
-          this.developmentGoalCount == other.developmentGoalCount &&
-          this.monitoringGoalCount == other.monitoringGoalCount &&
-          this.links == other.links &&
-          this.gitRepo == other.gitRepo &&
-          this.additionalProperties == other.additionalProperties
+        return other is ProjectCreateResponse &&
+            this.id == other.id &&
+            this.workspaceId == other.workspaceId &&
+            this.creatorId == other.creatorId &&
+            this.name == other.name &&
+            this.dateCreated == other.dateCreated &&
+            this.dateUpdated == other.dateUpdated &&
+            this.description == other.description &&
+            this.source == other.source &&
+            this.taskType == other.taskType &&
+            this.versionCount == other.versionCount &&
+            this.inferencePipelineCount == other.inferencePipelineCount &&
+            this.goalCount == other.goalCount &&
+            this.developmentGoalCount == other.developmentGoalCount &&
+            this.monitoringGoalCount == other.monitoringGoalCount &&
+            this.links == other.links &&
+            this.gitRepo == other.gitRepo &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            id,
-            workspaceId,
-            creatorId,
-            name,
-            dateCreated,
-            dateUpdated,
-            description,
-            source,
-            taskType,
-            versionCount,
-            inferencePipelineCount,
-            goalCount,
-            developmentGoalCount,
-            monitoringGoalCount,
-            links,
-            gitRepo,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    id,
+                    workspaceId,
+                    creatorId,
+                    name,
+                    dateCreated,
+                    dateUpdated,
+                    description,
+                    source,
+                    taskType,
+                    versionCount,
+                    inferencePipelineCount,
+                    goalCount,
+                    developmentGoalCount,
+                    monitoringGoalCount,
+                    links,
+                    gitRepo,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "ProjectCreateResponse{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, links=$links, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "ProjectCreateResponse{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, links=$links, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -317,11 +281,7 @@ class ProjectCreateResponse private constructor(
         fun id(id: String) = id(JsonField.of(id))
 
         /** The project id. */
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun id(id: JsonField<String>) = apply {
-            this.id = id
-        }
+        @JsonProperty("id") @ExcludeMissing fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The workspace id. */
         fun workspaceId(workspaceId: String) = workspaceId(JsonField.of(workspaceId))
@@ -329,9 +289,7 @@ class ProjectCreateResponse private constructor(
         /** The workspace id. */
         @JsonProperty("workspaceId")
         @ExcludeMissing
-        fun workspaceId(workspaceId: JsonField<String>) = apply {
-            this.workspaceId = workspaceId
-        }
+        fun workspaceId(workspaceId: JsonField<String>) = apply { this.workspaceId = workspaceId }
 
         /** The project creator id. */
         fun creatorId(creatorId: String) = creatorId(JsonField.of(creatorId))
@@ -339,9 +297,7 @@ class ProjectCreateResponse private constructor(
         /** The project creator id. */
         @JsonProperty("creatorId")
         @ExcludeMissing
-        fun creatorId(creatorId: JsonField<String>) = apply {
-            this.creatorId = creatorId
-        }
+        fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
         /** The project name. */
         fun name(name: String) = name(JsonField.of(name))
@@ -349,9 +305,7 @@ class ProjectCreateResponse private constructor(
         /** The project name. */
         @JsonProperty("name")
         @ExcludeMissing
-        fun name(name: JsonField<String>) = apply {
-            this.name = name
-        }
+        fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** The project creation date. */
         fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
@@ -379,9 +333,7 @@ class ProjectCreateResponse private constructor(
         /** The project description. */
         @JsonProperty("description")
         @ExcludeMissing
-        fun description(description: JsonField<String>) = apply {
-            this.description = description
-        }
+        fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** The source of the project. */
         fun source(source: Source) = source(JsonField.of(source))
@@ -389,9 +341,7 @@ class ProjectCreateResponse private constructor(
         /** The source of the project. */
         @JsonProperty("source")
         @ExcludeMissing
-        fun source(source: JsonField<Source>) = apply {
-            this.source = source
-        }
+        fun source(source: JsonField<Source>) = apply { this.source = source }
 
         /** The task type of the project. */
         fun taskType(taskType: TaskType) = taskType(JsonField.of(taskType))
@@ -399,9 +349,7 @@ class ProjectCreateResponse private constructor(
         /** The task type of the project. */
         @JsonProperty("taskType")
         @ExcludeMissing
-        fun taskType(taskType: JsonField<TaskType>) = apply {
-            this.taskType = taskType
-        }
+        fun taskType(taskType: JsonField<TaskType>) = apply { this.taskType = taskType }
 
         /** The number of versions (commits) in the project. */
         fun versionCount(versionCount: Long) = versionCount(JsonField.of(versionCount))
@@ -409,12 +357,11 @@ class ProjectCreateResponse private constructor(
         /** The number of versions (commits) in the project. */
         @JsonProperty("versionCount")
         @ExcludeMissing
-        fun versionCount(versionCount: JsonField<Long>) = apply {
-            this.versionCount = versionCount
-        }
+        fun versionCount(versionCount: JsonField<Long>) = apply { this.versionCount = versionCount }
 
         /** The number of inference pipelines in the project. */
-        fun inferencePipelineCount(inferencePipelineCount: Long) = inferencePipelineCount(JsonField.of(inferencePipelineCount))
+        fun inferencePipelineCount(inferencePipelineCount: Long) =
+            inferencePipelineCount(JsonField.of(inferencePipelineCount))
 
         /** The number of inference pipelines in the project. */
         @JsonProperty("inferencePipelineCount")
@@ -429,12 +376,11 @@ class ProjectCreateResponse private constructor(
         /** The total number of tests in the project. */
         @JsonProperty("goalCount")
         @ExcludeMissing
-        fun goalCount(goalCount: JsonField<Long>) = apply {
-            this.goalCount = goalCount
-        }
+        fun goalCount(goalCount: JsonField<Long>) = apply { this.goalCount = goalCount }
 
         /** The number of tests in the development mode of the project. */
-        fun developmentGoalCount(developmentGoalCount: Long) = developmentGoalCount(JsonField.of(developmentGoalCount))
+        fun developmentGoalCount(developmentGoalCount: Long) =
+            developmentGoalCount(JsonField.of(developmentGoalCount))
 
         /** The number of tests in the development mode of the project. */
         @JsonProperty("developmentGoalCount")
@@ -444,7 +390,8 @@ class ProjectCreateResponse private constructor(
         }
 
         /** The number of tests in the monitoring mode of the project. */
-        fun monitoringGoalCount(monitoringGoalCount: Long) = monitoringGoalCount(JsonField.of(monitoringGoalCount))
+        fun monitoringGoalCount(monitoringGoalCount: Long) =
+            monitoringGoalCount(JsonField.of(monitoringGoalCount))
 
         /** The number of tests in the monitoring mode of the project. */
         @JsonProperty("monitoringGoalCount")
@@ -459,17 +406,13 @@ class ProjectCreateResponse private constructor(
         /** Links to the project. */
         @JsonProperty("links")
         @ExcludeMissing
-        fun links(links: JsonField<Links>) = apply {
-            this.links = links
-        }
+        fun links(links: JsonField<Links>) = apply { this.links = links }
 
         fun gitRepo(gitRepo: GitRepo) = gitRepo(JsonField.of(gitRepo))
 
         @JsonProperty("gitRepo")
         @ExcludeMissing
-        fun gitRepo(gitRepo: JsonField<GitRepo>) = apply {
-            this.gitRepo = gitRepo
-        }
+        fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -485,31 +428,36 @@ class ProjectCreateResponse private constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): ProjectCreateResponse = ProjectCreateResponse(
-            id,
-            workspaceId,
-            creatorId,
-            name,
-            dateCreated,
-            dateUpdated,
-            description,
-            source,
-            taskType,
-            versionCount,
-            inferencePipelineCount,
-            goalCount,
-            developmentGoalCount,
-            monitoringGoalCount,
-            links,
-            gitRepo,
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): ProjectCreateResponse =
+            ProjectCreateResponse(
+                id,
+                workspaceId,
+                creatorId,
+                name,
+                dateCreated,
+                dateUpdated,
+                description,
+                source,
+                taskType,
+                versionCount,
+                inferencePipelineCount,
+                goalCount,
+                developmentGoalCount,
+                monitoringGoalCount,
+                links,
+                gitRepo,
+                additionalProperties.toUnmodifiable(),
+            )
     }
 
     /** Links to the project. */
     @JsonDeserialize(builder = Links.Builder::class)
     @NoAutoDetect
-    class Links private constructor(private val app: JsonField<String>, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Links
+    private constructor(
+        private val app: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var validated: Boolean = false
 
@@ -517,9 +465,7 @@ class ProjectCreateResponse private constructor(
 
         fun app(): String = app.getRequired("app")
 
-        @JsonProperty("app")
-        @ExcludeMissing
-        fun _app() = app
+        @JsonProperty("app") @ExcludeMissing fun _app() = app
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -527,36 +473,35 @@ class ProjectCreateResponse private constructor(
 
         fun validate(): Links = apply {
             if (!validated) {
-              app()
-              validated = true
+                app()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Links &&
-              this.app == other.app &&
-              this.additionalProperties == other.additionalProperties
+            return other is Links &&
+                this.app == other.app &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(app, additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(app, additionalProperties)
+            }
+            return hashCode
         }
 
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -574,9 +519,7 @@ class ProjectCreateResponse private constructor(
 
             @JsonProperty("app")
             @ExcludeMissing
-            fun app(app: JsonField<String>) = apply {
-                this.app = app
-            }
+            fun app(app: JsonField<String>) = apply { this.app = app }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -596,18 +539,20 @@ class ProjectCreateResponse private constructor(
         }
     }
 
-    class Source @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class Source
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Source &&
-              this.value == other.value
+            return other is Source && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -638,35 +583,39 @@ class ProjectCreateResponse private constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            WEB -> Value.WEB
-            API -> Value.API
-            NULL -> Value.NULL
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                WEB -> Value.WEB
+                API -> Value.API
+                NULL -> Value.NULL
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            WEB -> Known.WEB
-            API -> Known.API
-            NULL -> Known.NULL
-            else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                WEB -> Known.WEB
+                API -> Known.API
+                NULL -> Known.NULL
+                else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
 
-    class TaskType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class TaskType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is TaskType &&
-              this.value == other.value
+            return other is TaskType && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -701,42 +650,44 @@ class ProjectCreateResponse private constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            LLM_BASE -> Value.LLM_BASE
-            TABULAR_CLASSIFICATION -> Value.TABULAR_CLASSIFICATION
-            TABULAR_REGRESSION -> Value.TABULAR_REGRESSION
-            TEXT_CLASSIFICATION -> Value.TEXT_CLASSIFICATION
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                LLM_BASE -> Value.LLM_BASE
+                TABULAR_CLASSIFICATION -> Value.TABULAR_CLASSIFICATION
+                TABULAR_REGRESSION -> Value.TABULAR_REGRESSION
+                TEXT_CLASSIFICATION -> Value.TEXT_CLASSIFICATION
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            LLM_BASE -> Known.LLM_BASE
-            TABULAR_CLASSIFICATION -> Known.TABULAR_CLASSIFICATION
-            TABULAR_REGRESSION -> Known.TABULAR_REGRESSION
-            TEXT_CLASSIFICATION -> Known.TEXT_CLASSIFICATION
-            else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                LLM_BASE -> Known.LLM_BASE
+                TABULAR_CLASSIFICATION -> Known.TABULAR_CLASSIFICATION
+                TABULAR_REGRESSION -> Known.TABULAR_REGRESSION
+                TEXT_CLASSIFICATION -> Known.TEXT_CLASSIFICATION
+                else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(builder = GitRepo.Builder::class)
     @NoAutoDetect
-    class GitRepo private constructor(
-      private val id: JsonField<String>,
-      private val gitId: JsonField<Long>,
-      private val dateConnected: JsonField<OffsetDateTime>,
-      private val dateUpdated: JsonField<OffsetDateTime>,
-      private val branch: JsonField<String>,
-      private val name: JsonField<String>,
-      private val private_: JsonField<Boolean>,
-      private val slug: JsonField<String>,
-      private val url: JsonField<String>,
-      private val rootDir: JsonField<String>,
-      private val projectId: JsonField<String>,
-      private val gitAccountId: JsonField<String>,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class GitRepo
+    private constructor(
+        private val id: JsonField<String>,
+        private val gitId: JsonField<Long>,
+        private val dateConnected: JsonField<OffsetDateTime>,
+        private val dateUpdated: JsonField<OffsetDateTime>,
+        private val branch: JsonField<String>,
+        private val name: JsonField<String>,
+        private val private_: JsonField<Boolean>,
+        private val slug: JsonField<String>,
+        private val url: JsonField<String>,
+        private val rootDir: JsonField<String>,
+        private val projectId: JsonField<String>,
+        private val gitAccountId: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
@@ -767,53 +718,29 @@ class ProjectCreateResponse private constructor(
 
         fun gitAccountId(): String = gitAccountId.getRequired("gitAccountId")
 
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun _id() = id
+        @JsonProperty("id") @ExcludeMissing fun _id() = id
 
-        @JsonProperty("gitId")
-        @ExcludeMissing
-        fun _gitId() = gitId
+        @JsonProperty("gitId") @ExcludeMissing fun _gitId() = gitId
 
-        @JsonProperty("dateConnected")
-        @ExcludeMissing
-        fun _dateConnected() = dateConnected
+        @JsonProperty("dateConnected") @ExcludeMissing fun _dateConnected() = dateConnected
 
-        @JsonProperty("dateUpdated")
-        @ExcludeMissing
-        fun _dateUpdated() = dateUpdated
+        @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
 
-        @JsonProperty("branch")
-        @ExcludeMissing
-        fun _branch() = branch
+        @JsonProperty("branch") @ExcludeMissing fun _branch() = branch
 
-        @JsonProperty("name")
-        @ExcludeMissing
-        fun _name() = name
+        @JsonProperty("name") @ExcludeMissing fun _name() = name
 
-        @JsonProperty("private")
-        @ExcludeMissing
-        fun _private_() = private_
+        @JsonProperty("private") @ExcludeMissing fun _private_() = private_
 
-        @JsonProperty("slug")
-        @ExcludeMissing
-        fun _slug() = slug
+        @JsonProperty("slug") @ExcludeMissing fun _slug() = slug
 
-        @JsonProperty("url")
-        @ExcludeMissing
-        fun _url() = url
+        @JsonProperty("url") @ExcludeMissing fun _url() = url
 
-        @JsonProperty("rootDir")
-        @ExcludeMissing
-        fun _rootDir() = rootDir
+        @JsonProperty("rootDir") @ExcludeMissing fun _rootDir() = rootDir
 
-        @JsonProperty("projectId")
-        @ExcludeMissing
-        fun _projectId() = projectId
+        @JsonProperty("projectId") @ExcludeMissing fun _projectId() = projectId
 
-        @JsonProperty("gitAccountId")
-        @ExcludeMissing
-        fun _gitAccountId() = gitAccountId
+        @JsonProperty("gitAccountId") @ExcludeMissing fun _gitAccountId() = gitAccountId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -821,72 +748,73 @@ class ProjectCreateResponse private constructor(
 
         fun validate(): GitRepo = apply {
             if (!validated) {
-              id()
-              gitId()
-              dateConnected()
-              dateUpdated()
-              branch()
-              name()
-              private_()
-              slug()
-              url()
-              rootDir()
-              projectId()
-              gitAccountId()
-              validated = true
+                id()
+                gitId()
+                dateConnected()
+                dateUpdated()
+                branch()
+                name()
+                private_()
+                slug()
+                url()
+                rootDir()
+                projectId()
+                gitAccountId()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is GitRepo &&
-              this.id == other.id &&
-              this.gitId == other.gitId &&
-              this.dateConnected == other.dateConnected &&
-              this.dateUpdated == other.dateUpdated &&
-              this.branch == other.branch &&
-              this.name == other.name &&
-              this.private_ == other.private_ &&
-              this.slug == other.slug &&
-              this.url == other.url &&
-              this.rootDir == other.rootDir &&
-              this.projectId == other.projectId &&
-              this.gitAccountId == other.gitAccountId &&
-              this.additionalProperties == other.additionalProperties
+            return other is GitRepo &&
+                this.id == other.id &&
+                this.gitId == other.gitId &&
+                this.dateConnected == other.dateConnected &&
+                this.dateUpdated == other.dateUpdated &&
+                this.branch == other.branch &&
+                this.name == other.name &&
+                this.private_ == other.private_ &&
+                this.slug == other.slug &&
+                this.url == other.url &&
+                this.rootDir == other.rootDir &&
+                this.projectId == other.projectId &&
+                this.gitAccountId == other.gitAccountId &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                id,
-                gitId,
-                dateConnected,
-                dateUpdated,
-                branch,
-                name,
-                private_,
-                slug,
-                url,
-                rootDir,
-                projectId,
-                gitAccountId,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        id,
+                        gitId,
+                        dateConnected,
+                        dateUpdated,
+                        branch,
+                        name,
+                        private_,
+                        slug,
+                        url,
+                        rootDir,
+                        projectId,
+                        gitAccountId,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -926,19 +854,16 @@ class ProjectCreateResponse private constructor(
 
             @JsonProperty("id")
             @ExcludeMissing
-            fun id(id: JsonField<String>) = apply {
-                this.id = id
-            }
+            fun id(id: JsonField<String>) = apply { this.id = id }
 
             fun gitId(gitId: Long) = gitId(JsonField.of(gitId))
 
             @JsonProperty("gitId")
             @ExcludeMissing
-            fun gitId(gitId: JsonField<Long>) = apply {
-                this.gitId = gitId
-            }
+            fun gitId(gitId: JsonField<Long>) = apply { this.gitId = gitId }
 
-            fun dateConnected(dateConnected: OffsetDateTime) = dateConnected(JsonField.of(dateConnected))
+            fun dateConnected(dateConnected: OffsetDateTime) =
+                dateConnected(JsonField.of(dateConnected))
 
             @JsonProperty("dateConnected")
             @ExcludeMissing
@@ -958,57 +883,43 @@ class ProjectCreateResponse private constructor(
 
             @JsonProperty("branch")
             @ExcludeMissing
-            fun branch(branch: JsonField<String>) = apply {
-                this.branch = branch
-            }
+            fun branch(branch: JsonField<String>) = apply { this.branch = branch }
 
             fun name(name: String) = name(JsonField.of(name))
 
             @JsonProperty("name")
             @ExcludeMissing
-            fun name(name: JsonField<String>) = apply {
-                this.name = name
-            }
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             fun private_(private_: Boolean) = private_(JsonField.of(private_))
 
             @JsonProperty("private")
             @ExcludeMissing
-            fun private_(private_: JsonField<Boolean>) = apply {
-                this.private_ = private_
-            }
+            fun private_(private_: JsonField<Boolean>) = apply { this.private_ = private_ }
 
             fun slug(slug: String) = slug(JsonField.of(slug))
 
             @JsonProperty("slug")
             @ExcludeMissing
-            fun slug(slug: JsonField<String>) = apply {
-                this.slug = slug
-            }
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
             fun url(url: String) = url(JsonField.of(url))
 
             @JsonProperty("url")
             @ExcludeMissing
-            fun url(url: JsonField<String>) = apply {
-                this.url = url
-            }
+            fun url(url: JsonField<String>) = apply { this.url = url }
 
             fun rootDir(rootDir: String) = rootDir(JsonField.of(rootDir))
 
             @JsonProperty("rootDir")
             @ExcludeMissing
-            fun rootDir(rootDir: JsonField<String>) = apply {
-                this.rootDir = rootDir
-            }
+            fun rootDir(rootDir: JsonField<String>) = apply { this.rootDir = rootDir }
 
             fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
             @JsonProperty("projectId")
             @ExcludeMissing
-            fun projectId(projectId: JsonField<String>) = apply {
-                this.projectId = projectId
-            }
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
             fun gitAccountId(gitAccountId: String) = gitAccountId(JsonField.of(gitAccountId))
 
@@ -1032,21 +943,22 @@ class ProjectCreateResponse private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): GitRepo = GitRepo(
-                id,
-                gitId,
-                dateConnected,
-                dateUpdated,
-                branch,
-                name,
-                private_,
-                slug,
-                url,
-                rootDir,
-                projectId,
-                gitAccountId,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): GitRepo =
+                GitRepo(
+                    id,
+                    gitId,
+                    dateConnected,
+                    dateUpdated,
+                    branch,
+                    name,
+                    private_,
+                    slug,
+                    url,
+                    rootDir,
+                    projectId,
+                    gitAccountId,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 }

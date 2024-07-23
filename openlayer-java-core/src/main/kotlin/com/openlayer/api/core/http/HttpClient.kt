@@ -1,8 +1,8 @@
 package com.openlayer.api.core.http
 
+import com.openlayer.api.core.RequestOptions
 import java.io.Closeable
 import java.util.concurrent.CompletableFuture
-import com.openlayer.api.core.RequestOptions
 
 interface HttpClient : Closeable {
 
