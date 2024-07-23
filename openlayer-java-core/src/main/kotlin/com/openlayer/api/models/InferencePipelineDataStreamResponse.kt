@@ -5,37 +5,25 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.openlayer.api.core.BaseDeserializer
-import com.openlayer.api.core.BaseSerializer
-import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.JsonNull
-import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.Enum
-import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.util.Objects
 
 @JsonDeserialize(builder = InferencePipelineDataStreamResponse.Builder::class)
 @NoAutoDetect
-class InferencePipelineDataStreamResponse private constructor(private val success: JsonField<Success>, private val additionalProperties: Map<String, JsonValue>, ) {
+class InferencePipelineDataStreamResponse
+private constructor(
+    private val success: JsonField<Success>,
+    private val additionalProperties: Map<String, JsonValue>,
+) {
 
     private var validated: Boolean = false
 
@@ -43,9 +31,7 @@ class InferencePipelineDataStreamResponse private constructor(private val succes
 
     fun success(): Success = success.getRequired("success")
 
-    @JsonProperty("success")
-    @ExcludeMissing
-    fun _success() = success
+    @JsonProperty("success") @ExcludeMissing fun _success() = success
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -53,36 +39,36 @@ class InferencePipelineDataStreamResponse private constructor(private val succes
 
     fun validate(): InferencePipelineDataStreamResponse = apply {
         if (!validated) {
-          success()
-          validated = true
+            success()
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is InferencePipelineDataStreamResponse &&
-          this.success == other.success &&
-          this.additionalProperties == other.additionalProperties
+        return other is InferencePipelineDataStreamResponse &&
+            this.success == other.success &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(success, additionalProperties)
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode = Objects.hash(success, additionalProperties)
+        }
+        return hashCode
     }
 
-    override fun toString() = "InferencePipelineDataStreamResponse{success=$success, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "InferencePipelineDataStreamResponse{success=$success, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -91,7 +77,9 @@ class InferencePipelineDataStreamResponse private constructor(private val succes
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(inferencePipelineDataStreamResponse: InferencePipelineDataStreamResponse) = apply {
+        internal fun from(
+            inferencePipelineDataStreamResponse: InferencePipelineDataStreamResponse
+        ) = apply {
             this.success = inferencePipelineDataStreamResponse.success
             additionalProperties(inferencePipelineDataStreamResponse.additionalProperties)
         }
@@ -100,9 +88,7 @@ class InferencePipelineDataStreamResponse private constructor(private val succes
 
         @JsonProperty("success")
         @ExcludeMissing
-        fun success(success: JsonField<Success>) = apply {
-            this.success = success
-        }
+        fun success(success: JsonField<Success>) = apply { this.success = success }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -118,21 +104,24 @@ class InferencePipelineDataStreamResponse private constructor(private val succes
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): InferencePipelineDataStreamResponse = InferencePipelineDataStreamResponse(success, additionalProperties.toUnmodifiable())
+        fun build(): InferencePipelineDataStreamResponse =
+            InferencePipelineDataStreamResponse(success, additionalProperties.toUnmodifiable())
     }
 
-    class Success @JsonCreator private constructor(private val value: JsonField<Boolean>, ) : Enum {
+    class Success
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<Boolean>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<Boolean> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<Boolean> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Success &&
-              this.value == other.value
+            return other is Success && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -155,15 +144,17 @@ class InferencePipelineDataStreamResponse private constructor(private val succes
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            TRUE -> Value.TRUE
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                TRUE -> Value.TRUE
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            TRUE -> Known.TRUE
-            else -> throw OpenlayerInvalidDataException("Unknown Success: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                TRUE -> Known.TRUE
+                else -> throw OpenlayerInvalidDataException("Unknown Success: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }

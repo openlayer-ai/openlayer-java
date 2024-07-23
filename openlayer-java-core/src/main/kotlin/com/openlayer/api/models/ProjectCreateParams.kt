@@ -5,45 +5,28 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.core.JsonGenerator
-import com.fasterxml.jackson.core.ObjectCodec
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.SerializerProvider
-import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import org.apache.hc.core5.http.ContentType
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
-import com.openlayer.api.core.BaseDeserializer
-import com.openlayer.api.core.BaseSerializer
-import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.MultipartFormValue
-import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.Enum
-import com.openlayer.api.core.ContentTypes
+import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.Optional
 
-class ProjectCreateParams constructor(
-  private val name: String,
-  private val taskType: TaskType,
-  private val description: String?,
-  private val additionalQueryParams: Map<String, List<String>>,
-  private val additionalHeaders: Map<String, List<String>>,
-  private val additionalBodyProperties: Map<String, JsonValue>,
-
+class ProjectCreateParams
+constructor(
+    private val name: String,
+    private val taskType: TaskType,
+    private val description: String?,
+    private val additionalQueryParams: Map<String, List<String>>,
+    private val additionalHeaders: Map<String, List<String>>,
+    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun name(): String = name
@@ -54,43 +37,38 @@ class ProjectCreateParams constructor(
 
     @JvmSynthetic
     internal fun getBody(): ProjectCreateBody {
-      return ProjectCreateBody(
-          name,
-          taskType,
-          description,
-          additionalBodyProperties,
-      )
+        return ProjectCreateBody(
+            name,
+            taskType,
+            description,
+            additionalBodyProperties,
+        )
     }
 
-    @JvmSynthetic
-    internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
+    @JvmSynthetic internal fun getQueryParams(): Map<String, List<String>> = additionalQueryParams
 
-    @JvmSynthetic
-    internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
+    @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
 
     @JsonDeserialize(builder = ProjectCreateBody.Builder::class)
     @NoAutoDetect
-    class ProjectCreateBody internal constructor(
-      private val name: String?,
-      private val taskType: TaskType?,
-      private val description: String?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class ProjectCreateBody
+    internal constructor(
+        private val name: String?,
+        private val taskType: TaskType?,
+        private val description: String?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
         /** The project name. */
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
         /** The task type of the project. */
-        @JsonProperty("taskType")
-        fun taskType(): TaskType? = taskType
+        @JsonProperty("taskType") fun taskType(): TaskType? = taskType
 
         /** The project description. */
-        @JsonProperty("description")
-        fun description(): String? = description
+        @JsonProperty("description") fun description(): String? = description
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -99,35 +77,36 @@ class ProjectCreateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is ProjectCreateBody &&
-              this.name == other.name &&
-              this.taskType == other.taskType &&
-              this.description == other.description &&
-              this.additionalProperties == other.additionalProperties
+            return other is ProjectCreateBody &&
+                this.name == other.name &&
+                this.taskType == other.taskType &&
+                this.description == other.description &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                name,
-                taskType,
-                description,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        name,
+                        taskType,
+                        description,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -146,22 +125,15 @@ class ProjectCreateParams constructor(
             }
 
             /** The project name. */
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             /** The task type of the project. */
             @JsonProperty("taskType")
-            fun taskType(taskType: TaskType) = apply {
-                this.taskType = taskType
-            }
+            fun taskType(taskType: TaskType) = apply { this.taskType = taskType }
 
             /** The project description. */
             @JsonProperty("description")
-            fun description(description: String) = apply {
-                this.description = description
-            }
+            fun description(description: String) = apply { this.description = description }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -177,16 +149,13 @@ class ProjectCreateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): ProjectCreateBody = ProjectCreateBody(
-                checkNotNull(name) {
-                    "`name` is required but was not set"
-                },
-                checkNotNull(taskType) {
-                    "`taskType` is required but was not set"
-                },
-                description,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): ProjectCreateBody =
+                ProjectCreateBody(
+                    checkNotNull(name) { "`name` is required but was not set" },
+                    checkNotNull(taskType) { "`taskType` is required but was not set" },
+                    description,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
@@ -197,38 +166,38 @@ class ProjectCreateParams constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is ProjectCreateParams &&
-          this.name == other.name &&
-          this.taskType == other.taskType &&
-          this.description == other.description &&
-          this.additionalQueryParams == other.additionalQueryParams &&
-          this.additionalHeaders == other.additionalHeaders &&
-          this.additionalBodyProperties == other.additionalBodyProperties
+        return other is ProjectCreateParams &&
+            this.name == other.name &&
+            this.taskType == other.taskType &&
+            this.description == other.description &&
+            this.additionalQueryParams == other.additionalQueryParams &&
+            this.additionalHeaders == other.additionalHeaders &&
+            this.additionalBodyProperties == other.additionalBodyProperties
     }
 
     override fun hashCode(): Int {
-      return Objects.hash(
-          name,
-          taskType,
-          description,
-          additionalQueryParams,
-          additionalHeaders,
-          additionalBodyProperties,
-      )
+        return Objects.hash(
+            name,
+            taskType,
+            description,
+            additionalQueryParams,
+            additionalHeaders,
+            additionalBodyProperties,
+        )
     }
 
-    override fun toString() = "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
+    override fun toString() =
+        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalQueryParams=$additionalQueryParams, additionalHeaders=$additionalHeaders, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     @NoAutoDetect
@@ -252,19 +221,13 @@ class ProjectCreateParams constructor(
         }
 
         /** The project name. */
-        fun name(name: String) = apply {
-            this.name = name
-        }
+        fun name(name: String) = apply { this.name = name }
 
         /** The task type of the project. */
-        fun taskType(taskType: TaskType) = apply {
-            this.taskType = taskType
-        }
+        fun taskType(taskType: TaskType) = apply { this.taskType = taskType }
 
         /** The project description. */
-        fun description(description: String) = apply {
-            this.description = description
-        }
+        fun description(description: String) = apply { this.description = description }
 
         fun additionalQueryParams(additionalQueryParams: Map<String, List<String>>) = apply {
             this.additionalQueryParams.clear()
@@ -304,9 +267,7 @@ class ProjectCreateParams constructor(
             additionalHeaders.forEach(this::putHeaders)
         }
 
-        fun removeHeader(name: String) = apply {
-            this.additionalHeaders.put(name, mutableListOf())
-        }
+        fun removeHeader(name: String) = apply { this.additionalHeaders.put(name, mutableListOf()) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             this.additionalBodyProperties.clear()
@@ -317,33 +278,34 @@ class ProjectCreateParams constructor(
             this.additionalBodyProperties.put(key, value)
         }
 
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.putAll(additionalBodyProperties)
-        }
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                this.additionalBodyProperties.putAll(additionalBodyProperties)
+            }
 
-        fun build(): ProjectCreateParams = ProjectCreateParams(
-            checkNotNull(name) {
-                "`name` is required but was not set"
-            },
-            checkNotNull(taskType) {
-                "`taskType` is required but was not set"
-            },
-            description,
-            additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-            additionalBodyProperties.toUnmodifiable(),
-        )
+        fun build(): ProjectCreateParams =
+            ProjectCreateParams(
+                checkNotNull(name) { "`name` is required but was not set" },
+                checkNotNull(taskType) { "`taskType` is required but was not set" },
+                description,
+                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalBodyProperties.toUnmodifiable(),
+            )
     }
 
     /** Links to the project. */
     @JsonDeserialize(builder = Links.Builder::class)
     @NoAutoDetect
-    class Links private constructor(private val app: String?, private val additionalProperties: Map<String, JsonValue>, ) {
+    class Links
+    private constructor(
+        private val app: String?,
+        private val additionalProperties: Map<String, JsonValue>,
+    ) {
 
         private var hashCode: Int = 0
 
-        @JsonProperty("app")
-        fun app(): String? = app
+        @JsonProperty("app") fun app(): String? = app
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -352,28 +314,27 @@ class ProjectCreateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Links &&
-              this.app == other.app &&
-              this.additionalProperties == other.additionalProperties
+            return other is Links &&
+                this.app == other.app &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(app, additionalProperties)
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode = Objects.hash(app, additionalProperties)
+            }
+            return hashCode
         }
 
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -387,10 +348,7 @@ class ProjectCreateParams constructor(
                 additionalProperties(links.additionalProperties)
             }
 
-            @JsonProperty("app")
-            fun app(app: String) = apply {
-                this.app = app
-            }
+            @JsonProperty("app") fun app(app: String) = apply { this.app = app }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -406,24 +364,28 @@ class ProjectCreateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Links = Links(checkNotNull(app) {
-                "`app` is required but was not set"
-            }, additionalProperties.toUnmodifiable())
+            fun build(): Links =
+                Links(
+                    checkNotNull(app) { "`app` is required but was not set" },
+                    additionalProperties.toUnmodifiable()
+                )
         }
     }
 
-    class Source @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class Source
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Source &&
-              this.value == other.value
+            return other is Source && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -454,35 +416,39 @@ class ProjectCreateParams constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            WEB -> Value.WEB
-            API -> Value.API
-            NULL -> Value.NULL
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                WEB -> Value.WEB
+                API -> Value.API
+                NULL -> Value.NULL
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            WEB -> Known.WEB
-            API -> Known.API
-            NULL -> Known.NULL
-            else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                WEB -> Known.WEB
+                API -> Known.API
+                NULL -> Known.NULL
+                else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
 
-    class TaskType @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+    class TaskType
+    @JsonCreator
+    private constructor(
+        private val value: JsonField<String>,
+    ) : Enum {
 
-        @com.fasterxml.jackson.annotation.JsonValue
-        fun _value(): JsonField<String> = value
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is TaskType &&
-              this.value == other.value
+            return other is TaskType && this.value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -517,81 +483,71 @@ class ProjectCreateParams constructor(
             _UNKNOWN,
         }
 
-        fun value(): Value = when (this) {
-            LLM_BASE -> Value.LLM_BASE
-            TABULAR_CLASSIFICATION -> Value.TABULAR_CLASSIFICATION
-            TABULAR_REGRESSION -> Value.TABULAR_REGRESSION
-            TEXT_CLASSIFICATION -> Value.TEXT_CLASSIFICATION
-            else -> Value._UNKNOWN
-        }
+        fun value(): Value =
+            when (this) {
+                LLM_BASE -> Value.LLM_BASE
+                TABULAR_CLASSIFICATION -> Value.TABULAR_CLASSIFICATION
+                TABULAR_REGRESSION -> Value.TABULAR_REGRESSION
+                TEXT_CLASSIFICATION -> Value.TEXT_CLASSIFICATION
+                else -> Value._UNKNOWN
+            }
 
-        fun known(): Known = when (this) {
-            LLM_BASE -> Known.LLM_BASE
-            TABULAR_CLASSIFICATION -> Known.TABULAR_CLASSIFICATION
-            TABULAR_REGRESSION -> Known.TABULAR_REGRESSION
-            TEXT_CLASSIFICATION -> Known.TEXT_CLASSIFICATION
-            else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
-        }
+        fun known(): Known =
+            when (this) {
+                LLM_BASE -> Known.LLM_BASE
+                TABULAR_CLASSIFICATION -> Known.TABULAR_CLASSIFICATION
+                TABULAR_REGRESSION -> Known.TABULAR_REGRESSION
+                TEXT_CLASSIFICATION -> Known.TEXT_CLASSIFICATION
+                else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
+            }
 
         fun asString(): String = _value().asStringOrThrow()
     }
 
     @JsonDeserialize(builder = GitRepo.Builder::class)
     @NoAutoDetect
-    class GitRepo private constructor(
-      private val id: String?,
-      private val gitId: Long?,
-      private val dateConnected: OffsetDateTime?,
-      private val dateUpdated: OffsetDateTime?,
-      private val branch: String?,
-      private val name: String?,
-      private val private_: Boolean?,
-      private val slug: String?,
-      private val url: String?,
-      private val rootDir: String?,
-      private val projectId: String?,
-      private val gitAccountId: String?,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class GitRepo
+    private constructor(
+        private val id: String?,
+        private val gitId: Long?,
+        private val dateConnected: OffsetDateTime?,
+        private val dateUpdated: OffsetDateTime?,
+        private val branch: String?,
+        private val name: String?,
+        private val private_: Boolean?,
+        private val slug: String?,
+        private val url: String?,
+        private val rootDir: String?,
+        private val projectId: String?,
+        private val gitAccountId: String?,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var hashCode: Int = 0
 
-        @JsonProperty("id")
-        fun id(): String? = id
+        @JsonProperty("id") fun id(): String? = id
 
-        @JsonProperty("gitId")
-        fun gitId(): Long? = gitId
+        @JsonProperty("gitId") fun gitId(): Long? = gitId
 
-        @JsonProperty("dateConnected")
-        fun dateConnected(): OffsetDateTime? = dateConnected
+        @JsonProperty("dateConnected") fun dateConnected(): OffsetDateTime? = dateConnected
 
-        @JsonProperty("dateUpdated")
-        fun dateUpdated(): OffsetDateTime? = dateUpdated
+        @JsonProperty("dateUpdated") fun dateUpdated(): OffsetDateTime? = dateUpdated
 
-        @JsonProperty("branch")
-        fun branch(): String? = branch
+        @JsonProperty("branch") fun branch(): String? = branch
 
-        @JsonProperty("name")
-        fun name(): String? = name
+        @JsonProperty("name") fun name(): String? = name
 
-        @JsonProperty("private")
-        fun private_(): Boolean? = private_
+        @JsonProperty("private") fun private_(): Boolean? = private_
 
-        @JsonProperty("slug")
-        fun slug(): String? = slug
+        @JsonProperty("slug") fun slug(): String? = slug
 
-        @JsonProperty("url")
-        fun url(): String? = url
+        @JsonProperty("url") fun url(): String? = url
 
-        @JsonProperty("rootDir")
-        fun rootDir(): String? = rootDir
+        @JsonProperty("rootDir") fun rootDir(): String? = rootDir
 
-        @JsonProperty("projectId")
-        fun projectId(): String? = projectId
+        @JsonProperty("projectId") fun projectId(): String? = projectId
 
-        @JsonProperty("gitAccountId")
-        fun gitAccountId(): String? = gitAccountId
+        @JsonProperty("gitAccountId") fun gitAccountId(): String? = gitAccountId
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -600,53 +556,54 @@ class ProjectCreateParams constructor(
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is GitRepo &&
-              this.id == other.id &&
-              this.gitId == other.gitId &&
-              this.dateConnected == other.dateConnected &&
-              this.dateUpdated == other.dateUpdated &&
-              this.branch == other.branch &&
-              this.name == other.name &&
-              this.private_ == other.private_ &&
-              this.slug == other.slug &&
-              this.url == other.url &&
-              this.rootDir == other.rootDir &&
-              this.projectId == other.projectId &&
-              this.gitAccountId == other.gitAccountId &&
-              this.additionalProperties == other.additionalProperties
+            return other is GitRepo &&
+                this.id == other.id &&
+                this.gitId == other.gitId &&
+                this.dateConnected == other.dateConnected &&
+                this.dateUpdated == other.dateUpdated &&
+                this.branch == other.branch &&
+                this.name == other.name &&
+                this.private_ == other.private_ &&
+                this.slug == other.slug &&
+                this.url == other.url &&
+                this.rootDir == other.rootDir &&
+                this.projectId == other.projectId &&
+                this.gitAccountId == other.gitAccountId &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                id,
-                gitId,
-                dateConnected,
-                dateUpdated,
-                branch,
-                name,
-                private_,
-                slug,
-                url,
-                rootDir,
-                projectId,
-                gitAccountId,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        id,
+                        gitId,
+                        dateConnected,
+                        dateUpdated,
+                        branch,
+                        name,
+                        private_,
+                        slug,
+                        url,
+                        rootDir,
+                        projectId,
+                        gitAccountId,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -682,15 +639,9 @@ class ProjectCreateParams constructor(
                 additionalProperties(gitRepo.additionalProperties)
             }
 
-            @JsonProperty("id")
-            fun id(id: String) = apply {
-                this.id = id
-            }
+            @JsonProperty("id") fun id(id: String) = apply { this.id = id }
 
-            @JsonProperty("gitId")
-            fun gitId(gitId: Long) = apply {
-                this.gitId = gitId
-            }
+            @JsonProperty("gitId") fun gitId(gitId: Long) = apply { this.gitId = gitId }
 
             @JsonProperty("dateConnected")
             fun dateConnected(dateConnected: OffsetDateTime) = apply {
@@ -698,49 +649,26 @@ class ProjectCreateParams constructor(
             }
 
             @JsonProperty("dateUpdated")
-            fun dateUpdated(dateUpdated: OffsetDateTime) = apply {
-                this.dateUpdated = dateUpdated
-            }
+            fun dateUpdated(dateUpdated: OffsetDateTime) = apply { this.dateUpdated = dateUpdated }
 
-            @JsonProperty("branch")
-            fun branch(branch: String) = apply {
-                this.branch = branch
-            }
+            @JsonProperty("branch") fun branch(branch: String) = apply { this.branch = branch }
 
-            @JsonProperty("name")
-            fun name(name: String) = apply {
-                this.name = name
-            }
+            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
             @JsonProperty("private")
-            fun private_(private_: Boolean) = apply {
-                this.private_ = private_
-            }
+            fun private_(private_: Boolean) = apply { this.private_ = private_ }
 
-            @JsonProperty("slug")
-            fun slug(slug: String) = apply {
-                this.slug = slug
-            }
+            @JsonProperty("slug") fun slug(slug: String) = apply { this.slug = slug }
 
-            @JsonProperty("url")
-            fun url(url: String) = apply {
-                this.url = url
-            }
+            @JsonProperty("url") fun url(url: String) = apply { this.url = url }
 
-            @JsonProperty("rootDir")
-            fun rootDir(rootDir: String) = apply {
-                this.rootDir = rootDir
-            }
+            @JsonProperty("rootDir") fun rootDir(rootDir: String) = apply { this.rootDir = rootDir }
 
             @JsonProperty("projectId")
-            fun projectId(projectId: String) = apply {
-                this.projectId = projectId
-            }
+            fun projectId(projectId: String) = apply { this.projectId = projectId }
 
             @JsonProperty("gitAccountId")
-            fun gitAccountId(gitAccountId: String) = apply {
-                this.gitAccountId = gitAccountId
-            }
+            fun gitAccountId(gitAccountId: String) = apply { this.gitAccountId = gitAccountId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -756,41 +684,22 @@ class ProjectCreateParams constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): GitRepo = GitRepo(
-                checkNotNull(id) {
-                    "`id` is required but was not set"
-                },
-                checkNotNull(gitId) {
-                    "`gitId` is required but was not set"
-                },
-                checkNotNull(dateConnected) {
-                    "`dateConnected` is required but was not set"
-                },
-                checkNotNull(dateUpdated) {
-                    "`dateUpdated` is required but was not set"
-                },
-                branch,
-                checkNotNull(name) {
-                    "`name` is required but was not set"
-                },
-                checkNotNull(private_) {
-                    "`private_` is required but was not set"
-                },
-                checkNotNull(slug) {
-                    "`slug` is required but was not set"
-                },
-                checkNotNull(url) {
-                    "`url` is required but was not set"
-                },
-                rootDir,
-                checkNotNull(projectId) {
-                    "`projectId` is required but was not set"
-                },
-                checkNotNull(gitAccountId) {
-                    "`gitAccountId` is required but was not set"
-                },
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): GitRepo =
+                GitRepo(
+                    checkNotNull(id) { "`id` is required but was not set" },
+                    checkNotNull(gitId) { "`gitId` is required but was not set" },
+                    checkNotNull(dateConnected) { "`dateConnected` is required but was not set" },
+                    checkNotNull(dateUpdated) { "`dateUpdated` is required but was not set" },
+                    branch,
+                    checkNotNull(name) { "`name` is required but was not set" },
+                    checkNotNull(private_) { "`private_` is required but was not set" },
+                    checkNotNull(slug) { "`slug` is required but was not set" },
+                    checkNotNull(url) { "`url` is required but was not set" },
+                    rootDir,
+                    checkNotNull(projectId) { "`projectId` is required but was not set" },
+                    checkNotNull(gitAccountId) { "`gitAccountId` is required but was not set" },
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 }
