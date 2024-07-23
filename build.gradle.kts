@@ -4,7 +4,7 @@ plugins {
 
 allprojects {
     group = "com.openlayer.api"
-    version = "0.1.0-alpha.1" 
+    version = "0.1.0-alpha.1" // x-release-please-version
 }
 
 nexusPublishing {
