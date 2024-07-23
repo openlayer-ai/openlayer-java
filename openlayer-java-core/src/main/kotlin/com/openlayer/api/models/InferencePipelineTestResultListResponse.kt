@@ -5,37 +5,37 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.ObjectCodec
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
-import java.time.LocalDate
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
-import java.util.Objects
-import java.util.Optional
-import java.util.UUID
 import com.openlayer.api.core.BaseDeserializer
 import com.openlayer.api.core.BaseSerializer
-import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.JsonNull
-import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.Enum
-import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.toUnmodifiable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.time.OffsetDateTime
+import java.util.Objects
+import java.util.Optional
 
 @JsonDeserialize(builder = InferencePipelineTestResultListResponse.Builder::class)
 @NoAutoDetect
-class InferencePipelineTestResultListResponse private constructor(private val _meta: JsonField<_Meta>, private val items: JsonField<List<Item>>, private val additionalProperties: Map<String, JsonValue>, ) {
+class InferencePipelineTestResultListResponse
+private constructor(
+    private val _meta: JsonField<_Meta>,
+    private val items: JsonField<List<Item>>,
+    private val additionalProperties: Map<String, JsonValue>,
+) {
 
     private var validated: Boolean = false
 
@@ -45,13 +45,9 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
     fun items(): List<Item> = items.getRequired("items")
 
-    @JsonProperty("_meta")
-    @ExcludeMissing
-    fun __meta() = _meta
+    @JsonProperty("_meta") @ExcludeMissing fun __meta() = _meta
 
-    @JsonProperty("items")
-    @ExcludeMissing
-    fun _items() = items
+    @JsonProperty("items") @ExcludeMissing fun _items() = items
 
     @JsonAnyGetter
     @ExcludeMissing
@@ -59,42 +55,43 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
     fun validate(): InferencePipelineTestResultListResponse = apply {
         if (!validated) {
-          _meta().validate()
-          items().forEach { it.validate() }
-          validated = true
+            _meta().validate()
+            items().forEach { it.validate() }
+            validated = true
         }
     }
 
     fun toBuilder() = Builder().from(this)
 
     override fun equals(other: Any?): Boolean {
-      if (this === other) {
-          return true
-      }
+        if (this === other) {
+            return true
+        }
 
-      return other is InferencePipelineTestResultListResponse &&
-          this._meta == other._meta &&
-          this.items == other.items &&
-          this.additionalProperties == other.additionalProperties
+        return other is InferencePipelineTestResultListResponse &&
+            this._meta == other._meta &&
+            this.items == other.items &&
+            this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
-      if (hashCode == 0) {
-        hashCode = Objects.hash(
-            _meta,
-            items,
-            additionalProperties,
-        )
-      }
-      return hashCode
+        if (hashCode == 0) {
+            hashCode =
+                Objects.hash(
+                    _meta,
+                    items,
+                    additionalProperties,
+                )
+        }
+        return hashCode
     }
 
-    override fun toString() = "InferencePipelineTestResultListResponse{_meta=$_meta, items=$items, additionalProperties=$additionalProperties}"
+    override fun toString() =
+        "InferencePipelineTestResultListResponse{_meta=$_meta, items=$items, additionalProperties=$additionalProperties}"
 
     companion object {
 
-        @JvmStatic
-        fun builder() = Builder()
+        @JvmStatic fun builder() = Builder()
     }
 
     class Builder {
@@ -104,7 +101,9 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(inferencePipelineTestResultListResponse: InferencePipelineTestResultListResponse) = apply {
+        internal fun from(
+            inferencePipelineTestResultListResponse: InferencePipelineTestResultListResponse
+        ) = apply {
             this._meta = inferencePipelineTestResultListResponse._meta
             this.items = inferencePipelineTestResultListResponse.items
             additionalProperties(inferencePipelineTestResultListResponse.additionalProperties)
@@ -114,17 +113,13 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
         @JsonProperty("_meta")
         @ExcludeMissing
-        fun _meta(_meta: JsonField<_Meta>) = apply {
-            this._meta = _meta
-        }
+        fun _meta(_meta: JsonField<_Meta>) = apply { this._meta = _meta }
 
         fun items(items: List<Item>) = items(JsonField.of(items))
 
         @JsonProperty("items")
         @ExcludeMissing
-        fun items(items: JsonField<List<Item>>) = apply {
-            this.items = items
-        }
+        fun items(items: JsonField<List<Item>>) = apply { this.items = items }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
@@ -140,22 +135,23 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): InferencePipelineTestResultListResponse = InferencePipelineTestResultListResponse(
-            _meta,
-            items.map { it.toUnmodifiable() },
-            additionalProperties.toUnmodifiable(),
-        )
+        fun build(): InferencePipelineTestResultListResponse =
+            InferencePipelineTestResultListResponse(
+                _meta,
+                items.map { it.toUnmodifiable() },
+                additionalProperties.toUnmodifiable(),
+            )
     }
 
     @JsonDeserialize(builder = _Meta.Builder::class)
     @NoAutoDetect
-    class _Meta private constructor(
-      private val page: JsonField<Long>,
-      private val perPage: JsonField<Long>,
-      private val totalItems: JsonField<Long>,
-      private val totalPages: JsonField<Long>,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class _Meta
+    private constructor(
+        private val page: JsonField<Long>,
+        private val perPage: JsonField<Long>,
+        private val totalItems: JsonField<Long>,
+        private val totalPages: JsonField<Long>,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
@@ -175,24 +171,16 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
         fun totalPages(): Long = totalPages.getRequired("totalPages")
 
         /** The current page. */
-        @JsonProperty("page")
-        @ExcludeMissing
-        fun _page() = page
+        @JsonProperty("page") @ExcludeMissing fun _page() = page
 
         /** The number of items per page. */
-        @JsonProperty("perPage")
-        @ExcludeMissing
-        fun _perPage() = perPage
+        @JsonProperty("perPage") @ExcludeMissing fun _perPage() = perPage
 
         /** The total number of items. */
-        @JsonProperty("totalItems")
-        @ExcludeMissing
-        fun _totalItems() = totalItems
+        @JsonProperty("totalItems") @ExcludeMissing fun _totalItems() = totalItems
 
         /** The total number of pages. */
-        @JsonProperty("totalPages")
-        @ExcludeMissing
-        fun _totalPages() = totalPages
+        @JsonProperty("totalPages") @ExcludeMissing fun _totalPages() = totalPages
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -200,48 +188,49 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
         fun validate(): _Meta = apply {
             if (!validated) {
-              page()
-              perPage()
-              totalItems()
-              totalPages()
-              validated = true
+                page()
+                perPage()
+                totalItems()
+                totalPages()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is _Meta &&
-              this.page == other.page &&
-              this.perPage == other.perPage &&
-              this.totalItems == other.totalItems &&
-              this.totalPages == other.totalPages &&
-              this.additionalProperties == other.additionalProperties
+            return other is _Meta &&
+                this.page == other.page &&
+                this.perPage == other.perPage &&
+                this.totalItems == other.totalItems &&
+                this.totalPages == other.totalPages &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                page,
-                perPage,
-                totalItems,
-                totalPages,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        page,
+                        perPage,
+                        totalItems,
+                        totalPages,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "_Meta{page=$page, perPage=$perPage, totalItems=$totalItems, totalPages=$totalPages, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "_Meta{page=$page, perPage=$perPage, totalItems=$totalItems, totalPages=$totalPages, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -267,9 +256,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The current page. */
             @JsonProperty("page")
             @ExcludeMissing
-            fun page(page: JsonField<Long>) = apply {
-                this.page = page
-            }
+            fun page(page: JsonField<Long>) = apply { this.page = page }
 
             /** The number of items per page. */
             fun perPage(perPage: Long) = perPage(JsonField.of(perPage))
@@ -277,9 +264,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The number of items per page. */
             @JsonProperty("perPage")
             @ExcludeMissing
-            fun perPage(perPage: JsonField<Long>) = apply {
-                this.perPage = perPage
-            }
+            fun perPage(perPage: JsonField<Long>) = apply { this.perPage = perPage }
 
             /** The total number of items. */
             fun totalItems(totalItems: Long) = totalItems(JsonField.of(totalItems))
@@ -287,9 +272,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The total number of items. */
             @JsonProperty("totalItems")
             @ExcludeMissing
-            fun totalItems(totalItems: JsonField<Long>) = apply {
-                this.totalItems = totalItems
-            }
+            fun totalItems(totalItems: JsonField<Long>) = apply { this.totalItems = totalItems }
 
             /** The total number of pages. */
             fun totalPages(totalPages: Long) = totalPages(JsonField.of(totalPages))
@@ -297,9 +280,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The total number of pages. */
             @JsonProperty("totalPages")
             @ExcludeMissing
-            fun totalPages(totalPages: JsonField<Long>) = apply {
-                this.totalPages = totalPages
-            }
+            fun totalPages(totalPages: JsonField<Long>) = apply { this.totalPages = totalPages }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -315,32 +296,33 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): _Meta = _Meta(
-                page,
-                perPage,
-                totalItems,
-                totalPages,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): _Meta =
+                _Meta(
+                    page,
+                    perPage,
+                    totalItems,
+                    totalPages,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
     }
 
     @JsonDeserialize(builder = Item.Builder::class)
     @NoAutoDetect
-    class Item private constructor(
-      private val id: JsonField<String>,
-      private val goal: JsonField<Goal>,
-      private val goalId: JsonField<String>,
-      private val projectVersionId: JsonField<String>,
-      private val inferencePipelineId: JsonField<String>,
-      private val dateCreated: JsonField<OffsetDateTime>,
-      private val dateUpdated: JsonField<OffsetDateTime>,
-      private val dateDataStarts: JsonField<OffsetDateTime>,
-      private val dateDataEnds: JsonField<OffsetDateTime>,
-      private val status: JsonField<Status>,
-      private val statusMessage: JsonField<String>,
-      private val additionalProperties: Map<String, JsonValue>,
-
+    class Item
+    private constructor(
+        private val id: JsonField<String>,
+        private val goal: JsonField<Goal>,
+        private val goalId: JsonField<String>,
+        private val projectVersionId: JsonField<String>,
+        private val inferencePipelineId: JsonField<String>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val dateUpdated: JsonField<OffsetDateTime>,
+        private val dateDataStarts: JsonField<OffsetDateTime>,
+        private val dateDataEnds: JsonField<OffsetDateTime>,
+        private val status: JsonField<Status>,
+        private val statusMessage: JsonField<String>,
+        private val additionalProperties: Map<String, JsonValue>,
     ) {
 
         private var validated: Boolean = false
@@ -356,10 +338,12 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
         fun goalId(): Optional<String> = Optional.ofNullable(goalId.getNullable("goalId"))
 
         /** The project version (commit) id. */
-        fun projectVersionId(): Optional<String> = Optional.ofNullable(projectVersionId.getNullable("projectVersionId"))
+        fun projectVersionId(): Optional<String> =
+            Optional.ofNullable(projectVersionId.getNullable("projectVersionId"))
 
         /** The inference pipeline id. */
-        fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId.getNullable("inferencePipelineId"))
+        fun inferencePipelineId(): Optional<String> =
+            Optional.ofNullable(inferencePipelineId.getNullable("inferencePipelineId"))
 
         /** The creation date. */
         fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
@@ -368,35 +352,30 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
         /** The data start date. */
-        fun dateDataStarts(): Optional<OffsetDateTime> = Optional.ofNullable(dateDataStarts.getNullable("dateDataStarts"))
+        fun dateDataStarts(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateDataStarts.getNullable("dateDataStarts"))
 
         /** The data end date. */
-        fun dateDataEnds(): Optional<OffsetDateTime> = Optional.ofNullable(dateDataEnds.getNullable("dateDataEnds"))
+        fun dateDataEnds(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateDataEnds.getNullable("dateDataEnds"))
 
         /** The status of the test. */
         fun status(): Status = status.getRequired("status")
 
         /** The status message. */
-        fun statusMessage(): Optional<String> = Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+        fun statusMessage(): Optional<String> =
+            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
 
         /** Project version (commit) id. */
-        @JsonProperty("id")
-        @ExcludeMissing
-        fun _id() = id
+        @JsonProperty("id") @ExcludeMissing fun _id() = id
 
-        @JsonProperty("goal")
-        @ExcludeMissing
-        fun _goal() = goal
+        @JsonProperty("goal") @ExcludeMissing fun _goal() = goal
 
         /** The test id. */
-        @JsonProperty("goalId")
-        @ExcludeMissing
-        fun _goalId() = goalId
+        @JsonProperty("goalId") @ExcludeMissing fun _goalId() = goalId
 
         /** The project version (commit) id. */
-        @JsonProperty("projectVersionId")
-        @ExcludeMissing
-        fun _projectVersionId() = projectVersionId
+        @JsonProperty("projectVersionId") @ExcludeMissing fun _projectVersionId() = projectVersionId
 
         /** The inference pipeline id. */
         @JsonProperty("inferencePipelineId")
@@ -404,34 +383,22 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
         fun _inferencePipelineId() = inferencePipelineId
 
         /** The creation date. */
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        fun _dateCreated() = dateCreated
+        @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
 
         /** The last updated date. */
-        @JsonProperty("dateUpdated")
-        @ExcludeMissing
-        fun _dateUpdated() = dateUpdated
+        @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
 
         /** The data start date. */
-        @JsonProperty("dateDataStarts")
-        @ExcludeMissing
-        fun _dateDataStarts() = dateDataStarts
+        @JsonProperty("dateDataStarts") @ExcludeMissing fun _dateDataStarts() = dateDataStarts
 
         /** The data end date. */
-        @JsonProperty("dateDataEnds")
-        @ExcludeMissing
-        fun _dateDataEnds() = dateDataEnds
+        @JsonProperty("dateDataEnds") @ExcludeMissing fun _dateDataEnds() = dateDataEnds
 
         /** The status of the test. */
-        @JsonProperty("status")
-        @ExcludeMissing
-        fun _status() = status
+        @JsonProperty("status") @ExcludeMissing fun _status() = status
 
         /** The status message. */
-        @JsonProperty("statusMessage")
-        @ExcludeMissing
-        fun _statusMessage() = statusMessage
+        @JsonProperty("statusMessage") @ExcludeMissing fun _statusMessage() = statusMessage
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -439,69 +406,70 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
         fun validate(): Item = apply {
             if (!validated) {
-              id()
-              goal().map { it.validate() }
-              goalId()
-              projectVersionId()
-              inferencePipelineId()
-              dateCreated()
-              dateUpdated()
-              dateDataStarts()
-              dateDataEnds()
-              status()
-              statusMessage()
-              validated = true
+                id()
+                goal().map { it.validate() }
+                goalId()
+                projectVersionId()
+                inferencePipelineId()
+                dateCreated()
+                dateUpdated()
+                dateDataStarts()
+                dateDataEnds()
+                status()
+                statusMessage()
+                validated = true
             }
         }
 
         fun toBuilder() = Builder().from(this)
 
         override fun equals(other: Any?): Boolean {
-          if (this === other) {
-              return true
-          }
+            if (this === other) {
+                return true
+            }
 
-          return other is Item &&
-              this.id == other.id &&
-              this.goal == other.goal &&
-              this.goalId == other.goalId &&
-              this.projectVersionId == other.projectVersionId &&
-              this.inferencePipelineId == other.inferencePipelineId &&
-              this.dateCreated == other.dateCreated &&
-              this.dateUpdated == other.dateUpdated &&
-              this.dateDataStarts == other.dateDataStarts &&
-              this.dateDataEnds == other.dateDataEnds &&
-              this.status == other.status &&
-              this.statusMessage == other.statusMessage &&
-              this.additionalProperties == other.additionalProperties
+            return other is Item &&
+                this.id == other.id &&
+                this.goal == other.goal &&
+                this.goalId == other.goalId &&
+                this.projectVersionId == other.projectVersionId &&
+                this.inferencePipelineId == other.inferencePipelineId &&
+                this.dateCreated == other.dateCreated &&
+                this.dateUpdated == other.dateUpdated &&
+                this.dateDataStarts == other.dateDataStarts &&
+                this.dateDataEnds == other.dateDataEnds &&
+                this.status == other.status &&
+                this.statusMessage == other.statusMessage &&
+                this.additionalProperties == other.additionalProperties
         }
 
         override fun hashCode(): Int {
-          if (hashCode == 0) {
-            hashCode = Objects.hash(
-                id,
-                goal,
-                goalId,
-                projectVersionId,
-                inferencePipelineId,
-                dateCreated,
-                dateUpdated,
-                dateDataStarts,
-                dateDataEnds,
-                status,
-                statusMessage,
-                additionalProperties,
-            )
-          }
-          return hashCode
+            if (hashCode == 0) {
+                hashCode =
+                    Objects.hash(
+                        id,
+                        goal,
+                        goalId,
+                        projectVersionId,
+                        inferencePipelineId,
+                        dateCreated,
+                        dateUpdated,
+                        dateDataStarts,
+                        dateDataEnds,
+                        status,
+                        statusMessage,
+                        additionalProperties,
+                    )
+            }
+            return hashCode
         }
 
-        override fun toString() = "Item{id=$id, goal=$goal, goalId=$goalId, projectVersionId=$projectVersionId, inferencePipelineId=$inferencePipelineId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateDataStarts=$dateDataStarts, dateDataEnds=$dateDataEnds, status=$status, statusMessage=$statusMessage, additionalProperties=$additionalProperties}"
+        override fun toString() =
+            "Item{id=$id, goal=$goal, goalId=$goalId, projectVersionId=$projectVersionId, inferencePipelineId=$inferencePipelineId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateDataStarts=$dateDataStarts, dateDataEnds=$dateDataEnds, status=$status, statusMessage=$statusMessage, additionalProperties=$additionalProperties}"
 
         companion object {
 
-            @JvmStatic
-            fun builder() = Builder()
+            @JvmStatic fun builder() = Builder()
         }
 
         class Builder {
@@ -541,17 +509,13 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** Project version (commit) id. */
             @JsonProperty("id")
             @ExcludeMissing
-            fun id(id: JsonField<String>) = apply {
-                this.id = id
-            }
+            fun id(id: JsonField<String>) = apply { this.id = id }
 
             fun goal(goal: Goal) = goal(JsonField.of(goal))
 
             @JsonProperty("goal")
             @ExcludeMissing
-            fun goal(goal: JsonField<Goal>) = apply {
-                this.goal = goal
-            }
+            fun goal(goal: JsonField<Goal>) = apply { this.goal = goal }
 
             /** The test id. */
             fun goalId(goalId: String) = goalId(JsonField.of(goalId))
@@ -559,12 +523,11 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The test id. */
             @JsonProperty("goalId")
             @ExcludeMissing
-            fun goalId(goalId: JsonField<String>) = apply {
-                this.goalId = goalId
-            }
+            fun goalId(goalId: JsonField<String>) = apply { this.goalId = goalId }
 
             /** The project version (commit) id. */
-            fun projectVersionId(projectVersionId: String) = projectVersionId(JsonField.of(projectVersionId))
+            fun projectVersionId(projectVersionId: String) =
+                projectVersionId(JsonField.of(projectVersionId))
 
             /** The project version (commit) id. */
             @JsonProperty("projectVersionId")
@@ -574,7 +537,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             }
 
             /** The inference pipeline id. */
-            fun inferencePipelineId(inferencePipelineId: String) = inferencePipelineId(JsonField.of(inferencePipelineId))
+            fun inferencePipelineId(inferencePipelineId: String) =
+                inferencePipelineId(JsonField.of(inferencePipelineId))
 
             /** The inference pipeline id. */
             @JsonProperty("inferencePipelineId")
@@ -604,7 +568,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             }
 
             /** The data start date. */
-            fun dateDataStarts(dateDataStarts: OffsetDateTime) = dateDataStarts(JsonField.of(dateDataStarts))
+            fun dateDataStarts(dateDataStarts: OffsetDateTime) =
+                dateDataStarts(JsonField.of(dateDataStarts))
 
             /** The data start date. */
             @JsonProperty("dateDataStarts")
@@ -614,7 +579,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             }
 
             /** The data end date. */
-            fun dateDataEnds(dateDataEnds: OffsetDateTime) = dateDataEnds(JsonField.of(dateDataEnds))
+            fun dateDataEnds(dateDataEnds: OffsetDateTime) =
+                dateDataEnds(JsonField.of(dateDataEnds))
 
             /** The data end date. */
             @JsonProperty("dateDataEnds")
@@ -629,9 +595,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The status of the test. */
             @JsonProperty("status")
             @ExcludeMissing
-            fun status(status: JsonField<Status>) = apply {
-                this.status = status
-            }
+            fun status(status: JsonField<Status>) = apply { this.status = status }
 
             /** The status message. */
             fun statusMessage(statusMessage: String) = statusMessage(JsonField.of(statusMessage))
@@ -657,34 +621,37 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Item = Item(
-                id,
-                goal,
-                goalId,
-                projectVersionId,
-                inferencePipelineId,
-                dateCreated,
-                dateUpdated,
-                dateDataStarts,
-                dateDataEnds,
-                status,
-                statusMessage,
-                additionalProperties.toUnmodifiable(),
-            )
+            fun build(): Item =
+                Item(
+                    id,
+                    goal,
+                    goalId,
+                    projectVersionId,
+                    inferencePipelineId,
+                    dateCreated,
+                    dateUpdated,
+                    dateDataStarts,
+                    dateDataEnds,
+                    status,
+                    statusMessage,
+                    additionalProperties.toUnmodifiable(),
+                )
         }
 
-        class Status @JsonCreator private constructor(private val value: JsonField<String>, ) : Enum {
+        class Status
+        @JsonCreator
+        private constructor(
+            private val value: JsonField<String>,
+        ) : Enum {
 
-            @com.fasterxml.jackson.annotation.JsonValue
-            fun _value(): JsonField<String> = value
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is Status &&
-                  this.value == other.value
+                return other is Status && this.value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -723,54 +690,56 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 _UNKNOWN,
             }
 
-            fun value(): Value = when (this) {
-                RUNNING -> Value.RUNNING
-                PASSING -> Value.PASSING
-                FAILING -> Value.FAILING
-                SKIPPED -> Value.SKIPPED
-                ERROR -> Value.ERROR
-                else -> Value._UNKNOWN
-            }
+            fun value(): Value =
+                when (this) {
+                    RUNNING -> Value.RUNNING
+                    PASSING -> Value.PASSING
+                    FAILING -> Value.FAILING
+                    SKIPPED -> Value.SKIPPED
+                    ERROR -> Value.ERROR
+                    else -> Value._UNKNOWN
+                }
 
-            fun known(): Known = when (this) {
-                RUNNING -> Known.RUNNING
-                PASSING -> Known.PASSING
-                FAILING -> Known.FAILING
-                SKIPPED -> Known.SKIPPED
-                ERROR -> Known.ERROR
-                else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
-            }
+            fun known(): Known =
+                when (this) {
+                    RUNNING -> Known.RUNNING
+                    PASSING -> Known.PASSING
+                    FAILING -> Known.FAILING
+                    SKIPPED -> Known.SKIPPED
+                    ERROR -> Known.ERROR
+                    else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
+                }
 
             fun asString(): String = _value().asStringOrThrow()
         }
 
         @JsonDeserialize(builder = Goal.Builder::class)
         @NoAutoDetect
-        class Goal private constructor(
-          private val id: JsonField<String>,
-          private val number: JsonField<Long>,
-          private val name: JsonField<String>,
-          private val dateCreated: JsonField<OffsetDateTime>,
-          private val dateUpdated: JsonField<OffsetDateTime>,
-          private val description: JsonValue,
-          private val evaluationWindow: JsonField<Double>,
-          private val delayWindow: JsonField<Double>,
-          private val type: JsonField<String>,
-          private val subtype: JsonField<String>,
-          private val creatorId: JsonField<String>,
-          private val originProjectVersionId: JsonField<String>,
-          private val thresholds: JsonField<List<Threshold>>,
-          private val archived: JsonField<Boolean>,
-          private val dateArchived: JsonField<OffsetDateTime>,
-          private val suggested: JsonField<Boolean>,
-          private val commentCount: JsonField<Long>,
-          private val usesMlModel: JsonField<Boolean>,
-          private val usesValidationDataset: JsonField<Boolean>,
-          private val usesTrainingDataset: JsonField<Boolean>,
-          private val usesReferenceDataset: JsonField<Boolean>,
-          private val usesProductionData: JsonField<Boolean>,
-          private val additionalProperties: Map<String, JsonValue>,
-
+        class Goal
+        private constructor(
+            private val id: JsonField<String>,
+            private val number: JsonField<Long>,
+            private val name: JsonField<String>,
+            private val dateCreated: JsonField<OffsetDateTime>,
+            private val dateUpdated: JsonField<OffsetDateTime>,
+            private val description: JsonValue,
+            private val evaluationWindow: JsonField<Double>,
+            private val delayWindow: JsonField<Double>,
+            private val type: JsonField<String>,
+            private val subtype: JsonField<String>,
+            private val creatorId: JsonField<String>,
+            private val originProjectVersionId: JsonField<String>,
+            private val thresholds: JsonField<List<Threshold>>,
+            private val archived: JsonField<Boolean>,
+            private val dateArchived: JsonField<OffsetDateTime>,
+            private val suggested: JsonField<Boolean>,
+            private val commentCount: JsonField<Long>,
+            private val usesMlModel: JsonField<Boolean>,
+            private val usesValidationDataset: JsonField<Boolean>,
+            private val usesTrainingDataset: JsonField<Boolean>,
+            private val usesReferenceDataset: JsonField<Boolean>,
+            private val usesProductionData: JsonField<Boolean>,
+            private val additionalProperties: Map<String, JsonValue>,
         ) {
 
             private var validated: Boolean = false
@@ -792,14 +761,13 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             /** The last updated date. */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-            /**
-             * The evaluation window in seconds. Only applies to tests that use production
-             * data.
-             */
-            fun evaluationWindow(): Optional<Double> = Optional.ofNullable(evaluationWindow.getNullable("evaluationWindow"))
+            /** The evaluation window in seconds. Only applies to tests that use production data. */
+            fun evaluationWindow(): Optional<Double> =
+                Optional.ofNullable(evaluationWindow.getNullable("evaluationWindow"))
 
             /** The delay window in seconds. Only applies to tests that use production data. */
-            fun delayWindow(): Optional<Double> = Optional.ofNullable(delayWindow.getNullable("delayWindow"))
+            fun delayWindow(): Optional<Double> =
+                Optional.ofNullable(delayWindow.getNullable("delayWindow"))
 
             /** The test type. */
             fun type(): String = type.getRequired("type")
@@ -808,18 +776,22 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             fun subtype(): String = subtype.getRequired("subtype")
 
             /** The test creator id. */
-            fun creatorId(): Optional<String> = Optional.ofNullable(creatorId.getNullable("creatorId"))
+            fun creatorId(): Optional<String> =
+                Optional.ofNullable(creatorId.getNullable("creatorId"))
 
             /** The project version (commit) id where the test was created. */
-            fun originProjectVersionId(): Optional<String> = Optional.ofNullable(originProjectVersionId.getNullable("originProjectVersionId"))
+            fun originProjectVersionId(): Optional<String> =
+                Optional.ofNullable(originProjectVersionId.getNullable("originProjectVersionId"))
 
             fun thresholds(): List<Threshold> = thresholds.getRequired("thresholds")
 
             /** Whether the test is archived. */
-            fun archived(): Optional<Boolean> = Optional.ofNullable(archived.getNullable("archived"))
+            fun archived(): Optional<Boolean> =
+                Optional.ofNullable(archived.getNullable("archived"))
 
             /** The date the test was archived. */
-            fun dateArchived(): Optional<OffsetDateTime> = Optional.ofNullable(dateArchived.getNullable("dateArchived"))
+            fun dateArchived(): Optional<OffsetDateTime> =
+                Optional.ofNullable(dateArchived.getNullable("dateArchived"))
 
             /** Whether the test is suggested or user-created. */
             fun suggested(): Boolean = suggested.getRequired("suggested")
@@ -828,111 +800,81 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
             fun commentCount(): Long = commentCount.getRequired("commentCount")
 
             /** Whether the test uses an ML model. */
-            fun usesMlModel(): Optional<Boolean> = Optional.ofNullable(usesMlModel.getNullable("usesMlModel"))
+            fun usesMlModel(): Optional<Boolean> =
+                Optional.ofNullable(usesMlModel.getNullable("usesMlModel"))
 
             /** Whether the test uses a validation dataset. */
-            fun usesValidationDataset(): Optional<Boolean> = Optional.ofNullable(usesValidationDataset.getNullable("usesValidationDataset"))
+            fun usesValidationDataset(): Optional<Boolean> =
+                Optional.ofNullable(usesValidationDataset.getNullable("usesValidationDataset"))
 
             /** Whether the test uses a training dataset. */
-            fun usesTrainingDataset(): Optional<Boolean> = Optional.ofNullable(usesTrainingDataset.getNullable("usesTrainingDataset"))
+            fun usesTrainingDataset(): Optional<Boolean> =
+                Optional.ofNullable(usesTrainingDataset.getNullable("usesTrainingDataset"))
 
             /** Whether the test uses a reference dataset (monitoring mode only). */
-            fun usesReferenceDataset(): Optional<Boolean> = Optional.ofNullable(usesReferenceDataset.getNullable("usesReferenceDataset"))
+            fun usesReferenceDataset(): Optional<Boolean> =
+                Optional.ofNullable(usesReferenceDataset.getNullable("usesReferenceDataset"))
 
             /** Whether the test uses production data (monitoring mode only). */
-            fun usesProductionData(): Optional<Boolean> = Optional.ofNullable(usesProductionData.getNullable("usesProductionData"))
+            fun usesProductionData(): Optional<Boolean> =
+                Optional.ofNullable(usesProductionData.getNullable("usesProductionData"))
 
             /** The test id. */
-            @JsonProperty("id")
-            @ExcludeMissing
-            fun _id() = id
+            @JsonProperty("id") @ExcludeMissing fun _id() = id
 
             /** The test number. */
-            @JsonProperty("number")
-            @ExcludeMissing
-            fun _number() = number
+            @JsonProperty("number") @ExcludeMissing fun _number() = number
 
             /** The test name. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun _name() = name
+            @JsonProperty("name") @ExcludeMissing fun _name() = name
 
             /** The creation date. */
-            @JsonProperty("dateCreated")
-            @ExcludeMissing
-            fun _dateCreated() = dateCreated
+            @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
 
             /** The last updated date. */
-            @JsonProperty("dateUpdated")
-            @ExcludeMissing
-            fun _dateUpdated() = dateUpdated
+            @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
 
             /** The test description. */
-            @JsonProperty("description")
-            @ExcludeMissing
-            fun _description() = description
+            @JsonProperty("description") @ExcludeMissing fun _description() = description
 
-            /**
-             * The evaluation window in seconds. Only applies to tests that use production
-             * data.
-             */
+            /** The evaluation window in seconds. Only applies to tests that use production data. */
             @JsonProperty("evaluationWindow")
             @ExcludeMissing
             fun _evaluationWindow() = evaluationWindow
 
             /** The delay window in seconds. Only applies to tests that use production data. */
-            @JsonProperty("delayWindow")
-            @ExcludeMissing
-            fun _delayWindow() = delayWindow
+            @JsonProperty("delayWindow") @ExcludeMissing fun _delayWindow() = delayWindow
 
             /** The test type. */
-            @JsonProperty("type")
-            @ExcludeMissing
-            fun _type() = type
+            @JsonProperty("type") @ExcludeMissing fun _type() = type
 
             /** The test subtype. */
-            @JsonProperty("subtype")
-            @ExcludeMissing
-            fun _subtype() = subtype
+            @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
 
             /** The test creator id. */
-            @JsonProperty("creatorId")
-            @ExcludeMissing
-            fun _creatorId() = creatorId
+            @JsonProperty("creatorId") @ExcludeMissing fun _creatorId() = creatorId
 
             /** The project version (commit) id where the test was created. */
             @JsonProperty("originProjectVersionId")
             @ExcludeMissing
             fun _originProjectVersionId() = originProjectVersionId
 
-            @JsonProperty("thresholds")
-            @ExcludeMissing
-            fun _thresholds() = thresholds
+            @JsonProperty("thresholds") @ExcludeMissing fun _thresholds() = thresholds
 
             /** Whether the test is archived. */
-            @JsonProperty("archived")
-            @ExcludeMissing
-            fun _archived() = archived
+            @JsonProperty("archived") @ExcludeMissing fun _archived() = archived
 
             /** The date the test was archived. */
-            @JsonProperty("dateArchived")
-            @ExcludeMissing
-            fun _dateArchived() = dateArchived
+            @JsonProperty("dateArchived") @ExcludeMissing fun _dateArchived() = dateArchived
 
             /** Whether the test is suggested or user-created. */
-            @JsonProperty("suggested")
-            @ExcludeMissing
-            fun _suggested() = suggested
+            @JsonProperty("suggested") @ExcludeMissing fun _suggested() = suggested
 
             /** The number of comments on the test. */
-            @JsonProperty("commentCount")
-            @ExcludeMissing
-            fun _commentCount() = commentCount
+            @JsonProperty("commentCount") @ExcludeMissing fun _commentCount() = commentCount
 
             /** Whether the test uses an ML model. */
-            @JsonProperty("usesMlModel")
-            @ExcludeMissing
-            fun _usesMlModel() = usesMlModel
+            @JsonProperty("usesMlModel") @ExcludeMissing fun _usesMlModel() = usesMlModel
 
             /** Whether the test uses a validation dataset. */
             @JsonProperty("usesValidationDataset")
@@ -960,101 +902,102 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
             fun validate(): Goal = apply {
                 if (!validated) {
-                  id()
-                  number()
-                  name()
-                  dateCreated()
-                  dateUpdated()
-                  evaluationWindow()
-                  delayWindow()
-                  type()
-                  subtype()
-                  creatorId()
-                  originProjectVersionId()
-                  thresholds().forEach { it.validate() }
-                  archived()
-                  dateArchived()
-                  suggested()
-                  commentCount()
-                  usesMlModel()
-                  usesValidationDataset()
-                  usesTrainingDataset()
-                  usesReferenceDataset()
-                  usesProductionData()
-                  validated = true
+                    id()
+                    number()
+                    name()
+                    dateCreated()
+                    dateUpdated()
+                    evaluationWindow()
+                    delayWindow()
+                    type()
+                    subtype()
+                    creatorId()
+                    originProjectVersionId()
+                    thresholds().forEach { it.validate() }
+                    archived()
+                    dateArchived()
+                    suggested()
+                    commentCount()
+                    usesMlModel()
+                    usesValidationDataset()
+                    usesTrainingDataset()
+                    usesReferenceDataset()
+                    usesProductionData()
+                    validated = true
                 }
             }
 
             fun toBuilder() = Builder().from(this)
 
             override fun equals(other: Any?): Boolean {
-              if (this === other) {
-                  return true
-              }
+                if (this === other) {
+                    return true
+                }
 
-              return other is Goal &&
-                  this.id == other.id &&
-                  this.number == other.number &&
-                  this.name == other.name &&
-                  this.dateCreated == other.dateCreated &&
-                  this.dateUpdated == other.dateUpdated &&
-                  this.description == other.description &&
-                  this.evaluationWindow == other.evaluationWindow &&
-                  this.delayWindow == other.delayWindow &&
-                  this.type == other.type &&
-                  this.subtype == other.subtype &&
-                  this.creatorId == other.creatorId &&
-                  this.originProjectVersionId == other.originProjectVersionId &&
-                  this.thresholds == other.thresholds &&
-                  this.archived == other.archived &&
-                  this.dateArchived == other.dateArchived &&
-                  this.suggested == other.suggested &&
-                  this.commentCount == other.commentCount &&
-                  this.usesMlModel == other.usesMlModel &&
-                  this.usesValidationDataset == other.usesValidationDataset &&
-                  this.usesTrainingDataset == other.usesTrainingDataset &&
-                  this.usesReferenceDataset == other.usesReferenceDataset &&
-                  this.usesProductionData == other.usesProductionData &&
-                  this.additionalProperties == other.additionalProperties
+                return other is Goal &&
+                    this.id == other.id &&
+                    this.number == other.number &&
+                    this.name == other.name &&
+                    this.dateCreated == other.dateCreated &&
+                    this.dateUpdated == other.dateUpdated &&
+                    this.description == other.description &&
+                    this.evaluationWindow == other.evaluationWindow &&
+                    this.delayWindow == other.delayWindow &&
+                    this.type == other.type &&
+                    this.subtype == other.subtype &&
+                    this.creatorId == other.creatorId &&
+                    this.originProjectVersionId == other.originProjectVersionId &&
+                    this.thresholds == other.thresholds &&
+                    this.archived == other.archived &&
+                    this.dateArchived == other.dateArchived &&
+                    this.suggested == other.suggested &&
+                    this.commentCount == other.commentCount &&
+                    this.usesMlModel == other.usesMlModel &&
+                    this.usesValidationDataset == other.usesValidationDataset &&
+                    this.usesTrainingDataset == other.usesTrainingDataset &&
+                    this.usesReferenceDataset == other.usesReferenceDataset &&
+                    this.usesProductionData == other.usesProductionData &&
+                    this.additionalProperties == other.additionalProperties
             }
 
             override fun hashCode(): Int {
-              if (hashCode == 0) {
-                hashCode = Objects.hash(
-                    id,
-                    number,
-                    name,
-                    dateCreated,
-                    dateUpdated,
-                    description,
-                    evaluationWindow,
-                    delayWindow,
-                    type,
-                    subtype,
-                    creatorId,
-                    originProjectVersionId,
-                    thresholds,
-                    archived,
-                    dateArchived,
-                    suggested,
-                    commentCount,
-                    usesMlModel,
-                    usesValidationDataset,
-                    usesTrainingDataset,
-                    usesReferenceDataset,
-                    usesProductionData,
-                    additionalProperties,
-                )
-              }
-              return hashCode
+                if (hashCode == 0) {
+                    hashCode =
+                        Objects.hash(
+                            id,
+                            number,
+                            name,
+                            dateCreated,
+                            dateUpdated,
+                            description,
+                            evaluationWindow,
+                            delayWindow,
+                            type,
+                            subtype,
+                            creatorId,
+                            originProjectVersionId,
+                            thresholds,
+                            archived,
+                            dateArchived,
+                            suggested,
+                            commentCount,
+                            usesMlModel,
+                            usesValidationDataset,
+                            usesTrainingDataset,
+                            usesReferenceDataset,
+                            usesProductionData,
+                            additionalProperties,
+                        )
+                }
+                return hashCode
             }
 
-            override fun toString() = "Goal{id=$id, number=$number, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, evaluationWindow=$evaluationWindow, delayWindow=$delayWindow, type=$type, subtype=$subtype, creatorId=$creatorId, originProjectVersionId=$originProjectVersionId, thresholds=$thresholds, archived=$archived, dateArchived=$dateArchived, suggested=$suggested, commentCount=$commentCount, usesMlModel=$usesMlModel, usesValidationDataset=$usesValidationDataset, usesTrainingDataset=$usesTrainingDataset, usesReferenceDataset=$usesReferenceDataset, usesProductionData=$usesProductionData, additionalProperties=$additionalProperties}"
+            override fun toString() =
+                "Goal{id=$id, number=$number, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, evaluationWindow=$evaluationWindow, delayWindow=$delayWindow, type=$type, subtype=$subtype, creatorId=$creatorId, originProjectVersionId=$originProjectVersionId, thresholds=$thresholds, archived=$archived, dateArchived=$dateArchived, suggested=$suggested, commentCount=$commentCount, usesMlModel=$usesMlModel, usesValidationDataset=$usesValidationDataset, usesTrainingDataset=$usesTrainingDataset, usesReferenceDataset=$usesReferenceDataset, usesProductionData=$usesProductionData, additionalProperties=$additionalProperties}"
 
             companion object {
 
-                @JvmStatic
-                fun builder() = Builder()
+                @JvmStatic fun builder() = Builder()
             }
 
             class Builder {
@@ -1116,9 +1059,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test id. */
                 @JsonProperty("id")
                 @ExcludeMissing
-                fun id(id: JsonField<String>) = apply {
-                    this.id = id
-                }
+                fun id(id: JsonField<String>) = apply { this.id = id }
 
                 /** The test number. */
                 fun number(number: Long) = number(JsonField.of(number))
@@ -1126,9 +1067,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test number. */
                 @JsonProperty("number")
                 @ExcludeMissing
-                fun number(number: JsonField<Long>) = apply {
-                    this.number = number
-                }
+                fun number(number: JsonField<Long>) = apply { this.number = number }
 
                 /** The test name. */
                 fun name(name: String) = name(JsonField.of(name))
@@ -1136,12 +1075,11 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test name. */
                 @JsonProperty("name")
                 @ExcludeMissing
-                fun name(name: JsonField<String>) = apply {
-                    this.name = name
-                }
+                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** The creation date. */
-                fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
+                fun dateCreated(dateCreated: OffsetDateTime) =
+                    dateCreated(JsonField.of(dateCreated))
 
                 /** The creation date. */
                 @JsonProperty("dateCreated")
@@ -1151,7 +1089,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 }
 
                 /** The last updated date. */
-                fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
+                fun dateUpdated(dateUpdated: OffsetDateTime) =
+                    dateUpdated(JsonField.of(dateUpdated))
 
                 /** The last updated date. */
                 @JsonProperty("dateUpdated")
@@ -1163,19 +1102,16 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test description. */
                 @JsonProperty("description")
                 @ExcludeMissing
-                fun description(description: JsonValue) = apply {
-                    this.description = description
-                }
+                fun description(description: JsonValue) = apply { this.description = description }
 
                 /**
-                 * The evaluation window in seconds. Only applies to tests that use production
-                 * data.
+                 * The evaluation window in seconds. Only applies to tests that use production data.
                  */
-                fun evaluationWindow(evaluationWindow: Double) = evaluationWindow(JsonField.of(evaluationWindow))
+                fun evaluationWindow(evaluationWindow: Double) =
+                    evaluationWindow(JsonField.of(evaluationWindow))
 
                 /**
-                 * The evaluation window in seconds. Only applies to tests that use production
-                 * data.
+                 * The evaluation window in seconds. Only applies to tests that use production data.
                  */
                 @JsonProperty("evaluationWindow")
                 @ExcludeMissing
@@ -1199,9 +1135,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test type. */
                 @JsonProperty("type")
                 @ExcludeMissing
-                fun type(type: JsonField<String>) = apply {
-                    this.type = type
-                }
+                fun type(type: JsonField<String>) = apply { this.type = type }
 
                 /** The test subtype. */
                 fun subtype(subtype: String) = subtype(JsonField.of(subtype))
@@ -1209,9 +1143,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test subtype. */
                 @JsonProperty("subtype")
                 @ExcludeMissing
-                fun subtype(subtype: JsonField<String>) = apply {
-                    this.subtype = subtype
-                }
+                fun subtype(subtype: JsonField<String>) = apply { this.subtype = subtype }
 
                 /** The test creator id. */
                 fun creatorId(creatorId: String) = creatorId(JsonField.of(creatorId))
@@ -1219,12 +1151,11 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** The test creator id. */
                 @JsonProperty("creatorId")
                 @ExcludeMissing
-                fun creatorId(creatorId: JsonField<String>) = apply {
-                    this.creatorId = creatorId
-                }
+                fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
                 /** The project version (commit) id where the test was created. */
-                fun originProjectVersionId(originProjectVersionId: String) = originProjectVersionId(JsonField.of(originProjectVersionId))
+                fun originProjectVersionId(originProjectVersionId: String) =
+                    originProjectVersionId(JsonField.of(originProjectVersionId))
 
                 /** The project version (commit) id where the test was created. */
                 @JsonProperty("originProjectVersionId")
@@ -1247,12 +1178,11 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** Whether the test is archived. */
                 @JsonProperty("archived")
                 @ExcludeMissing
-                fun archived(archived: JsonField<Boolean>) = apply {
-                    this.archived = archived
-                }
+                fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
 
                 /** The date the test was archived. */
-                fun dateArchived(dateArchived: OffsetDateTime) = dateArchived(JsonField.of(dateArchived))
+                fun dateArchived(dateArchived: OffsetDateTime) =
+                    dateArchived(JsonField.of(dateArchived))
 
                 /** The date the test was archived. */
                 @JsonProperty("dateArchived")
@@ -1267,9 +1197,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 /** Whether the test is suggested or user-created. */
                 @JsonProperty("suggested")
                 @ExcludeMissing
-                fun suggested(suggested: JsonField<Boolean>) = apply {
-                    this.suggested = suggested
-                }
+                fun suggested(suggested: JsonField<Boolean>) = apply { this.suggested = suggested }
 
                 /** The number of comments on the test. */
                 fun commentCount(commentCount: Long) = commentCount(JsonField.of(commentCount))
@@ -1292,7 +1220,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 }
 
                 /** Whether the test uses a validation dataset. */
-                fun usesValidationDataset(usesValidationDataset: Boolean) = usesValidationDataset(JsonField.of(usesValidationDataset))
+                fun usesValidationDataset(usesValidationDataset: Boolean) =
+                    usesValidationDataset(JsonField.of(usesValidationDataset))
 
                 /** Whether the test uses a validation dataset. */
                 @JsonProperty("usesValidationDataset")
@@ -1302,7 +1231,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 }
 
                 /** Whether the test uses a training dataset. */
-                fun usesTrainingDataset(usesTrainingDataset: Boolean) = usesTrainingDataset(JsonField.of(usesTrainingDataset))
+                fun usesTrainingDataset(usesTrainingDataset: Boolean) =
+                    usesTrainingDataset(JsonField.of(usesTrainingDataset))
 
                 /** Whether the test uses a training dataset. */
                 @JsonProperty("usesTrainingDataset")
@@ -1312,7 +1242,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 }
 
                 /** Whether the test uses a reference dataset (monitoring mode only). */
-                fun usesReferenceDataset(usesReferenceDataset: Boolean) = usesReferenceDataset(JsonField.of(usesReferenceDataset))
+                fun usesReferenceDataset(usesReferenceDataset: Boolean) =
+                    usesReferenceDataset(JsonField.of(usesReferenceDataset))
 
                 /** Whether the test uses a reference dataset (monitoring mode only). */
                 @JsonProperty("usesReferenceDataset")
@@ -1322,7 +1253,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 }
 
                 /** Whether the test uses production data (monitoring mode only). */
-                fun usesProductionData(usesProductionData: Boolean) = usesProductionData(JsonField.of(usesProductionData))
+                fun usesProductionData(usesProductionData: Boolean) =
+                    usesProductionData(JsonField.of(usesProductionData))
 
                 /** Whether the test uses production data (monitoring mode only). */
                 @JsonProperty("usesProductionData")
@@ -1341,47 +1273,49 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                     this.additionalProperties.put(key, value)
                 }
 
-                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.putAll(additionalProperties)
-                }
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
 
-                fun build(): Goal = Goal(
-                    id,
-                    number,
-                    name,
-                    dateCreated,
-                    dateUpdated,
-                    description,
-                    evaluationWindow,
-                    delayWindow,
-                    type,
-                    subtype,
-                    creatorId,
-                    originProjectVersionId,
-                    thresholds.map { it.toUnmodifiable() },
-                    archived,
-                    dateArchived,
-                    suggested,
-                    commentCount,
-                    usesMlModel,
-                    usesValidationDataset,
-                    usesTrainingDataset,
-                    usesReferenceDataset,
-                    usesProductionData,
-                    additionalProperties.toUnmodifiable(),
-                )
+                fun build(): Goal =
+                    Goal(
+                        id,
+                        number,
+                        name,
+                        dateCreated,
+                        dateUpdated,
+                        description,
+                        evaluationWindow,
+                        delayWindow,
+                        type,
+                        subtype,
+                        creatorId,
+                        originProjectVersionId,
+                        thresholds.map { it.toUnmodifiable() },
+                        archived,
+                        dateArchived,
+                        suggested,
+                        commentCount,
+                        usesMlModel,
+                        usesValidationDataset,
+                        usesTrainingDataset,
+                        usesReferenceDataset,
+                        usesProductionData,
+                        additionalProperties.toUnmodifiable(),
+                    )
             }
 
             @JsonDeserialize(builder = Threshold.Builder::class)
             @NoAutoDetect
-            class Threshold private constructor(
-              private val measurement: JsonField<String>,
-              private val insightName: JsonField<String>,
-              private val insightParameters: JsonField<List<JsonValue>>,
-              private val operator: JsonField<String>,
-              private val value: JsonField<Value>,
-              private val additionalProperties: Map<String, JsonValue>,
-
+            class Threshold
+            private constructor(
+                private val measurement: JsonField<String>,
+                private val insightName: JsonField<String>,
+                private val insightParameters: JsonField<List<JsonValue>>,
+                private val operator: JsonField<String>,
+                private val value: JsonField<Value>,
+                private val additionalProperties: Map<String, JsonValue>,
             ) {
 
                 private var validated: Boolean = false
@@ -1389,42 +1323,38 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                 private var hashCode: Int = 0
 
                 /** The measurement to be evaluated. */
-                fun measurement(): Optional<String> = Optional.ofNullable(measurement.getNullable("measurement"))
+                fun measurement(): Optional<String> =
+                    Optional.ofNullable(measurement.getNullable("measurement"))
 
                 /** The insight name to be evaluated. */
-                fun insightName(): Optional<String> = Optional.ofNullable(insightName.getNullable("insightName"))
+                fun insightName(): Optional<String> =
+                    Optional.ofNullable(insightName.getNullable("insightName"))
 
-                fun insightParameters(): Optional<List<JsonValue>> = Optional.ofNullable(insightParameters.getNullable("insightParameters"))
+                fun insightParameters(): Optional<List<JsonValue>> =
+                    Optional.ofNullable(insightParameters.getNullable("insightParameters"))
 
                 /** The operator to be used for the evaluation. */
-                fun operator(): Optional<String> = Optional.ofNullable(operator.getNullable("operator"))
+                fun operator(): Optional<String> =
+                    Optional.ofNullable(operator.getNullable("operator"))
 
                 /** The value to be compared. */
                 fun value(): Optional<Value> = Optional.ofNullable(value.getNullable("value"))
 
                 /** The measurement to be evaluated. */
-                @JsonProperty("measurement")
-                @ExcludeMissing
-                fun _measurement() = measurement
+                @JsonProperty("measurement") @ExcludeMissing fun _measurement() = measurement
 
                 /** The insight name to be evaluated. */
-                @JsonProperty("insightName")
-                @ExcludeMissing
-                fun _insightName() = insightName
+                @JsonProperty("insightName") @ExcludeMissing fun _insightName() = insightName
 
                 @JsonProperty("insightParameters")
                 @ExcludeMissing
                 fun _insightParameters() = insightParameters
 
                 /** The operator to be used for the evaluation. */
-                @JsonProperty("operator")
-                @ExcludeMissing
-                fun _operator() = operator
+                @JsonProperty("operator") @ExcludeMissing fun _operator() = operator
 
                 /** The value to be compared. */
-                @JsonProperty("value")
-                @ExcludeMissing
-                fun _value() = value
+                @JsonProperty("value") @ExcludeMissing fun _value() = value
 
                 @JsonAnyGetter
                 @ExcludeMissing
@@ -1432,51 +1362,52 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
 
                 fun validate(): Threshold = apply {
                     if (!validated) {
-                      measurement()
-                      insightName()
-                      insightParameters()
-                      operator()
-                      value()
-                      validated = true
+                        measurement()
+                        insightName()
+                        insightParameters()
+                        operator()
+                        value()
+                        validated = true
                     }
                 }
 
                 fun toBuilder() = Builder().from(this)
 
                 override fun equals(other: Any?): Boolean {
-                  if (this === other) {
-                      return true
-                  }
+                    if (this === other) {
+                        return true
+                    }
 
-                  return other is Threshold &&
-                      this.measurement == other.measurement &&
-                      this.insightName == other.insightName &&
-                      this.insightParameters == other.insightParameters &&
-                      this.operator == other.operator &&
-                      this.value == other.value &&
-                      this.additionalProperties == other.additionalProperties
+                    return other is Threshold &&
+                        this.measurement == other.measurement &&
+                        this.insightName == other.insightName &&
+                        this.insightParameters == other.insightParameters &&
+                        this.operator == other.operator &&
+                        this.value == other.value &&
+                        this.additionalProperties == other.additionalProperties
                 }
 
                 override fun hashCode(): Int {
-                  if (hashCode == 0) {
-                    hashCode = Objects.hash(
-                        measurement,
-                        insightName,
-                        insightParameters,
-                        operator,
-                        value,
-                        additionalProperties,
-                    )
-                  }
-                  return hashCode
+                    if (hashCode == 0) {
+                        hashCode =
+                            Objects.hash(
+                                measurement,
+                                insightName,
+                                insightParameters,
+                                operator,
+                                value,
+                                additionalProperties,
+                            )
+                    }
+                    return hashCode
                 }
 
-                override fun toString() = "Threshold{measurement=$measurement, insightName=$insightName, insightParameters=$insightParameters, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
+                override fun toString() =
+                    "Threshold{measurement=$measurement, insightName=$insightName, insightParameters=$insightParameters, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
 
                 companion object {
 
-                    @JvmStatic
-                    fun builder() = Builder()
+                    @JvmStatic fun builder() = Builder()
                 }
 
                 class Builder {
@@ -1518,7 +1449,8 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                         this.insightName = insightName
                     }
 
-                    fun insightParameters(insightParameters: List<JsonValue>) = insightParameters(JsonField.of(insightParameters))
+                    fun insightParameters(insightParameters: List<JsonValue>) =
+                        insightParameters(JsonField.of(insightParameters))
 
                     @JsonProperty("insightParameters")
                     @ExcludeMissing
@@ -1532,9 +1464,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                     /** The operator to be used for the evaluation. */
                     @JsonProperty("operator")
                     @ExcludeMissing
-                    fun operator(operator: JsonField<String>) = apply {
-                        this.operator = operator
-                    }
+                    fun operator(operator: JsonField<String>) = apply { this.operator = operator }
 
                     /** The value to be compared. */
                     fun value(value: Value) = value(JsonField.of(value))
@@ -1542,9 +1472,7 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                     /** The value to be compared. */
                     @JsonProperty("value")
                     @ExcludeMissing
-                    fun value(value: JsonField<Value>) = apply {
-                        this.value = value
-                    }
+                    fun value(value: JsonField<Value>) = apply { this.value = value }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
@@ -1556,114 +1484,126 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                         this.additionalProperties.put(key, value)
                     }
 
-                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                        this.additionalProperties.putAll(additionalProperties)
-                    }
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
 
-                    fun build(): Threshold = Threshold(
-                        measurement,
-                        insightName,
-                        insightParameters.map { it.toUnmodifiable() },
-                        operator,
-                        value,
-                        additionalProperties.toUnmodifiable(),
-                    )
+                    fun build(): Threshold =
+                        Threshold(
+                            measurement,
+                            insightName,
+                            insightParameters.map { it.toUnmodifiable() },
+                            operator,
+                            value,
+                            additionalProperties.toUnmodifiable(),
+                        )
                 }
 
                 @JsonDeserialize(using = Value.Deserializer::class)
                 @JsonSerialize(using = Value.Serializer::class)
-                class Value private constructor(
-                  private val double: Double? = null,
-                  private val boolean: Boolean? = null,
-                  private val string: String? = null,
-                  private val strings: List<String>? = null,
-                  private val _json: JsonValue? = null,
-
+                class Value
+                private constructor(
+                    private val double: Double? = null,
+                    private val boolean: Boolean? = null,
+                    private val string: String? = null,
+                    private val strings: List<String>? = null,
+                    private val _json: JsonValue? = null,
                 ) {
 
                     private var validated: Boolean = false
 
                     fun double(): Optional<Double> = Optional.ofNullable(double)
+
                     fun boolean(): Optional<Boolean> = Optional.ofNullable(boolean)
+
                     fun string(): Optional<String> = Optional.ofNullable(string)
+
                     fun strings(): Optional<List<String>> = Optional.ofNullable(strings)
 
                     fun isDouble(): Boolean = double != null
+
                     fun isBoolean(): Boolean = boolean != null
+
                     fun isString(): Boolean = string != null
+
                     fun isStrings(): Boolean = strings != null
 
                     fun asDouble(): Double = double.getOrThrow("double")
+
                     fun asBoolean(): Boolean = boolean.getOrThrow("boolean")
+
                     fun asString(): String = string.getOrThrow("string")
+
                     fun asStrings(): List<String> = strings.getOrThrow("strings")
 
                     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
                     fun <T> accept(visitor: Visitor<T>): T {
-                      return when {
-                          double != null -> visitor.visitDouble(double)
-                          boolean != null -> visitor.visitBoolean(boolean)
-                          string != null -> visitor.visitString(string)
-                          strings != null -> visitor.visitStrings(strings)
-                          else -> visitor.unknown(_json)
-                      }
+                        return when {
+                            double != null -> visitor.visitDouble(double)
+                            boolean != null -> visitor.visitBoolean(boolean)
+                            string != null -> visitor.visitString(string)
+                            strings != null -> visitor.visitStrings(strings)
+                            else -> visitor.unknown(_json)
+                        }
                     }
 
                     fun validate(): Value = apply {
                         if (!validated) {
-                          if (double == null && boolean == null && string == null && strings == null) {
-                            throw OpenlayerInvalidDataException("Unknown Value: $_json")
-                          }
-                          validated = true
+                            if (
+                                double == null &&
+                                    boolean == null &&
+                                    string == null &&
+                                    strings == null
+                            ) {
+                                throw OpenlayerInvalidDataException("Unknown Value: $_json")
+                            }
+                            validated = true
                         }
                     }
 
                     override fun equals(other: Any?): Boolean {
-                      if (this === other) {
-                          return true
-                      }
+                        if (this === other) {
+                            return true
+                        }
 
-                      return other is Value &&
-                          this.double == other.double &&
-                          this.boolean == other.boolean &&
-                          this.string == other.string &&
-                          this.strings == other.strings
+                        return other is Value &&
+                            this.double == other.double &&
+                            this.boolean == other.boolean &&
+                            this.string == other.string &&
+                            this.strings == other.strings
                     }
 
                     override fun hashCode(): Int {
-                      return Objects.hash(
-                          double,
-                          boolean,
-                          string,
-                          strings,
-                      )
+                        return Objects.hash(
+                            double,
+                            boolean,
+                            string,
+                            strings,
+                        )
                     }
 
                     override fun toString(): String {
-                      return when {
-                          double != null -> "Value{double=$double}"
-                          boolean != null -> "Value{boolean=$boolean}"
-                          string != null -> "Value{string=$string}"
-                          strings != null -> "Value{strings=$strings}"
-                          _json != null -> "Value{_unknown=$_json}"
-                          else -> throw IllegalStateException("Invalid Value")
-                      }
+                        return when {
+                            double != null -> "Value{double=$double}"
+                            boolean != null -> "Value{boolean=$boolean}"
+                            string != null -> "Value{string=$string}"
+                            strings != null -> "Value{strings=$strings}"
+                            _json != null -> "Value{_unknown=$_json}"
+                            else -> throw IllegalStateException("Invalid Value")
+                        }
                     }
 
                     companion object {
 
-                        @JvmStatic
-                        fun ofDouble(double: Double) = Value(double = double)
+                        @JvmStatic fun ofDouble(double: Double) = Value(double = double)
 
-                        @JvmStatic
-                        fun ofBoolean(boolean: Boolean) = Value(boolean = boolean)
+                        @JvmStatic fun ofBoolean(boolean: Boolean) = Value(boolean = boolean)
 
-                        @JvmStatic
-                        fun ofString(string: String) = Value(string = string)
+                        @JvmStatic fun ofString(string: String) = Value(string = string)
 
-                        @JvmStatic
-                        fun ofStrings(strings: List<String>) = Value(strings = strings)
+                        @JvmStatic fun ofStrings(strings: List<String>) = Value(strings = strings)
                     }
 
                     interface Visitor<out T> {
@@ -1677,42 +1617,46 @@ class InferencePipelineTestResultListResponse private constructor(private val _m
                         fun visitStrings(strings: List<String>): T
 
                         fun unknown(json: JsonValue?): T {
-                          throw OpenlayerInvalidDataException("Unknown Value: $json")
+                            throw OpenlayerInvalidDataException("Unknown Value: $json")
                         }
                     }
 
                     class Deserializer : BaseDeserializer<Value>(Value::class) {
 
                         override fun ObjectCodec.deserialize(node: JsonNode): Value {
-                          val json = JsonValue.fromJsonNode(node)
-                          tryDeserialize(node, jacksonTypeRef<Double>())?.let {
-                              return Value(double = it, _json = json)
-                          }
-                          tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
-                              return Value(boolean = it, _json = json)
-                          }
-                          tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                              return Value(string = it, _json = json)
-                          }
-                          tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
-                              return Value(strings = it, _json = json)
-                          }
+                            val json = JsonValue.fromJsonNode(node)
+                            tryDeserialize(node, jacksonTypeRef<Double>())?.let {
+                                return Value(double = it, _json = json)
+                            }
+                            tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
+                                return Value(boolean = it, _json = json)
+                            }
+                            tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                return Value(string = it, _json = json)
+                            }
+                            tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
+                                return Value(strings = it, _json = json)
+                            }
 
-                          return Value(_json = json)
+                            return Value(_json = json)
                         }
                     }
 
                     class Serializer : BaseSerializer<Value>(Value::class) {
 
-                        override fun serialize(value: Value, generator: JsonGenerator, provider: SerializerProvider) {
-                          when {
-                              value.double != null -> generator.writeObject(value.double)
-                              value.boolean != null -> generator.writeObject(value.boolean)
-                              value.string != null -> generator.writeObject(value.string)
-                              value.strings != null -> generator.writeObject(value.strings)
-                              value._json != null -> generator.writeObject(value._json)
-                              else -> throw IllegalStateException("Invalid Value")
-                          }
+                        override fun serialize(
+                            value: Value,
+                            generator: JsonGenerator,
+                            provider: SerializerProvider
+                        ) {
+                            when {
+                                value.double != null -> generator.writeObject(value.double)
+                                value.boolean != null -> generator.writeObject(value.boolean)
+                                value.string != null -> generator.writeObject(value.string)
+                                value.strings != null -> generator.writeObject(value.strings)
+                                value._json != null -> generator.writeObject(value._json)
+                                else -> throw IllegalStateException("Invalid Value")
+                            }
                         }
                     }
                 }
