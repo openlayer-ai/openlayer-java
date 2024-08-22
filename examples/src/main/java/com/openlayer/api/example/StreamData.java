@@ -9,8 +9,7 @@ import com.openlayer.api.core.JsonNumber;
 import com.openlayer.api.core.JsonString;
 import com.openlayer.api.models.InferencePipelineDataStreamParams;
 import com.openlayer.api.models.InferencePipelineDataStreamResponse;
-
-import java.util.List;
+import java.util.Arrays;
 
 public class StreamData {
     public static void main(String[] args) {
@@ -42,20 +41,20 @@ public class StreamData {
         // Create Inference Pipeline Data Stream Parameters
         InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
                 .inferencePipelineId(inferencePipelineId)
-                .rows(List.of(row))
-                .config(InferencePipelineDataStreamParams.Config
-                        .ofLlmData(InferencePipelineDataStreamParams.Config.LlmData.builder()
+                .rows(Arrays.asList(row))
+                .config(InferencePipelineDataStreamParams.Config.ofLlmData(
+                        InferencePipelineDataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .costColumnName("cost")
-                                .inputVariableNames(List.of("user_query"))
+                                .inputVariableNames(Arrays.asList("user_query"))
                                 .numOfTokenColumnName("tokens")
                                 .timestampColumnName("timestamp")
                                 .build()))
                 .build();
 
         // Execute the request
-        InferencePipelineDataStreamResponse inferencePipelineDataStreamResponse = client.inferencePipelines().data()
-                .stream(params);
+        InferencePipelineDataStreamResponse inferencePipelineDataStreamResponse =
+                client.inferencePipelines().data().stream(params);
 
         // Print the response
         System.out.println(inferencePipelineDataStreamResponse);
