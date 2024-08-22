@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.3 (2024-08-22)
+
+Full Changelog: [v0.1.0-alpha.2...v0.1.0-alpha.3](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.2...v0.1.0-alpha.3)
+
+### Features
+
+* **api:** update via SDK Studio ([#32](https://github.com/openlayer-ai/openlayer-java/issues/32)) ([2888737](https://github.com/openlayer-ai/openlayer-java/commit/2888737a8d729c74ea0c1e98f99eff9b1891af2c))
+
+
+### Bug Fixes
+
+* **docs:** use correct putAdditionalProperty value ([#33](https://github.com/openlayer-ai/openlayer-java/issues/33)) ([a5b56f8](https://github.com/openlayer-ai/openlayer-java/commit/a5b56f873a197293df6b73134070544269e37711))
+
 ## 0.1.0-alpha.2 (2024-08-15)
 
 Full Changelog: [v0.1.0-alpha.1...v0.1.0-alpha.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.1...v0.1.0-alpha.2)
