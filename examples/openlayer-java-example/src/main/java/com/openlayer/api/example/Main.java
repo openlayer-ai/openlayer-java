@@ -8,16 +8,14 @@ import com.openlayer.api.models.*;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class Main {
     static final String API_KEY = System.getenv("OPENLAYER_API_KEY");
-    // require API key or exit if not set
-//    static {
-//        if (API_KEY == null) {
-//            System.err.println("Please set the OPENLAYER_API_KEY environment variable");
-//            System.exit(1);
-//        }
-//    }
+    static {
+        if (API_KEY == null) {
+            System.err.println("Please set the OPENLAYER_API_KEY environment variable");
+            System.exit(1);
+        }
+    }
     static final OpenlayerClient client = OpenlayerOkHttpClient.builder()
             .apiKey("TEST")
             .build();
