@@ -3,6 +3,6 @@
 This is an example project to demonstrate how a java project would look like
 that uses the `openlayer-java` sdk.
 
-## Running the project
+## Running an example
 
-`./gradlew :openlayer-java-example:run`
+`./gradlew runStreamData`
