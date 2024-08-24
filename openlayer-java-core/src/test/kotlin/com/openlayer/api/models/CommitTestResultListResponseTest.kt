@@ -13,15 +13,6 @@ class CommitTestResultListResponseTest {
     fun createCommitTestResultListResponse() {
         val commitTestResultListResponse =
             CommitTestResultListResponse.builder()
-                ._meta(
-                    CommitTestResultListResponse._Meta
-                        .builder()
-                        .page(123L)
-                        .perPage(100L)
-                        .totalItems(123L)
-                        .totalPages(123L)
-                        .build()
-                )
                 .items(
                     listOf(
                         CommitTestResultListResponse.Item.builder()
@@ -87,16 +78,6 @@ class CommitTestResultListResponseTest {
                 )
                 .build()
         assertThat(commitTestResultListResponse).isNotNull
-        assertThat(commitTestResultListResponse._meta())
-            .isEqualTo(
-                CommitTestResultListResponse._Meta
-                    .builder()
-                    .page(123L)
-                    .perPage(100L)
-                    .totalItems(123L)
-                    .totalPages(123L)
-                    .build()
-            )
         assertThat(commitTestResultListResponse.items())
             .containsExactly(
                 CommitTestResultListResponse.Item.builder()

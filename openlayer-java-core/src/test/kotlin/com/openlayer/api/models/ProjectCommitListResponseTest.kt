@@ -12,15 +12,6 @@ class ProjectCommitListResponseTest {
     fun createProjectCommitListResponse() {
         val projectCommitListResponse =
             ProjectCommitListResponse.builder()
-                ._meta(
-                    ProjectCommitListResponse._Meta
-                        .builder()
-                        .page(123L)
-                        .perPage(100L)
-                        .totalItems(123L)
-                        .totalPages(123L)
-                        .build()
-                )
                 .items(
                     listOf(
                         ProjectCommitListResponse.Item.builder()
@@ -67,16 +58,6 @@ class ProjectCommitListResponseTest {
                 )
                 .build()
         assertThat(projectCommitListResponse).isNotNull
-        assertThat(projectCommitListResponse._meta())
-            .isEqualTo(
-                ProjectCommitListResponse._Meta
-                    .builder()
-                    .page(123L)
-                    .perPage(100L)
-                    .totalItems(123L)
-                    .totalPages(123L)
-                    .build()
-            )
         assertThat(projectCommitListResponse.items())
             .containsExactly(
                 ProjectCommitListResponse.Item.builder()
