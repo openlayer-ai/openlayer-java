@@ -23,7 +23,6 @@ import java.util.Optional
 @NoAutoDetect
 class ProjectListResponse
 private constructor(
-    private val _meta: JsonField<_Meta>,
     private val items: JsonField<List<Item>>,
     private val additionalProperties: Map<String, JsonValue>,
 ) {
@@ -32,11 +31,7 @@ private constructor(
 
     private var hashCode: Int = 0
 
-    fun _meta(): _Meta = _meta.getRequired("_meta")
-
     fun items(): List<Item> = items.getRequired("items")
-
-    @JsonProperty("_meta") @ExcludeMissing fun __meta() = _meta
 
     @JsonProperty("items") @ExcludeMissing fun _items() = items
 
@@ -46,7 +41,6 @@ private constructor(
 
     fun validate(): ProjectListResponse = apply {
         if (!validated) {
-            _meta().validate()
             items().forEach { it.validate() }
             validated = true
         }
@@ -60,25 +54,19 @@ private constructor(
         }
 
         return other is ProjectListResponse &&
-            this._meta == other._meta &&
             this.items == other.items &&
             this.additionalProperties == other.additionalProperties
     }
 
     override fun hashCode(): Int {
         if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    _meta,
-                    items,
-                    additionalProperties,
-                )
+            hashCode = Objects.hash(items, additionalProperties)
         }
         return hashCode
     }
 
     override fun toString() =
-        "ProjectListResponse{_meta=$_meta, items=$items, additionalProperties=$additionalProperties}"
+        "ProjectListResponse{items=$items, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -87,22 +75,14 @@ private constructor(
 
     class Builder {
 
-        private var _meta: JsonField<_Meta> = JsonMissing.of()
         private var items: JsonField<List<Item>> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectListResponse: ProjectListResponse) = apply {
-            this._meta = projectListResponse._meta
             this.items = projectListResponse.items
             additionalProperties(projectListResponse.additionalProperties)
         }
-
-        fun _meta(_meta: _Meta) = _meta(JsonField.of(_meta))
-
-        @JsonProperty("_meta")
-        @ExcludeMissing
-        fun _meta(_meta: JsonField<_Meta>) = apply { this._meta = _meta }
 
         fun items(items: List<Item>) = items(JsonField.of(items))
 
@@ -126,174 +106,9 @@ private constructor(
 
         fun build(): ProjectListResponse =
             ProjectListResponse(
-                _meta,
                 items.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toUnmodifiable()
             )
-    }
-
-    @JsonDeserialize(builder = _Meta.Builder::class)
-    @NoAutoDetect
-    class _Meta
-    private constructor(
-        private val page: JsonField<Long>,
-        private val perPage: JsonField<Long>,
-        private val totalItems: JsonField<Long>,
-        private val totalPages: JsonField<Long>,
-        private val additionalProperties: Map<String, JsonValue>,
-    ) {
-
-        private var validated: Boolean = false
-
-        private var hashCode: Int = 0
-
-        /** The current page. */
-        fun page(): Long = page.getRequired("page")
-
-        /** The number of items per page. */
-        fun perPage(): Long = perPage.getRequired("perPage")
-
-        /** The total number of items. */
-        fun totalItems(): Long = totalItems.getRequired("totalItems")
-
-        /** The total number of pages. */
-        fun totalPages(): Long = totalPages.getRequired("totalPages")
-
-        /** The current page. */
-        @JsonProperty("page") @ExcludeMissing fun _page() = page
-
-        /** The number of items per page. */
-        @JsonProperty("perPage") @ExcludeMissing fun _perPage() = perPage
-
-        /** The total number of items. */
-        @JsonProperty("totalItems") @ExcludeMissing fun _totalItems() = totalItems
-
-        /** The total number of pages. */
-        @JsonProperty("totalPages") @ExcludeMissing fun _totalPages() = totalPages
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        fun validate(): _Meta = apply {
-            if (!validated) {
-                page()
-                perPage()
-                totalItems()
-                totalPages()
-                validated = true
-            }
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is _Meta &&
-                this.page == other.page &&
-                this.perPage == other.perPage &&
-                this.totalItems == other.totalItems &&
-                this.totalPages == other.totalPages &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        page,
-                        perPage,
-                        totalItems,
-                        totalPages,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "_Meta{page=$page, perPage=$perPage, totalItems=$totalItems, totalPages=$totalPages, additionalProperties=$additionalProperties}"
-
-        companion object {
-
-            @JvmStatic fun builder() = Builder()
-        }
-
-        class Builder {
-
-            private var page: JsonField<Long> = JsonMissing.of()
-            private var perPage: JsonField<Long> = JsonMissing.of()
-            private var totalItems: JsonField<Long> = JsonMissing.of()
-            private var totalPages: JsonField<Long> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(_meta: _Meta) = apply {
-                this.page = _meta.page
-                this.perPage = _meta.perPage
-                this.totalItems = _meta.totalItems
-                this.totalPages = _meta.totalPages
-                additionalProperties(_meta.additionalProperties)
-            }
-
-            /** The current page. */
-            fun page(page: Long) = page(JsonField.of(page))
-
-            /** The current page. */
-            @JsonProperty("page")
-            @ExcludeMissing
-            fun page(page: JsonField<Long>) = apply { this.page = page }
-
-            /** The number of items per page. */
-            fun perPage(perPage: Long) = perPage(JsonField.of(perPage))
-
-            /** The number of items per page. */
-            @JsonProperty("perPage")
-            @ExcludeMissing
-            fun perPage(perPage: JsonField<Long>) = apply { this.perPage = perPage }
-
-            /** The total number of items. */
-            fun totalItems(totalItems: Long) = totalItems(JsonField.of(totalItems))
-
-            /** The total number of items. */
-            @JsonProperty("totalItems")
-            @ExcludeMissing
-            fun totalItems(totalItems: JsonField<Long>) = apply { this.totalItems = totalItems }
-
-            /** The total number of pages. */
-            fun totalPages(totalPages: Long) = totalPages(JsonField.of(totalPages))
-
-            /** The total number of pages. */
-            @JsonProperty("totalPages")
-            @ExcludeMissing
-            fun totalPages(totalPages: JsonField<Long>) = apply { this.totalPages = totalPages }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            @JsonAnySetter
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun build(): _Meta =
-                _Meta(
-                    page,
-                    perPage,
-                    totalItems,
-                    totalPages,
-                    additionalProperties.toUnmodifiable(),
-                )
-        }
     }
 
     @JsonDeserialize(builder = Item.Builder::class)

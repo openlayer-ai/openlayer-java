@@ -13,15 +13,6 @@ class InferencePipelineTestResultListResponseTest {
     fun createInferencePipelineTestResultListResponse() {
         val inferencePipelineTestResultListResponse =
             InferencePipelineTestResultListResponse.builder()
-                ._meta(
-                    InferencePipelineTestResultListResponse._Meta
-                        .builder()
-                        .page(123L)
-                        .perPage(100L)
-                        .totalItems(123L)
-                        .totalPages(123L)
-                        .build()
-                )
                 .items(
                     listOf(
                         InferencePipelineTestResultListResponse.Item.builder()
@@ -90,16 +81,6 @@ class InferencePipelineTestResultListResponseTest {
                 )
                 .build()
         assertThat(inferencePipelineTestResultListResponse).isNotNull
-        assertThat(inferencePipelineTestResultListResponse._meta())
-            .isEqualTo(
-                InferencePipelineTestResultListResponse._Meta
-                    .builder()
-                    .page(123L)
-                    .perPage(100L)
-                    .totalItems(123L)
-                    .totalPages(123L)
-                    .build()
-            )
         assertThat(inferencePipelineTestResultListResponse.items())
             .containsExactly(
                 InferencePipelineTestResultListResponse.Item.builder()

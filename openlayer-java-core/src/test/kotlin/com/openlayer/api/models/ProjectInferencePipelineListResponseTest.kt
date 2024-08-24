@@ -12,15 +12,6 @@ class ProjectInferencePipelineListResponseTest {
     fun createProjectInferencePipelineListResponse() {
         val projectInferencePipelineListResponse =
             ProjectInferencePipelineListResponse.builder()
-                ._meta(
-                    ProjectInferencePipelineListResponse._Meta
-                        .builder()
-                        .page(123L)
-                        .perPage(100L)
-                        .totalItems(123L)
-                        .totalPages(123L)
-                        .build()
-                )
                 .items(
                     listOf(
                         ProjectInferencePipelineListResponse.Item.builder()
@@ -52,16 +43,6 @@ class ProjectInferencePipelineListResponseTest {
                 )
                 .build()
         assertThat(projectInferencePipelineListResponse).isNotNull
-        assertThat(projectInferencePipelineListResponse._meta())
-            .isEqualTo(
-                ProjectInferencePipelineListResponse._Meta
-                    .builder()
-                    .page(123L)
-                    .perPage(100L)
-                    .totalItems(123L)
-                    .totalPages(123L)
-                    .build()
-            )
         assertThat(projectInferencePipelineListResponse.items())
             .containsExactly(
                 ProjectInferencePipelineListResponse.Item.builder()

@@ -12,15 +12,6 @@ class ProjectListResponseTest {
     fun createProjectListResponse() {
         val projectListResponse =
             ProjectListResponse.builder()
-                ._meta(
-                    ProjectListResponse._Meta
-                        .builder()
-                        .page(123L)
-                        .perPage(100L)
-                        .totalItems(123L)
-                        .totalPages(123L)
-                        .build()
-                )
                 .items(
                     listOf(
                         ProjectListResponse.Item.builder()
@@ -66,16 +57,6 @@ class ProjectListResponseTest {
                 )
                 .build()
         assertThat(projectListResponse).isNotNull
-        assertThat(projectListResponse._meta())
-            .isEqualTo(
-                ProjectListResponse._Meta
-                    .builder()
-                    .page(123L)
-                    .perPage(100L)
-                    .totalItems(123L)
-                    .totalPages(123L)
-                    .build()
-            )
         assertThat(projectListResponse.items())
             .containsExactly(
                 ProjectListResponse.Item.builder()
