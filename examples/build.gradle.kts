@@ -15,6 +15,6 @@ examples.forEach { example ->
         group = "Examples"
         description = "Run $example"
         classpath = sourceSets.getByName("main").runtimeClasspath
-        mainClass.set("com.langsmith.example.$example")
+        mainClass.set("com.openlayer.api.example.$example")
     }
 }

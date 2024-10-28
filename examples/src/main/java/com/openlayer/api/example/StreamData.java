@@ -35,7 +35,6 @@ public class StreamData {
                 .putAdditionalProperty("output", JsonString.of("42"))
                 .putAdditionalProperty("tokens", JsonNumber.of(7))
                 .putAdditionalProperty("cost", JsonNumber.of(0.02))
-                .putAdditionalProperty("timestamp", JsonNumber.of(1620000000))
                 .build();
 
         // Create Inference Pipeline Data Stream Parameters
@@ -48,7 +47,6 @@ public class StreamData {
                                 .costColumnName("cost")
                                 .inputVariableNames(Arrays.asList("user_query"))
                                 .numOfTokenColumnName("tokens")
-                                .timestampColumnName("timestamp")
                                 .build()))
                 .build();
 
