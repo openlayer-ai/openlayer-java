@@ -54,24 +54,11 @@ constructor(
             return true
         }
 
-        return other is ProjectInferencePipelineListParams &&
-            this.projectId == other.projectId &&
-            this.name == other.name &&
-            this.page == other.page &&
-            this.perPage == other.perPage &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ProjectInferencePipelineListParams && this.projectId == other.projectId && this.name == other.name && this.page == other.page && this.perPage == other.perPage && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectId,
-            name,
-            page,
-            perPage,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
