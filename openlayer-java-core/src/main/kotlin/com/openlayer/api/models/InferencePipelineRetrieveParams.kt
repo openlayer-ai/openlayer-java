@@ -36,18 +36,11 @@ constructor(
             return true
         }
 
-        return other is InferencePipelineRetrieveParams &&
-            this.inferencePipelineId == other.inferencePipelineId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is InferencePipelineRetrieveParams && this.inferencePipelineId == other.inferencePipelineId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            inferencePipelineId,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(inferencePipelineId, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =

@@ -77,7 +77,7 @@ import com.openlayer.api.models.InferencePipelineDataStreamResponse;
 import java.util.List;
 
 InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
-    .rows(List.of(InferencePipelineDataStreamParams.Row.builder().build()))
+    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     .config(InferencePipelineDataStreamParams.Config.ofLlmData(InferencePipelineDataStreamParams.Config.LlmData.builder()
         .outputColumnName("output")
         .costColumnName("cost")
@@ -85,8 +85,9 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .numOfTokenColumnName("tokens")
         .timestampColumnName("timestamp")
         .build()))
+    .row(List.of(InferencePipelineDataStreamParams.Row.builder().build()))
     .build();
-InferencePipelineDataStreamResponse inferencePipelineDataStreamResponse = client.inferencePipelines().data().stream(params);
+InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(params);
 ```
 
 ---
@@ -118,7 +119,7 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
 When receiving a response, the Openlayer Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `OpenlayerInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
-InferencePipelineDataStreamResponse inferencePipelineDataStreamResponse = client.inferencePipelines().data().stream().validate();
+InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream().validate();
 ```
 
 ### Response properties as JSON
@@ -148,7 +149,7 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
-JsonValue secret = inferencePipelineDataStreamResponse._additionalProperties().get("secret_field");
+JsonValue secret = projectCreateResponse._additionalProperties().get("secret_field");
 ```
 
 ---

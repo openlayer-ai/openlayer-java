@@ -19,6 +19,7 @@ configure<SpotlessExtension> {
         importOrder()
         removeUnusedImports()
         palantirJavaFormat()
+        toggleOffOn()
     }
 }
 
