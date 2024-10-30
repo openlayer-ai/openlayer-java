@@ -9,13 +9,8 @@ import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Collections
 
 @JvmSynthetic
-internal fun <T : Any> T?.getOrThrow(name: String): T {
-    if (this == null) {
-        throw OpenlayerInvalidDataException("'${name}' is not present")
-    }
-
-    return this
-}
+internal fun <T : Any> T?.getOrThrow(name: String): T =
+    this ?: throw OpenlayerInvalidDataException("`${name}` is not present")
 
 @JvmSynthetic
 internal fun <T> List<T>.toUnmodifiable(): List<T> {
