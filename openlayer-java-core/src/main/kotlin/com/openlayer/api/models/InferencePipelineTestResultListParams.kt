@@ -63,26 +63,11 @@ constructor(
             return true
         }
 
-        return other is InferencePipelineTestResultListParams &&
-            this.inferencePipelineId == other.inferencePipelineId &&
-            this.page == other.page &&
-            this.perPage == other.perPage &&
-            this.status == other.status &&
-            this.type == other.type &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is InferencePipelineTestResultListParams && this.inferencePipelineId == other.inferencePipelineId && this.page == other.page && this.perPage == other.perPage && this.status == other.status && this.type == other.type && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            inferencePipelineId,
-            page,
-            perPage,
-            status,
-            type,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
@@ -208,7 +193,7 @@ constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -283,7 +268,7 @@ constructor(
                 return true
             }
 
-            return other is Type && this.value == other.value
+            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

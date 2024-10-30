@@ -4,18 +4,18 @@ package com.openlayer.api.services.blocking.projects
 
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.handlers.errorHandler
+import com.openlayer.api.core.handlers.jsonHandler
+import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
+import com.openlayer.api.core.json
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.ProjectInferencePipelineCreateParams
 import com.openlayer.api.models.ProjectInferencePipelineCreateResponse
 import com.openlayer.api.models.ProjectInferencePipelineListParams
 import com.openlayer.api.models.ProjectInferencePipelineListResponse
-import com.openlayer.api.services.errorHandler
-import com.openlayer.api.services.json
-import com.openlayer.api.services.jsonHandler
-import com.openlayer.api.services.withErrorHandler
 
 class InferencePipelineServiceImpl
 constructor(

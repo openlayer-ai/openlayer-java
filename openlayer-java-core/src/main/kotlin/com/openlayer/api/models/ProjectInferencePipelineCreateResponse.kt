@@ -43,8 +43,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The inference pipeline id. */
     fun id(): String = id.getRequired("id")
 
@@ -168,58 +166,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is ProjectInferencePipelineCreateResponse &&
-            this.id == other.id &&
-            this.projectId == other.projectId &&
-            this.name == other.name &&
-            this.dateCreated == other.dateCreated &&
-            this.dateUpdated == other.dateUpdated &&
-            this.dateLastSampleReceived == other.dateLastSampleReceived &&
-            this.description == other.description &&
-            this.dateLastEvaluated == other.dateLastEvaluated &&
-            this.dateOfNextEvaluation == other.dateOfNextEvaluation &&
-            this.passingGoalCount == other.passingGoalCount &&
-            this.failingGoalCount == other.failingGoalCount &&
-            this.totalGoalCount == other.totalGoalCount &&
-            this.status == other.status &&
-            this.statusMessage == other.statusMessage &&
-            this.links == other.links &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    id,
-                    projectId,
-                    name,
-                    dateCreated,
-                    dateUpdated,
-                    dateLastSampleReceived,
-                    description,
-                    dateLastEvaluated,
-                    dateOfNextEvaluation,
-                    passingGoalCount,
-                    failingGoalCount,
-                    totalGoalCount,
-                    status,
-                    statusMessage,
-                    links,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "ProjectInferencePipelineCreateResponse{id=$id, projectId=$projectId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateLastSampleReceived=$dateLastSampleReceived, description=$description, dateLastEvaluated=$dateLastEvaluated, dateOfNextEvaluation=$dateOfNextEvaluation, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, status=$status, statusMessage=$statusMessage, links=$links, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -452,8 +398,6 @@ private constructor(
 
         private var validated: Boolean = false
 
-        private var hashCode: Int = 0
-
         fun app(): String = app.getRequired("app")
 
         @JsonProperty("app") @ExcludeMissing fun _app() = app
@@ -470,25 +414,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Links &&
-                this.app == other.app &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(app, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -528,6 +453,25 @@ private constructor(
 
             fun build(): Links = Links(app, additionalProperties.toUnmodifiable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
 
     class Status
@@ -543,7 +487,7 @@ private constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -610,4 +554,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectInferencePipelineCreateResponse && this.id == other.id && this.projectId == other.projectId && this.name == other.name && this.dateCreated == other.dateCreated && this.dateUpdated == other.dateUpdated && this.dateLastSampleReceived == other.dateLastSampleReceived && this.description == other.description && this.dateLastEvaluated == other.dateLastEvaluated && this.dateOfNextEvaluation == other.dateOfNextEvaluation && this.passingGoalCount == other.passingGoalCount && this.failingGoalCount == other.failingGoalCount && this.totalGoalCount == other.totalGoalCount && this.status == other.status && this.statusMessage == other.statusMessage && this.links == other.links && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(id, projectId, name, dateCreated, dateUpdated, dateLastSampleReceived, description, dateLastEvaluated, dateOfNextEvaluation, passingGoalCount, failingGoalCount, totalGoalCount, status, statusMessage, links, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "ProjectInferencePipelineCreateResponse{id=$id, projectId=$projectId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateLastSampleReceived=$dateLastSampleReceived, description=$description, dateLastEvaluated=$dateLastEvaluated, dateOfNextEvaluation=$dateOfNextEvaluation, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, status=$status, statusMessage=$statusMessage, links=$links, additionalProperties=$additionalProperties}"
 }

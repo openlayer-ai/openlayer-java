@@ -53,24 +53,11 @@ constructor(
             return true
         }
 
-        return other is ProjectListParams &&
-            this.name == other.name &&
-            this.page == other.page &&
-            this.perPage == other.perPage &&
-            this.taskType == other.taskType &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ProjectListParams && this.name == other.name && this.page == other.page && this.perPage == other.perPage && this.taskType == other.taskType && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            page,
-            perPage,
-            taskType,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(name, page, perPage, taskType, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
@@ -179,7 +166,7 @@ constructor(
                 return true
             }
 
-            return other is TaskType && this.value == other.value
+            return /* spotless:off */ other is TaskType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

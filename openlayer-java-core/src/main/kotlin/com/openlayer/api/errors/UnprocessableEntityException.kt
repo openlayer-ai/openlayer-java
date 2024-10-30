@@ -2,12 +2,8 @@ package com.openlayer.api.errors
 
 import com.google.common.collect.ListMultimap
 
-class UnprocessableEntityException
-constructor(
+class UnprocessableEntityException(
     headers: ListMultimap<String, String>,
-    private val error: OpenlayerError,
-) : OpenlayerServiceException(headers, "${error}") {
-    override fun statusCode(): Int = 422
-
-    fun error(): OpenlayerError = error
-}
+    body: String,
+    error: OpenlayerError,
+) : OpenlayerServiceException(422, headers, body, error)

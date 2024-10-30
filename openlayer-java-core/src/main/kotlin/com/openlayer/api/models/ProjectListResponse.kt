@@ -29,8 +29,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun items(): List<Item> = items.getRequired("items")
 
     @JsonProperty("items") @ExcludeMissing fun _items() = items
@@ -47,26 +45,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is ProjectListResponse &&
-            this.items == other.items &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(items, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "ProjectListResponse{items=$items, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -135,8 +113,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** The project id. */
         fun id(): String = id.getRequired("id")
@@ -268,60 +244,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Item &&
-                this.id == other.id &&
-                this.workspaceId == other.workspaceId &&
-                this.creatorId == other.creatorId &&
-                this.name == other.name &&
-                this.dateCreated == other.dateCreated &&
-                this.dateUpdated == other.dateUpdated &&
-                this.description == other.description &&
-                this.source == other.source &&
-                this.taskType == other.taskType &&
-                this.versionCount == other.versionCount &&
-                this.inferencePipelineCount == other.inferencePipelineCount &&
-                this.goalCount == other.goalCount &&
-                this.developmentGoalCount == other.developmentGoalCount &&
-                this.monitoringGoalCount == other.monitoringGoalCount &&
-                this.links == other.links &&
-                this.gitRepo == other.gitRepo &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        id,
-                        workspaceId,
-                        creatorId,
-                        name,
-                        dateCreated,
-                        dateUpdated,
-                        description,
-                        source,
-                        taskType,
-                        versionCount,
-                        inferencePipelineCount,
-                        goalCount,
-                        developmentGoalCount,
-                        monitoringGoalCount,
-                        links,
-                        gitRepo,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Item{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, links=$links, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -561,8 +483,6 @@ private constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             fun app(): String = app.getRequired("app")
 
             @JsonProperty("app") @ExcludeMissing fun _app() = app
@@ -579,25 +499,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Links &&
-                    this.app == other.app &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(app, additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -638,6 +539,25 @@ private constructor(
 
                 fun build(): Links = Links(app, additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
         }
 
         class Source
@@ -653,7 +573,7 @@ private constructor(
                     return true
                 }
 
-                return other is Source && this.value == other.value
+                return /* spotless:off */ other is Source && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -716,7 +636,7 @@ private constructor(
                     return true
                 }
 
-                return other is TaskType && this.value == other.value
+                return /* spotless:off */ other is TaskType && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -794,8 +714,6 @@ private constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             fun id(): String = id.getRequired("id")
 
             fun gitId(): Long = gitId.getRequired("gitId")
@@ -867,52 +785,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is GitRepo &&
-                    this.id == other.id &&
-                    this.gitId == other.gitId &&
-                    this.dateConnected == other.dateConnected &&
-                    this.dateUpdated == other.dateUpdated &&
-                    this.branch == other.branch &&
-                    this.name == other.name &&
-                    this.private_ == other.private_ &&
-                    this.slug == other.slug &&
-                    this.url == other.url &&
-                    this.rootDir == other.rootDir &&
-                    this.projectId == other.projectId &&
-                    this.gitAccountId == other.gitAccountId &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            id,
-                            gitId,
-                            dateConnected,
-                            dateUpdated,
-                            branch,
-                            name,
-                            private_,
-                            slug,
-                            url,
-                            rootDir,
-                            projectId,
-                            gitAccountId,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1064,6 +936,66 @@ private constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is GitRepo && this.id == other.id && this.gitId == other.gitId && this.dateConnected == other.dateConnected && this.dateUpdated == other.dateUpdated && this.branch == other.branch && this.name == other.name && this.private_ == other.private_ && this.slug == other.slug && this.url == other.url && this.rootDir == other.rootDir && this.projectId == other.projectId && this.gitAccountId == other.gitAccountId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(id, gitId, dateConnected, dateUpdated, branch, name, private_, slug, url, rootDir, projectId, gitAccountId, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Item && this.id == other.id && this.workspaceId == other.workspaceId && this.creatorId == other.creatorId && this.name == other.name && this.dateCreated == other.dateCreated && this.dateUpdated == other.dateUpdated && this.description == other.description && this.source == other.source && this.taskType == other.taskType && this.versionCount == other.versionCount && this.inferencePipelineCount == other.inferencePipelineCount && this.goalCount == other.goalCount && this.developmentGoalCount == other.developmentGoalCount && this.monitoringGoalCount == other.monitoringGoalCount && this.links == other.links && this.gitRepo == other.gitRepo && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, workspaceId, creatorId, name, dateCreated, dateUpdated, description, source, taskType, versionCount, inferencePipelineCount, goalCount, developmentGoalCount, monitoringGoalCount, links, gitRepo, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Item{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, links=$links, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectListResponse && this.items == other.items && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "ProjectListResponse{items=$items, additionalProperties=$additionalProperties}"
 }
