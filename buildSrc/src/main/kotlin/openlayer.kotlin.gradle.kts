@@ -16,6 +16,7 @@ kotlin {
 configure<SpotlessExtension> {
     kotlin {
         ktfmt().kotlinlangStyle()
+        toggleOffOn()
     }
 }
 

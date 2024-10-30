@@ -3,30 +3,35 @@
 package com.openlayer.api.client
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.http.HttpResponse.Handler
-import com.openlayer.api.errors.OpenlayerError
+import com.openlayer.api.core.getPackageVersion
 import com.openlayer.api.models.*
 import com.openlayer.api.services.blocking.*
-import com.openlayer.api.services.errorHandler
 
 class OpenlayerClientImpl
 constructor(
     private val clientOptions: ClientOptions,
 ) : OpenlayerClient {
 
-    private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+    private val clientOptionsWithUserAgent =
+        if (clientOptions.headers.containsKey("User-Agent")) clientOptions
+        else
+            clientOptions
+                .toBuilder()
+                .putHeader("User-Agent", "${javaClass.simpleName}/Java ${getPackageVersion()}")
+                .build()
 
+    // Pass the original clientOptions so that this client sets its own User-Agent.
     private val async: OpenlayerClientAsync by lazy { OpenlayerClientAsyncImpl(clientOptions) }
 
-    private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptions) }
+    private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptionsWithUserAgent) }
 
-    private val commits: CommitService by lazy { CommitServiceImpl(clientOptions) }
+    private val commits: CommitService by lazy { CommitServiceImpl(clientOptionsWithUserAgent) }
 
     private val inferencePipelines: InferencePipelineService by lazy {
-        InferencePipelineServiceImpl(clientOptions)
+        InferencePipelineServiceImpl(clientOptionsWithUserAgent)
     }
 
-    private val storage: StorageService by lazy { StorageServiceImpl(clientOptions) }
+    private val storage: StorageService by lazy { StorageServiceImpl(clientOptionsWithUserAgent) }
 
     override fun async(): OpenlayerClientAsync = async
 

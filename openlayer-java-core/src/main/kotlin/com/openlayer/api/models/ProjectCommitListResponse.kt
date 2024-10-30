@@ -29,8 +29,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun items(): List<Item> = items.getRequired("items")
 
     @JsonProperty("items") @ExcludeMissing fun _items() = items
@@ -47,26 +45,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is ProjectCommitListResponse &&
-            this.items == other.items &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(items, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "ProjectCommitListResponse{items=$items, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -136,8 +114,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** The project version (commit) id. */
         fun id(): String = id.getRequired("id")
@@ -282,62 +258,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Item &&
-                this.id == other.id &&
-                this.dateCreated == other.dateCreated &&
-                this.status == other.status &&
-                this.statusMessage == other.statusMessage &&
-                this.projectId == other.projectId &&
-                this.storageUri == other.storageUri &&
-                this.commit == other.commit &&
-                this.deploymentStatus == other.deploymentStatus &&
-                this.mlModelId == other.mlModelId &&
-                this.validationDatasetId == other.validationDatasetId &&
-                this.trainingDatasetId == other.trainingDatasetId &&
-                this.archived == other.archived &&
-                this.dateArchived == other.dateArchived &&
-                this.passingGoalCount == other.passingGoalCount &&
-                this.failingGoalCount == other.failingGoalCount &&
-                this.totalGoalCount == other.totalGoalCount &&
-                this.links == other.links &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        id,
-                        dateCreated,
-                        status,
-                        statusMessage,
-                        projectId,
-                        storageUri,
-                        commit,
-                        deploymentStatus,
-                        mlModelId,
-                        validationDatasetId,
-                        trainingDatasetId,
-                        archived,
-                        dateArchived,
-                        passingGoalCount,
-                        failingGoalCount,
-                        totalGoalCount,
-                        links,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Item{id=$id, dateCreated=$dateCreated, status=$status, statusMessage=$statusMessage, projectId=$projectId, storageUri=$storageUri, commit=$commit, deploymentStatus=$deploymentStatus, mlModelId=$mlModelId, validationDatasetId=$validationDatasetId, trainingDatasetId=$trainingDatasetId, archived=$archived, dateArchived=$dateArchived, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, links=$links, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -610,8 +530,6 @@ private constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             /** The commit id. */
             fun id(): String = id.getRequired("id")
 
@@ -718,52 +636,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Commit &&
-                    this.id == other.id &&
-                    this.authorId == other.authorId &&
-                    this.dateCreated == other.dateCreated &&
-                    this.fileSize == other.fileSize &&
-                    this.message == other.message &&
-                    this.mlModelId == other.mlModelId &&
-                    this.validationDatasetId == other.validationDatasetId &&
-                    this.trainingDatasetId == other.trainingDatasetId &&
-                    this.storageUri == other.storageUri &&
-                    this.gitCommitSha == other.gitCommitSha &&
-                    this.gitCommitRef == other.gitCommitRef &&
-                    this.gitCommitUrl == other.gitCommitUrl &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            id,
-                            authorId,
-                            dateCreated,
-                            fileSize,
-                            message,
-                            mlModelId,
-                            validationDatasetId,
-                            trainingDatasetId,
-                            storageUri,
-                            gitCommitSha,
-                            gitCommitRef,
-                            gitCommitUrl,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "Commit{id=$id, authorId=$authorId, dateCreated=$dateCreated, fileSize=$fileSize, message=$message, mlModelId=$mlModelId, validationDatasetId=$validationDatasetId, trainingDatasetId=$trainingDatasetId, storageUri=$storageUri, gitCommitSha=$gitCommitSha, gitCommitRef=$gitCommitRef, gitCommitUrl=$gitCommitUrl, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -948,6 +820,26 @@ private constructor(
                         additionalProperties.toUnmodifiable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Commit && this.id == other.id && this.authorId == other.authorId && this.dateCreated == other.dateCreated && this.fileSize == other.fileSize && this.message == other.message && this.mlModelId == other.mlModelId && this.validationDatasetId == other.validationDatasetId && this.trainingDatasetId == other.trainingDatasetId && this.storageUri == other.storageUri && this.gitCommitSha == other.gitCommitSha && this.gitCommitRef == other.gitCommitRef && this.gitCommitUrl == other.gitCommitUrl && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(id, authorId, dateCreated, fileSize, message, mlModelId, validationDatasetId, trainingDatasetId, storageUri, gitCommitSha, gitCommitRef, gitCommitUrl, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "Commit{id=$id, authorId=$authorId, dateCreated=$dateCreated, fileSize=$fileSize, message=$message, mlModelId=$mlModelId, validationDatasetId=$validationDatasetId, trainingDatasetId=$trainingDatasetId, storageUri=$storageUri, gitCommitSha=$gitCommitSha, gitCommitRef=$gitCommitRef, gitCommitUrl=$gitCommitUrl, additionalProperties=$additionalProperties}"
         }
 
         class Status
@@ -963,7 +855,7 @@ private constructor(
                     return true
                 }
 
-                return other is Status && this.value == other.value
+                return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1041,8 +933,6 @@ private constructor(
 
             private var validated: Boolean = false
 
-            private var hashCode: Int = 0
-
             fun app(): String = app.getRequired("app")
 
             @JsonProperty("app") @ExcludeMissing fun _app() = app
@@ -1059,25 +949,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Links &&
-                    this.app == other.app &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = Objects.hash(app, additionalProperties)
-                }
-                return hashCode
-            }
-
-            override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1118,6 +989,65 @@ private constructor(
 
                 fun build(): Links = Links(app, additionalProperties.toUnmodifiable())
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Item && this.id == other.id && this.dateCreated == other.dateCreated && this.status == other.status && this.statusMessage == other.statusMessage && this.projectId == other.projectId && this.storageUri == other.storageUri && this.commit == other.commit && this.deploymentStatus == other.deploymentStatus && this.mlModelId == other.mlModelId && this.validationDatasetId == other.validationDatasetId && this.trainingDatasetId == other.trainingDatasetId && this.archived == other.archived && this.dateArchived == other.dateArchived && this.passingGoalCount == other.passingGoalCount && this.failingGoalCount == other.failingGoalCount && this.totalGoalCount == other.totalGoalCount && this.links == other.links && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, dateCreated, status, statusMessage, projectId, storageUri, commit, deploymentStatus, mlModelId, validationDatasetId, trainingDatasetId, archived, dateArchived, passingGoalCount, failingGoalCount, totalGoalCount, links, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Item{id=$id, dateCreated=$dateCreated, status=$status, statusMessage=$statusMessage, projectId=$projectId, storageUri=$storageUri, commit=$commit, deploymentStatus=$deploymentStatus, mlModelId=$mlModelId, validationDatasetId=$validationDatasetId, trainingDatasetId=$trainingDatasetId, archived=$archived, dateArchived=$dateArchived, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, links=$links, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectCommitListResponse && this.items == other.items && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "ProjectCommitListResponse{items=$items, additionalProperties=$additionalProperties}"
 }

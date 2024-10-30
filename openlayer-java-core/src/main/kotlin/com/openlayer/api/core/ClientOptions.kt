@@ -6,11 +6,13 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.google.common.collect.ArrayListMultimap
 import com.google.common.collect.ListMultimap
 import com.openlayer.api.core.http.HttpClient
+import com.openlayer.api.core.http.PhantomReachableClosingHttpClient
 import com.openlayer.api.core.http.RetryingHttpClient
 import java.time.Clock
 
 class ClientOptions
 private constructor(
+    private val originalHttpClient: HttpClient,
     @get:JvmName("httpClient") val httpClient: HttpClient,
     @get:JvmName("jsonMapper") val jsonMapper: JsonMapper,
     @get:JvmName("clock") val clock: Clock,
@@ -19,7 +21,10 @@ private constructor(
     @get:JvmName("headers") val headers: ListMultimap<String, String>,
     @get:JvmName("queryParams") val queryParams: ListMultimap<String, String>,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
+    @get:JvmName("maxRetries") val maxRetries: Int,
 ) {
+
+    fun toBuilder() = Builder().from(this)
 
     companion object {
 
@@ -41,6 +46,25 @@ private constructor(
         private var responseValidation: Boolean = false
         private var maxRetries: Int = 2
         private var apiKey: String? = null
+
+        @JvmSynthetic
+        internal fun from(clientOptions: ClientOptions) = apply {
+            httpClient = clientOptions.originalHttpClient
+            jsonMapper = clientOptions.jsonMapper
+            clock = clientOptions.clock
+            baseUrl = clientOptions.baseUrl
+            headers =
+                clientOptions.headers.asMap().mapValuesTo(mutableMapOf()) { (_, value) ->
+                    value.toMutableList()
+                }
+            queryParams =
+                clientOptions.queryParams.asMap().mapValuesTo(mutableMapOf()) { (_, value) ->
+                    value.toMutableList()
+                }
+            responseValidation = clientOptions.responseValidation
+            maxRetries = clientOptions.maxRetries
+            apiKey = clientOptions.apiKey
+        }
 
         fun httpClient(httpClient: HttpClient) = apply { this.httpClient = httpClient }
 
@@ -108,6 +132,7 @@ private constructor(
             headers.put("X-Stainless-OS", getOsName())
             headers.put("X-Stainless-OS-Version", getOsVersion())
             headers.put("X-Stainless-Package-Version", getPackageVersion())
+            headers.put("X-Stainless-Runtime", "JRE")
             headers.put("X-Stainless-Runtime-Version", getJavaVersion())
             if (!apiKey.isNullOrEmpty()) {
                 headers.put("Authorization", "Bearer ${apiKey}")
@@ -116,11 +141,14 @@ private constructor(
             this.queryParams.forEach(queryParams::replaceValues)
 
             return ClientOptions(
-                RetryingHttpClient.builder()
-                    .httpClient(httpClient!!)
-                    .clock(clock)
-                    .maxRetries(maxRetries)
-                    .build(),
+                httpClient!!,
+                PhantomReachableClosingHttpClient(
+                    RetryingHttpClient.builder()
+                        .httpClient(httpClient!!)
+                        .clock(clock)
+                        .maxRetries(maxRetries)
+                        .build()
+                ),
                 jsonMapper ?: jsonMapper(),
                 clock,
                 baseUrl,
@@ -128,6 +156,7 @@ private constructor(
                 headers.toUnmodifiable(),
                 queryParams.toUnmodifiable(),
                 responseValidation,
+                maxRetries,
             )
         }
     }

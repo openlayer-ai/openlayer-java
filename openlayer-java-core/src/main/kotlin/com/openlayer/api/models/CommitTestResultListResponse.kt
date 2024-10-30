@@ -38,8 +38,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     fun items(): List<Item> = items.getRequired("items")
 
     @JsonProperty("items") @ExcludeMissing fun _items() = items
@@ -56,26 +54,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is CommitTestResultListResponse &&
-            this.items == other.items &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(items, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "CommitTestResultListResponse{items=$items, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -139,8 +117,6 @@ private constructor(
     ) {
 
         private var validated: Boolean = false
-
-        private var hashCode: Int = 0
 
         /** Project version (commit) id. */
         fun id(): String = id.getRequired("id")
@@ -235,50 +211,6 @@ private constructor(
         }
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Item &&
-                this.id == other.id &&
-                this.goal == other.goal &&
-                this.goalId == other.goalId &&
-                this.projectVersionId == other.projectVersionId &&
-                this.inferencePipelineId == other.inferencePipelineId &&
-                this.dateCreated == other.dateCreated &&
-                this.dateUpdated == other.dateUpdated &&
-                this.dateDataStarts == other.dateDataStarts &&
-                this.dateDataEnds == other.dateDataEnds &&
-                this.status == other.status &&
-                this.statusMessage == other.statusMessage &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        id,
-                        goal,
-                        goalId,
-                        projectVersionId,
-                        inferencePipelineId,
-                        dateCreated,
-                        dateUpdated,
-                        dateDataStarts,
-                        dateDataEnds,
-                        status,
-                        statusMessage,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Item{id=$id, goal=$goal, goalId=$goalId, projectVersionId=$projectVersionId, inferencePipelineId=$inferencePipelineId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateDataStarts=$dateDataStarts, dateDataEnds=$dateDataEnds, status=$status, statusMessage=$statusMessage, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -464,7 +396,7 @@ private constructor(
                     return true
                 }
 
-                return other is Status && this.value == other.value
+                return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -556,8 +488,6 @@ private constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** The test id. */
             fun id(): String = id.getRequired("id")
@@ -741,72 +671,6 @@ private constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is Goal &&
-                    this.id == other.id &&
-                    this.number == other.number &&
-                    this.name == other.name &&
-                    this.dateCreated == other.dateCreated &&
-                    this.dateUpdated == other.dateUpdated &&
-                    this.description == other.description &&
-                    this.evaluationWindow == other.evaluationWindow &&
-                    this.delayWindow == other.delayWindow &&
-                    this.type == other.type &&
-                    this.subtype == other.subtype &&
-                    this.creatorId == other.creatorId &&
-                    this.originProjectVersionId == other.originProjectVersionId &&
-                    this.thresholds == other.thresholds &&
-                    this.archived == other.archived &&
-                    this.dateArchived == other.dateArchived &&
-                    this.suggested == other.suggested &&
-                    this.commentCount == other.commentCount &&
-                    this.usesMlModel == other.usesMlModel &&
-                    this.usesValidationDataset == other.usesValidationDataset &&
-                    this.usesTrainingDataset == other.usesTrainingDataset &&
-                    this.usesReferenceDataset == other.usesReferenceDataset &&
-                    this.usesProductionData == other.usesProductionData &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            id,
-                            number,
-                            name,
-                            dateCreated,
-                            dateUpdated,
-                            description,
-                            evaluationWindow,
-                            delayWindow,
-                            type,
-                            subtype,
-                            creatorId,
-                            originProjectVersionId,
-                            thresholds,
-                            archived,
-                            dateArchived,
-                            suggested,
-                            commentCount,
-                            usesMlModel,
-                            usesValidationDataset,
-                            usesTrainingDataset,
-                            usesReferenceDataset,
-                            usesProductionData,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "Goal{id=$id, number=$number, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, evaluationWindow=$evaluationWindow, delayWindow=$delayWindow, type=$type, subtype=$subtype, creatorId=$creatorId, originProjectVersionId=$originProjectVersionId, thresholds=$thresholds, archived=$archived, dateArchived=$dateArchived, suggested=$suggested, commentCount=$commentCount, usesMlModel=$usesMlModel, usesValidationDataset=$usesValidationDataset, usesTrainingDataset=$usesTrainingDataset, usesReferenceDataset=$usesReferenceDataset, usesProductionData=$usesProductionData, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1133,8 +997,6 @@ private constructor(
 
                 private var validated: Boolean = false
 
-                private var hashCode: Int = 0
-
                 /** The measurement to be evaluated. */
                 fun measurement(): Optional<String> =
                     Optional.ofNullable(measurement.getNullable("measurement"))
@@ -1185,38 +1047,6 @@ private constructor(
                 }
 
                 fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is Threshold &&
-                        this.measurement == other.measurement &&
-                        this.insightName == other.insightName &&
-                        this.insightParameters == other.insightParameters &&
-                        this.operator == other.operator &&
-                        this.value == other.value &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode =
-                            Objects.hash(
-                                measurement,
-                                insightName,
-                                insightParameters,
-                                operator,
-                                value,
-                                additionalProperties,
-                            )
-                    }
-                    return hashCode
-                }
-
-                override fun toString() =
-                    "Threshold{measurement=$measurement, insightName=$insightName, insightParameters=$insightParameters, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
 
                 companion object {
 
@@ -1317,8 +1147,8 @@ private constructor(
                 @JsonSerialize(using = Value.Serializer::class)
                 class Value
                 private constructor(
-                    private val double: Double? = null,
-                    private val boolean: Boolean? = null,
+                    private val number: Double? = null,
+                    private val bool: Boolean? = null,
                     private val string: String? = null,
                     private val strings: List<String>? = null,
                     private val _json: JsonValue? = null,
@@ -1326,25 +1156,25 @@ private constructor(
 
                     private var validated: Boolean = false
 
-                    fun double(): Optional<Double> = Optional.ofNullable(double)
+                    fun number(): Optional<Double> = Optional.ofNullable(number)
 
-                    fun boolean(): Optional<Boolean> = Optional.ofNullable(boolean)
+                    fun bool(): Optional<Boolean> = Optional.ofNullable(bool)
 
                     fun string(): Optional<String> = Optional.ofNullable(string)
 
                     fun strings(): Optional<List<String>> = Optional.ofNullable(strings)
 
-                    fun isDouble(): Boolean = double != null
+                    fun isNumber(): Boolean = number != null
 
-                    fun isBoolean(): Boolean = boolean != null
+                    fun isBool(): Boolean = bool != null
 
                     fun isString(): Boolean = string != null
 
                     fun isStrings(): Boolean = strings != null
 
-                    fun asDouble(): Double = double.getOrThrow("double")
+                    fun asNumber(): Double = number.getOrThrow("number")
 
-                    fun asBoolean(): Boolean = boolean.getOrThrow("boolean")
+                    fun asBool(): Boolean = bool.getOrThrow("bool")
 
                     fun asString(): String = string.getOrThrow("string")
 
@@ -1354,8 +1184,8 @@ private constructor(
 
                     fun <T> accept(visitor: Visitor<T>): T {
                         return when {
-                            double != null -> visitor.visitDouble(double)
-                            boolean != null -> visitor.visitBoolean(boolean)
+                            number != null -> visitor.visitNumber(number)
+                            bool != null -> visitor.visitBool(bool)
                             string != null -> visitor.visitString(string)
                             strings != null -> visitor.visitStrings(strings)
                             else -> visitor.unknown(_json)
@@ -1365,10 +1195,7 @@ private constructor(
                     fun validate(): Value = apply {
                         if (!validated) {
                             if (
-                                double == null &&
-                                    boolean == null &&
-                                    string == null &&
-                                    strings == null
+                                number == null && bool == null && string == null && strings == null
                             ) {
                                 throw OpenlayerInvalidDataException("Unknown Value: $_json")
                             }
@@ -1381,26 +1208,17 @@ private constructor(
                             return true
                         }
 
-                        return other is Value &&
-                            this.double == other.double &&
-                            this.boolean == other.boolean &&
-                            this.string == other.string &&
-                            this.strings == other.strings
+                        return /* spotless:off */ other is Value && this.number == other.number && this.bool == other.bool && this.string == other.string && this.strings == other.strings /* spotless:on */
                     }
 
                     override fun hashCode(): Int {
-                        return Objects.hash(
-                            double,
-                            boolean,
-                            string,
-                            strings,
-                        )
+                        return /* spotless:off */ Objects.hash(number, bool, string, strings) /* spotless:on */
                     }
 
                     override fun toString(): String {
                         return when {
-                            double != null -> "Value{double=$double}"
-                            boolean != null -> "Value{boolean=$boolean}"
+                            number != null -> "Value{number=$number}"
+                            bool != null -> "Value{bool=$bool}"
                             string != null -> "Value{string=$string}"
                             strings != null -> "Value{strings=$strings}"
                             _json != null -> "Value{_unknown=$_json}"
@@ -1410,9 +1228,9 @@ private constructor(
 
                     companion object {
 
-                        @JvmStatic fun ofDouble(double: Double) = Value(double = double)
+                        @JvmStatic fun ofNumber(number: Double) = Value(number = number)
 
-                        @JvmStatic fun ofBoolean(boolean: Boolean) = Value(boolean = boolean)
+                        @JvmStatic fun ofBool(bool: Boolean) = Value(bool = bool)
 
                         @JvmStatic fun ofString(string: String) = Value(string = string)
 
@@ -1421,9 +1239,9 @@ private constructor(
 
                     interface Visitor<out T> {
 
-                        fun visitDouble(double: Double): T
+                        fun visitNumber(number: Double): T
 
-                        fun visitBoolean(boolean: Boolean): T
+                        fun visitBool(bool: Boolean): T
 
                         fun visitString(string: String): T
 
@@ -1438,11 +1256,12 @@ private constructor(
 
                         override fun ObjectCodec.deserialize(node: JsonNode): Value {
                             val json = JsonValue.fromJsonNode(node)
+
                             tryDeserialize(node, jacksonTypeRef<Double>())?.let {
-                                return Value(double = it, _json = json)
+                                return Value(number = it, _json = json)
                             }
                             tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
-                                return Value(boolean = it, _json = json)
+                                return Value(bool = it, _json = json)
                             }
                             tryDeserialize(node, jacksonTypeRef<String>())?.let {
                                 return Value(string = it, _json = json)
@@ -1463,8 +1282,8 @@ private constructor(
                             provider: SerializerProvider
                         ) {
                             when {
-                                value.double != null -> generator.writeObject(value.double)
-                                value.boolean != null -> generator.writeObject(value.boolean)
+                                value.number != null -> generator.writeObject(value.number)
+                                value.bool != null -> generator.writeObject(value.bool)
                                 value.string != null -> generator.writeObject(value.string)
                                 value.strings != null -> generator.writeObject(value.strings)
                                 value._json != null -> generator.writeObject(value._json)
@@ -1473,7 +1292,87 @@ private constructor(
                         }
                     }
                 }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Threshold && this.measurement == other.measurement && this.insightName == other.insightName && this.insightParameters == other.insightParameters && this.operator == other.operator && this.value == other.value && this.additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                private var hashCode: Int = 0
+
+                override fun hashCode(): Int {
+                    if (hashCode == 0) {
+                        hashCode = /* spotless:off */ Objects.hash(measurement, insightName, insightParameters, operator, value, additionalProperties) /* spotless:on */
+                    }
+                    return hashCode
+                }
+
+                override fun toString() =
+                    "Threshold{measurement=$measurement, insightName=$insightName, insightParameters=$insightParameters, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Goal && this.id == other.id && this.number == other.number && this.name == other.name && this.dateCreated == other.dateCreated && this.dateUpdated == other.dateUpdated && this.description == other.description && this.evaluationWindow == other.evaluationWindow && this.delayWindow == other.delayWindow && this.type == other.type && this.subtype == other.subtype && this.creatorId == other.creatorId && this.originProjectVersionId == other.originProjectVersionId && this.thresholds == other.thresholds && this.archived == other.archived && this.dateArchived == other.dateArchived && this.suggested == other.suggested && this.commentCount == other.commentCount && this.usesMlModel == other.usesMlModel && this.usesValidationDataset == other.usesValidationDataset && this.usesTrainingDataset == other.usesTrainingDataset && this.usesReferenceDataset == other.usesReferenceDataset && this.usesProductionData == other.usesProductionData && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(id, number, name, dateCreated, dateUpdated, description, evaluationWindow, delayWindow, type, subtype, creatorId, originProjectVersionId, thresholds, archived, dateArchived, suggested, commentCount, usesMlModel, usesValidationDataset, usesTrainingDataset, usesReferenceDataset, usesProductionData, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "Goal{id=$id, number=$number, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, evaluationWindow=$evaluationWindow, delayWindow=$delayWindow, type=$type, subtype=$subtype, creatorId=$creatorId, originProjectVersionId=$originProjectVersionId, thresholds=$thresholds, archived=$archived, dateArchived=$dateArchived, suggested=$suggested, commentCount=$commentCount, usesMlModel=$usesMlModel, usesValidationDataset=$usesValidationDataset, usesTrainingDataset=$usesTrainingDataset, usesReferenceDataset=$usesReferenceDataset, usesProductionData=$usesProductionData, additionalProperties=$additionalProperties}"
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Item && this.id == other.id && this.goal == other.goal && this.goalId == other.goalId && this.projectVersionId == other.projectVersionId && this.inferencePipelineId == other.inferencePipelineId && this.dateCreated == other.dateCreated && this.dateUpdated == other.dateUpdated && this.dateDataStarts == other.dateDataStarts && this.dateDataEnds == other.dateDataEnds && this.status == other.status && this.statusMessage == other.statusMessage && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, goal, goalId, projectVersionId, inferencePipelineId, dateCreated, dateUpdated, dateDataStarts, dateDataEnds, status, statusMessage, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Item{id=$id, goal=$goal, goalId=$goalId, projectVersionId=$projectVersionId, inferencePipelineId=$inferencePipelineId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateDataStarts=$dateDataStarts, dateDataEnds=$dateDataEnds, status=$status, statusMessage=$statusMessage, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is CommitTestResultListResponse && this.items == other.items && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "CommitTestResultListResponse{items=$items, additionalProperties=$additionalProperties}"
 }
