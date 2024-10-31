@@ -3,7 +3,7 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.models.*
 import java.util.Objects
 
@@ -117,8 +117,8 @@ constructor(
                 checkNotNull(inferencePipelineId) {
                     "`inferencePipelineId` is required but was not set"
                 },
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }

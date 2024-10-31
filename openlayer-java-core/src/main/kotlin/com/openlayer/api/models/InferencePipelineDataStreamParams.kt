@@ -20,7 +20,7 @@ import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.getOrThrow
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
 import java.util.Objects
@@ -127,8 +127,8 @@ constructor(
             fun build(): InferencePipelineDataStreamBody =
                 InferencePipelineDataStreamBody(
                     checkNotNull(config) { "`config` is required but was not set" },
-                    checkNotNull(rows) { "`rows` is required but was not set" }.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    checkNotNull(rows) { "`rows` is required but was not set" }.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -296,10 +296,10 @@ constructor(
                     "`inferencePipelineId` is required but was not set"
                 },
                 checkNotNull(config) { "`config` is required but was not set" },
-                checkNotNull(rows) { "`rows` is required but was not set" }.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                checkNotNull(rows) { "`rows` is required but was not set" }.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -863,14 +863,14 @@ constructor(
                         costColumnName,
                         groundTruthColumnName,
                         inferenceIdColumnName,
-                        inputVariableNames.map { it.toUnmodifiable() },
+                        inputVariableNames.map { it.toImmutable() },
                         latencyColumnName,
                         metadata,
                         outputColumnName,
-                        prompt.map { it.toUnmodifiable() },
+                        prompt.map { it.toImmutable() },
                         questionColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -965,7 +965,7 @@ constructor(
                         Prompt(
                             role,
                             content,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 
@@ -1361,9 +1361,9 @@ constructor(
 
                 fun build(): TabularClassificationData =
                     TabularClassificationData(
-                        categoricalFeatureNames.map { it.toUnmodifiable() },
-                        classNames.map { it.toUnmodifiable() },
-                        featureNames.map { it.toUnmodifiable() },
+                        categoricalFeatureNames.map { it.toImmutable() },
+                        classNames.map { it.toImmutable() },
+                        featureNames.map { it.toImmutable() },
                         inferenceIdColumnName,
                         labelColumnName,
                         latencyColumnName,
@@ -1371,7 +1371,7 @@ constructor(
                         predictionsColumnName,
                         predictionScoresColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1664,15 +1664,15 @@ constructor(
 
                 fun build(): TabularRegressionData =
                     TabularRegressionData(
-                        categoricalFeatureNames.map { it.toUnmodifiable() },
-                        featureNames.map { it.toUnmodifiable() },
+                        categoricalFeatureNames.map { it.toImmutable() },
+                        featureNames.map { it.toImmutable() },
                         inferenceIdColumnName,
                         latencyColumnName,
                         metadata,
                         predictionsColumnName,
                         targetColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -2010,7 +2010,7 @@ constructor(
 
                 fun build(): TextClassificationData =
                     TextClassificationData(
-                        classNames.map { it.toUnmodifiable() },
+                        classNames.map { it.toImmutable() },
                         inferenceIdColumnName,
                         labelColumnName,
                         latencyColumnName,
@@ -2019,7 +2019,7 @@ constructor(
                         predictionScoresColumnName,
                         textColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -2084,7 +2084,7 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Row = Row(additionalProperties.toUnmodifiable())
+            fun build(): Row = Row(additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

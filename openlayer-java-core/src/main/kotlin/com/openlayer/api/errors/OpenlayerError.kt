@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = OpenlayerError.Builder::class)
@@ -60,6 +60,6 @@ constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): OpenlayerError = OpenlayerError(additionalProperties.toUnmodifiable())
+        fun build(): OpenlayerError = OpenlayerError(additionalProperties.toImmutable())
     }
 }

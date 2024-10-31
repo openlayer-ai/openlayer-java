@@ -13,7 +13,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
@@ -429,7 +429,7 @@ private constructor(
                 failingGoalCount,
                 totalGoalCount,
                 links,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 
@@ -737,7 +737,7 @@ private constructor(
                     gitCommitSha,
                     gitCommitRef,
                     gitCommitUrl,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -906,7 +906,7 @@ private constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Links = Links(app, additionalProperties.toUnmodifiable())
+            fun build(): Links = Links(app, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {

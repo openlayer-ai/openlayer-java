@@ -3,7 +3,7 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -29,7 +29,7 @@ constructor(
         this.page?.let { params.put("page", listOf(it.toString())) }
         this.perPage?.let { params.put("perPage", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -138,8 +138,8 @@ constructor(
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
                 page,
                 perPage,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }
