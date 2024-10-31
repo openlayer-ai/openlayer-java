@@ -22,7 +22,7 @@ import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.getOrThrow
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
@@ -93,8 +93,8 @@ private constructor(
 
         fun build(): CommitTestResultListResponse =
             CommitTestResultListResponse(
-                items.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable()
+                items.map { it.toImmutable() },
+                additionalProperties.toImmutable()
             )
     }
 
@@ -379,7 +379,7 @@ private constructor(
                     dateDataEnds,
                     status,
                     statusMessage,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -969,7 +969,7 @@ private constructor(
                         subtype,
                         creatorId,
                         originProjectVersionId,
-                        thresholds.map { it.toUnmodifiable() },
+                        thresholds.map { it.toImmutable() },
                         archived,
                         dateArchived,
                         suggested,
@@ -979,7 +979,7 @@ private constructor(
                         usesTrainingDataset,
                         usesReferenceDataset,
                         usesProductionData,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -1136,10 +1136,10 @@ private constructor(
                         Threshold(
                             measurement,
                             insightName,
-                            insightParameters.map { it.toUnmodifiable() },
+                            insightParameters.map { it.toImmutable() },
                             operator,
                             value,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
 

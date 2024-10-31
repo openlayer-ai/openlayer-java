@@ -13,7 +13,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 
@@ -83,7 +83,7 @@ private constructor(
         }
 
         fun build(): InferencePipelineDataStreamResponse =
-            InferencePipelineDataStreamResponse(success, additionalProperties.toUnmodifiable())
+            InferencePipelineDataStreamResponse(success, additionalProperties.toImmutable())
     }
 
     class Success
