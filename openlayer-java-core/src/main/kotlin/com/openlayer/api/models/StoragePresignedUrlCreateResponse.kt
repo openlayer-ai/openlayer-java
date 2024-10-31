@@ -11,7 +11,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = StoragePresignedUrlCreateResponse.Builder::class)
@@ -116,7 +116,7 @@ private constructor(
                 url,
                 fields,
                 storageUri,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
 

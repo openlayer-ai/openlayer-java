@@ -13,7 +13,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
@@ -83,10 +83,7 @@ private constructor(
         }
 
         fun build(): ProjectListResponse =
-            ProjectListResponse(
-                items.map { it.toUnmodifiable() },
-                additionalProperties.toUnmodifiable()
-            )
+            ProjectListResponse(items.map { it.toImmutable() }, additionalProperties.toImmutable())
     }
 
     @JsonDeserialize(builder = Item.Builder::class)
@@ -468,7 +465,7 @@ private constructor(
                     monitoringGoalCount,
                     links,
                     gitRepo,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -537,7 +534,7 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Links = Links(app, additionalProperties.toUnmodifiable())
+                fun build(): Links = Links(app, additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -933,7 +930,7 @@ private constructor(
                         rootDir,
                         projectId,
                         gitAccountId,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 

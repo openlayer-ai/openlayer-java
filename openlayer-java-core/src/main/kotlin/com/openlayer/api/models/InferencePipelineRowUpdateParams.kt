@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -47,7 +47,7 @@ constructor(
         val params = mutableMapOf<String, List<String>>()
         this.inferenceId.let { params.put("inferenceId", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -119,7 +119,7 @@ constructor(
                 InferencePipelineRowUpdateBody(
                     checkNotNull(row) { "`row` is required but was not set" },
                     config,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
@@ -268,9 +268,9 @@ constructor(
                 checkNotNull(inferenceId) { "`inferenceId` is required but was not set" },
                 checkNotNull(row) { "`row` is required but was not set" },
                 config,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -398,7 +398,7 @@ constructor(
                     timestampColumnName,
                     groundTruthColumnName,
                     humanFeedbackColumnName,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
 
