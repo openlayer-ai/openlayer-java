@@ -12,7 +12,7 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
 import java.util.Objects
@@ -63,8 +63,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** The inference pipeline description. */
         @JsonProperty("description") fun description(): String? = description
 
@@ -76,32 +74,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ProjectInferencePipelineCreateBody &&
-                this.description == other.description &&
-                this.name == other.name &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        description,
-                        name,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ProjectInferencePipelineCreateBody{description=$description, name=$name, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -148,9 +120,29 @@ constructor(
                 ProjectInferencePipelineCreateBody(
                     description,
                     checkNotNull(name) { "`name` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ProjectInferencePipelineCreateBody && this.description == other.description && this.name == other.name && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(description, name, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ProjectInferencePipelineCreateBody{description=$description, name=$name, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -164,24 +156,11 @@ constructor(
             return true
         }
 
-        return other is ProjectInferencePipelineCreateParams &&
-            this.projectId == other.projectId &&
-            this.description == other.description &&
-            this.name == other.name &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ProjectInferencePipelineCreateParams && this.projectId == other.projectId && this.description == other.description && this.name == other.name && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectId,
-            description,
-            name,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(projectId, description, name, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -283,9 +262,9 @@ constructor(
                 checkNotNull(projectId) { "`projectId` is required but was not set" },
                 description,
                 checkNotNull(name) { "`name` is required but was not set" },
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -297,8 +276,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("app") fun app(): String? = app
 
         @JsonAnyGetter
@@ -306,25 +283,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Links &&
-                this.app == other.app &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(app, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -361,9 +319,28 @@ constructor(
             fun build(): Links =
                 Links(
                     checkNotNull(app) { "`app` is required but was not set" },
-                    additionalProperties.toUnmodifiable()
+                    additionalProperties.toImmutable()
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
 
     class Status
@@ -379,7 +356,7 @@ constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

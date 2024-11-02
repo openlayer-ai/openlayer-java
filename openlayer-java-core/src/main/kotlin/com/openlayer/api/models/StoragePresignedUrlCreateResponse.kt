@@ -11,7 +11,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = StoragePresignedUrlCreateResponse.Builder::class)
@@ -26,8 +26,6 @@ private constructor(
 
     private var validated: Boolean = false
 
-    private var hashCode: Int = 0
-
     /** The presigned url. */
     fun url(): String = url.getRequired("url")
 
@@ -37,7 +35,7 @@ private constructor(
     /** The presigned url. */
     @JsonProperty("url") @ExcludeMissing fun _url() = url
 
-    /** Fields to include in the body of the upload. Only needed by s3. */
+    /** Fields to include in the body of the upload. Only needed by s3 */
     @JsonProperty("fields") @ExcludeMissing fun _fields() = fields
 
     /** The storage URI to send back to the backend after the upload was completed. */
@@ -56,34 +54,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is StoragePresignedUrlCreateResponse &&
-            this.url == other.url &&
-            this.fields == other.fields &&
-            this.storageUri == other.storageUri &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode =
-                Objects.hash(
-                    url,
-                    fields,
-                    storageUri,
-                    additionalProperties,
-                )
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "StoragePresignedUrlCreateResponse{url=$url, fields=$fields, storageUri=$storageUri, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -114,7 +84,7 @@ private constructor(
         @ExcludeMissing
         fun url(url: JsonField<String>) = apply { this.url = url }
 
-        /** Fields to include in the body of the upload. Only needed by s3. */
+        /** Fields to include in the body of the upload. Only needed by s3 */
         @JsonProperty("fields")
         @ExcludeMissing
         fun fields(fields: JsonValue) = apply { this.fields = fields }
@@ -146,7 +116,27 @@ private constructor(
                 url,
                 fields,
                 storageUri,
-                additionalProperties.toUnmodifiable(),
+                additionalProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is StoragePresignedUrlCreateResponse && this.url == other.url && this.fields == other.fields && this.storageUri == other.storageUri && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(url, fields, storageUri, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "StoragePresignedUrlCreateResponse{url=$url, fields=$fields, storageUri=$storageUri, additionalProperties=$additionalProperties}"
 }

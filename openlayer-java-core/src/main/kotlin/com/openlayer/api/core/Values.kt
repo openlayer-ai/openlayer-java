@@ -142,6 +142,8 @@ sealed class JsonField<out T : Any> {
     // This filter should not be used directly and should instead use the @ExcludeMissing annotation
     class IsMissing {
         override fun equals(other: Any?): Boolean = other is JsonMissing
+
+        override fun hashCode(): Int = Objects.hash()
     }
 
     class Deserializer(private val type: JavaType? = null) :
@@ -387,7 +389,7 @@ private constructor(
     override fun toString() = values.toString()
 
     companion object {
-        @JsonCreator @JvmStatic fun of(values: List<JsonValue>) = JsonArray(values.toUnmodifiable())
+        @JsonCreator @JvmStatic fun of(values: List<JsonValue>) = JsonArray(values.toImmutable())
     }
 }
 
@@ -413,7 +415,7 @@ private constructor(
     companion object {
         @JsonCreator
         @JvmStatic
-        fun of(values: Map<String, JsonValue>) = JsonObject(values.toUnmodifiable())
+        fun of(values: Map<String, JsonValue>) = JsonObject(values.toImmutable())
     }
 }
 
@@ -479,9 +481,8 @@ internal constructor(
         }
     }
 
-    override fun toString(): String {
-        return "MultipartFormValue(name='$name', contentType=$contentType, filename=$filename, value=${valueToString()})"
-    }
+    override fun toString(): String =
+        "MultipartFormValue{name=$name, contentType=$contentType, filename=$filename, value=${valueToString()}}"
 
     private fun valueToString(): String =
         when (value) {

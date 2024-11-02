@@ -59,7 +59,7 @@ class InferencePipelineTestResultListResponseTest {
                                                         .Goal
                                                         .Threshold
                                                         .Value
-                                                        .ofDouble(42.23)
+                                                        .ofNumber(42.23)
                                                 )
                                                 .build()
                                         )
@@ -125,7 +125,7 @@ class InferencePipelineTestResultListResponseTest {
                                             InferencePipelineTestResultListResponse.Item.Goal
                                                 .Threshold
                                                 .Value
-                                                .ofDouble(42.23)
+                                                .ofNumber(42.23)
                                         )
                                         .build()
                                 )

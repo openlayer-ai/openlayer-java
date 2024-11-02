@@ -20,7 +20,7 @@ import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.getOrThrow
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
 import java.util.Objects
@@ -71,8 +71,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
         @JsonProperty("config") fun config(): Config? = config
 
@@ -84,32 +82,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is InferencePipelineDataStreamBody &&
-                this.config == other.config &&
-                this.rows == other.rows &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        config,
-                        rows,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "InferencePipelineDataStreamBody{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -155,10 +127,30 @@ constructor(
             fun build(): InferencePipelineDataStreamBody =
                 InferencePipelineDataStreamBody(
                     checkNotNull(config) { "`config` is required but was not set" },
-                    checkNotNull(rows) { "`rows` is required but was not set" }.toUnmodifiable(),
-                    additionalProperties.toUnmodifiable(),
+                    checkNotNull(rows) { "`rows` is required but was not set" }.toImmutable(),
+                    additionalProperties.toImmutable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is InferencePipelineDataStreamBody && this.config == other.config && this.rows == other.rows && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(config, rows, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "InferencePipelineDataStreamBody{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -172,24 +164,11 @@ constructor(
             return true
         }
 
-        return other is InferencePipelineDataStreamParams &&
-            this.inferencePipelineId == other.inferencePipelineId &&
-            this.config == other.config &&
-            this.rows == other.rows &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is InferencePipelineDataStreamParams && this.inferencePipelineId == other.inferencePipelineId && this.config == other.config && this.rows == other.rows && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            inferencePipelineId,
-            config,
-            rows,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(inferencePipelineId, config, rows, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -317,10 +296,10 @@ constructor(
                     "`inferencePipelineId` is required but was not set"
                 },
                 checkNotNull(config) { "`config` is required but was not set" },
-                checkNotNull(rows) { "`rows` is required but was not set" }.toUnmodifiable(),
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                checkNotNull(rows) { "`rows` is required but was not set" }.toImmutable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -405,20 +384,11 @@ constructor(
                 return true
             }
 
-            return other is Config &&
-                this.llmData == other.llmData &&
-                this.tabularClassificationData == other.tabularClassificationData &&
-                this.tabularRegressionData == other.tabularRegressionData &&
-                this.textClassificationData == other.textClassificationData
+            return /* spotless:off */ other is Config && this.llmData == other.llmData && this.tabularClassificationData == other.tabularClassificationData && this.tabularRegressionData == other.tabularRegressionData && this.textClassificationData == other.textClassificationData /* spotless:on */
         }
 
         override fun hashCode(): Int {
-            return Objects.hash(
-                llmData,
-                tabularClassificationData,
-                tabularRegressionData,
-                textClassificationData,
-            )
+            return /* spotless:off */ Objects.hash(llmData, tabularClassificationData, tabularRegressionData, textClassificationData) /* spotless:on */
         }
 
         override fun toString(): String {
@@ -473,6 +443,7 @@ constructor(
 
             override fun ObjectCodec.deserialize(node: JsonNode): Config {
                 val json = JsonValue.fromJsonNode(node)
+
                 tryDeserialize(node, jacksonTypeRef<LlmData>()) { it.validate() }
                     ?.let {
                         return Config(llmData = it, _json = json)
@@ -535,8 +506,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /** Name of the column with the total number of tokens. */
             fun numOfTokenColumnName(): Optional<String> =
@@ -680,52 +649,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is LlmData &&
-                    this.numOfTokenColumnName == other.numOfTokenColumnName &&
-                    this.contextColumnName == other.contextColumnName &&
-                    this.costColumnName == other.costColumnName &&
-                    this.groundTruthColumnName == other.groundTruthColumnName &&
-                    this.inferenceIdColumnName == other.inferenceIdColumnName &&
-                    this.inputVariableNames == other.inputVariableNames &&
-                    this.latencyColumnName == other.latencyColumnName &&
-                    this.metadata == other.metadata &&
-                    this.outputColumnName == other.outputColumnName &&
-                    this.prompt == other.prompt &&
-                    this.questionColumnName == other.questionColumnName &&
-                    this.timestampColumnName == other.timestampColumnName &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            numOfTokenColumnName,
-                            contextColumnName,
-                            costColumnName,
-                            groundTruthColumnName,
-                            inferenceIdColumnName,
-                            inputVariableNames,
-                            latencyColumnName,
-                            metadata,
-                            outputColumnName,
-                            prompt,
-                            questionColumnName,
-                            timestampColumnName,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "LlmData{numOfTokenColumnName=$numOfTokenColumnName, contextColumnName=$contextColumnName, costColumnName=$costColumnName, groundTruthColumnName=$groundTruthColumnName, inferenceIdColumnName=$inferenceIdColumnName, inputVariableNames=$inputVariableNames, latencyColumnName=$latencyColumnName, metadata=$metadata, outputColumnName=$outputColumnName, prompt=$prompt, questionColumnName=$questionColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -940,14 +863,14 @@ constructor(
                         costColumnName,
                         groundTruthColumnName,
                         inferenceIdColumnName,
-                        inputVariableNames.map { it.toUnmodifiable() },
+                        inputVariableNames.map { it.toImmutable() },
                         latencyColumnName,
                         metadata,
                         outputColumnName,
-                        prompt.map { it.toUnmodifiable() },
+                        prompt.map { it.toImmutable() },
                         questionColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
 
@@ -961,8 +884,6 @@ constructor(
             ) {
 
                 private var validated: Boolean = false
-
-                private var hashCode: Int = 0
 
                 /** Role of the prompt. */
                 fun role(): Optional<String> = Optional.ofNullable(role.getNullable("role"))
@@ -990,32 +911,6 @@ constructor(
                 }
 
                 fun toBuilder() = Builder().from(this)
-
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) {
-                        return true
-                    }
-
-                    return other is Prompt &&
-                        this.role == other.role &&
-                        this.content == other.content &&
-                        this.additionalProperties == other.additionalProperties
-                }
-
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode =
-                            Objects.hash(
-                                role,
-                                content,
-                                additionalProperties,
-                            )
-                    }
-                    return hashCode
-                }
-
-                override fun toString() =
-                    "Prompt{role=$role, content=$content, additionalProperties=$additionalProperties}"
 
                 companion object {
 
@@ -1070,10 +965,50 @@ constructor(
                         Prompt(
                             role,
                             content,
-                            additionalProperties.toUnmodifiable(),
+                            additionalProperties.toImmutable(),
                         )
                 }
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return /* spotless:off */ other is Prompt && this.role == other.role && this.content == other.content && this.additionalProperties == other.additionalProperties /* spotless:on */
+                }
+
+                private var hashCode: Int = 0
+
+                override fun hashCode(): Int {
+                    if (hashCode == 0) {
+                        hashCode = /* spotless:off */ Objects.hash(role, content, additionalProperties) /* spotless:on */
+                    }
+                    return hashCode
+                }
+
+                override fun toString() =
+                    "Prompt{role=$role, content=$content, additionalProperties=$additionalProperties}"
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is LlmData && this.numOfTokenColumnName == other.numOfTokenColumnName && this.contextColumnName == other.contextColumnName && this.costColumnName == other.costColumnName && this.groundTruthColumnName == other.groundTruthColumnName && this.inferenceIdColumnName == other.inferenceIdColumnName && this.inputVariableNames == other.inputVariableNames && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.outputColumnName == other.outputColumnName && this.prompt == other.prompt && this.questionColumnName == other.questionColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(numOfTokenColumnName, contextColumnName, costColumnName, groundTruthColumnName, inferenceIdColumnName, inputVariableNames, latencyColumnName, metadata, outputColumnName, prompt, questionColumnName, timestampColumnName, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "LlmData{numOfTokenColumnName=$numOfTokenColumnName, contextColumnName=$contextColumnName, costColumnName=$costColumnName, groundTruthColumnName=$groundTruthColumnName, inferenceIdColumnName=$inferenceIdColumnName, inputVariableNames=$inputVariableNames, latencyColumnName=$latencyColumnName, metadata=$metadata, outputColumnName=$outputColumnName, prompt=$prompt, questionColumnName=$questionColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
 
         @JsonDeserialize(builder = TabularClassificationData.Builder::class)
@@ -1094,8 +1029,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /**
              * Array with the names of all categorical features in the dataset. E.g.
@@ -1232,48 +1165,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is TabularClassificationData &&
-                    this.categoricalFeatureNames == other.categoricalFeatureNames &&
-                    this.classNames == other.classNames &&
-                    this.featureNames == other.featureNames &&
-                    this.inferenceIdColumnName == other.inferenceIdColumnName &&
-                    this.labelColumnName == other.labelColumnName &&
-                    this.latencyColumnName == other.latencyColumnName &&
-                    this.metadata == other.metadata &&
-                    this.predictionsColumnName == other.predictionsColumnName &&
-                    this.predictionScoresColumnName == other.predictionScoresColumnName &&
-                    this.timestampColumnName == other.timestampColumnName &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            categoricalFeatureNames,
-                            classNames,
-                            featureNames,
-                            inferenceIdColumnName,
-                            labelColumnName,
-                            latencyColumnName,
-                            metadata,
-                            predictionsColumnName,
-                            predictionScoresColumnName,
-                            timestampColumnName,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "TabularClassificationData{categoricalFeatureNames=$categoricalFeatureNames, classNames=$classNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1470,9 +1361,9 @@ constructor(
 
                 fun build(): TabularClassificationData =
                     TabularClassificationData(
-                        categoricalFeatureNames.map { it.toUnmodifiable() },
-                        classNames.map { it.toUnmodifiable() },
-                        featureNames.map { it.toUnmodifiable() },
+                        categoricalFeatureNames.map { it.toImmutable() },
+                        classNames.map { it.toImmutable() },
+                        featureNames.map { it.toImmutable() },
                         inferenceIdColumnName,
                         labelColumnName,
                         latencyColumnName,
@@ -1480,9 +1371,29 @@ constructor(
                         predictionsColumnName,
                         predictionScoresColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is TabularClassificationData && this.categoricalFeatureNames == other.categoricalFeatureNames && this.classNames == other.classNames && this.featureNames == other.featureNames && this.inferenceIdColumnName == other.inferenceIdColumnName && this.labelColumnName == other.labelColumnName && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.predictionsColumnName == other.predictionsColumnName && this.predictionScoresColumnName == other.predictionScoresColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(categoricalFeatureNames, classNames, featureNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, timestampColumnName, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "TabularClassificationData{categoricalFeatureNames=$categoricalFeatureNames, classNames=$classNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
 
         @JsonDeserialize(builder = TabularRegressionData.Builder::class)
@@ -1501,8 +1412,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /**
              * Array with the names of all categorical features in the dataset. E.g.
@@ -1604,44 +1513,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is TabularRegressionData &&
-                    this.categoricalFeatureNames == other.categoricalFeatureNames &&
-                    this.featureNames == other.featureNames &&
-                    this.inferenceIdColumnName == other.inferenceIdColumnName &&
-                    this.latencyColumnName == other.latencyColumnName &&
-                    this.metadata == other.metadata &&
-                    this.predictionsColumnName == other.predictionsColumnName &&
-                    this.targetColumnName == other.targetColumnName &&
-                    this.timestampColumnName == other.timestampColumnName &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            categoricalFeatureNames,
-                            featureNames,
-                            inferenceIdColumnName,
-                            latencyColumnName,
-                            metadata,
-                            predictionsColumnName,
-                            targetColumnName,
-                            timestampColumnName,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "TabularRegressionData{categoricalFeatureNames=$categoricalFeatureNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, targetColumnName=$targetColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -1793,17 +1664,37 @@ constructor(
 
                 fun build(): TabularRegressionData =
                     TabularRegressionData(
-                        categoricalFeatureNames.map { it.toUnmodifiable() },
-                        featureNames.map { it.toUnmodifiable() },
+                        categoricalFeatureNames.map { it.toImmutable() },
+                        featureNames.map { it.toImmutable() },
                         inferenceIdColumnName,
                         latencyColumnName,
                         metadata,
                         predictionsColumnName,
                         targetColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is TabularRegressionData && this.categoricalFeatureNames == other.categoricalFeatureNames && this.featureNames == other.featureNames && this.inferenceIdColumnName == other.inferenceIdColumnName && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.predictionsColumnName == other.predictionsColumnName && this.targetColumnName == other.targetColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(categoricalFeatureNames, featureNames, inferenceIdColumnName, latencyColumnName, metadata, predictionsColumnName, targetColumnName, timestampColumnName, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "TabularRegressionData{categoricalFeatureNames=$categoricalFeatureNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, targetColumnName=$targetColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
 
         @JsonDeserialize(builder = TextClassificationData.Builder::class)
@@ -1823,8 +1714,6 @@ constructor(
         ) {
 
             private var validated: Boolean = false
-
-            private var hashCode: Int = 0
 
             /**
              * List of class names indexed by label integer in the dataset. E.g.
@@ -1945,46 +1834,6 @@ constructor(
             }
 
             fun toBuilder() = Builder().from(this)
-
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return other is TextClassificationData &&
-                    this.classNames == other.classNames &&
-                    this.inferenceIdColumnName == other.inferenceIdColumnName &&
-                    this.labelColumnName == other.labelColumnName &&
-                    this.latencyColumnName == other.latencyColumnName &&
-                    this.metadata == other.metadata &&
-                    this.predictionsColumnName == other.predictionsColumnName &&
-                    this.predictionScoresColumnName == other.predictionScoresColumnName &&
-                    this.textColumnName == other.textColumnName &&
-                    this.timestampColumnName == other.timestampColumnName &&
-                    this.additionalProperties == other.additionalProperties
-            }
-
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode =
-                        Objects.hash(
-                            classNames,
-                            inferenceIdColumnName,
-                            labelColumnName,
-                            latencyColumnName,
-                            metadata,
-                            predictionsColumnName,
-                            predictionScoresColumnName,
-                            textColumnName,
-                            timestampColumnName,
-                            additionalProperties,
-                        )
-                }
-                return hashCode
-            }
-
-            override fun toString() =
-                "TextClassificationData{classNames=$classNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, textColumnName=$textColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
 
             companion object {
 
@@ -2161,7 +2010,7 @@ constructor(
 
                 fun build(): TextClassificationData =
                     TextClassificationData(
-                        classNames.map { it.toUnmodifiable() },
+                        classNames.map { it.toImmutable() },
                         inferenceIdColumnName,
                         labelColumnName,
                         latencyColumnName,
@@ -2170,9 +2019,29 @@ constructor(
                         predictionScoresColumnName,
                         textColumnName,
                         timestampColumnName,
-                        additionalProperties.toUnmodifiable(),
+                        additionalProperties.toImmutable(),
                     )
             }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is TextClassificationData && this.classNames == other.classNames && this.inferenceIdColumnName == other.inferenceIdColumnName && this.labelColumnName == other.labelColumnName && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.predictionsColumnName == other.predictionsColumnName && this.predictionScoresColumnName == other.predictionScoresColumnName && this.textColumnName == other.textColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            }
+
+            private var hashCode: Int = 0
+
+            override fun hashCode(): Int {
+                if (hashCode == 0) {
+                    hashCode = /* spotless:off */ Objects.hash(classNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, textColumnName, timestampColumnName, additionalProperties) /* spotless:on */
+                }
+                return hashCode
+            }
+
+            override fun toString() =
+                "TextClassificationData{classNames=$classNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, textColumnName=$textColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
     }
 
@@ -2183,30 +2052,11 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Row && this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Row{additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -2234,7 +2084,26 @@ constructor(
                 this.additionalProperties.putAll(additionalProperties)
             }
 
-            fun build(): Row = Row(additionalProperties.toUnmodifiable())
+            fun build(): Row = Row(additionalProperties.toImmutable())
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Row && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Row{additionalProperties=$additionalProperties}"
     }
 }

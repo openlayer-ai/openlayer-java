@@ -2,12 +2,8 @@ package com.openlayer.api.errors
 
 import com.google.common.collect.ListMultimap
 
-class BadRequestException
-constructor(
+class BadRequestException(
     headers: ListMultimap<String, String>,
-    private val error: OpenlayerError,
-) : OpenlayerServiceException(headers, "${error}") {
-    override fun statusCode(): Int = 400
-
-    fun error(): OpenlayerError = error
-}
+    body: String,
+    error: OpenlayerError,
+) : OpenlayerServiceException(400, headers, body, error)

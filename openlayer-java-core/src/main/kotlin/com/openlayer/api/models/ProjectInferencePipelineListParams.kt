@@ -3,7 +3,7 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -33,7 +33,7 @@ constructor(
         this.page?.let { params.put("page", listOf(it.toString())) }
         this.perPage?.let { params.put("perPage", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -54,24 +54,11 @@ constructor(
             return true
         }
 
-        return other is ProjectInferencePipelineListParams &&
-            this.projectId == other.projectId &&
-            this.name == other.name &&
-            this.page == other.page &&
-            this.perPage == other.perPage &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ProjectInferencePipelineListParams && this.projectId == other.projectId && this.name == other.name && this.page == other.page && this.perPage == other.perPage && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            projectId,
-            name,
-            page,
-            perPage,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
@@ -162,8 +149,8 @@ constructor(
                 name,
                 page,
                 perPage,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 }

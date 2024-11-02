@@ -7,7 +7,7 @@ import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
 import java.util.Objects
@@ -42,7 +42,7 @@ constructor(
         this.status?.let { params.put("status", listOf(it.toString())) }
         this.type?.let { params.put("type", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -63,26 +63,11 @@ constructor(
             return true
         }
 
-        return other is InferencePipelineTestResultListParams &&
-            this.inferencePipelineId == other.inferencePipelineId &&
-            this.page == other.page &&
-            this.perPage == other.perPage &&
-            this.status == other.status &&
-            this.type == other.type &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is InferencePipelineTestResultListParams && this.inferencePipelineId == other.inferencePipelineId && this.page == other.page && this.perPage == other.perPage && this.status == other.status && this.type == other.type && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            inferencePipelineId,
-            page,
-            perPage,
-            status,
-            type,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
@@ -190,8 +175,8 @@ constructor(
                 perPage,
                 status,
                 type,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 
@@ -208,7 +193,7 @@ constructor(
                 return true
             }
 
-            return other is Status && this.value == other.value
+            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -283,7 +268,7 @@ constructor(
                 return true
             }
 
-            return other is Type && this.value == other.value
+            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

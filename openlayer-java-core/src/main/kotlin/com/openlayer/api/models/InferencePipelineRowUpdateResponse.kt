@@ -13,7 +13,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 
@@ -26,8 +26,6 @@ private constructor(
 ) {
 
     private var validated: Boolean = false
-
-    private var hashCode: Int = 0
 
     fun success(): Success = success.getRequired("success")
 
@@ -45,26 +43,6 @@ private constructor(
     }
 
     fun toBuilder() = Builder().from(this)
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return other is InferencePipelineRowUpdateResponse &&
-            this.success == other.success &&
-            this.additionalProperties == other.additionalProperties
-    }
-
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = Objects.hash(success, additionalProperties)
-        }
-        return hashCode
-    }
-
-    override fun toString() =
-        "InferencePipelineRowUpdateResponse{success=$success, additionalProperties=$additionalProperties}"
 
     companion object {
 
@@ -104,7 +82,7 @@ private constructor(
         }
 
         fun build(): InferencePipelineRowUpdateResponse =
-            InferencePipelineRowUpdateResponse(success, additionalProperties.toUnmodifiable())
+            InferencePipelineRowUpdateResponse(success, additionalProperties.toImmutable())
     }
 
     class Success
@@ -120,7 +98,7 @@ private constructor(
                 return true
             }
 
-            return other is Success && this.value == other.value
+            return /* spotless:off */ other is Success && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -157,4 +135,24 @@ private constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is InferencePipelineRowUpdateResponse && this.success == other.success && this.additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    private var hashCode: Int = 0
+
+    override fun hashCode(): Int {
+        if (hashCode == 0) {
+            hashCode = /* spotless:off */ Objects.hash(success, additionalProperties) /* spotless:on */
+        }
+        return hashCode
+    }
+
+    override fun toString() =
+        "InferencePipelineRowUpdateResponse{success=$success, additionalProperties=$additionalProperties}"
 }

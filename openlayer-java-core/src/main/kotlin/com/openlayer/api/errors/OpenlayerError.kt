@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import java.util.Objects
 
 @JsonDeserialize(builder = OpenlayerError.Builder::class)
@@ -26,11 +26,11 @@ constructor(
             return true
         }
 
-        return other is OpenlayerError && this.additionalProperties == other.additionalProperties
+        return /* spotless:off */ other is OpenlayerError && this.additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(additionalProperties)
+        return /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
     }
 
     override fun toString() = "OpenlayerError{additionalProperties=$additionalProperties}"
@@ -60,6 +60,6 @@ constructor(
             this.additionalProperties.putAll(additionalProperties)
         }
 
-        fun build(): OpenlayerError = OpenlayerError(additionalProperties.toUnmodifiable())
+        fun build(): OpenlayerError = OpenlayerError(additionalProperties.toImmutable())
     }
 }

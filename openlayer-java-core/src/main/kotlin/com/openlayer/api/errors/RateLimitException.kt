@@ -2,12 +2,8 @@ package com.openlayer.api.errors
 
 import com.google.common.collect.ListMultimap
 
-class RateLimitException
-constructor(
+class RateLimitException(
     headers: ListMultimap<String, String>,
-    private val error: OpenlayerError,
-) : OpenlayerServiceException(headers, "${error}") {
-    override fun statusCode(): Int = 429
-
-    fun error(): OpenlayerError = error
-}
+    body: String,
+    error: OpenlayerError,
+) : OpenlayerServiceException(429, headers, body, error)

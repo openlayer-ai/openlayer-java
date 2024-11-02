@@ -1,11 +1,8 @@
 @file:JvmName("HttpRequestBodies")
 
-package com.openlayer.api.services
+package com.openlayer.api.core
 
 import com.fasterxml.jackson.databind.json.JsonMapper
-import com.openlayer.api.core.Enum
-import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.MultipartFormValue
 import com.openlayer.api.core.http.HttpRequestBody
 import com.openlayer.api.errors.OpenlayerException
 import java.io.ByteArrayOutputStream

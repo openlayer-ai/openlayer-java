@@ -7,7 +7,7 @@ import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
 import java.util.Objects
@@ -39,7 +39,7 @@ constructor(
         this.perPage?.let { params.put("perPage", listOf(it.toString())) }
         this.taskType?.let { params.put("taskType", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -53,24 +53,11 @@ constructor(
             return true
         }
 
-        return other is ProjectListParams &&
-            this.name == other.name &&
-            this.page == other.page &&
-            this.perPage == other.perPage &&
-            this.taskType == other.taskType &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders
+        return /* spotless:off */ other is ProjectListParams && this.name == other.name && this.page == other.page && this.perPage == other.perPage && this.taskType == other.taskType && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            page,
-            perPage,
-            taskType,
-            additionalQueryParams,
-            additionalHeaders,
-        )
+        return /* spotless:off */ Objects.hash(name, page, perPage, taskType, additionalQueryParams, additionalHeaders) /* spotless:on */
     }
 
     override fun toString() =
@@ -161,8 +148,8 @@ constructor(
                 page,
                 perPage,
                 taskType,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
             )
     }
 
@@ -179,7 +166,7 @@ constructor(
                 return true
             }
 
-            return other is TaskType && this.value == other.value
+            return /* spotless:off */ other is TaskType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

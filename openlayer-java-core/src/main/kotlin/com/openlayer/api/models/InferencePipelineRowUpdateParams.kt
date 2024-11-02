@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.models.*
 import java.util.Objects
 import java.util.Optional
@@ -47,7 +47,7 @@ constructor(
         val params = mutableMapOf<String, List<String>>()
         this.inferenceId.let { params.put("inferenceId", listOf(it.toString())) }
         params.putAll(additionalQueryParams)
-        return params.toUnmodifiable()
+        return params.toImmutable()
     }
 
     @JvmSynthetic internal fun getHeaders(): Map<String, List<String>> = additionalHeaders
@@ -68,8 +68,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("row") fun row(): JsonValue? = row
 
         @JsonProperty("config") fun config(): Config? = config
@@ -79,32 +77,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is InferencePipelineRowUpdateBody &&
-                this.row == other.row &&
-                this.config == other.config &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        row,
-                        config,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "InferencePipelineRowUpdateBody{row=$row, config=$config, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -147,9 +119,29 @@ constructor(
                 InferencePipelineRowUpdateBody(
                     checkNotNull(row) { "`row` is required but was not set" },
                     config,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is InferencePipelineRowUpdateBody && this.row == other.row && this.config == other.config && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(row, config, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "InferencePipelineRowUpdateBody{row=$row, config=$config, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -163,26 +155,11 @@ constructor(
             return true
         }
 
-        return other is InferencePipelineRowUpdateParams &&
-            this.inferencePipelineId == other.inferencePipelineId &&
-            this.row == other.row &&
-            this.config == other.config &&
-            this.inferenceId == other.inferenceId &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is InferencePipelineRowUpdateParams && this.inferencePipelineId == other.inferencePipelineId && this.row == other.row && this.config == other.config && this.inferenceId == other.inferenceId && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            inferencePipelineId,
-            row,
-            config,
-            inferenceId,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(inferencePipelineId, row, config, inferenceId, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -291,9 +268,9 @@ constructor(
                 checkNotNull(inferenceId) { "`inferenceId` is required but was not set" },
                 checkNotNull(row) { "`row` is required but was not set" },
                 config,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -308,8 +285,6 @@ constructor(
         private val humanFeedbackColumnName: String?,
         private val additionalProperties: Map<String, JsonValue>,
     ) {
-
-        private var hashCode: Int = 0
 
         /**
          * Name of the column with the inference ids. This is useful if you want to update rows at a
@@ -341,38 +316,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Config &&
-                this.inferenceIdColumnName == other.inferenceIdColumnName &&
-                this.latencyColumnName == other.latencyColumnName &&
-                this.timestampColumnName == other.timestampColumnName &&
-                this.groundTruthColumnName == other.groundTruthColumnName &&
-                this.humanFeedbackColumnName == other.humanFeedbackColumnName &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        inferenceIdColumnName,
-                        latencyColumnName,
-                        timestampColumnName,
-                        groundTruthColumnName,
-                        humanFeedbackColumnName,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "Config{inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -455,8 +398,28 @@ constructor(
                     timestampColumnName,
                     groundTruthColumnName,
                     humanFeedbackColumnName,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Config && this.inferenceIdColumnName == other.inferenceIdColumnName && this.latencyColumnName == other.latencyColumnName && this.timestampColumnName == other.timestampColumnName && this.groundTruthColumnName == other.groundTruthColumnName && this.humanFeedbackColumnName == other.humanFeedbackColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(inferenceIdColumnName, latencyColumnName, timestampColumnName, groundTruthColumnName, humanFeedbackColumnName, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "Config{inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, additionalProperties=$additionalProperties}"
     }
 }

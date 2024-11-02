@@ -12,7 +12,7 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
-import com.openlayer.api.core.toUnmodifiable
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import com.openlayer.api.models.*
 import java.time.OffsetDateTime
@@ -59,8 +59,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         /** The project name. */
         @JsonProperty("name") fun name(): String? = name
 
@@ -75,34 +73,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is ProjectCreateBody &&
-                this.name == other.name &&
-                this.taskType == other.taskType &&
-                this.description == other.description &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        name,
-                        taskType,
-                        description,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -154,9 +124,29 @@ constructor(
                     checkNotNull(name) { "`name` is required but was not set" },
                     checkNotNull(taskType) { "`taskType` is required but was not set" },
                     description,
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is ProjectCreateBody && this.name == other.name && this.taskType == other.taskType && this.description == other.description && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(name, taskType, description, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
     }
 
     fun _additionalQueryParams(): Map<String, List<String>> = additionalQueryParams
@@ -170,24 +160,11 @@ constructor(
             return true
         }
 
-        return other is ProjectCreateParams &&
-            this.name == other.name &&
-            this.taskType == other.taskType &&
-            this.description == other.description &&
-            this.additionalQueryParams == other.additionalQueryParams &&
-            this.additionalHeaders == other.additionalHeaders &&
-            this.additionalBodyProperties == other.additionalBodyProperties
+        return /* spotless:off */ other is ProjectCreateParams && this.name == other.name && this.taskType == other.taskType && this.description == other.description && this.additionalQueryParams == other.additionalQueryParams && this.additionalHeaders == other.additionalHeaders && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
     override fun hashCode(): Int {
-        return Objects.hash(
-            name,
-            taskType,
-            description,
-            additionalQueryParams,
-            additionalHeaders,
-            additionalBodyProperties,
-        )
+        return /* spotless:off */ Objects.hash(name, taskType, description, additionalQueryParams, additionalHeaders, additionalBodyProperties) /* spotless:on */
     }
 
     override fun toString() =
@@ -288,9 +265,9 @@ constructor(
                 checkNotNull(name) { "`name` is required but was not set" },
                 checkNotNull(taskType) { "`taskType` is required but was not set" },
                 description,
-                additionalQueryParams.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalHeaders.mapValues { it.value.toUnmodifiable() }.toUnmodifiable(),
-                additionalBodyProperties.toUnmodifiable(),
+                additionalQueryParams.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalHeaders.mapValues { it.value.toImmutable() }.toImmutable(),
+                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -303,8 +280,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("app") fun app(): String? = app
 
         @JsonAnyGetter
@@ -312,25 +287,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is Links &&
-                this.app == other.app &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = Objects.hash(app, additionalProperties)
-            }
-            return hashCode
-        }
-
-        override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -367,9 +323,28 @@ constructor(
             fun build(): Links =
                 Links(
                     checkNotNull(app) { "`app` is required but was not set" },
-                    additionalProperties.toUnmodifiable()
+                    additionalProperties.toImmutable()
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
 
     class Source
@@ -385,7 +360,7 @@ constructor(
                 return true
             }
 
-            return other is Source && this.value == other.value
+            return /* spotless:off */ other is Source && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -448,7 +423,7 @@ constructor(
                 return true
             }
 
-            return other is TaskType && this.value == other.value
+            return /* spotless:off */ other is TaskType && this.value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -523,8 +498,6 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
-        private var hashCode: Int = 0
-
         @JsonProperty("id") fun id(): String? = id
 
         @JsonProperty("gitId") fun gitId(): Long? = gitId
@@ -554,52 +527,6 @@ constructor(
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         fun toBuilder() = Builder().from(this)
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return other is GitRepo &&
-                this.id == other.id &&
-                this.gitId == other.gitId &&
-                this.dateConnected == other.dateConnected &&
-                this.dateUpdated == other.dateUpdated &&
-                this.branch == other.branch &&
-                this.name == other.name &&
-                this.private_ == other.private_ &&
-                this.slug == other.slug &&
-                this.url == other.url &&
-                this.rootDir == other.rootDir &&
-                this.projectId == other.projectId &&
-                this.gitAccountId == other.gitAccountId &&
-                this.additionalProperties == other.additionalProperties
-        }
-
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode =
-                    Objects.hash(
-                        id,
-                        gitId,
-                        dateConnected,
-                        dateUpdated,
-                        branch,
-                        name,
-                        private_,
-                        slug,
-                        url,
-                        rootDir,
-                        projectId,
-                        gitAccountId,
-                        additionalProperties,
-                    )
-            }
-            return hashCode
-        }
-
-        override fun toString() =
-            "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
 
         companion object {
 
@@ -698,8 +625,28 @@ constructor(
                     rootDir,
                     checkNotNull(projectId) { "`projectId` is required but was not set" },
                     checkNotNull(gitAccountId) { "`gitAccountId` is required but was not set" },
-                    additionalProperties.toUnmodifiable(),
+                    additionalProperties.toImmutable(),
                 )
         }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is GitRepo && this.id == other.id && this.gitId == other.gitId && this.dateConnected == other.dateConnected && this.dateUpdated == other.dateUpdated && this.branch == other.branch && this.name == other.name && this.private_ == other.private_ && this.slug == other.slug && this.url == other.url && this.rootDir == other.rootDir && this.projectId == other.projectId && this.gitAccountId == other.gitAccountId && this.additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        private var hashCode: Int = 0
+
+        override fun hashCode(): Int {
+            if (hashCode == 0) {
+                hashCode = /* spotless:off */ Objects.hash(id, gitId, dateConnected, dateUpdated, branch, name, private_, slug, url, rootDir, projectId, gitAccountId, additionalProperties) /* spotless:on */
+            }
+            return hashCode
+        }
+
+        override fun toString() =
+            "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
     }
 }
