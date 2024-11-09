@@ -13,7 +13,7 @@ constructor(
 ) : OpenlayerClientAsync {
 
     private val clientOptionsWithUserAgent =
-        if (clientOptions.headers.containsKey("User-Agent")) clientOptions
+        if (clientOptions.headers.names().contains("User-Agent")) clientOptions
         else
             clientOptions
                 .toBuilder()
