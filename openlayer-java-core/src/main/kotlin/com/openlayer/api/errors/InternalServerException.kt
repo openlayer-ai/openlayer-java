@@ -1,10 +1,10 @@
 package com.openlayer.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.openlayer.api.core.http.Headers
 
 class InternalServerException(
     statusCode: Int,
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: OpenlayerError,
 ) : OpenlayerServiceException(statusCode, headers, body, error)

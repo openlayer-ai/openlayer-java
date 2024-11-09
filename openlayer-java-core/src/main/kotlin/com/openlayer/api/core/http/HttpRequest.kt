@@ -1,9 +1,5 @@
 package com.openlayer.api.core.http
 
-import com.google.common.collect.ArrayListMultimap
-import com.google.common.collect.ListMultimap
-import com.google.common.collect.Multimap
-import com.google.common.collect.MultimapBuilder
 import com.openlayer.api.core.toImmutable
 
 class HttpRequest
@@ -11,13 +7,15 @@ private constructor(
     @get:JvmName("method") val method: HttpMethod,
     @get:JvmName("url") val url: String?,
     @get:JvmName("pathSegments") val pathSegments: List<String>,
-    @get:JvmName("queryParams") val queryParams: ListMultimap<String, String>,
-    @get:JvmName("headers") val headers: ListMultimap<String, String>,
+    @get:JvmName("headers") val headers: Headers,
+    @get:JvmName("queryParams") val queryParams: QueryParams,
     @get:JvmName("body") val body: HttpRequestBody?,
 ) {
 
+    fun toBuilder(): Builder = Builder().from(this)
+
     override fun toString(): String =
-        "HttpRequest{method=$method, pathSegments=$pathSegments, queryParams=$queryParams, headers=$headers, body=$body}"
+        "HttpRequest{method=$method, url=$url, pathSegments=$pathSegments, headers=$headers, queryParams=$queryParams, body=$body}"
 
     companion object {
         @JvmStatic fun builder() = Builder()
@@ -27,55 +25,110 @@ private constructor(
 
         private var method: HttpMethod? = null
         private var url: String? = null
-        private var pathSegments: MutableList<String> = ArrayList()
-        private var queryParams: ListMultimap<String, String> = ArrayListMultimap.create()
+        private var pathSegments: MutableList<String> = mutableListOf()
+        private var headers: Headers.Builder = Headers.builder()
+        private var queryParams: QueryParams.Builder = QueryParams.builder()
         private var body: HttpRequestBody? = null
-        private var headers: ListMultimap<String, String> =
-            MultimapBuilder.treeKeys(String.CASE_INSENSITIVE_ORDER).arrayListValues().build()
+
+        @JvmSynthetic
+        internal fun from(request: HttpRequest) = apply {
+            method = request.method
+            url = request.url
+            pathSegments = request.pathSegments.toMutableList()
+            headers = request.headers.toBuilder()
+            queryParams = request.queryParams.toBuilder()
+            body = request.body
+        }
 
         fun method(method: HttpMethod) = apply { this.method = method }
 
         fun url(url: String) = apply { this.url = url }
 
-        fun addPathSegment(pathSegment: String) = apply { this.pathSegments.add(pathSegment) }
+        fun addPathSegment(pathSegment: String) = apply { pathSegments.add(pathSegment) }
 
         fun addPathSegments(vararg pathSegments: String) = apply {
-            for (pathSegment in pathSegments) {
-                this.pathSegments.add(pathSegment)
-            }
+            this.pathSegments.addAll(pathSegments)
         }
 
-        fun putQueryParam(name: String, value: String) = apply {
-            this.queryParams.replaceValues(name, listOf(value))
+        fun headers(headers: Headers) = apply {
+            this.headers.clear()
+            putAllHeaders(headers)
         }
 
-        fun putQueryParams(name: String, values: Iterable<String>) = apply {
-            this.queryParams.replaceValues(name, values)
+        fun headers(headers: Map<String, Iterable<String>>) = apply {
+            this.headers.clear()
+            putAllHeaders(headers)
+        }
+
+        fun putHeader(name: String, value: String) = apply { headers.put(name, value) }
+
+        fun putHeaders(name: String, values: Iterable<String>) = apply { headers.put(name, values) }
+
+        fun putAllHeaders(headers: Headers) = apply { this.headers.putAll(headers) }
+
+        fun putAllHeaders(headers: Map<String, Iterable<String>>) = apply {
+            this.headers.putAll(headers)
+        }
+
+        fun replaceHeaders(name: String, value: String) = apply { headers.replace(name, value) }
+
+        fun replaceHeaders(name: String, values: Iterable<String>) = apply {
+            headers.replace(name, values)
+        }
+
+        fun replaceAllHeaders(headers: Headers) = apply { this.headers.replaceAll(headers) }
+
+        fun replaceAllHeaders(headers: Map<String, Iterable<String>>) = apply {
+            this.headers.replaceAll(headers)
+        }
+
+        fun removeHeaders(name: String) = apply { headers.remove(name) }
+
+        fun removeAllHeaders(names: Set<String>) = apply { headers.removeAll(names) }
+
+        fun queryParams(queryParams: QueryParams) = apply {
+            this.queryParams.clear()
+            putAllQueryParams(queryParams)
+        }
+
+        fun queryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            this.queryParams.clear()
+            putAllQueryParams(queryParams)
+        }
+
+        fun putQueryParam(key: String, value: String) = apply { queryParams.put(key, value) }
+
+        fun putQueryParams(key: String, values: Iterable<String>) = apply {
+            queryParams.put(key, values)
+        }
+
+        fun putAllQueryParams(queryParams: QueryParams) = apply {
+            this.queryParams.putAll(queryParams)
         }
 
         fun putAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
-            queryParams.forEach(this::putQueryParams)
+            this.queryParams.putAll(queryParams)
         }
 
-        fun putAllQueryParams(queryParams: Multimap<String, String>) = apply {
-            queryParams.asMap().forEach(this::putQueryParams)
+        fun replaceQueryParams(key: String, value: String) = apply {
+            queryParams.replace(key, value)
         }
 
-        fun putHeader(name: String, value: String) = apply {
-            this.headers.replaceValues(name, listOf(value))
+        fun replaceQueryParams(key: String, values: Iterable<String>) = apply {
+            queryParams.replace(key, values)
         }
 
-        fun putHeaders(name: String, values: Iterable<String>) = apply {
-            this.headers.replaceValues(name, values)
+        fun replaceAllQueryParams(queryParams: QueryParams) = apply {
+            this.queryParams.replaceAll(queryParams)
         }
 
-        fun putAllHeaders(headers: Map<String, Iterable<String>>) = apply {
-            headers.forEach(this::putHeaders)
+        fun replaceAllQueryParams(queryParams: Map<String, Iterable<String>>) = apply {
+            this.queryParams.replaceAll(queryParams)
         }
 
-        fun putAllHeaders(headers: Multimap<String, String>) = apply {
-            headers.asMap().forEach(this::putHeaders)
-        }
+        fun removeQueryParams(key: String) = apply { queryParams.remove(key) }
+
+        fun removeAllQueryParams(keys: Set<String>) = apply { queryParams.removeAll(keys) }
 
         fun body(body: HttpRequestBody) = apply { this.body = body }
 
@@ -84,8 +137,8 @@ private constructor(
                 checkNotNull(method) { "`method` is required but was not set" },
                 url,
                 pathSegments.toImmutable(),
-                queryParams.toImmutable(),
-                headers,
+                headers.build(),
+                queryParams.build(),
                 body,
             )
     }

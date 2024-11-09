@@ -1,9 +1,9 @@
 package com.openlayer.api.errors
 
-import com.google.common.collect.ListMultimap
+import com.openlayer.api.core.http.Headers
 
 class BadRequestException(
-    headers: ListMultimap<String, String>,
+    headers: Headers,
     body: String,
     error: OpenlayerError,
 ) : OpenlayerServiceException(400, headers, body, error)
