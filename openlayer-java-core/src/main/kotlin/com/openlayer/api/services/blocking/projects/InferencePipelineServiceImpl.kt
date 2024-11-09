@@ -38,9 +38,9 @@ constructor(
                 .method(HttpMethod.POST)
                 .addPathSegments("projects", params.getPathParam(0), "inference-pipelines")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
-                .putAllHeaders(params.getHeaders())
+                .replaceAllHeaders(params.getHeaders())
                 .body(json(clientOptions.jsonMapper, params.getBody()))
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
@@ -68,9 +68,9 @@ constructor(
                 .method(HttpMethod.GET)
                 .addPathSegments("projects", params.getPathParam(0), "inference-pipelines")
                 .putAllQueryParams(clientOptions.queryParams)
-                .putAllQueryParams(params.getQueryParams())
+                .replaceAllQueryParams(params.getQueryParams())
                 .putAllHeaders(clientOptions.headers)
-                .putAllHeaders(params.getHeaders())
+                .replaceAllHeaders(params.getHeaders())
                 .build()
         return clientOptions.httpClient.execute(request, requestOptions).let { response ->
             response

@@ -2,6 +2,7 @@
 
 package com.openlayer.api.models
 
+import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -27,18 +28,18 @@ class ProjectListParamsTest {
                 .perPage(100L)
                 .taskType(ProjectListParams.TaskType.LLM_BASE)
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("name", listOf("name"))
-        expected.put("page", listOf("123"))
-        expected.put("perPage", listOf("100"))
-        expected.put("taskType", listOf(ProjectListParams.TaskType.LLM_BASE.toString()))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("name", "name")
+        expected.put("page", "123")
+        expected.put("perPage", "100")
+        expected.put("taskType", ProjectListParams.TaskType.LLM_BASE.toString())
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params = ProjectListParams.builder().build()
-        val expected = mutableMapOf<String, List<String>>()
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 }

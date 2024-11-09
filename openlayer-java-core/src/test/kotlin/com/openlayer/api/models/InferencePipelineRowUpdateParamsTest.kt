@@ -3,6 +3,7 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
+import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -44,9 +45,9 @@ class InferencePipelineRowUpdateParamsTest {
                 )
                 .inferenceId("inferenceId")
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("inferenceId", listOf("inferenceId"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("inferenceId", "inferenceId")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
@@ -57,9 +58,9 @@ class InferencePipelineRowUpdateParamsTest {
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .inferenceId("inferenceId")
                 .build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("inferenceId", listOf("inferenceId"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("inferenceId", "inferenceId")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
