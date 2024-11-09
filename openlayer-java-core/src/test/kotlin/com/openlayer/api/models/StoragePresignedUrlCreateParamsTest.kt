@@ -2,6 +2,7 @@
 
 package com.openlayer.api.models
 
+import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -16,16 +17,16 @@ class StoragePresignedUrlCreateParamsTest {
     @Test
     fun getQueryParams() {
         val params = StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("objectName", listOf("objectName"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("objectName", "objectName")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
     fun getQueryParamsWithoutOptionalFields() {
         val params = StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
-        val expected = mutableMapOf<String, List<String>>()
-        expected.put("objectName", listOf("objectName"))
-        assertThat(params.getQueryParams()).isEqualTo(expected)
+        val expected = QueryParams.builder()
+        expected.put("objectName", "objectName")
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 }

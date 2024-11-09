@@ -13,13 +13,11 @@ import java.util.Objects
 @JsonDeserialize(builder = OpenlayerError.Builder::class)
 @NoAutoDetect
 class OpenlayerError
-constructor(
-    private val additionalProperties: Map<String, JsonValue>,
+private constructor(
+    @JsonAnyGetter
+    @get:JvmName("additionalProperties")
+    val additionalProperties: Map<String, JsonValue>,
 ) {
-
-    @JsonAnyGetter fun additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    fun toBuilder() = Builder()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {
@@ -35,6 +33,8 @@ constructor(
 
     override fun toString() = "OpenlayerError{additionalProperties=$additionalProperties}"
 
+    fun toBuilder() = Builder().from(this)
+
     companion object {
 
         @JvmStatic fun builder() = Builder()
@@ -44,20 +44,29 @@ constructor(
 
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
-        fun from(error: OpenlayerError) = apply { additionalProperties(error.additionalProperties) }
+        @JvmSynthetic
+        internal fun from(openlayerError: OpenlayerError) = apply {
+            additionalProperties = openlayerError.additionalProperties.toMutableMap()
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
         @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
         }
 
         fun build(): OpenlayerError = OpenlayerError(additionalProperties.toImmutable())
