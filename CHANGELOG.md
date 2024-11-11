@@ -1,5 +1,27 @@
 # Changelog
 
+## 0.1.0-alpha.5 (2024-11-11)
+
+Full Changelog: [v0.1.0-alpha.4...v0.1.0-alpha.5](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.4...v0.1.0-alpha.5)
+
+### Features
+
+* **api:** manual updates ([#42](https://github.com/openlayer-ai/openlayer-java/issues/42)) ([90b8621](https://github.com/openlayer-ai/openlayer-java/commit/90b8621b2a9cd61dac108272689fd0ac91892e98))
+* **api:** manual updates ([#43](https://github.com/openlayer-ai/openlayer-java/issues/43)) ([197d1e4](https://github.com/openlayer-ai/openlayer-java/commit/197d1e408bb880f11dde24d4af04b0b6102a05cd))
+* **api:** update via SDK Studio ([#40](https://github.com/openlayer-ai/openlayer-java/issues/40)) ([d739c0c](https://github.com/openlayer-ai/openlayer-java/commit/d739c0cf10da747b6116db07064f4211e138fbca))
+* **api:** update via SDK Studio ([#41](https://github.com/openlayer-ai/openlayer-java/issues/41)) ([115a8bb](https://github.com/openlayer-ai/openlayer-java/commit/115a8bb76b4cc1deb9abccd7ff9341c9e7507db2))
+
+
+### Bug Fixes
+
+* update stream data example ([01a6acb](https://github.com/openlayer-ai/openlayer-java/commit/01a6acb859853b961556dcc7e51b91a40def3461))
+
+
+### Chores
+
+* custom code changes ([#44](https://github.com/openlayer-ai/openlayer-java/issues/44)) ([d1a94e9](https://github.com/openlayer-ai/openlayer-java/commit/d1a94e9d34778ca922ce580a0d887201881114ee))
+* rebuild project due to codegen change ([#45](https://github.com/openlayer-ai/openlayer-java/issues/45)) ([546951e](https://github.com/openlayer-ai/openlayer-java/commit/546951ef157f61e22168e8bc3caee9e437c27a53))
+
 ## 0.1.0-alpha.4 (2024-09-23)
 
 Full Changelog: [v0.1.0-alpha.3...v0.1.0-alpha.4](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.3...v0.1.0-alpha.4)
