@@ -37,12 +37,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineRetrieveParams && this.inferencePipelineId == other.inferencePipelineId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineRetrieveParams && inferencePipelineId == other.inferencePipelineId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(inferencePipelineId, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "InferencePipelineRetrieveParams{inferencePipelineId=$inferencePipelineId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

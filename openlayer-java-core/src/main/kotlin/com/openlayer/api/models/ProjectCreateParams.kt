@@ -135,17 +135,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectCreateBody && this.name == other.name && this.taskType == other.taskType && this.description == other.description && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ProjectCreateBody && name == other.name && taskType == other.taskType && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(name, taskType, description, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(name, taskType, description, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
@@ -162,12 +159,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectCreateParams && this.name == other.name && this.taskType == other.taskType && this.description == other.description && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectCreateParams && name == other.name && taskType == other.taskType && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(name, taskType, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, taskType, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -400,17 +395,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
@@ -428,7 +420,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Source && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Source && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -491,7 +483,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is TaskType && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -702,17 +694,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is GitRepo && this.id == other.id && this.gitId == other.gitId && this.dateConnected == other.dateConnected && this.dateUpdated == other.dateUpdated && this.branch == other.branch && this.name == other.name && this.private_ == other.private_ && this.slug == other.slug && this.url == other.url && this.rootDir == other.rootDir && this.projectId == other.projectId && this.gitAccountId == other.gitAccountId && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is GitRepo && id == other.id && gitId == other.gitId && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && branch == other.branch && name == other.name && private_ == other.private_ && slug == other.slug && url == other.url && rootDir == other.rootDir && projectId == other.projectId && gitAccountId == other.gitAccountId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(id, gitId, dateConnected, dateUpdated, branch, name, private_, slug, url, rootDir, projectId, gitAccountId, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(id, gitId, dateConnected, dateUpdated, branch, name, private_, slug, url, rootDir, projectId, gitAccountId, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"

@@ -139,17 +139,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InferencePipelineDataStreamBody && this.config == other.config && this.rows == other.rows && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is InferencePipelineDataStreamBody && config == other.config && rows == other.rows && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(config, rows, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(config, rows, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "InferencePipelineDataStreamBody{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
@@ -166,12 +163,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineDataStreamParams && this.inferencePipelineId == other.inferencePipelineId && this.config == other.config && this.rows == other.rows && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineDataStreamParams && inferencePipelineId == other.inferencePipelineId && config == other.config && rows == other.rows && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(inferencePipelineId, config, rows, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, config, rows, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "InferencePipelineDataStreamParams{inferencePipelineId=$inferencePipelineId, config=$config, rows=$rows, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -452,15 +447,13 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Config && this.llmData == other.llmData && this.tabularClassificationData == other.tabularClassificationData && this.tabularRegressionData == other.tabularRegressionData && this.textClassificationData == other.textClassificationData /* spotless:on */
+            return /* spotless:off */ other is Config && llmData == other.llmData && tabularClassificationData == other.tabularClassificationData && tabularRegressionData == other.tabularRegressionData && textClassificationData == other.textClassificationData /* spotless:on */
         }
 
-        override fun hashCode(): Int {
-            return /* spotless:off */ Objects.hash(llmData, tabularClassificationData, tabularRegressionData, textClassificationData) /* spotless:on */
-        }
+        override fun hashCode(): Int = /* spotless:off */ Objects.hash(llmData, tabularClassificationData, tabularRegressionData, textClassificationData) /* spotless:on */
 
-        override fun toString(): String {
-            return when {
+        override fun toString(): String =
+            when {
                 llmData != null -> "Config{llmData=$llmData}"
                 tabularClassificationData != null ->
                     "Config{tabularClassificationData=$tabularClassificationData}"
@@ -471,7 +464,6 @@ constructor(
                 _json != null -> "Config{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid Config")
             }
-        }
 
         companion object {
 
@@ -1042,17 +1034,14 @@ constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Prompt && this.role == other.role && this.content == other.content && this.additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Prompt && role == other.role && content == other.content && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
-                private var hashCode: Int = 0
+                /* spotless:off */
+                private val hashCode: Int by lazy { Objects.hash(role, content, additionalProperties) }
+                /* spotless:on */
 
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = /* spotless:off */ Objects.hash(role, content, additionalProperties) /* spotless:on */
-                    }
-                    return hashCode
-                }
+                override fun hashCode(): Int = hashCode
 
                 override fun toString() =
                     "Prompt{role=$role, content=$content, additionalProperties=$additionalProperties}"
@@ -1063,17 +1052,14 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is LlmData && this.numOfTokenColumnName == other.numOfTokenColumnName && this.contextColumnName == other.contextColumnName && this.costColumnName == other.costColumnName && this.groundTruthColumnName == other.groundTruthColumnName && this.inferenceIdColumnName == other.inferenceIdColumnName && this.inputVariableNames == other.inputVariableNames && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.outputColumnName == other.outputColumnName && this.prompt == other.prompt && this.questionColumnName == other.questionColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is LlmData && numOfTokenColumnName == other.numOfTokenColumnName && contextColumnName == other.contextColumnName && costColumnName == other.costColumnName && groundTruthColumnName == other.groundTruthColumnName && inferenceIdColumnName == other.inferenceIdColumnName && inputVariableNames == other.inputVariableNames && latencyColumnName == other.latencyColumnName && metadata == other.metadata && outputColumnName == other.outputColumnName && prompt == other.prompt && questionColumnName == other.questionColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(numOfTokenColumnName, contextColumnName, costColumnName, groundTruthColumnName, inferenceIdColumnName, inputVariableNames, latencyColumnName, metadata, outputColumnName, prompt, questionColumnName, timestampColumnName, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(numOfTokenColumnName, contextColumnName, costColumnName, groundTruthColumnName, inferenceIdColumnName, inputVariableNames, latencyColumnName, metadata, outputColumnName, prompt, questionColumnName, timestampColumnName, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "LlmData{numOfTokenColumnName=$numOfTokenColumnName, contextColumnName=$contextColumnName, costColumnName=$costColumnName, groundTruthColumnName=$groundTruthColumnName, inferenceIdColumnName=$inferenceIdColumnName, inputVariableNames=$inputVariableNames, latencyColumnName=$latencyColumnName, metadata=$metadata, outputColumnName=$outputColumnName, prompt=$prompt, questionColumnName=$questionColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
@@ -1448,17 +1434,14 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TabularClassificationData && this.categoricalFeatureNames == other.categoricalFeatureNames && this.classNames == other.classNames && this.featureNames == other.featureNames && this.inferenceIdColumnName == other.inferenceIdColumnName && this.labelColumnName == other.labelColumnName && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.predictionsColumnName == other.predictionsColumnName && this.predictionScoresColumnName == other.predictionScoresColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is TabularClassificationData && categoricalFeatureNames == other.categoricalFeatureNames && classNames == other.classNames && featureNames == other.featureNames && inferenceIdColumnName == other.inferenceIdColumnName && labelColumnName == other.labelColumnName && latencyColumnName == other.latencyColumnName && metadata == other.metadata && predictionsColumnName == other.predictionsColumnName && predictionScoresColumnName == other.predictionScoresColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(categoricalFeatureNames, classNames, featureNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, timestampColumnName, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(categoricalFeatureNames, classNames, featureNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, timestampColumnName, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "TabularClassificationData{categoricalFeatureNames=$categoricalFeatureNames, classNames=$classNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
@@ -1749,17 +1732,14 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TabularRegressionData && this.categoricalFeatureNames == other.categoricalFeatureNames && this.featureNames == other.featureNames && this.inferenceIdColumnName == other.inferenceIdColumnName && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.predictionsColumnName == other.predictionsColumnName && this.targetColumnName == other.targetColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is TabularRegressionData && categoricalFeatureNames == other.categoricalFeatureNames && featureNames == other.featureNames && inferenceIdColumnName == other.inferenceIdColumnName && latencyColumnName == other.latencyColumnName && metadata == other.metadata && predictionsColumnName == other.predictionsColumnName && targetColumnName == other.targetColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(categoricalFeatureNames, featureNames, inferenceIdColumnName, latencyColumnName, metadata, predictionsColumnName, targetColumnName, timestampColumnName, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(categoricalFeatureNames, featureNames, inferenceIdColumnName, latencyColumnName, metadata, predictionsColumnName, targetColumnName, timestampColumnName, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "TabularRegressionData{categoricalFeatureNames=$categoricalFeatureNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, targetColumnName=$targetColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
@@ -2096,17 +2076,14 @@ constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TextClassificationData && this.classNames == other.classNames && this.inferenceIdColumnName == other.inferenceIdColumnName && this.labelColumnName == other.labelColumnName && this.latencyColumnName == other.latencyColumnName && this.metadata == other.metadata && this.predictionsColumnName == other.predictionsColumnName && this.predictionScoresColumnName == other.predictionScoresColumnName && this.textColumnName == other.textColumnName && this.timestampColumnName == other.timestampColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is TextClassificationData && classNames == other.classNames && inferenceIdColumnName == other.inferenceIdColumnName && labelColumnName == other.labelColumnName && latencyColumnName == other.latencyColumnName && metadata == other.metadata && predictionsColumnName == other.predictionsColumnName && predictionScoresColumnName == other.predictionScoresColumnName && textColumnName == other.textColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(classNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, textColumnName, timestampColumnName, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(classNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, textColumnName, timestampColumnName, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "TextClassificationData{classNames=$classNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, textColumnName=$textColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
@@ -2160,17 +2137,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Row && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Row && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Row{additionalProperties=$additionalProperties}"
     }
