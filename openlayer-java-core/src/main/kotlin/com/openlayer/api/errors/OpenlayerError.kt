@@ -19,20 +19,6 @@ private constructor(
     val additionalProperties: Map<String, JsonValue>,
 ) {
 
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is OpenlayerError && this.additionalProperties == other.additionalProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
-    }
-
-    override fun toString() = "OpenlayerError{additionalProperties=$additionalProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -71,4 +57,16 @@ private constructor(
 
         fun build(): OpenlayerError = OpenlayerError(additionalProperties.toImmutable())
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is OpenlayerError && additionalProperties == other.additionalProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(additionalProperties) /* spotless:on */
+
+    override fun toString() = "OpenlayerError{additionalProperties=$additionalProperties}"
 }

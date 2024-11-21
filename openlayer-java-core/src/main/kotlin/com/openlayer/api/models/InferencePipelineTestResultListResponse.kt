@@ -398,7 +398,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
+                return /* spotless:off */ other is Status && value == other.value /* spotless:on */
             }
 
             override fun hashCode() = value.hashCode()
@@ -1210,15 +1210,13 @@ private constructor(
                             return true
                         }
 
-                        return /* spotless:off */ other is Value && this.number == other.number && this.bool == other.bool && this.string == other.string && this.strings == other.strings /* spotless:on */
+                        return /* spotless:off */ other is Value && number == other.number && bool == other.bool && string == other.string && strings == other.strings /* spotless:on */
                     }
 
-                    override fun hashCode(): Int {
-                        return /* spotless:off */ Objects.hash(number, bool, string, strings) /* spotless:on */
-                    }
+                    override fun hashCode(): Int = /* spotless:off */ Objects.hash(number, bool, string, strings) /* spotless:on */
 
-                    override fun toString(): String {
-                        return when {
+                    override fun toString(): String =
+                        when {
                             number != null -> "Value{number=$number}"
                             bool != null -> "Value{bool=$bool}"
                             string != null -> "Value{string=$string}"
@@ -1226,7 +1224,6 @@ private constructor(
                             _json != null -> "Value{_unknown=$_json}"
                             else -> throw IllegalStateException("Invalid Value")
                         }
-                    }
 
                     companion object {
 
@@ -1300,17 +1297,14 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Threshold && this.measurement == other.measurement && this.insightName == other.insightName && this.insightParameters == other.insightParameters && this.operator == other.operator && this.value == other.value && this.additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Threshold && measurement == other.measurement && insightName == other.insightName && insightParameters == other.insightParameters && operator == other.operator && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
-                private var hashCode: Int = 0
+                /* spotless:off */
+                private val hashCode: Int by lazy { Objects.hash(measurement, insightName, insightParameters, operator, value, additionalProperties) }
+                /* spotless:on */
 
-                override fun hashCode(): Int {
-                    if (hashCode == 0) {
-                        hashCode = /* spotless:off */ Objects.hash(measurement, insightName, insightParameters, operator, value, additionalProperties) /* spotless:on */
-                    }
-                    return hashCode
-                }
+                override fun hashCode(): Int = hashCode
 
                 override fun toString() =
                     "Threshold{measurement=$measurement, insightName=$insightName, insightParameters=$insightParameters, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
@@ -1321,17 +1315,14 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Goal && this.id == other.id && this.number == other.number && this.name == other.name && this.dateCreated == other.dateCreated && this.dateUpdated == other.dateUpdated && this.description == other.description && this.evaluationWindow == other.evaluationWindow && this.delayWindow == other.delayWindow && this.type == other.type && this.subtype == other.subtype && this.creatorId == other.creatorId && this.originProjectVersionId == other.originProjectVersionId && this.thresholds == other.thresholds && this.archived == other.archived && this.dateArchived == other.dateArchived && this.suggested == other.suggested && this.commentCount == other.commentCount && this.usesMlModel == other.usesMlModel && this.usesValidationDataset == other.usesValidationDataset && this.usesTrainingDataset == other.usesTrainingDataset && this.usesReferenceDataset == other.usesReferenceDataset && this.usesProductionData == other.usesProductionData && this.additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Goal && id == other.id && number == other.number && name == other.name && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && description == other.description && evaluationWindow == other.evaluationWindow && delayWindow == other.delayWindow && type == other.type && subtype == other.subtype && creatorId == other.creatorId && originProjectVersionId == other.originProjectVersionId && thresholds == other.thresholds && archived == other.archived && dateArchived == other.dateArchived && suggested == other.suggested && commentCount == other.commentCount && usesMlModel == other.usesMlModel && usesValidationDataset == other.usesValidationDataset && usesTrainingDataset == other.usesTrainingDataset && usesReferenceDataset == other.usesReferenceDataset && usesProductionData == other.usesProductionData && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
-            private var hashCode: Int = 0
+            /* spotless:off */
+            private val hashCode: Int by lazy { Objects.hash(id, number, name, dateCreated, dateUpdated, description, evaluationWindow, delayWindow, type, subtype, creatorId, originProjectVersionId, thresholds, archived, dateArchived, suggested, commentCount, usesMlModel, usesValidationDataset, usesTrainingDataset, usesReferenceDataset, usesProductionData, additionalProperties) }
+            /* spotless:on */
 
-            override fun hashCode(): Int {
-                if (hashCode == 0) {
-                    hashCode = /* spotless:off */ Objects.hash(id, number, name, dateCreated, dateUpdated, description, evaluationWindow, delayWindow, type, subtype, creatorId, originProjectVersionId, thresholds, archived, dateArchived, suggested, commentCount, usesMlModel, usesValidationDataset, usesTrainingDataset, usesReferenceDataset, usesProductionData, additionalProperties) /* spotless:on */
-                }
-                return hashCode
-            }
+            override fun hashCode(): Int = hashCode
 
             override fun toString() =
                 "Goal{id=$id, number=$number, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, evaluationWindow=$evaluationWindow, delayWindow=$delayWindow, type=$type, subtype=$subtype, creatorId=$creatorId, originProjectVersionId=$originProjectVersionId, thresholds=$thresholds, archived=$archived, dateArchived=$dateArchived, suggested=$suggested, commentCount=$commentCount, usesMlModel=$usesMlModel, usesValidationDataset=$usesValidationDataset, usesTrainingDataset=$usesTrainingDataset, usesReferenceDataset=$usesReferenceDataset, usesProductionData=$usesProductionData, additionalProperties=$additionalProperties}"
@@ -1342,17 +1333,14 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Item && this.id == other.id && this.goal == other.goal && this.goalId == other.goalId && this.projectVersionId == other.projectVersionId && this.inferencePipelineId == other.inferencePipelineId && this.dateCreated == other.dateCreated && this.dateUpdated == other.dateUpdated && this.dateDataStarts == other.dateDataStarts && this.dateDataEnds == other.dateDataEnds && this.status == other.status && this.statusMessage == other.statusMessage && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Item && id == other.id && goal == other.goal && goalId == other.goalId && projectVersionId == other.projectVersionId && inferencePipelineId == other.inferencePipelineId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && dateDataStarts == other.dateDataStarts && dateDataEnds == other.dateDataEnds && status == other.status && statusMessage == other.statusMessage && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(id, goal, goalId, projectVersionId, inferencePipelineId, dateCreated, dateUpdated, dateDataStarts, dateDataEnds, status, statusMessage, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(id, goal, goalId, projectVersionId, inferencePipelineId, dateCreated, dateUpdated, dateDataStarts, dateDataEnds, status, statusMessage, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Item{id=$id, goal=$goal, goalId=$goalId, projectVersionId=$projectVersionId, inferencePipelineId=$inferencePipelineId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateDataStarts=$dateDataStarts, dateDataEnds=$dateDataEnds, status=$status, statusMessage=$statusMessage, additionalProperties=$additionalProperties}"
@@ -1363,17 +1351,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineTestResultListResponse && this.items == other.items && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineTestResultListResponse && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(items, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(items, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "InferencePipelineTestResultListResponse{items=$items, additionalProperties=$additionalProperties}"

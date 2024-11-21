@@ -162,17 +162,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectCommitCreateBody && this.commit == other.commit && this.storageUri == other.storageUri && this.archived == other.archived && this.deploymentStatus == other.deploymentStatus && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is ProjectCommitCreateBody && commit == other.commit && storageUri == other.storageUri && archived == other.archived && deploymentStatus == other.deploymentStatus && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(commit, storageUri, archived, deploymentStatus, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(commit, storageUri, archived, deploymentStatus, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "ProjectCommitCreateBody{commit=$commit, storageUri=$storageUri, archived=$archived, deploymentStatus=$deploymentStatus, additionalProperties=$additionalProperties}"
@@ -189,12 +186,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectCommitCreateParams && this.projectId == other.projectId && this.commit == other.commit && this.storageUri == other.storageUri && this.archived == other.archived && this.deploymentStatus == other.deploymentStatus && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectCommitCreateParams && projectId == other.projectId && commit == other.commit && storageUri == other.storageUri && archived == other.archived && deploymentStatus == other.deploymentStatus && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(projectId, commit, storageUri, archived, deploymentStatus, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, commit, storageUri, archived, deploymentStatus, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "ProjectCommitCreateParams{projectId=$projectId, commit=$commit, storageUri=$storageUri, archived=$archived, deploymentStatus=$deploymentStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -567,17 +562,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Commit && this.id == other.id && this.authorId == other.authorId && this.dateCreated == other.dateCreated && this.fileSize == other.fileSize && this.message == other.message && this.mlModelId == other.mlModelId && this.validationDatasetId == other.validationDatasetId && this.trainingDatasetId == other.trainingDatasetId && this.storageUri == other.storageUri && this.gitCommitSha == other.gitCommitSha && this.gitCommitRef == other.gitCommitRef && this.gitCommitUrl == other.gitCommitUrl && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Commit && id == other.id && authorId == other.authorId && dateCreated == other.dateCreated && fileSize == other.fileSize && message == other.message && mlModelId == other.mlModelId && validationDatasetId == other.validationDatasetId && trainingDatasetId == other.trainingDatasetId && storageUri == other.storageUri && gitCommitSha == other.gitCommitSha && gitCommitRef == other.gitCommitRef && gitCommitUrl == other.gitCommitUrl && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(id, authorId, dateCreated, fileSize, message, mlModelId, validationDatasetId, trainingDatasetId, storageUri, gitCommitSha, gitCommitRef, gitCommitUrl, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(id, authorId, dateCreated, fileSize, message, mlModelId, validationDatasetId, trainingDatasetId, storageUri, gitCommitSha, gitCommitRef, gitCommitUrl, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Commit{id=$id, authorId=$authorId, dateCreated=$dateCreated, fileSize=$fileSize, message=$message, mlModelId=$mlModelId, validationDatasetId=$validationDatasetId, trainingDatasetId=$trainingDatasetId, storageUri=$storageUri, gitCommitSha=$gitCommitSha, gitCommitRef=$gitCommitRef, gitCommitUrl=$gitCommitUrl, additionalProperties=$additionalProperties}"
@@ -596,7 +588,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -724,17 +716,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Links && this.app == other.app && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(app, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
