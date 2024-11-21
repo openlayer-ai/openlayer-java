@@ -51,12 +51,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectCommitListParams && this.projectId == other.projectId && this.page == other.page && this.perPage == other.perPage && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ProjectCommitListParams && projectId == other.projectId && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(projectId, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ProjectCommitListParams{projectId=$projectId, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

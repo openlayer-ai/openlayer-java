@@ -125,17 +125,14 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is StoragePresignedUrlCreateResponse && this.url == other.url && this.fields == other.fields && this.storageUri == other.storageUri && this.additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is StoragePresignedUrlCreateResponse && url == other.url && fields == other.fields && storageUri == other.storageUri && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
-    private var hashCode: Int = 0
+    /* spotless:off */
+    private val hashCode: Int by lazy { Objects.hash(url, fields, storageUri, additionalProperties) }
+    /* spotless:on */
 
-    override fun hashCode(): Int {
-        if (hashCode == 0) {
-            hashCode = /* spotless:off */ Objects.hash(url, fields, storageUri, additionalProperties) /* spotless:on */
-        }
-        return hashCode
-    }
+    override fun hashCode(): Int = hashCode
 
     override fun toString() =
         "StoragePresignedUrlCreateResponse{url=$url, fields=$fields, storageUri=$storageUri, additionalProperties=$additionalProperties}"
