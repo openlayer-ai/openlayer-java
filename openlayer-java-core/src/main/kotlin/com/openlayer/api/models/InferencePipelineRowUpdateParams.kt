@@ -130,17 +130,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InferencePipelineRowUpdateBody && this.row == other.row && this.config == other.config && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is InferencePipelineRowUpdateBody && row == other.row && config == other.config && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(row, config, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(row, config, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "InferencePipelineRowUpdateBody{row=$row, config=$config, additionalProperties=$additionalProperties}"
@@ -157,12 +154,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineRowUpdateParams && this.inferencePipelineId == other.inferencePipelineId && this.row == other.row && this.config == other.config && this.inferenceId == other.inferenceId && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineRowUpdateParams && inferencePipelineId == other.inferencePipelineId && row == other.row && config == other.config && inferenceId == other.inferenceId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(inferencePipelineId, row, config, inferenceId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, row, config, inferenceId, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "InferencePipelineRowUpdateParams{inferencePipelineId=$inferencePipelineId, row=$row, config=$config, inferenceId=$inferenceId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
@@ -475,17 +470,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Config && this.inferenceIdColumnName == other.inferenceIdColumnName && this.latencyColumnName == other.latencyColumnName && this.timestampColumnName == other.timestampColumnName && this.groundTruthColumnName == other.groundTruthColumnName && this.humanFeedbackColumnName == other.humanFeedbackColumnName && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Config && inferenceIdColumnName == other.inferenceIdColumnName && latencyColumnName == other.latencyColumnName && timestampColumnName == other.timestampColumnName && groundTruthColumnName == other.groundTruthColumnName && humanFeedbackColumnName == other.humanFeedbackColumnName && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(inferenceIdColumnName, latencyColumnName, timestampColumnName, groundTruthColumnName, humanFeedbackColumnName, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(inferenceIdColumnName, latencyColumnName, timestampColumnName, groundTruthColumnName, humanFeedbackColumnName, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "Config{inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, additionalProperties=$additionalProperties}"

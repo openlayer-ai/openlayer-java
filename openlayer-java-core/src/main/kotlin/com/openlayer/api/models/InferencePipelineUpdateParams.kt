@@ -149,17 +149,14 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InferencePipelineUpdateBody && this.description == other.description && this.name == other.name && this.referenceDatasetUri == other.referenceDatasetUri && this.additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is InferencePipelineUpdateBody && description == other.description && name == other.name && referenceDatasetUri == other.referenceDatasetUri && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
-        private var hashCode: Int = 0
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(description, name, referenceDatasetUri, additionalProperties) }
+        /* spotless:on */
 
-        override fun hashCode(): Int {
-            if (hashCode == 0) {
-                hashCode = /* spotless:off */ Objects.hash(description, name, referenceDatasetUri, additionalProperties) /* spotless:on */
-            }
-            return hashCode
-        }
+        override fun hashCode(): Int = hashCode
 
         override fun toString() =
             "InferencePipelineUpdateBody{description=$description, name=$name, referenceDatasetUri=$referenceDatasetUri, additionalProperties=$additionalProperties}"
@@ -176,12 +173,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineUpdateParams && this.inferencePipelineId == other.inferencePipelineId && this.description == other.description && this.name == other.name && this.referenceDatasetUri == other.referenceDatasetUri && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams && this.additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineUpdateParams && inferencePipelineId == other.inferencePipelineId && description == other.description && name == other.name && referenceDatasetUri == other.referenceDatasetUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(inferencePipelineId, description, name, referenceDatasetUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, description, name, referenceDatasetUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
 
     override fun toString() =
         "InferencePipelineUpdateParams{inferencePipelineId=$inferencePipelineId, description=$description, name=$name, referenceDatasetUri=$referenceDatasetUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"

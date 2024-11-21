@@ -64,12 +64,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineTestResultListParams && this.inferencePipelineId == other.inferencePipelineId && this.page == other.page && this.perPage == other.perPage && this.status == other.status && this.type == other.type && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineTestResultListParams && inferencePipelineId == other.inferencePipelineId && page == other.page && perPage == other.perPage && status == other.status && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "InferencePipelineTestResultListParams{inferencePipelineId=$inferencePipelineId, page=$page, perPage=$perPage, status=$status, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
@@ -252,7 +250,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()
@@ -327,7 +325,7 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && this.value == other.value /* spotless:on */
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
         }
 
         override fun hashCode() = value.hashCode()

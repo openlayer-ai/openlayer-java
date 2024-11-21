@@ -55,12 +55,10 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectInferencePipelineListParams && this.projectId == other.projectId && this.name == other.name && this.page == other.page && this.perPage == other.perPage && this.additionalHeaders == other.additionalHeaders && this.additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is ProjectInferencePipelineListParams && projectId == other.projectId && name == other.name && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int {
-        return /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
-    }
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
         "ProjectInferencePipelineListParams{projectId=$projectId, name=$name, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
