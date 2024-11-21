@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.0-alpha.7 (2024-11-21)
+
+Full Changelog: [v0.1.0-alpha.6...v0.1.0-alpha.7](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.6...v0.1.0-alpha.7)
+
+### Chores
+
+* **internal:** codegen related update ([#52](https://github.com/openlayer-ai/openlayer-java/issues/52)) ([224921d](https://github.com/openlayer-ai/openlayer-java/commit/224921d231f065fe66c42ab53fce59a8d0efbde0))
+* rebuild project due to codegen change ([#50](https://github.com/openlayer-ai/openlayer-java/issues/50)) ([49217e1](https://github.com/openlayer-ai/openlayer-java/commit/49217e1b55888fd18cd1ac1979036450e290a6f4))
+
 ## 0.1.0-alpha.6 (2024-11-14)
 
 Full Changelog: [v0.1.0-alpha.5...v0.1.0-alpha.6](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.5...v0.1.0-alpha.6)
