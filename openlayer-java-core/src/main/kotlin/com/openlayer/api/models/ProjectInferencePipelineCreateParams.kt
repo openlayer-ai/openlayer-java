@@ -36,6 +36,12 @@ constructor(
 
     fun name(): String = name
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectInferencePipelineCreateBody {
         return ProjectInferencePipelineCreateBody(
@@ -144,25 +150,6 @@ constructor(
             "ProjectInferencePipelineCreateBody{description=$description, name=$name, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectInferencePipelineCreateParams && projectId == other.projectId && description == other.description && name == other.name && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, description, name, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectInferencePipelineCreateParams{projectId=$projectId, description=$description, name=$name, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -184,12 +171,14 @@ constructor(
         internal fun from(
             projectInferencePipelineCreateParams: ProjectInferencePipelineCreateParams
         ) = apply {
-            this.projectId = projectInferencePipelineCreateParams.projectId
-            this.description = projectInferencePipelineCreateParams.description
-            this.name = projectInferencePipelineCreateParams.name
-            additionalHeaders(projectInferencePipelineCreateParams.additionalHeaders)
-            additionalQueryParams(projectInferencePipelineCreateParams.additionalQueryParams)
-            additionalBodyProperties(projectInferencePipelineCreateParams.additionalBodyProperties)
+            projectId = projectInferencePipelineCreateParams.projectId
+            description = projectInferencePipelineCreateParams.description
+            name = projectInferencePipelineCreateParams.name
+            additionalHeaders = projectInferencePipelineCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                projectInferencePipelineCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                projectInferencePipelineCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun projectId(projectId: String) = apply { this.projectId = projectId }
@@ -483,4 +472,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectInferencePipelineCreateParams && projectId == other.projectId && description == other.description && name == other.name && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, description, name, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectInferencePipelineCreateParams{projectId=$projectId, description=$description, name=$name, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

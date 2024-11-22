@@ -38,6 +38,10 @@ constructor(
 
     fun type(): Optional<Type> = Optional.ofNullable(type)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -58,23 +62,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is CommitTestResultListParams && projectVersionId == other.projectVersionId && includeArchived == other.includeArchived && page == other.page && perPage == other.perPage && status == other.status && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectVersionId, includeArchived, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "CommitTestResultListParams{projectVersionId=$projectVersionId, includeArchived=$includeArchived, page=$page, perPage=$perPage, status=$status, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -97,14 +84,14 @@ constructor(
 
         @JvmSynthetic
         internal fun from(commitTestResultListParams: CommitTestResultListParams) = apply {
-            this.projectVersionId = commitTestResultListParams.projectVersionId
-            this.includeArchived = commitTestResultListParams.includeArchived
-            this.page = commitTestResultListParams.page
-            this.perPage = commitTestResultListParams.perPage
-            this.status = commitTestResultListParams.status
-            this.type = commitTestResultListParams.type
-            additionalHeaders(commitTestResultListParams.additionalHeaders)
-            additionalQueryParams(commitTestResultListParams.additionalQueryParams)
+            projectVersionId = commitTestResultListParams.projectVersionId
+            includeArchived = commitTestResultListParams.includeArchived
+            page = commitTestResultListParams.page
+            perPage = commitTestResultListParams.perPage
+            status = commitTestResultListParams.status
+            type = commitTestResultListParams.type
+            additionalHeaders = commitTestResultListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = commitTestResultListParams.additionalQueryParams.toBuilder()
         }
 
         fun projectVersionId(projectVersionId: String) = apply {
@@ -394,4 +381,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is CommitTestResultListParams && projectVersionId == other.projectVersionId && includeArchived == other.includeArchived && page == other.page && perPage == other.perPage && status == other.status && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectVersionId, includeArchived, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "CommitTestResultListParams{projectVersionId=$projectVersionId, includeArchived=$includeArchived, page=$page, perPage=$perPage, status=$status, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

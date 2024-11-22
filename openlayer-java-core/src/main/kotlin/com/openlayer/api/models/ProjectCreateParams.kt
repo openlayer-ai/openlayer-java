@@ -37,6 +37,12 @@ constructor(
 
     fun description(): Optional<String> = Optional.ofNullable(description)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectCreateBody {
         return ProjectCreateBody(
@@ -148,25 +154,6 @@ constructor(
             "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectCreateParams && name == other.name && taskType == other.taskType && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, taskType, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -186,12 +173,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectCreateParams: ProjectCreateParams) = apply {
-            this.name = projectCreateParams.name
-            this.taskType = projectCreateParams.taskType
-            this.description = projectCreateParams.description
-            additionalHeaders(projectCreateParams.additionalHeaders)
-            additionalQueryParams(projectCreateParams.additionalQueryParams)
-            additionalBodyProperties(projectCreateParams.additionalBodyProperties)
+            name = projectCreateParams.name
+            taskType = projectCreateParams.taskType
+            description = projectCreateParams.description
+            additionalHeaders = projectCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties = projectCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The project name. */
@@ -706,4 +693,17 @@ constructor(
         override fun toString() =
             "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectCreateParams && name == other.name && taskType == other.taskType && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, taskType, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
