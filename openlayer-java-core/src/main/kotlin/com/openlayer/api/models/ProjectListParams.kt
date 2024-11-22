@@ -32,6 +32,10 @@ constructor(
 
     fun taskType(): Optional<TaskType> = Optional.ofNullable(taskType)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -44,23 +48,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectListParams && name == other.name && page == other.page && perPage == other.perPage && taskType == other.taskType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, page, perPage, taskType, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ProjectListParams{name=$name, page=$page, perPage=$perPage, taskType=$taskType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -81,12 +68,12 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectListParams: ProjectListParams) = apply {
-            this.name = projectListParams.name
-            this.page = projectListParams.page
-            this.perPage = projectListParams.perPage
-            this.taskType = projectListParams.taskType
-            additionalHeaders(projectListParams.additionalHeaders)
-            additionalQueryParams(projectListParams.additionalQueryParams)
+            name = projectListParams.name
+            page = projectListParams.page
+            perPage = projectListParams.perPage
+            taskType = projectListParams.taskType
+            additionalHeaders = projectListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectListParams.additionalQueryParams.toBuilder()
         }
 
         /** Filter list of items by project name. */
@@ -278,4 +265,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectListParams && name == other.name && page == other.page && perPage == other.perPage && taskType == other.taskType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, page, perPage, taskType, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ProjectListParams{name=$name, page=$page, perPage=$perPage, taskType=$taskType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

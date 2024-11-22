@@ -44,6 +44,12 @@ constructor(
 
     fun rows(): List<Row> = rows
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): InferencePipelineDataStreamBody {
         return InferencePipelineDataStreamBody(
@@ -152,25 +158,6 @@ constructor(
             "InferencePipelineDataStreamBody{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is InferencePipelineDataStreamParams && inferencePipelineId == other.inferencePipelineId && config == other.config && rows == other.rows && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, config, rows, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "InferencePipelineDataStreamParams{inferencePipelineId=$inferencePipelineId, config=$config, rows=$rows, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -191,12 +178,14 @@ constructor(
         @JvmSynthetic
         internal fun from(inferencePipelineDataStreamParams: InferencePipelineDataStreamParams) =
             apply {
-                this.inferencePipelineId = inferencePipelineDataStreamParams.inferencePipelineId
-                this.config = inferencePipelineDataStreamParams.config
-                this.rows(inferencePipelineDataStreamParams.rows)
-                additionalHeaders(inferencePipelineDataStreamParams.additionalHeaders)
-                additionalQueryParams(inferencePipelineDataStreamParams.additionalQueryParams)
-                additionalBodyProperties(inferencePipelineDataStreamParams.additionalBodyProperties)
+                inferencePipelineId = inferencePipelineDataStreamParams.inferencePipelineId
+                config = inferencePipelineDataStreamParams.config
+                rows = inferencePipelineDataStreamParams.rows.toMutableList()
+                additionalHeaders = inferencePipelineDataStreamParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    inferencePipelineDataStreamParams.additionalQueryParams.toBuilder()
+                additionalBodyProperties =
+                    inferencePipelineDataStreamParams.additionalBodyProperties.toMutableMap()
             }
 
         fun inferencePipelineId(inferencePipelineId: String) = apply {
@@ -359,7 +348,7 @@ constructor(
                     "`inferencePipelineId` is required but was not set"
                 },
                 checkNotNull(config) { "`config` is required but was not set" },
-                checkNotNull(rows) { "`rows` is required but was not set" }.toImmutable(),
+                rows.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -2148,4 +2137,17 @@ constructor(
 
         override fun toString() = "Row{additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is InferencePipelineDataStreamParams && inferencePipelineId == other.inferencePipelineId && config == other.config && rows == other.rows && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, config, rows, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "InferencePipelineDataStreamParams{inferencePipelineId=$inferencePipelineId, config=$config, rows=$rows, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

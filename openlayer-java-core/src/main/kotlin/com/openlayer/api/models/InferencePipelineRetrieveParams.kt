@@ -17,6 +17,10 @@ constructor(
 
     fun inferencePipelineId(): String = inferencePipelineId
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
@@ -27,23 +31,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is InferencePipelineRetrieveParams && inferencePipelineId == other.inferencePipelineId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "InferencePipelineRetrieveParams{inferencePipelineId=$inferencePipelineId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -62,9 +49,10 @@ constructor(
         @JvmSynthetic
         internal fun from(inferencePipelineRetrieveParams: InferencePipelineRetrieveParams) =
             apply {
-                this.inferencePipelineId = inferencePipelineRetrieveParams.inferencePipelineId
-                additionalHeaders(inferencePipelineRetrieveParams.additionalHeaders)
-                additionalQueryParams(inferencePipelineRetrieveParams.additionalQueryParams)
+                inferencePipelineId = inferencePipelineRetrieveParams.inferencePipelineId
+                additionalHeaders = inferencePipelineRetrieveParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    inferencePipelineRetrieveParams.additionalQueryParams.toBuilder()
             }
 
         fun inferencePipelineId(inferencePipelineId: String) = apply {
@@ -178,4 +166,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is InferencePipelineRetrieveParams && inferencePipelineId == other.inferencePipelineId && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "InferencePipelineRetrieveParams{inferencePipelineId=$inferencePipelineId, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

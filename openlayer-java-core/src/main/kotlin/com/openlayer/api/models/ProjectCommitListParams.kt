@@ -24,6 +24,10 @@ constructor(
 
     fun perPage(): Optional<Long> = Optional.ofNullable(perPage)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -41,23 +45,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectCommitListParams && projectId == other.projectId && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ProjectCommitListParams{projectId=$projectId, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -77,11 +64,11 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectCommitListParams: ProjectCommitListParams) = apply {
-            this.projectId = projectCommitListParams.projectId
-            this.page = projectCommitListParams.page
-            this.perPage = projectCommitListParams.perPage
-            additionalHeaders(projectCommitListParams.additionalHeaders)
-            additionalQueryParams(projectCommitListParams.additionalQueryParams)
+            projectId = projectCommitListParams.projectId
+            page = projectCommitListParams.page
+            perPage = projectCommitListParams.perPage
+            additionalHeaders = projectCommitListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectCommitListParams.additionalQueryParams.toBuilder()
         }
 
         fun projectId(projectId: String) = apply { this.projectId = projectId }
@@ -199,4 +186,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectCommitListParams && projectId == other.projectId && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ProjectCommitListParams{projectId=$projectId, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

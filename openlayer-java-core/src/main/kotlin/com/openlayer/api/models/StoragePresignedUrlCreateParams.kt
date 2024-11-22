@@ -21,6 +21,12 @@ constructor(
 
     fun objectName(): String = objectName
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): Optional<Map<String, JsonValue>> {
         return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
@@ -35,25 +41,6 @@ constructor(
         queryParams.putAll(additionalQueryParams)
         return queryParams.build()
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is StoragePresignedUrlCreateParams && objectName == other.objectName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "StoragePresignedUrlCreateParams{objectName=$objectName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -73,10 +60,12 @@ constructor(
         @JvmSynthetic
         internal fun from(storagePresignedUrlCreateParams: StoragePresignedUrlCreateParams) =
             apply {
-                this.objectName = storagePresignedUrlCreateParams.objectName
-                additionalHeaders(storagePresignedUrlCreateParams.additionalHeaders)
-                additionalQueryParams(storagePresignedUrlCreateParams.additionalQueryParams)
-                additionalBodyProperties(storagePresignedUrlCreateParams.additionalBodyProperties)
+                objectName = storagePresignedUrlCreateParams.objectName
+                additionalHeaders = storagePresignedUrlCreateParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    storagePresignedUrlCreateParams.additionalQueryParams.toBuilder()
+                additionalBodyProperties =
+                    storagePresignedUrlCreateParams.additionalBodyProperties.toMutableMap()
             }
 
         /** The name of the object. */
@@ -210,4 +199,17 @@ constructor(
                 additionalBodyProperties.toImmutable(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is StoragePresignedUrlCreateParams && objectName == other.objectName && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(objectName, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "StoragePresignedUrlCreateParams{objectName=$objectName, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }

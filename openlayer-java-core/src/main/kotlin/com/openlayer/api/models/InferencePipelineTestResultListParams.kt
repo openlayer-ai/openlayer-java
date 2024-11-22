@@ -35,6 +35,10 @@ constructor(
 
     fun type(): Optional<Type> = Optional.ofNullable(type)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -54,23 +58,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is InferencePipelineTestResultListParams && inferencePipelineId == other.inferencePipelineId && page == other.page && perPage == other.perPage && status == other.status && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "InferencePipelineTestResultListParams{inferencePipelineId=$inferencePipelineId, page=$page, perPage=$perPage, status=$status, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -94,13 +81,14 @@ constructor(
         internal fun from(
             inferencePipelineTestResultListParams: InferencePipelineTestResultListParams
         ) = apply {
-            this.inferencePipelineId = inferencePipelineTestResultListParams.inferencePipelineId
-            this.page = inferencePipelineTestResultListParams.page
-            this.perPage = inferencePipelineTestResultListParams.perPage
-            this.status = inferencePipelineTestResultListParams.status
-            this.type = inferencePipelineTestResultListParams.type
-            additionalHeaders(inferencePipelineTestResultListParams.additionalHeaders)
-            additionalQueryParams(inferencePipelineTestResultListParams.additionalQueryParams)
+            inferencePipelineId = inferencePipelineTestResultListParams.inferencePipelineId
+            page = inferencePipelineTestResultListParams.page
+            perPage = inferencePipelineTestResultListParams.perPage
+            status = inferencePipelineTestResultListParams.status
+            type = inferencePipelineTestResultListParams.type
+            additionalHeaders = inferencePipelineTestResultListParams.additionalHeaders.toBuilder()
+            additionalQueryParams =
+                inferencePipelineTestResultListParams.additionalQueryParams.toBuilder()
         }
 
         fun inferencePipelineId(inferencePipelineId: String) = apply {
@@ -386,4 +374,17 @@ constructor(
 
         fun asString(): String = _value().asStringOrThrow()
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is InferencePipelineTestResultListParams && inferencePipelineId == other.inferencePipelineId && page == other.page && perPage == other.perPage && status == other.status && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "InferencePipelineTestResultListParams{inferencePipelineId=$inferencePipelineId, page=$page, perPage=$perPage, status=$status, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
