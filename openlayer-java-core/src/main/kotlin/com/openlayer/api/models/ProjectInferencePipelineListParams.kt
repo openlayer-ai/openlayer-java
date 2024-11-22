@@ -27,6 +27,10 @@ constructor(
 
     fun perPage(): Optional<Long> = Optional.ofNullable(perPage)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic
@@ -45,23 +49,6 @@ constructor(
             else -> ""
         }
     }
-
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectInferencePipelineListParams && projectId == other.projectId && name == other.name && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
-
-    override fun toString() =
-        "ProjectInferencePipelineListParams{projectId=$projectId, name=$name, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 
     fun toBuilder() = Builder().from(this)
 
@@ -83,12 +70,13 @@ constructor(
         @JvmSynthetic
         internal fun from(projectInferencePipelineListParams: ProjectInferencePipelineListParams) =
             apply {
-                this.projectId = projectInferencePipelineListParams.projectId
-                this.name = projectInferencePipelineListParams.name
-                this.page = projectInferencePipelineListParams.page
-                this.perPage = projectInferencePipelineListParams.perPage
-                additionalHeaders(projectInferencePipelineListParams.additionalHeaders)
-                additionalQueryParams(projectInferencePipelineListParams.additionalQueryParams)
+                projectId = projectInferencePipelineListParams.projectId
+                name = projectInferencePipelineListParams.name
+                page = projectInferencePipelineListParams.page
+                perPage = projectInferencePipelineListParams.perPage
+                additionalHeaders = projectInferencePipelineListParams.additionalHeaders.toBuilder()
+                additionalQueryParams =
+                    projectInferencePipelineListParams.additionalQueryParams.toBuilder()
             }
 
         fun projectId(projectId: String) = apply { this.projectId = projectId }
@@ -210,4 +198,17 @@ constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectInferencePipelineListParams && projectId == other.projectId && name == other.name && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
+
+    override fun toString() =
+        "ProjectInferencePipelineListParams{projectId=$projectId, name=$name, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

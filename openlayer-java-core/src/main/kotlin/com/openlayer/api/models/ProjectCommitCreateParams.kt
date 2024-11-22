@@ -43,6 +43,12 @@ constructor(
 
     fun deploymentStatus(): Optional<String> = Optional.ofNullable(deploymentStatus)
 
+    fun _additionalHeaders(): Headers = additionalHeaders
+
+    fun _additionalQueryParams(): QueryParams = additionalQueryParams
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+
     @JvmSynthetic
     internal fun getBody(): ProjectCommitCreateBody {
         return ProjectCommitCreateBody(
@@ -175,25 +181,6 @@ constructor(
             "ProjectCommitCreateBody{commit=$commit, storageUri=$storageUri, archived=$archived, deploymentStatus=$deploymentStatus, additionalProperties=$additionalProperties}"
     }
 
-    fun _additionalHeaders(): Headers = additionalHeaders
-
-    fun _additionalQueryParams(): QueryParams = additionalQueryParams
-
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    override fun equals(other: Any?): Boolean {
-        if (this === other) {
-            return true
-        }
-
-        return /* spotless:off */ other is ProjectCommitCreateParams && projectId == other.projectId && commit == other.commit && storageUri == other.storageUri && archived == other.archived && deploymentStatus == other.deploymentStatus && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
-    }
-
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, commit, storageUri, archived, deploymentStatus, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
-
-    override fun toString() =
-        "ProjectCommitCreateParams{projectId=$projectId, commit=$commit, storageUri=$storageUri, archived=$archived, deploymentStatus=$deploymentStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -215,14 +202,15 @@ constructor(
 
         @JvmSynthetic
         internal fun from(projectCommitCreateParams: ProjectCommitCreateParams) = apply {
-            this.projectId = projectCommitCreateParams.projectId
-            this.commit = projectCommitCreateParams.commit
-            this.storageUri = projectCommitCreateParams.storageUri
-            this.archived = projectCommitCreateParams.archived
-            this.deploymentStatus = projectCommitCreateParams.deploymentStatus
-            additionalHeaders(projectCommitCreateParams.additionalHeaders)
-            additionalQueryParams(projectCommitCreateParams.additionalQueryParams)
-            additionalBodyProperties(projectCommitCreateParams.additionalBodyProperties)
+            projectId = projectCommitCreateParams.projectId
+            commit = projectCommitCreateParams.commit
+            storageUri = projectCommitCreateParams.storageUri
+            archived = projectCommitCreateParams.archived
+            deploymentStatus = projectCommitCreateParams.deploymentStatus
+            additionalHeaders = projectCommitCreateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = projectCommitCreateParams.additionalQueryParams.toBuilder()
+            additionalBodyProperties =
+                projectCommitCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun projectId(projectId: String) = apply { this.projectId = projectId }
@@ -727,4 +715,17 @@ constructor(
 
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return /* spotless:off */ other is ProjectCommitCreateParams && projectId == other.projectId && commit == other.commit && storageUri == other.storageUri && archived == other.archived && deploymentStatus == other.deploymentStatus && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+    }
+
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, commit, storageUri, archived, deploymentStatus, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+
+    override fun toString() =
+        "ProjectCommitCreateParams{projectId=$projectId, commit=$commit, storageUri=$storageUri, archived=$archived, deploymentStatus=$deploymentStatus, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
 }
