@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.0-alpha.8 (2024-11-25)
+
+Full Changelog: [v0.1.0-alpha.7...v0.1.0-alpha.8](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.7...v0.1.0-alpha.8)
+
+### Features
+
+* **client:** add logging when debug env is set ([#56](https://github.com/openlayer-ai/openlayer-java/issues/56)) ([9d81162](https://github.com/openlayer-ai/openlayer-java/commit/9d811622736492e0eeea4d4acde518a6a2319b21))
+
+
+### Chores
+
+* **internal:** codegen related update ([#54](https://github.com/openlayer-ai/openlayer-java/issues/54)) ([4794b46](https://github.com/openlayer-ai/openlayer-java/commit/4794b465e2893768f1763cf2254c6f8aba909fdf))
+
 ## 0.1.0-alpha.7 (2024-11-21)
 
 Full Changelog: [v0.1.0-alpha.6...v0.1.0-alpha.7](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.6...v0.1.0-alpha.7)
