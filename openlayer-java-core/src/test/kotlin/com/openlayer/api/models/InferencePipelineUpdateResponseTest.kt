@@ -19,7 +19,7 @@ class InferencePipelineUpdateResponseTest {
                 .dateOfNextEvaluation(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                 .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                 .description("This pipeline is used for production.")
-                .failingGoalCount(123L)
+                .failingGoalCount(1L)
                 .links(
                     InferencePipelineUpdateResponse.Links.builder()
                         .app(
@@ -28,11 +28,11 @@ class InferencePipelineUpdateResponseTest {
                         .build()
                 )
                 .name("production")
-                .passingGoalCount(123L)
+                .passingGoalCount(5L)
                 .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(InferencePipelineUpdateResponse.Status.QUEUED)
                 .statusMessage("Tests successfully evaluated")
-                .totalGoalCount(123L)
+                .totalGoalCount(6L)
                 .build()
         assertThat(inferencePipelineUpdateResponse).isNotNull
         assertThat(inferencePipelineUpdateResponse.id())
@@ -49,7 +49,7 @@ class InferencePipelineUpdateResponseTest {
             .isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
         assertThat(inferencePipelineUpdateResponse.description())
             .contains("This pipeline is used for production.")
-        assertThat(inferencePipelineUpdateResponse.failingGoalCount()).isEqualTo(123L)
+        assertThat(inferencePipelineUpdateResponse.failingGoalCount()).isEqualTo(1L)
         assertThat(inferencePipelineUpdateResponse.links())
             .isEqualTo(
                 InferencePipelineUpdateResponse.Links.builder()
@@ -59,13 +59,13 @@ class InferencePipelineUpdateResponseTest {
                     .build()
             )
         assertThat(inferencePipelineUpdateResponse.name()).isEqualTo("production")
-        assertThat(inferencePipelineUpdateResponse.passingGoalCount()).isEqualTo(123L)
+        assertThat(inferencePipelineUpdateResponse.passingGoalCount()).isEqualTo(5L)
         assertThat(inferencePipelineUpdateResponse.projectId())
             .isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(inferencePipelineUpdateResponse.status())
             .isEqualTo(InferencePipelineUpdateResponse.Status.QUEUED)
         assertThat(inferencePipelineUpdateResponse.statusMessage())
             .contains("Tests successfully evaluated")
-        assertThat(inferencePipelineUpdateResponse.totalGoalCount()).isEqualTo(123L)
+        assertThat(inferencePipelineUpdateResponse.totalGoalCount()).isEqualTo(6L)
     }
 }
