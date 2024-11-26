@@ -28,7 +28,7 @@ class InferencePipelineTestResultListResponseTest {
                             .goal(
                                 InferencePipelineTestResultListResponse.Item.Goal.builder()
                                     .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                                    .commentCount(123L)
+                                    .commentCount(0L)
                                     .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
                                     .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                                     .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -39,10 +39,10 @@ class InferencePipelineTestResultListResponseTest {
                                         )
                                     )
                                     .name("No duplicate rows")
-                                    .number(123L)
+                                    .number(1L)
                                     .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                                     .subtype("duplicateRowCount")
-                                    .suggested(true)
+                                    .suggested(false)
                                     .thresholds(
                                         listOf(
                                             InferencePipelineTestResultListResponse.Item.Goal
@@ -59,19 +59,19 @@ class InferencePipelineTestResultListResponseTest {
                                                         .Goal
                                                         .Threshold
                                                         .Value
-                                                        .ofNumber(42.23)
+                                                        .ofNumber(0.0)
                                                 )
                                                 .build()
                                         )
                                     )
                                     .type("integrity")
-                                    .archived(true)
-                                    .delayWindow(42.23)
-                                    .evaluationWindow(42.23)
-                                    .usesMlModel(true)
-                                    .usesProductionData(true)
-                                    .usesReferenceDataset(true)
-                                    .usesTrainingDataset(true)
+                                    .archived(false)
+                                    .delayWindow(0.0)
+                                    .evaluationWindow(3600.0)
+                                    .usesMlModel(false)
+                                    .usesProductionData(false)
+                                    .usesReferenceDataset(false)
+                                    .usesTrainingDataset(false)
                                     .usesValidationDataset(true)
                                     .build()
                             )
@@ -96,7 +96,7 @@ class InferencePipelineTestResultListResponseTest {
                     .goal(
                         InferencePipelineTestResultListResponse.Item.Goal.builder()
                             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                            .commentCount(123L)
+                            .commentCount(0L)
                             .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
                             .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                             .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -107,10 +107,10 @@ class InferencePipelineTestResultListResponseTest {
                                 )
                             )
                             .name("No duplicate rows")
-                            .number(123L)
+                            .number(1L)
                             .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                             .subtype("duplicateRowCount")
-                            .suggested(true)
+                            .suggested(false)
                             .thresholds(
                                 listOf(
                                     InferencePipelineTestResultListResponse.Item.Goal.Threshold
@@ -125,19 +125,19 @@ class InferencePipelineTestResultListResponseTest {
                                             InferencePipelineTestResultListResponse.Item.Goal
                                                 .Threshold
                                                 .Value
-                                                .ofNumber(42.23)
+                                                .ofNumber(0.0)
                                         )
                                         .build()
                                 )
                             )
                             .type("integrity")
-                            .archived(true)
-                            .delayWindow(42.23)
-                            .evaluationWindow(42.23)
-                            .usesMlModel(true)
-                            .usesProductionData(true)
-                            .usesReferenceDataset(true)
-                            .usesTrainingDataset(true)
+                            .archived(false)
+                            .delayWindow(0.0)
+                            .evaluationWindow(3600.0)
+                            .usesMlModel(false)
+                            .usesProductionData(false)
+                            .usesReferenceDataset(false)
+                            .usesTrainingDataset(false)
                             .usesValidationDataset(true)
                             .build()
                     )
