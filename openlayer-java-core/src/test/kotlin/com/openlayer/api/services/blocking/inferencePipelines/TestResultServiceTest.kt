@@ -23,8 +23,8 @@ class TestResultServiceTest {
             testResultService.list(
                 InferencePipelineTestResultListParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .page(123L)
-                    .perPage(100L)
+                    .page(1L)
+                    .perPage(1L)
                     .status(InferencePipelineTestResultListParams.Status.RUNNING)
                     .type(InferencePipelineTestResultListParams.Type.INTEGRITY)
                     .build()
