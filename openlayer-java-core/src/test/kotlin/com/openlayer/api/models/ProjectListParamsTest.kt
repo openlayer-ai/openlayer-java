@@ -13,8 +13,8 @@ class ProjectListParamsTest {
     fun createProjectListParams() {
         ProjectListParams.builder()
             .name("name")
-            .page(123L)
-            .perPage(100L)
+            .page(1L)
+            .perPage(1L)
             .taskType(ProjectListParams.TaskType.LLM_BASE)
             .build()
     }
@@ -24,14 +24,14 @@ class ProjectListParamsTest {
         val params =
             ProjectListParams.builder()
                 .name("name")
-                .page(123L)
-                .perPage(100L)
+                .page(1L)
+                .perPage(1L)
                 .taskType(ProjectListParams.TaskType.LLM_BASE)
                 .build()
         val expected = QueryParams.builder()
         expected.put("name", "name")
-        expected.put("page", "123")
-        expected.put("perPage", "100")
+        expected.put("page", "1")
+        expected.put("perPage", "1")
         expected.put("taskType", ProjectListParams.TaskType.LLM_BASE.toString())
         assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }

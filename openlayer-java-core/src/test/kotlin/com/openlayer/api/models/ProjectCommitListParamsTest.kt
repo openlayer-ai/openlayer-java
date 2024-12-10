@@ -13,8 +13,8 @@ class ProjectCommitListParamsTest {
     fun createProjectCommitListParams() {
         ProjectCommitListParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .page(123L)
-            .perPage(100L)
+            .page(1L)
+            .perPage(1L)
             .build()
     }
 
@@ -23,12 +23,12 @@ class ProjectCommitListParamsTest {
         val params =
             ProjectCommitListParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .page(123L)
-                .perPage(100L)
+                .page(1L)
+                .perPage(1L)
                 .build()
         val expected = QueryParams.builder()
-        expected.put("page", "123")
-        expected.put("perPage", "100")
+        expected.put("page", "1")
+        expected.put("perPage", "1")
         assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 

@@ -24,7 +24,7 @@ class ProjectInferencePipelineListResponseTest {
                             .dateOfNextEvaluation(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                             .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                             .description("This pipeline is used for production.")
-                            .failingGoalCount(123L)
+                            .failingGoalCount(1L)
                             .links(
                                 ProjectInferencePipelineListResponse.Item.Links.builder()
                                     .app(
@@ -33,11 +33,11 @@ class ProjectInferencePipelineListResponseTest {
                                     .build()
                             )
                             .name("production")
-                            .passingGoalCount(123L)
+                            .passingGoalCount(5L)
                             .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                             .status(ProjectInferencePipelineListResponse.Item.Status.QUEUED)
                             .statusMessage("Tests successfully evaluated")
-                            .totalGoalCount(123L)
+                            .totalGoalCount(6L)
                             .build()
                     )
                 )
@@ -53,7 +53,7 @@ class ProjectInferencePipelineListResponseTest {
                     .dateOfNextEvaluation(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                     .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                     .description("This pipeline is used for production.")
-                    .failingGoalCount(123L)
+                    .failingGoalCount(1L)
                     .links(
                         ProjectInferencePipelineListResponse.Item.Links.builder()
                             .app(
@@ -62,11 +62,11 @@ class ProjectInferencePipelineListResponseTest {
                             .build()
                     )
                     .name("production")
-                    .passingGoalCount(123L)
+                    .passingGoalCount(5L)
                     .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .status(ProjectInferencePipelineListResponse.Item.Status.QUEUED)
                     .statusMessage("Tests successfully evaluated")
-                    .totalGoalCount(123L)
+                    .totalGoalCount(6L)
                     .build()
             )
     }

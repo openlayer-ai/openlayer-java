@@ -43,8 +43,8 @@ class ProjectServiceTest {
             projectService.list(
                 ProjectListParams.builder()
                     .name("name")
-                    .page(123L)
-                    .perPage(100L)
+                    .page(1L)
+                    .perPage(1L)
                     .taskType(ProjectListParams.TaskType.LLM_BASE)
                     .build()
             )
