@@ -107,7 +107,7 @@ private constructor(
 
         companion object {
 
-            @JvmField val TRUE = Success(JsonField.of(true))
+            @JvmField val TRUE = of(true)
 
             @JvmStatic fun of(value: Boolean) = Success(JsonField.of(value))
         }

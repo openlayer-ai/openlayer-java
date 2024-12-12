@@ -414,17 +414,17 @@ constructor(
 
         companion object {
 
-            @JvmField val QUEUED = Status(JsonField.of("queued"))
+            @JvmField val QUEUED = of("queued")
 
-            @JvmField val RUNNING = Status(JsonField.of("running"))
+            @JvmField val RUNNING = of("running")
 
-            @JvmField val PAUSED = Status(JsonField.of("paused"))
+            @JvmField val PAUSED = of("paused")
 
-            @JvmField val FAILED = Status(JsonField.of("failed"))
+            @JvmField val FAILED = of("failed")
 
-            @JvmField val COMPLETED = Status(JsonField.of("completed"))
+            @JvmField val COMPLETED = of("completed")
 
-            @JvmField val UNKNOWN = Status(JsonField.of("unknown"))
+            @JvmField val UNKNOWN = of("unknown")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }

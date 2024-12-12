@@ -405,15 +405,15 @@ private constructor(
 
             companion object {
 
-                @JvmField val RUNNING = Status(JsonField.of("running"))
+                @JvmField val RUNNING = of("running")
 
-                @JvmField val PASSING = Status(JsonField.of("passing"))
+                @JvmField val PASSING = of("passing")
 
-                @JvmField val FAILING = Status(JsonField.of("failing"))
+                @JvmField val FAILING = of("failing")
 
-                @JvmField val SKIPPED = Status(JsonField.of("skipped"))
+                @JvmField val SKIPPED = of("skipped")
 
-                @JvmField val ERROR = Status(JsonField.of("error"))
+                @JvmField val ERROR = of("error")
 
                 @JvmStatic fun of(value: String) = Status(JsonField.of(value))
             }
