@@ -21,10 +21,10 @@ class InferencePipelineDataStreamParamsTest {
                         .costColumnName("cost")
                         .groundTruthColumnName("ground_truth")
                         .inferenceIdColumnName("id")
-                        .inputVariableNames(listOf("string"))
+                        .inputVariableNames(listOf("user_query"))
                         .latencyColumnName("latency")
                         .metadata(JsonValue.from(mapOf<String, Any>()))
-                        .numOfTokenColumnName("num_tokens")
+                        .numOfTokenColumnName("tokens")
                         .prompt(
                             listOf(
                                 InferencePipelineDataStreamParams.Config.LlmData.Prompt.builder()
@@ -38,7 +38,17 @@ class InferencePipelineDataStreamParamsTest {
                         .build()
                 )
             )
-            .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+            .rows(
+                listOf(
+                    InferencePipelineDataStreamParams.Row.builder()
+                        .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                        .putAdditionalProperty("output", JsonValue.from("bar"))
+                        .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                        .putAdditionalProperty("cost", JsonValue.from("bar"))
+                        .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                        .build()
+                )
+            )
             .build()
     }
 
@@ -55,10 +65,10 @@ class InferencePipelineDataStreamParamsTest {
                             .costColumnName("cost")
                             .groundTruthColumnName("ground_truth")
                             .inferenceIdColumnName("id")
-                            .inputVariableNames(listOf("string"))
+                            .inputVariableNames(listOf("user_query"))
                             .latencyColumnName("latency")
                             .metadata(JsonValue.from(mapOf<String, Any>()))
-                            .numOfTokenColumnName("num_tokens")
+                            .numOfTokenColumnName("tokens")
                             .prompt(
                                 listOf(
                                     InferencePipelineDataStreamParams.Config.LlmData.Prompt
@@ -73,7 +83,17 @@ class InferencePipelineDataStreamParamsTest {
                             .build()
                     )
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+                .rows(
+                    listOf(
+                        InferencePipelineDataStreamParams.Row.builder()
+                            .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                            .putAdditionalProperty("output", JsonValue.from("bar"))
+                            .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                            .putAdditionalProperty("cost", JsonValue.from("bar"))
+                            .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                            .build()
+                    )
+                )
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -86,10 +106,10 @@ class InferencePipelineDataStreamParamsTest {
                         .costColumnName("cost")
                         .groundTruthColumnName("ground_truth")
                         .inferenceIdColumnName("id")
-                        .inputVariableNames(listOf("string"))
+                        .inputVariableNames(listOf("user_query"))
                         .latencyColumnName("latency")
                         .metadata(JsonValue.from(mapOf<String, Any>()))
-                        .numOfTokenColumnName("num_tokens")
+                        .numOfTokenColumnName("tokens")
                         .prompt(
                             listOf(
                                 InferencePipelineDataStreamParams.Config.LlmData.Prompt.builder()
@@ -104,7 +124,17 @@ class InferencePipelineDataStreamParamsTest {
                 )
             )
         assertThat(body.rows())
-            .isEqualTo(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+            .isEqualTo(
+                listOf(
+                    InferencePipelineDataStreamParams.Row.builder()
+                        .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                        .putAdditionalProperty("output", JsonValue.from("bar"))
+                        .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                        .putAdditionalProperty("cost", JsonValue.from("bar"))
+                        .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                        .build()
+                )
+            )
     }
 
     @Test
@@ -119,7 +149,17 @@ class InferencePipelineDataStreamParamsTest {
                             .build()
                     )
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+                .rows(
+                    listOf(
+                        InferencePipelineDataStreamParams.Row.builder()
+                            .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                            .putAdditionalProperty("output", JsonValue.from("bar"))
+                            .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                            .putAdditionalProperty("cost", JsonValue.from("bar"))
+                            .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                            .build()
+                    )
+                )
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -132,7 +172,17 @@ class InferencePipelineDataStreamParamsTest {
                 )
             )
         assertThat(body.rows())
-            .isEqualTo(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+            .isEqualTo(
+                listOf(
+                    InferencePipelineDataStreamParams.Row.builder()
+                        .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                        .putAdditionalProperty("output", JsonValue.from("bar"))
+                        .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                        .putAdditionalProperty("cost", JsonValue.from("bar"))
+                        .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                        .build()
+                )
+            )
     }
 
     @Test
@@ -147,7 +197,17 @@ class InferencePipelineDataStreamParamsTest {
                             .build()
                     )
                 )
-                .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+                .rows(
+                    listOf(
+                        InferencePipelineDataStreamParams.Row.builder()
+                            .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                            .putAdditionalProperty("output", JsonValue.from("bar"))
+                            .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                            .putAdditionalProperty("cost", JsonValue.from("bar"))
+                            .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                            .build()
+                    )
+                )
                 .build()
         assertThat(params).isNotNull
         // path param "inferencePipelineId"

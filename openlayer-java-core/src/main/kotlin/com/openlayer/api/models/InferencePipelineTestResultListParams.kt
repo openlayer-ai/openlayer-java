@@ -5,7 +5,6 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -233,29 +232,17 @@ constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val RUNNING = Status(JsonField.of("running"))
+            @JvmField val RUNNING = of("running")
 
-            @JvmField val PASSING = Status(JsonField.of("passing"))
+            @JvmField val PASSING = of("passing")
 
-            @JvmField val FAILING = Status(JsonField.of("failing"))
+            @JvmField val FAILING = of("failing")
 
-            @JvmField val SKIPPED = Status(JsonField.of("skipped"))
+            @JvmField val SKIPPED = of("skipped")
 
-            @JvmField val ERROR = Status(JsonField.of("error"))
+            @JvmField val ERROR = of("error")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
@@ -298,6 +285,18 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     class Type
@@ -308,29 +307,17 @@ constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val INTEGRITY = Type(JsonField.of("integrity"))
+            @JvmField val INTEGRITY = of("integrity")
 
-            @JvmField val CONSISTENCY = Type(JsonField.of("consistency"))
+            @JvmField val CONSISTENCY = of("consistency")
 
-            @JvmField val PERFORMANCE = Type(JsonField.of("performance"))
+            @JvmField val PERFORMANCE = of("performance")
 
-            @JvmField val FAIRNESS = Type(JsonField.of("fairness"))
+            @JvmField val FAIRNESS = of("fairness")
 
-            @JvmField val ROBUSTNESS = Type(JsonField.of("robustness"))
+            @JvmField val ROBUSTNESS = of("robustness")
 
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }
@@ -373,6 +360,18 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

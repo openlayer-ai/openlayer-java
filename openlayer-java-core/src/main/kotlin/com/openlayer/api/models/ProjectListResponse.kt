@@ -562,25 +562,13 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Source && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                @JvmField val WEB = Source(JsonField.of("web"))
+                @JvmField val WEB = of("web")
 
-                @JvmField val API = Source(JsonField.of("api"))
+                @JvmField val API = of("api")
 
-                @JvmField val NULL = Source(JsonField.of("null"))
+                @JvmField val NULL = of("null")
 
                 @JvmStatic fun of(value: String) = Source(JsonField.of(value))
             }
@@ -615,6 +603,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Source && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         class TaskType
@@ -625,28 +625,15 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                @JvmField val LLM_BASE = TaskType(JsonField.of("llm-base"))
+                @JvmField val LLM_BASE = of("llm-base")
 
-                @JvmField
-                val TABULAR_CLASSIFICATION = TaskType(JsonField.of("tabular-classification"))
+                @JvmField val TABULAR_CLASSIFICATION = of("tabular-classification")
 
-                @JvmField val TABULAR_REGRESSION = TaskType(JsonField.of("tabular-regression"))
+                @JvmField val TABULAR_REGRESSION = of("tabular-regression")
 
-                @JvmField val TEXT_CLASSIFICATION = TaskType(JsonField.of("text-classification"))
+                @JvmField val TEXT_CLASSIFICATION = of("text-classification")
 
                 @JvmStatic fun of(value: String) = TaskType(JsonField.of(value))
             }
@@ -685,6 +672,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         @JsonDeserialize(builder = GitRepo.Builder::class)

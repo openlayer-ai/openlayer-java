@@ -393,29 +393,17 @@ private constructor(
 
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-            override fun equals(other: Any?): Boolean {
-                if (this === other) {
-                    return true
-                }
-
-                return /* spotless:off */ other is Status && value == other.value /* spotless:on */
-            }
-
-            override fun hashCode() = value.hashCode()
-
-            override fun toString() = value.toString()
-
             companion object {
 
-                @JvmField val RUNNING = Status(JsonField.of("running"))
+                @JvmField val RUNNING = of("running")
 
-                @JvmField val PASSING = Status(JsonField.of("passing"))
+                @JvmField val PASSING = of("passing")
 
-                @JvmField val FAILING = Status(JsonField.of("failing"))
+                @JvmField val FAILING = of("failing")
 
-                @JvmField val SKIPPED = Status(JsonField.of("skipped"))
+                @JvmField val SKIPPED = of("skipped")
 
-                @JvmField val ERROR = Status(JsonField.of("error"))
+                @JvmField val ERROR = of("error")
 
                 @JvmStatic fun of(value: String) = Status(JsonField.of(value))
             }
@@ -458,6 +446,18 @@ private constructor(
                 }
 
             fun asString(): String = _value().asStringOrThrow()
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
         }
 
         @JsonDeserialize(builder = Goal.Builder::class)

@@ -5,7 +5,6 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -205,27 +204,15 @@ constructor(
 
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
-        }
-
-        override fun hashCode() = value.hashCode()
-
-        override fun toString() = value.toString()
-
         companion object {
 
-            @JvmField val LLM_BASE = TaskType(JsonField.of("llm-base"))
+            @JvmField val LLM_BASE = of("llm-base")
 
-            @JvmField val TABULAR_CLASSIFICATION = TaskType(JsonField.of("tabular-classification"))
+            @JvmField val TABULAR_CLASSIFICATION = of("tabular-classification")
 
-            @JvmField val TABULAR_REGRESSION = TaskType(JsonField.of("tabular-regression"))
+            @JvmField val TABULAR_REGRESSION = of("tabular-regression")
 
-            @JvmField val TEXT_CLASSIFICATION = TaskType(JsonField.of("text-classification"))
+            @JvmField val TEXT_CLASSIFICATION = of("text-classification")
 
             @JvmStatic fun of(value: String) = TaskType(JsonField.of(value))
         }
@@ -264,6 +251,18 @@ constructor(
             }
 
         fun asString(): String = _value().asStringOrThrow()
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {
