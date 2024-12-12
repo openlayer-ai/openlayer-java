@@ -79,13 +79,19 @@ import java.util.List;
 InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     .config(InferencePipelineDataStreamParams.Config.ofLlmData(InferencePipelineDataStreamParams.Config.LlmData.builder()
-        .outputColumnName("output")
-        .costColumnName("cost")
         .inputVariableNames(List.of("user_query"))
+        .outputColumnName("output")
         .numOfTokenColumnName("tokens")
+        .costColumnName("cost")
         .timestampColumnName("timestamp")
         .build()))
-    .row(List.of(InferencePipelineDataStreamParams.Row.builder().build()))
+    .row(List.of(InferencePipelineDataStreamParams.Row.builder()
+        .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
+        .putAdditionalProperty("output", JsonValue.from("42"))
+        .putAdditionalProperty("tokens", JsonValue.from(7))
+        .putAdditionalProperty("cost", JsonValue.from(0.02))
+        .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
+        .build()))
     .build();
 InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(params);
 ```

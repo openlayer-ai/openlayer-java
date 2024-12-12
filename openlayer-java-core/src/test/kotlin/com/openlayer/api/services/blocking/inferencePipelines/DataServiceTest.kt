@@ -32,10 +32,10 @@ class DataServiceTest {
                                 .costColumnName("cost")
                                 .groundTruthColumnName("ground_truth")
                                 .inferenceIdColumnName("id")
-                                .inputVariableNames(listOf("string"))
+                                .inputVariableNames(listOf("user_query"))
                                 .latencyColumnName("latency")
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
-                                .numOfTokenColumnName("num_tokens")
+                                .numOfTokenColumnName("tokens")
                                 .prompt(
                                     listOf(
                                         InferencePipelineDataStreamParams.Config.LlmData.Prompt
@@ -50,7 +50,17 @@ class DataServiceTest {
                                 .build()
                         )
                     )
-                    .rows(listOf(InferencePipelineDataStreamParams.Row.builder().build()))
+                    .rows(
+                        listOf(
+                            InferencePipelineDataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                    )
                     .build()
             )
         println(inferencePipelineDataStreamResponse)
