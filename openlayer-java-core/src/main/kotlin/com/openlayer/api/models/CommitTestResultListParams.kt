@@ -254,15 +254,15 @@ constructor(
 
         companion object {
 
-            @JvmField val RUNNING = Status(JsonField.of("running"))
+            @JvmField val RUNNING = of("running")
 
-            @JvmField val PASSING = Status(JsonField.of("passing"))
+            @JvmField val PASSING = of("passing")
 
-            @JvmField val FAILING = Status(JsonField.of("failing"))
+            @JvmField val FAILING = of("failing")
 
-            @JvmField val SKIPPED = Status(JsonField.of("skipped"))
+            @JvmField val SKIPPED = of("skipped")
 
-            @JvmField val ERROR = Status(JsonField.of("error"))
+            @JvmField val ERROR = of("error")
 
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
@@ -329,15 +329,15 @@ constructor(
 
         companion object {
 
-            @JvmField val INTEGRITY = Type(JsonField.of("integrity"))
+            @JvmField val INTEGRITY = of("integrity")
 
-            @JvmField val CONSISTENCY = Type(JsonField.of("consistency"))
+            @JvmField val CONSISTENCY = of("consistency")
 
-            @JvmField val PERFORMANCE = Type(JsonField.of("performance"))
+            @JvmField val PERFORMANCE = of("performance")
 
-            @JvmField val FAIRNESS = Type(JsonField.of("fairness"))
+            @JvmField val FAIRNESS = of("fairness")
 
-            @JvmField val ROBUSTNESS = Type(JsonField.of("robustness"))
+            @JvmField val ROBUSTNESS = of("robustness")
 
             @JvmStatic fun of(value: String) = Type(JsonField.of(value))
         }
