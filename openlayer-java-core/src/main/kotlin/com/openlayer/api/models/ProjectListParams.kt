@@ -5,7 +5,6 @@ package com.openlayer.api.models
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
