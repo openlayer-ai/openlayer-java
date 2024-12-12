@@ -219,13 +219,13 @@ constructor(
 
         companion object {
 
-            @JvmField val LLM_BASE = TaskType(JsonField.of("llm-base"))
+            @JvmField val LLM_BASE = of("llm-base")
 
-            @JvmField val TABULAR_CLASSIFICATION = TaskType(JsonField.of("tabular-classification"))
+            @JvmField val TABULAR_CLASSIFICATION = of("tabular-classification")
 
-            @JvmField val TABULAR_REGRESSION = TaskType(JsonField.of("tabular-regression"))
+            @JvmField val TABULAR_REGRESSION = of("tabular-regression")
 
-            @JvmField val TEXT_CLASSIFICATION = TaskType(JsonField.of("text-classification"))
+            @JvmField val TEXT_CLASSIFICATION = of("text-classification")
 
             @JvmStatic fun of(value: String) = TaskType(JsonField.of(value))
         }
