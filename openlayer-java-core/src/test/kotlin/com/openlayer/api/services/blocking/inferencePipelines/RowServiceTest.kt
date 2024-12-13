@@ -5,7 +5,7 @@ package com.openlayer.api.services.blocking.inferencePipelines
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.models.*
+import com.openlayer.api.models.InferencePipelineRowUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

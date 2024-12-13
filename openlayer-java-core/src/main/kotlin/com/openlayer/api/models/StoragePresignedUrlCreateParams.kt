@@ -7,7 +7,6 @@ import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.toImmutable
-import com.openlayer.api.models.*
 import java.util.Objects
 import java.util.Optional
 
