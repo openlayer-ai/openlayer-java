@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.1.0-alpha.10 (2024-12-13)
+
+Full Changelog: [v0.1.0-alpha.9...v0.1.0-alpha.10](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.9...v0.1.0-alpha.10)
+
+### Chores
+
+* **internal:** codegen related update ([#66](https://github.com/openlayer-ai/openlayer-java/issues/66)) ([0a31936](https://github.com/openlayer-ai/openlayer-java/commit/0a319360b98f225d92d3fc31ad49db5eed2b88e7))
+* **internal:** remove unused imports ([#65](https://github.com/openlayer-ai/openlayer-java/issues/65)) ([cfb5af8](https://github.com/openlayer-ai/openlayer-java/commit/cfb5af80bc1435706e38760b5448dd079036edf7))
+* update example values in tests and docs ([#61](https://github.com/openlayer-ai/openlayer-java/issues/61)) ([4737582](https://github.com/openlayer-ai/openlayer-java/commit/4737582a254bb1ae0d9905394c3cb550552b3286))
+
+
+### Styles
+
+* **internal:** make enum value definitions less verbose ([#63](https://github.com/openlayer-ai/openlayer-java/issues/63)) ([445cf02](https://github.com/openlayer-ai/openlayer-java/commit/445cf0268a084c9d27f47004fc22a8d6fcfa34e9))
+* **internal:** move enum identity methods to bottom of class ([#64](https://github.com/openlayer-ai/openlayer-java/issues/64)) ([1be25e8](https://github.com/openlayer-ai/openlayer-java/commit/1be25e83f73636cca43eb945223b78ff2eb94849))
+
 ## 0.1.0-alpha.9 (2024-12-11)
 
 Full Changelog: [v0.1.0-alpha.8...v0.1.0-alpha.9](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.8...v0.1.0-alpha.9)
