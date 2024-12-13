@@ -4,7 +4,7 @@ package com.openlayer.api.services.blocking.storage
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.*
+import com.openlayer.api.models.StoragePresignedUrlCreateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

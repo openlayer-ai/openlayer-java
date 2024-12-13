@@ -4,8 +4,14 @@ package com.openlayer.api.client
 
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.getPackageVersion
-import com.openlayer.api.models.*
-import com.openlayer.api.services.blocking.*
+import com.openlayer.api.services.blocking.CommitService
+import com.openlayer.api.services.blocking.CommitServiceImpl
+import com.openlayer.api.services.blocking.InferencePipelineService
+import com.openlayer.api.services.blocking.InferencePipelineServiceImpl
+import com.openlayer.api.services.blocking.ProjectService
+import com.openlayer.api.services.blocking.ProjectServiceImpl
+import com.openlayer.api.services.blocking.StorageService
+import com.openlayer.api.services.blocking.StorageServiceImpl
 
 class OpenlayerClientImpl
 constructor(

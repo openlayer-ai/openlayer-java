@@ -2,8 +2,10 @@
 
 package com.openlayer.api.client
 
-import com.openlayer.api.models.*
-import com.openlayer.api.services.async.*
+import com.openlayer.api.services.async.CommitServiceAsync
+import com.openlayer.api.services.async.InferencePipelineServiceAsync
+import com.openlayer.api.services.async.ProjectServiceAsync
+import com.openlayer.api.services.async.StorageServiceAsync
 
 interface OpenlayerClientAsync {
 

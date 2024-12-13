@@ -2,8 +2,10 @@
 
 package com.openlayer.api.client
 
-import com.openlayer.api.models.*
-import com.openlayer.api.services.blocking.*
+import com.openlayer.api.services.blocking.CommitService
+import com.openlayer.api.services.blocking.InferencePipelineService
+import com.openlayer.api.services.blocking.ProjectService
+import com.openlayer.api.services.blocking.StorageService
 
 interface OpenlayerClient {
 
