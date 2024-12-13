@@ -4,17 +4,14 @@ package com.openlayer.api.services
 
 import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
-import com.github.tomakehurst.wiremock.client.WireMock.get
 import com.github.tomakehurst.wiremock.client.WireMock.ok
 import com.github.tomakehurst.wiremock.client.WireMock.post
-import com.github.tomakehurst.wiremock.client.WireMock.put
 import com.github.tomakehurst.wiremock.client.WireMock.status
 import com.github.tomakehurst.wiremock.client.WireMock.stubFor
 import com.github.tomakehurst.wiremock.junit5.WireMockRuntimeInfo
 import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.openlayer.api.client.OpenlayerClient
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.core.JsonString
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.jsonMapper
@@ -28,7 +25,8 @@ import com.openlayer.api.errors.RateLimitException
 import com.openlayer.api.errors.UnauthorizedException
 import com.openlayer.api.errors.UnexpectedStatusCodeException
 import com.openlayer.api.errors.UnprocessableEntityException
-import com.openlayer.api.models.*
+import com.openlayer.api.models.InferencePipelineDataStreamParams
+import com.openlayer.api.models.InferencePipelineDataStreamResponse
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.InstanceOfAssertFactories
@@ -41,7 +39,7 @@ class ErrorHandlingTest {
     private val JSON_MAPPER: JsonMapper = jsonMapper()
 
     private val OPENLAYER_ERROR: OpenlayerError =
-        OpenlayerError.builder().putAdditionalProperty("key", JsonString.of("value")).build()
+        OpenlayerError.builder().putAdditionalProperty("key", JsonValue.from("value")).build()
 
     private lateinit var client: OpenlayerClient
 

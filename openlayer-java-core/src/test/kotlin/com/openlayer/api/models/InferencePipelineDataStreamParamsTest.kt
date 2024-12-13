@@ -3,7 +3,6 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.models.*
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 

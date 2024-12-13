@@ -5,7 +5,6 @@ package com.openlayer.api.models
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
-import com.openlayer.api.models.*
 import java.util.Objects
 
 class InferencePipelineRetrieveParams
