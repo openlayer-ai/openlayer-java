@@ -4,7 +4,8 @@ package com.openlayer.api.services.blocking.projects
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.*
+import com.openlayer.api.models.ProjectCommitCreateParams
+import com.openlayer.api.models.ProjectCommitListParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

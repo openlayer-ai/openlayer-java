@@ -4,7 +4,9 @@ package com.openlayer.api.services.blocking
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.*
+import com.openlayer.api.models.InferencePipelineDeleteParams
+import com.openlayer.api.models.InferencePipelineRetrieveParams
+import com.openlayer.api.models.InferencePipelineUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
