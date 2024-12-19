@@ -24,7 +24,6 @@ class RowServiceTest {
             rowService.update(
                 InferencePipelineRowUpdateParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .inferenceId("inferenceId")
                     .row(JsonValue.from(mapOf<String, Any>()))
                     .config(
                         InferencePipelineRowUpdateParams.Config.builder()
@@ -35,6 +34,7 @@ class RowServiceTest {
                             .timestampColumnName("timestamp")
                             .build()
                     )
+                    .inferenceId("inferenceId")
                     .build()
             )
         println(inferencePipelineRowUpdateResponse)
