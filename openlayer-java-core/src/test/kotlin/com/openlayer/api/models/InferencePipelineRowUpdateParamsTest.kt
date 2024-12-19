@@ -13,7 +13,6 @@ class InferencePipelineRowUpdateParamsTest {
     fun createInferencePipelineRowUpdateParams() {
         InferencePipelineRowUpdateParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-            .inferenceId("inferenceId")
             .row(JsonValue.from(mapOf<String, Any>()))
             .config(
                 InferencePipelineRowUpdateParams.Config.builder()
@@ -24,6 +23,7 @@ class InferencePipelineRowUpdateParamsTest {
                     .timestampColumnName("timestamp")
                     .build()
             )
+            .inferenceId("inferenceId")
             .build()
     }
 
@@ -32,7 +32,6 @@ class InferencePipelineRowUpdateParamsTest {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .config(
                     InferencePipelineRowUpdateParams.Config.builder()
@@ -43,6 +42,7 @@ class InferencePipelineRowUpdateParamsTest {
                         .timestampColumnName("timestamp")
                         .build()
                 )
+                .inferenceId("inferenceId")
                 .build()
         val expected = QueryParams.builder()
         expected.put("inferenceId", "inferenceId")
@@ -54,8 +54,8 @@ class InferencePipelineRowUpdateParamsTest {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
+                .inferenceId("inferenceId")
                 .build()
         val expected = QueryParams.builder()
         expected.put("inferenceId", "inferenceId")
@@ -67,7 +67,6 @@ class InferencePipelineRowUpdateParamsTest {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .config(
                     InferencePipelineRowUpdateParams.Config.builder()
@@ -78,6 +77,7 @@ class InferencePipelineRowUpdateParamsTest {
                         .timestampColumnName("timestamp")
                         .build()
                 )
+                .inferenceId("inferenceId")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -99,8 +99,8 @@ class InferencePipelineRowUpdateParamsTest {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
+                .inferenceId("inferenceId")
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
@@ -112,8 +112,8 @@ class InferencePipelineRowUpdateParamsTest {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
+                .inferenceId("inferenceId")
                 .build()
         assertThat(params).isNotNull
         // path param "inferencePipelineId"
