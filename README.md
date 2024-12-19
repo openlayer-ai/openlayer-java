@@ -49,6 +49,9 @@ Use `OpenlayerOkHttpClient.builder()` to configure the client.
 Alternately, set the environment with `OPENLAYER_API_KEY`, and use `OpenlayerOkHttpClient.fromEnv()` to read from the environment.
 
 ```java
+import com.openlayer.api.client.OpenlayerClient;
+import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
+
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
 // Note: you can also call fromEnv() from the client builder, for example if you need to set additional properties
@@ -68,10 +71,10 @@ Read the documentation for more configuration options.
 
 ### Example: creating a resource
 
-To create a new inference pipeline data, first use the `InferencePipelineDataStreamParams` builder to specify attributes,
-then pass that to the `stream` method of the `data` service.
+To create a new inference pipeline data, first use the `InferencePipelineDataStreamParams` builder to specify attributes, then pass that to the `stream` method of the `data` service.
 
 ```java
+import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.models.InferencePipelineDataStreamParams;
 import com.openlayer.api.models.InferencePipelineDataStreamResponse;
 import java.util.List;
@@ -85,7 +88,7 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .costColumnName("cost")
         .timestampColumnName("timestamp")
         .build()))
-    .row(List.of(InferencePipelineDataStreamParams.Row.builder()
+    .rows(List.of(InferencePipelineDataStreamParams.Row.builder()
         .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
         .putAdditionalProperty("output", JsonValue.from("42"))
         .putAdditionalProperty("tokens", JsonValue.from(7))
@@ -104,14 +107,14 @@ InferencePipelineDataStreamResponse response = client.inferencePipelines().data(
 
 To make a request to the Openlayer API, you generally build an instance of the appropriate `Params` class.
 
-In [Example: creating a resource](#example-creating-a-resource) above, we used the `InferencePipelineDataStreamParams.builder()` to pass to
-the `stream` method of the `data` service.
+In [Example: creating a resource](#example-creating-a-resource) above, we used the `InferencePipelineDataStreamParams.builder()` to pass to the `stream` method of the `data` service.
 
-Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case,
-you can attach them using the `putAdditionalProperty` method.
+Sometimes, the API may support other properties that are not yet supported in the Java SDK types. In that case, you can attach them using the `putAdditionalProperty` method.
 
 ```java
-import com.openlayer.api.models.core.JsonValue;
+import com.openlayer.api.core.JsonValue;
+import com.openlayer.api.models.InferencePipelineDataStreamParams;
+
 InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
     // ... normal properties
     .putAdditionalProperty("secret_param", JsonValue.from("4242"))
@@ -125,15 +128,19 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
 When receiving a response, the Openlayer Java SDK will deserialize it into instances of the typed model classes. In rare cases, the API may return a response property that doesn't match the expected Java type. If you directly access the mistaken property, the SDK will throw an unchecked `OpenlayerInvalidDataException` at runtime. If you would prefer to check in advance that that response is completely well-typed, call `.validate()` on the returned model.
 
 ```java
+import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+
 InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream().validate();
 ```
 
 ### Response properties as JSON
 
-In rare cases, you may want to access the underlying JSON value for a response property rather than using the typed version provided by
-this SDK. Each model property has a corresponding JSON version, with an underscore before the method name, which returns a `JsonField` value.
+In rare cases, you may want to access the underlying JSON value for a response property rather than using the typed version provided by this SDK. Each model property has a corresponding JSON version, with an underscore before the method name, which returns a `JsonField` value.
 
 ```java
+import com.openlayer.api.core.JsonField;
+import java.util.Optional;
+
 JsonField field = responseObj._field();
 
 if (field.isMissing()) {
@@ -155,6 +162,8 @@ if (field.isMissing()) {
 Sometimes, the server response may include additional properties that are not yet available in this library's types. You can access them using the model's `_additionalProperties` method:
 
 ```java
+import com.openlayer.api.core.JsonValue;
+
 JsonValue secret = projectCreateResponse._additionalProperties().get("secret_field");
 ```
 
@@ -168,31 +177,33 @@ This library throws exceptions in a single hierarchy for easy handling:
 
 - **`OpenlayerException`** - Base exception for all exceptions
 
-  - **`OpenlayerServiceException`** - HTTP errors with a well-formed response body we were able to parse. The exception message and the `.debuggingRequestId()` will be set by the server.
+- **`OpenlayerServiceException`** - HTTP errors with a well-formed response body we were able to parse. The exception message and the `.debuggingRequestId()` will be set by the server.
 
-    | 400    | BadRequestException           |
-    | ------ | ----------------------------- |
-    | 401    | AuthenticationException       |
-    | 403    | PermissionDeniedException     |
-    | 404    | NotFoundException             |
-    | 422    | UnprocessableEntityException  |
-    | 429    | RateLimitException            |
-    | 5xx    | InternalServerException       |
-    | others | UnexpectedStatusCodeException |
+  | 400    | BadRequestException           |
+  | ------ | ----------------------------- |
+  | 401    | AuthenticationException       |
+  | 403    | PermissionDeniedException     |
+  | 404    | NotFoundException             |
+  | 422    | UnprocessableEntityException  |
+  | 429    | RateLimitException            |
+  | 5xx    | InternalServerException       |
+  | others | UnexpectedStatusCodeException |
 
-  - **`OpenlayerIoException`** - I/O networking errors
-  - **`OpenlayerInvalidDataException`** - any other exceptions on the client side, e.g.:
-    - We failed to serialize the request body
-    - We failed to parse the response body (has access to response code and body)
+- **`OpenlayerIoException`** - I/O networking errors
+- **`OpenlayerInvalidDataException`** - any other exceptions on the client side, e.g.:
+  - We failed to serialize the request body
+  - We failed to parse the response body (has access to response code and body)
 
 ## Network options
 
 ### Retries
 
-Requests that experience certain errors are automatically retried 2 times by default, with a short exponential backoff. Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, and >=500 Internal errors will all be retried by default.
-You can provide a `maxRetries` on the client builder to configure this:
+Requests that experience certain errors are automatically retried 2 times by default, with a short exponential backoff. Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict, 429 Rate Limit, and >=500 Internal errors will all be retried by default. You can provide a `maxRetries` on the client builder to configure this:
 
 ```java
+import com.openlayer.api.client.OpenlayerClient;
+import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
+
 OpenlayerClient client = OpenlayerOkHttpClient.builder()
     .fromEnv()
     .maxRetries(4)
@@ -204,6 +215,10 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
 Requests time out after 1 minute by default. You can configure this on the client builder:
 
 ```java
+import com.openlayer.api.client.OpenlayerClient;
+import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
+import java.time.Duration;
+
 OpenlayerClient client = OpenlayerOkHttpClient.builder()
     .fromEnv()
     .timeout(Duration.ofSeconds(30))
@@ -215,24 +230,24 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
 Requests can be routed through a proxy. You can configure this on the client builder:
 
 ```java
+import com.openlayer.api.client.OpenlayerClient;
+import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
+import java.net.InetSocketAddress;
+import java.net.Proxy;
+
 OpenlayerClient client = OpenlayerOkHttpClient.builder()
     .fromEnv()
-    .proxy(new Proxy(
-        Type.HTTP,
-        new InetSocketAddress("proxy.com", 8080)
-    ))
+    .proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("example.com", 8080)))
     .build();
 ```
 
 ## Making custom/undocumented requests
 
-This library is typed for convenient access to the documented API. If you need to access undocumented
-params or response properties, the library can still be used.
+This library is typed for convenient access to the documented API. If you need to access undocumented params or response properties, the library can still be used.
 
 ### Undocumented request params
 
-To make requests using undocumented parameters, you can provide or override parameters on the params object
-while building it.
+To make requests using undocumented parameters, you can provide or override parameters on the params object while building it.
 
 ```kotlin
 FooCreateParams address = FooCreateParams.builder()
@@ -243,10 +258,7 @@ FooCreateParams address = FooCreateParams.builder()
 
 ### Undocumented response properties
 
-To access undocumented response properties, you can use `res._additionalProperties()` on a response object to
-get a map of untyped fields of type `Map<String, JsonValue>`. You can then access fields like
-`._additionalProperties().get("secret_prop").asString()` or use other helpers defined on the `JsonValue` class
-to extract it to a desired type.
+To access undocumented response properties, you can use `res._additionalProperties()` on a response object to get a map of untyped fields of type `Map<String, JsonValue>`. You can then access fields like `._additionalProperties().get("secret_prop").asString()` or use other helpers defined on the `JsonValue` class to extract it to a desired type.
 
 ## Logging
 
