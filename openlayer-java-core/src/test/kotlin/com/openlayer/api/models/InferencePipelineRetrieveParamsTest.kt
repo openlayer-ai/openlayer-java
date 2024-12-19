@@ -2,6 +2,7 @@
 
 package com.openlayer.api.models
 
+import com.openlayer.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -11,7 +12,30 @@ class InferencePipelineRetrieveParamsTest {
     fun createInferencePipelineRetrieveParams() {
         InferencePipelineRetrieveParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .expand(listOf(InferencePipelineRetrieveParams.Expand.PROJECT))
             .build()
+    }
+
+    @Test
+    fun getQueryParams() {
+        val params =
+            InferencePipelineRetrieveParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .expand(listOf(InferencePipelineRetrieveParams.Expand.PROJECT))
+                .build()
+        val expected = QueryParams.builder()
+        expected.put("expand", InferencePipelineRetrieveParams.Expand.PROJECT.toString())
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+    }
+
+    @Test
+    fun getQueryParamsWithoutOptionalFields() {
+        val params =
+            InferencePipelineRetrieveParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .build()
+        val expected = QueryParams.builder()
+        assertThat(params.getQueryParams()).isEqualTo(expected.build())
     }
 
     @Test
