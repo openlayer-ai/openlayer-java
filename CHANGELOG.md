@@ -1,5 +1,23 @@
 # Changelog
 
+## 0.1.0-alpha.11 (2024-12-20)
+
+Full Changelog: [v0.1.0-alpha.10...v0.1.0-alpha.11](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.10...v0.1.0-alpha.11)
+
+### Features
+
+* **api:** api update ([#68](https://github.com/openlayer-ai/openlayer-java/issues/68)) ([679ff1c](https://github.com/openlayer-ai/openlayer-java/commit/679ff1c2cd70530e6429d31766e1cad6165a7f6d))
+
+
+### Chores
+
+* **docs:** add example project ([#71](https://github.com/openlayer-ai/openlayer-java/issues/71)) ([7efeda9](https://github.com/openlayer-ai/openlayer-java/commit/7efeda9e63ec09ca07ec18e1647f4353ada3d218))
+* **docs:** add example project ([#75](https://github.com/openlayer-ai/openlayer-java/issues/75)) ([3c48537](https://github.com/openlayer-ai/openlayer-java/commit/3c485375542ec9c8f8daf996bf436c0e50773149))
+* **docs:** update readme ([#70](https://github.com/openlayer-ai/openlayer-java/issues/70)) ([91e2007](https://github.com/openlayer-ai/openlayer-java/commit/91e2007f4938d80ce30cc54651612e7d00ceda78))
+* **docs:** update readme ([#73](https://github.com/openlayer-ai/openlayer-java/issues/73)) ([1f3da27](https://github.com/openlayer-ai/openlayer-java/commit/1f3da279ac393c8d077d21b1605cb28e398fff8e))
+* **internal:** codegen related update ([#72](https://github.com/openlayer-ai/openlayer-java/issues/72)) ([029360f](https://github.com/openlayer-ai/openlayer-java/commit/029360f548e14f460168b7a0fe79e8914d7bfa48))
+* **internal:** codegen related update ([#74](https://github.com/openlayer-ai/openlayer-java/issues/74)) ([2561984](https://github.com/openlayer-ai/openlayer-java/commit/2561984b26c0b220318ef21c2201cb1b96702e29))
+
 ## 0.1.0-alpha.10 (2024-12-13)
 
 Full Changelog: [v0.1.0-alpha.9...v0.1.0-alpha.10](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.9...v0.1.0-alpha.10)
