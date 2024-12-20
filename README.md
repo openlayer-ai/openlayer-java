@@ -2,7 +2,7 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.1.0-alpha.10)
+[![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.1.0-alpha.11)
 
 <!-- x-release-please-end -->
 
@@ -27,7 +27,7 @@ The REST API documentation can be found on [openlayer.com](https://openlayer.co
 <!-- x-release-please-start-version -->
 
 ```kotlin
-implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.10")
+implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.11")
 ```
 
 #### Maven
@@ -36,7 +36,7 @@ implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.10")
 <dependency>
     <groupId>com.openlayer.api</groupId>
     <artifactId>openlayer-java</artifactId>
-    <version>0.1.0-alpha.10</version>
+    <version>0.1.0-alpha.11</version>
 </dependency>
 ```
 
