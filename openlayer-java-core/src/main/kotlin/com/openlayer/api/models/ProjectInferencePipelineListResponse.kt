@@ -1597,77 +1597,103 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /** The workspace id. */
             fun id(): String = id.getRequired("id")
 
+            /** The workspace name. */
             fun name(): String = name.getRequired("name")
 
+            /** The workspace slug. */
             fun slug(): String = slug.getRequired("slug")
 
+            /** The workspace creation date. */
             fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
+            /** The workspace last updated date. */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
+            /** The workspace creator id. */
             fun creatorId(): Optional<String> =
                 Optional.ofNullable(creatorId.getNullable("creatorId"))
 
+            /** The workspace invite code. */
             fun inviteCode(): Optional<String> =
                 Optional.ofNullable(inviteCode.getNullable("inviteCode"))
 
             fun wildcardDomains(): Optional<List<String>> =
                 Optional.ofNullable(wildcardDomains.getNullable("wildcardDomains"))
 
+            /** The number of projects in the workspace. */
             fun projectCount(): Long = projectCount.getRequired("projectCount")
 
+            /** The number of members in the workspace. */
             fun memberCount(): Long = memberCount.getRequired("memberCount")
 
             fun monthlyUsage(): Optional<List<MonthlyUsage>> =
                 Optional.ofNullable(monthlyUsage.getNullable("monthlyUsage"))
 
+            /** The number of invites in the workspace. */
             fun inviteCount(): Long = inviteCount.getRequired("inviteCount")
 
+            /** The start date of the current billing period. */
             fun periodStartDate(): Optional<OffsetDateTime> =
                 Optional.ofNullable(periodStartDate.getNullable("periodStartDate"))
 
+            /** The end date of the current billing period. */
             fun periodEndDate(): Optional<OffsetDateTime> =
                 Optional.ofNullable(periodEndDate.getNullable("periodEndDate"))
 
+            /** Whether the workspace only allows SAML authentication. */
             fun samlOnlyAccess(): Optional<Boolean> =
                 Optional.ofNullable(samlOnlyAccess.getNullable("samlOnlyAccess"))
 
             fun status(): Status = status.getRequired("status")
 
+            /** The workspace id. */
             @JsonProperty("id") @ExcludeMissing fun _id() = id
 
+            /** The workspace name. */
             @JsonProperty("name") @ExcludeMissing fun _name() = name
 
+            /** The workspace slug. */
             @JsonProperty("slug") @ExcludeMissing fun _slug() = slug
 
+            /** The workspace creation date. */
             @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
 
+            /** The workspace last updated date. */
             @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
 
+            /** The workspace creator id. */
             @JsonProperty("creatorId") @ExcludeMissing fun _creatorId() = creatorId
 
+            /** The workspace invite code. */
             @JsonProperty("inviteCode") @ExcludeMissing fun _inviteCode() = inviteCode
 
             @JsonProperty("wildcardDomains")
             @ExcludeMissing
             fun _wildcardDomains() = wildcardDomains
 
+            /** The number of projects in the workspace. */
             @JsonProperty("projectCount") @ExcludeMissing fun _projectCount() = projectCount
 
+            /** The number of members in the workspace. */
             @JsonProperty("memberCount") @ExcludeMissing fun _memberCount() = memberCount
 
             @JsonProperty("monthlyUsage") @ExcludeMissing fun _monthlyUsage() = monthlyUsage
 
+            /** The number of invites in the workspace. */
             @JsonProperty("inviteCount") @ExcludeMissing fun _inviteCount() = inviteCount
 
+            /** The start date of the current billing period. */
             @JsonProperty("periodStartDate")
             @ExcludeMissing
             fun _periodStartDate() = periodStartDate
 
+            /** The end date of the current billing period. */
             @JsonProperty("periodEndDate") @ExcludeMissing fun _periodEndDate() = periodEndDate
 
+            /** Whether the workspace only allows SAML authentication. */
             @JsonProperty("samlOnlyAccess") @ExcludeMissing fun _samlOnlyAccess() = samlOnlyAccess
 
             @JsonProperty("status") @ExcludeMissing fun _status() = status
@@ -1746,50 +1772,64 @@ private constructor(
                     additionalProperties(workspace.additionalProperties)
                 }
 
+                /** The workspace id. */
                 fun id(id: String) = id(JsonField.of(id))
 
+                /** The workspace id. */
                 @JsonProperty("id")
                 @ExcludeMissing
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
+                /** The workspace name. */
                 fun name(name: String) = name(JsonField.of(name))
 
+                /** The workspace name. */
                 @JsonProperty("name")
                 @ExcludeMissing
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
+                /** The workspace slug. */
                 fun slug(slug: String) = slug(JsonField.of(slug))
 
+                /** The workspace slug. */
                 @JsonProperty("slug")
                 @ExcludeMissing
                 fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
+                /** The workspace creation date. */
                 fun dateCreated(dateCreated: OffsetDateTime) =
                     dateCreated(JsonField.of(dateCreated))
 
+                /** The workspace creation date. */
                 @JsonProperty("dateCreated")
                 @ExcludeMissing
                 fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                     this.dateCreated = dateCreated
                 }
 
+                /** The workspace last updated date. */
                 fun dateUpdated(dateUpdated: OffsetDateTime) =
                     dateUpdated(JsonField.of(dateUpdated))
 
+                /** The workspace last updated date. */
                 @JsonProperty("dateUpdated")
                 @ExcludeMissing
                 fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                     this.dateUpdated = dateUpdated
                 }
 
+                /** The workspace creator id. */
                 fun creatorId(creatorId: String) = creatorId(JsonField.of(creatorId))
 
+                /** The workspace creator id. */
                 @JsonProperty("creatorId")
                 @ExcludeMissing
                 fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
+                /** The workspace invite code. */
                 fun inviteCode(inviteCode: String) = inviteCode(JsonField.of(inviteCode))
 
+                /** The workspace invite code. */
                 @JsonProperty("inviteCode")
                 @ExcludeMissing
                 fun inviteCode(inviteCode: JsonField<String>) = apply {
@@ -1805,16 +1845,20 @@ private constructor(
                     this.wildcardDomains = wildcardDomains
                 }
 
+                /** The number of projects in the workspace. */
                 fun projectCount(projectCount: Long) = projectCount(JsonField.of(projectCount))
 
+                /** The number of projects in the workspace. */
                 @JsonProperty("projectCount")
                 @ExcludeMissing
                 fun projectCount(projectCount: JsonField<Long>) = apply {
                     this.projectCount = projectCount
                 }
 
+                /** The number of members in the workspace. */
                 fun memberCount(memberCount: Long) = memberCount(JsonField.of(memberCount))
 
+                /** The number of members in the workspace. */
                 @JsonProperty("memberCount")
                 @ExcludeMissing
                 fun memberCount(memberCount: JsonField<Long>) = apply {
@@ -1830,35 +1874,43 @@ private constructor(
                     this.monthlyUsage = monthlyUsage
                 }
 
+                /** The number of invites in the workspace. */
                 fun inviteCount(inviteCount: Long) = inviteCount(JsonField.of(inviteCount))
 
+                /** The number of invites in the workspace. */
                 @JsonProperty("inviteCount")
                 @ExcludeMissing
                 fun inviteCount(inviteCount: JsonField<Long>) = apply {
                     this.inviteCount = inviteCount
                 }
 
+                /** The start date of the current billing period. */
                 fun periodStartDate(periodStartDate: OffsetDateTime) =
                     periodStartDate(JsonField.of(periodStartDate))
 
+                /** The start date of the current billing period. */
                 @JsonProperty("periodStartDate")
                 @ExcludeMissing
                 fun periodStartDate(periodStartDate: JsonField<OffsetDateTime>) = apply {
                     this.periodStartDate = periodStartDate
                 }
 
+                /** The end date of the current billing period. */
                 fun periodEndDate(periodEndDate: OffsetDateTime) =
                     periodEndDate(JsonField.of(periodEndDate))
 
+                /** The end date of the current billing period. */
                 @JsonProperty("periodEndDate")
                 @ExcludeMissing
                 fun periodEndDate(periodEndDate: JsonField<OffsetDateTime>) = apply {
                     this.periodEndDate = periodEndDate
                 }
 
+                /** Whether the workspace only allows SAML authentication. */
                 fun samlOnlyAccess(samlOnlyAccess: Boolean) =
                     samlOnlyAccess(JsonField.of(samlOnlyAccess))
 
+                /** Whether the workspace only allows SAML authentication. */
                 @JsonProperty("samlOnlyAccess")
                 @ExcludeMissing
                 fun samlOnlyAccess(samlOnlyAccess: JsonField<Boolean>) = apply {

@@ -1162,34 +1162,47 @@ constructor(
         private val additionalProperties: Map<String, JsonValue>,
     ) {
 
+        /** The workspace id. */
         @JsonProperty("id") fun id(): String? = id
 
+        /** The workspace name. */
         @JsonProperty("name") fun name(): String? = name
 
+        /** The workspace slug. */
         @JsonProperty("slug") fun slug(): String? = slug
 
+        /** The workspace creation date. */
         @JsonProperty("dateCreated") fun dateCreated(): OffsetDateTime? = dateCreated
 
+        /** The workspace last updated date. */
         @JsonProperty("dateUpdated") fun dateUpdated(): OffsetDateTime? = dateUpdated
 
+        /** The workspace creator id. */
         @JsonProperty("creatorId") fun creatorId(): String? = creatorId
 
+        /** The workspace invite code. */
         @JsonProperty("inviteCode") fun inviteCode(): String? = inviteCode
 
         @JsonProperty("wildcardDomains") fun wildcardDomains(): List<String>? = wildcardDomains
 
+        /** The number of projects in the workspace. */
         @JsonProperty("projectCount") fun projectCount(): Long? = projectCount
 
+        /** The number of members in the workspace. */
         @JsonProperty("memberCount") fun memberCount(): Long? = memberCount
 
         @JsonProperty("monthlyUsage") fun monthlyUsage(): List<MonthlyUsage>? = monthlyUsage
 
+        /** The number of invites in the workspace. */
         @JsonProperty("inviteCount") fun inviteCount(): Long? = inviteCount
 
+        /** The start date of the current billing period. */
         @JsonProperty("periodStartDate") fun periodStartDate(): OffsetDateTime? = periodStartDate
 
+        /** The end date of the current billing period. */
         @JsonProperty("periodEndDate") fun periodEndDate(): OffsetDateTime? = periodEndDate
 
+        /** Whether the workspace only allows SAML authentication. */
         @JsonProperty("samlOnlyAccess") fun samlOnlyAccess(): Boolean? = samlOnlyAccess
 
         @JsonProperty("status") fun status(): Status? = status
@@ -1246,21 +1259,28 @@ constructor(
                 additionalProperties(workspace.additionalProperties)
             }
 
+            /** The workspace id. */
             @JsonProperty("id") fun id(id: String) = apply { this.id = id }
 
+            /** The workspace name. */
             @JsonProperty("name") fun name(name: String) = apply { this.name = name }
 
+            /** The workspace slug. */
             @JsonProperty("slug") fun slug(slug: String) = apply { this.slug = slug }
 
+            /** The workspace creation date. */
             @JsonProperty("dateCreated")
             fun dateCreated(dateCreated: OffsetDateTime) = apply { this.dateCreated = dateCreated }
 
+            /** The workspace last updated date. */
             @JsonProperty("dateUpdated")
             fun dateUpdated(dateUpdated: OffsetDateTime) = apply { this.dateUpdated = dateUpdated }
 
+            /** The workspace creator id. */
             @JsonProperty("creatorId")
             fun creatorId(creatorId: String) = apply { this.creatorId = creatorId }
 
+            /** The workspace invite code. */
             @JsonProperty("inviteCode")
             fun inviteCode(inviteCode: String) = apply { this.inviteCode = inviteCode }
 
@@ -1269,9 +1289,11 @@ constructor(
                 this.wildcardDomains = wildcardDomains
             }
 
+            /** The number of projects in the workspace. */
             @JsonProperty("projectCount")
             fun projectCount(projectCount: Long) = apply { this.projectCount = projectCount }
 
+            /** The number of members in the workspace. */
             @JsonProperty("memberCount")
             fun memberCount(memberCount: Long) = apply { this.memberCount = memberCount }
 
@@ -1280,19 +1302,23 @@ constructor(
                 this.monthlyUsage = monthlyUsage
             }
 
+            /** The number of invites in the workspace. */
             @JsonProperty("inviteCount")
             fun inviteCount(inviteCount: Long) = apply { this.inviteCount = inviteCount }
 
+            /** The start date of the current billing period. */
             @JsonProperty("periodStartDate")
             fun periodStartDate(periodStartDate: OffsetDateTime) = apply {
                 this.periodStartDate = periodStartDate
             }
 
+            /** The end date of the current billing period. */
             @JsonProperty("periodEndDate")
             fun periodEndDate(periodEndDate: OffsetDateTime) = apply {
                 this.periodEndDate = periodEndDate
             }
 
+            /** Whether the workspace only allows SAML authentication. */
             @JsonProperty("samlOnlyAccess")
             fun samlOnlyAccess(samlOnlyAccess: Boolean) = apply {
                 this.samlOnlyAccess = samlOnlyAccess
