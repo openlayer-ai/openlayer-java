@@ -4,12 +4,14 @@ package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Delete inference pipeline. */
 class InferencePipelineDeleteParams
 constructor(
     private val inferencePipelineId: String,
@@ -27,9 +29,8 @@ constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     @JvmSynthetic
-    internal fun getBody(): Optional<Map<String, JsonValue>> {
-        return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
-    }
+    internal fun getBody(): Optional<Map<String, JsonValue>> =
+        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -192,9 +193,7 @@ constructor(
 
         fun build(): InferencePipelineDeleteParams =
             InferencePipelineDeleteParams(
-                checkNotNull(inferencePipelineId) {
-                    "`inferencePipelineId` is required but was not set"
-                },
+                checkRequired("inferencePipelineId", inferencePipelineId),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),

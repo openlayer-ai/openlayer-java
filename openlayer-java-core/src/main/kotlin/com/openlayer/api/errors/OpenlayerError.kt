@@ -4,19 +4,23 @@ package com.openlayer.api.errors
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = OpenlayerError.Builder::class)
 @NoAutoDetect
 class OpenlayerError
+@JsonCreator
 private constructor(
     @JsonAnyGetter
+    @ExcludeMissing
+    @JsonAnySetter
     @get:JvmName("additionalProperties")
-    val additionalProperties: Map<String, JsonValue>,
+    val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
     fun toBuilder() = Builder().from(this)
@@ -40,7 +44,6 @@ private constructor(
             putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
             additionalProperties.put(key, value)
         }

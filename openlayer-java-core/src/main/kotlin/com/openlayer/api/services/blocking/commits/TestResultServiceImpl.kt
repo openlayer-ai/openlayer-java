@@ -15,7 +15,7 @@ import com.openlayer.api.models.CommitTestResultListParams
 import com.openlayer.api.models.CommitTestResultListResponse
 
 class TestResultServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : TestResultService {
 

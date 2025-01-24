@@ -6,40 +6,45 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 
-@JsonDeserialize(builder = InferencePipelineDataStreamResponse.Builder::class)
 @NoAutoDetect
 class InferencePipelineDataStreamResponse
+@JsonCreator
 private constructor(
-    private val success: JsonField<Success>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("success")
+    @ExcludeMissing
+    private val success: JsonField<Success> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun success(): Success = success.getRequired("success")
 
-    @JsonProperty("success") @ExcludeMissing fun _success() = success
+    @JsonProperty("success") @ExcludeMissing fun _success(): JsonField<Success> = success
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): InferencePipelineDataStreamResponse = apply {
-        if (!validated) {
-            success()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        success()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -51,39 +56,46 @@ private constructor(
 
     class Builder {
 
-        private var success: JsonField<Success> = JsonMissing.of()
+        private var success: JsonField<Success>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(
             inferencePipelineDataStreamResponse: InferencePipelineDataStreamResponse
         ) = apply {
-            this.success = inferencePipelineDataStreamResponse.success
-            additionalProperties(inferencePipelineDataStreamResponse.additionalProperties)
+            success = inferencePipelineDataStreamResponse.success
+            additionalProperties =
+                inferencePipelineDataStreamResponse.additionalProperties.toMutableMap()
         }
 
         fun success(success: Success) = success(JsonField.of(success))
 
-        @JsonProperty("success")
-        @ExcludeMissing
         fun success(success: JsonField<Success>) = apply { this.success = success }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): InferencePipelineDataStreamResponse =
-            InferencePipelineDataStreamResponse(success, additionalProperties.toImmutable())
+            InferencePipelineDataStreamResponse(
+                checkRequired("success", success),
+                additionalProperties.toImmutable()
+            )
     }
 
     class Success

@@ -12,6 +12,7 @@ import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** List your workspace's projects. */
 class ProjectListParams
 constructor(
     private val name: String?,
@@ -22,12 +23,16 @@ constructor(
     private val additionalQueryParams: QueryParams,
 ) {
 
+    /** Filter list of items by project name. */
     fun name(): Optional<String> = Optional.ofNullable(name)
 
+    /** The page to return in a paginated query. */
     fun page(): Optional<Long> = Optional.ofNullable(page)
 
+    /** Maximum number of items to return per page. */
     fun perPage(): Optional<Long> = Optional.ofNullable(perPage)
 
+    /** Filter list of items by task type. */
     fun taskType(): Optional<TaskType> = Optional.ofNullable(taskType)
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -75,16 +80,36 @@ constructor(
         }
 
         /** Filter list of items by project name. */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String?) = apply { this.name = name }
+
+        /** Filter list of items by project name. */
+        fun name(name: Optional<String>) = name(name.orElse(null))
 
         /** The page to return in a paginated query. */
-        fun page(page: Long) = apply { this.page = page }
+        fun page(page: Long?) = apply { this.page = page }
+
+        /** The page to return in a paginated query. */
+        fun page(page: Long) = page(page as Long?)
+
+        /** The page to return in a paginated query. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun page(page: Optional<Long>) = page(page.orElse(null) as Long?)
 
         /** Maximum number of items to return per page. */
-        fun perPage(perPage: Long) = apply { this.perPage = perPage }
+        fun perPage(perPage: Long?) = apply { this.perPage = perPage }
+
+        /** Maximum number of items to return per page. */
+        fun perPage(perPage: Long) = perPage(perPage as Long?)
+
+        /** Maximum number of items to return per page. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun perPage(perPage: Optional<Long>) = perPage(perPage.orElse(null) as Long?)
 
         /** Filter list of items by task type. */
-        fun taskType(taskType: TaskType) = apply { this.taskType = taskType }
+        fun taskType(taskType: TaskType?) = apply { this.taskType = taskType }
+
+        /** Filter list of items by task type. */
+        fun taskType(taskType: Optional<TaskType>) = taskType(taskType.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -195,6 +220,7 @@ constructor(
             )
     }
 
+    /** Filter list of items by task type. */
     class TaskType
     @JsonCreator
     private constructor(

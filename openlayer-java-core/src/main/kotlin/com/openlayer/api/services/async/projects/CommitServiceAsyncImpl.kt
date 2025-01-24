@@ -19,7 +19,7 @@ import com.openlayer.api.models.ProjectCommitListResponse
 import java.util.concurrent.CompletableFuture
 
 class CommitServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CommitServiceAsync {
 

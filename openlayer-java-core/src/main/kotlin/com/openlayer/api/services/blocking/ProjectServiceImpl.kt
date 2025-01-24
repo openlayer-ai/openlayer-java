@@ -22,7 +22,7 @@ import com.openlayer.api.services.blocking.projects.InferencePipelineService
 import com.openlayer.api.services.blocking.projects.InferencePipelineServiceImpl
 
 class ProjectServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : ProjectService {
 

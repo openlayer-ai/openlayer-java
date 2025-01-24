@@ -3,11 +3,13 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
 
+/** List the commits (project versions) in a project. */
 class ProjectCommitListParams
 constructor(
     private val projectId: String,
@@ -19,8 +21,10 @@ constructor(
 
     fun projectId(): String = projectId
 
+    /** The page to return in a paginated query. */
     fun page(): Optional<Long> = Optional.ofNullable(page)
 
+    /** Maximum number of items to return per page. */
     fun perPage(): Optional<Long> = Optional.ofNullable(perPage)
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -73,10 +77,24 @@ constructor(
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
         /** The page to return in a paginated query. */
-        fun page(page: Long) = apply { this.page = page }
+        fun page(page: Long?) = apply { this.page = page }
+
+        /** The page to return in a paginated query. */
+        fun page(page: Long) = page(page as Long?)
+
+        /** The page to return in a paginated query. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun page(page: Optional<Long>) = page(page.orElse(null) as Long?)
 
         /** Maximum number of items to return per page. */
-        fun perPage(perPage: Long) = apply { this.perPage = perPage }
+        fun perPage(perPage: Long?) = apply { this.perPage = perPage }
+
+        /** Maximum number of items to return per page. */
+        fun perPage(perPage: Long) = perPage(perPage as Long?)
+
+        /** Maximum number of items to return per page. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun perPage(perPage: Optional<Long>) = perPage(perPage.orElse(null) as Long?)
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -178,7 +196,7 @@ constructor(
 
         fun build(): ProjectCommitListParams =
             ProjectCommitListParams(
-                checkNotNull(projectId) { "`projectId` is required but was not set" },
+                checkRequired("projectId", projectId),
                 page,
                 perPage,
                 additionalHeaders.build(),

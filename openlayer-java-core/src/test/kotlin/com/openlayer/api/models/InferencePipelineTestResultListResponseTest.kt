@@ -13,71 +13,58 @@ class InferencePipelineTestResultListResponseTest {
     fun createInferencePipelineTestResultListResponse() {
         val inferencePipelineTestResultListResponse =
             InferencePipelineTestResultListResponse.builder()
-                .items(
-                    listOf(
-                        InferencePipelineTestResultListResponse.Item.builder()
-                            .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                            .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                            .dateDataEnds(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                            .dateDataStarts(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                            .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                            .inferencePipelineId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                            .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                            .status(InferencePipelineTestResultListResponse.Item.Status.RUNNING)
-                            .statusMessage("Test successfully processed.")
-                            .goal(
-                                InferencePipelineTestResultListResponse.Item.Goal.builder()
-                                    .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                                    .commentCount(0L)
-                                    .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                                    .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                                    .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                                    .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                                    .description(
-                                        JsonValue.from(
-                                            "This test checks for duplicate rows in the dataset."
-                                        )
+                .addItem(
+                    InferencePipelineTestResultListResponse.Item.builder()
+                        .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                        .dateDataEnds(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                        .dateDataStarts(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                        .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                        .inferencePipelineId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .status(InferencePipelineTestResultListResponse.Item.Status.RUNNING)
+                        .statusMessage("Test successfully processed.")
+                        .goal(
+                            InferencePipelineTestResultListResponse.Item.Goal.builder()
+                                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                                .commentCount(0L)
+                                .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+                                .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                                .description(
+                                    JsonValue.from(
+                                        "This test checks for duplicate rows in the dataset."
                                     )
-                                    .name("No duplicate rows")
-                                    .number(1L)
-                                    .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                                    .subtype("duplicateRowCount")
-                                    .suggested(false)
-                                    .thresholds(
-                                        listOf(
-                                            InferencePipelineTestResultListResponse.Item.Goal
-                                                .Threshold
-                                                .builder()
-                                                .insightName("duplicateRowCount")
-                                                .insightParameters(
-                                                    listOf(JsonValue.from(mapOf<String, Any>()))
-                                                )
-                                                .measurement("duplicateRowCount")
-                                                .operator("<=")
-                                                .value(
-                                                    InferencePipelineTestResultListResponse.Item
-                                                        .Goal
-                                                        .Threshold
-                                                        .Value
-                                                        .ofNumber(0.0)
-                                                )
-                                                .build()
-                                        )
-                                    )
-                                    .type("integrity")
-                                    .archived(false)
-                                    .delayWindow(0.0)
-                                    .evaluationWindow(3600.0)
-                                    .usesMlModel(false)
-                                    .usesProductionData(false)
-                                    .usesReferenceDataset(false)
-                                    .usesTrainingDataset(false)
-                                    .usesValidationDataset(true)
-                                    .build()
-                            )
-                            .goalId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                            .build()
-                    )
+                                )
+                                .name("No duplicate rows")
+                                .number(1L)
+                                .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                                .subtype("duplicateRowCount")
+                                .suggested(false)
+                                .addThreshold(
+                                    InferencePipelineTestResultListResponse.Item.Goal.Threshold
+                                        .builder()
+                                        .insightName("duplicateRowCount")
+                                        .addInsightParameter(JsonValue.from(mapOf<String, Any>()))
+                                        .measurement("duplicateRowCount")
+                                        .operator("<=")
+                                        .value(0.0)
+                                        .build()
+                                )
+                                .type("integrity")
+                                .archived(false)
+                                .delayWindow(0.0)
+                                .evaluationWindow(3600.0)
+                                .usesMlModel(false)
+                                .usesProductionData(false)
+                                .usesReferenceDataset(false)
+                                .usesTrainingDataset(false)
+                                .usesValidationDataset(true)
+                                .build()
+                        )
+                        .goalId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .build()
                 )
                 .build()
         assertThat(inferencePipelineTestResultListResponse).isNotNull
@@ -111,24 +98,15 @@ class InferencePipelineTestResultListResponseTest {
                             .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                             .subtype("duplicateRowCount")
                             .suggested(false)
-                            .thresholds(
-                                listOf(
-                                    InferencePipelineTestResultListResponse.Item.Goal.Threshold
-                                        .builder()
-                                        .insightName("duplicateRowCount")
-                                        .insightParameters(
-                                            listOf(JsonValue.from(mapOf<String, Any>()))
-                                        )
-                                        .measurement("duplicateRowCount")
-                                        .operator("<=")
-                                        .value(
-                                            InferencePipelineTestResultListResponse.Item.Goal
-                                                .Threshold
-                                                .Value
-                                                .ofNumber(0.0)
-                                        )
-                                        .build()
-                                )
+                            .addThreshold(
+                                InferencePipelineTestResultListResponse.Item.Goal.Threshold
+                                    .builder()
+                                    .insightName("duplicateRowCount")
+                                    .addInsightParameter(JsonValue.from(mapOf<String, Any>()))
+                                    .measurement("duplicateRowCount")
+                                    .operator("<=")
+                                    .value(0.0)
+                                    .build()
                             )
                             .type("integrity")
                             .archived(false)

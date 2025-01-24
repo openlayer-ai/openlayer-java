@@ -81,9 +81,9 @@ class InferencePipelineRowUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.config())
-            .isEqualTo(
+            .contains(
                 InferencePipelineRowUpdateParams.Config.builder()
                     .groundTruthColumnName("ground_truth")
                     .humanFeedbackColumnName("human_feedback")
@@ -104,7 +104,7 @@ class InferencePipelineRowUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
+        assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
     }
 
     @Test

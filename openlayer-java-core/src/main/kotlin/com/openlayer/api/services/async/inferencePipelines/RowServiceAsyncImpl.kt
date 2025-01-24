@@ -17,7 +17,7 @@ import com.openlayer.api.models.InferencePipelineRowUpdateResponse
 import java.util.concurrent.CompletableFuture
 
 class RowServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : RowServiceAsync {
 

@@ -16,7 +16,7 @@ import com.openlayer.api.models.InferencePipelineRowUpdateParams
 import com.openlayer.api.models.InferencePipelineRowUpdateResponse
 
 class RowServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : RowService {
 

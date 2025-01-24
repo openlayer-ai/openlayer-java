@@ -15,7 +15,7 @@ import com.openlayer.api.models.InferencePipelineTestResultListParams
 import com.openlayer.api.models.InferencePipelineTestResultListResponse
 
 class TestResultServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : TestResultService {
 

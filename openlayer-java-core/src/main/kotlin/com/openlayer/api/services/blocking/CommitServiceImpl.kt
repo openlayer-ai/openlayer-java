@@ -7,7 +7,7 @@ import com.openlayer.api.services.blocking.commits.TestResultService
 import com.openlayer.api.services.blocking.commits.TestResultServiceImpl
 
 class CommitServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CommitService {
 

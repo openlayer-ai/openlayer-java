@@ -28,7 +28,7 @@ class ProjectCreateParamsTest {
         assertThat(body).isNotNull
         assertThat(body.name()).isEqualTo("My Project")
         assertThat(body.taskType()).isEqualTo(ProjectCreateParams.TaskType.LLM_BASE)
-        assertThat(body.description()).isEqualTo("My project description.")
+        assertThat(body.description()).contains("My project description.")
     }
 
     @Test

@@ -16,7 +16,7 @@ import com.openlayer.api.models.StoragePresignedUrlCreateParams
 import com.openlayer.api.models.StoragePresignedUrlCreateResponse
 
 class PresignedUrlServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PresignedUrlService {
 

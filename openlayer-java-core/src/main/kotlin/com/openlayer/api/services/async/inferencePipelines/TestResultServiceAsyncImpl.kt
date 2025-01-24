@@ -16,7 +16,7 @@ import com.openlayer.api.models.InferencePipelineTestResultListResponse
 import java.util.concurrent.CompletableFuture
 
 class TestResultServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : TestResultServiceAsync {
 

@@ -17,7 +17,7 @@ import com.openlayer.api.models.StoragePresignedUrlCreateResponse
 import java.util.concurrent.CompletableFuture
 
 class PresignedUrlServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : PresignedUrlServiceAsync {
 

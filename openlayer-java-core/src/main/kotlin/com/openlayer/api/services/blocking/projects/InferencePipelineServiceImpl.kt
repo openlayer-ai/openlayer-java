@@ -18,7 +18,7 @@ import com.openlayer.api.models.ProjectInferencePipelineListParams
 import com.openlayer.api.models.ProjectInferencePipelineListResponse
 
 class InferencePipelineServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : InferencePipelineService {
 

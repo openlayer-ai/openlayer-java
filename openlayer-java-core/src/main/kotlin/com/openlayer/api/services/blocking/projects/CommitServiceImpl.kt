@@ -18,7 +18,7 @@ import com.openlayer.api.models.ProjectCommitListParams
 import com.openlayer.api.models.ProjectCommitListResponse
 
 class CommitServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : CommitService {
 

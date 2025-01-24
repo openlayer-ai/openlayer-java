@@ -6,31 +6,23 @@
 
 <!-- x-release-please-end -->
 
-The Openlayer Java SDK provides convenient access to the Openlayer REST API from applications written in Java. It includes helper classes with helpful types and documentation for every request and response property.
-
-The Openlayer Java SDK is similar to the Openlayer Kotlin SDK but with minor differences that make it more ergonomic for use in Java, such as `Optional` instead of nullable values, `Stream` instead of `Sequence`, and `CompletableFuture` instead of suspend functions.
+The Openlayer Java SDK provides convenient access to the Openlayer REST API from applications written in Java.
 
 It is generated with [Stainless](https://www.stainlessapi.com/).
 
-## Documentation
+The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview).
 
-The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview).
-
----
-
-## Getting started
-
-### Install dependencies
-
-#### Gradle
+## Installation
 
 <!-- x-release-please-start-version -->
+
+### Gradle
 
 ```kotlin
 implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.11")
 ```
 
-#### Maven
+### Maven
 
 ```xml
 <dependency>
@@ -41,6 +33,12 @@ implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.11")
 ```
 
 <!-- x-release-please-end -->
+
+## Requirements
+
+This library requires Java 8 or later.
+
+## Usage
 
 ### Configure the client
 
@@ -77,24 +75,23 @@ To create a new inference pipeline data, first use the `InferencePipelineDataStr
 import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.models.InferencePipelineDataStreamParams;
 import com.openlayer.api.models.InferencePipelineDataStreamResponse;
-import java.util.List;
 
 InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-    .config(InferencePipelineDataStreamParams.Config.ofLlmData(InferencePipelineDataStreamParams.Config.LlmData.builder()
-        .inputVariableNames(List.of("user_query"))
+    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+        .addInputVariableName("user_query")
         .outputColumnName("output")
         .numOfTokenColumnName("tokens")
         .costColumnName("cost")
         .timestampColumnName("timestamp")
-        .build()))
-    .rows(List.of(InferencePipelineDataStreamParams.Row.builder()
+        .build())
+    .addRow(InferencePipelineDataStreamParams.Row.builder()
         .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
         .putAdditionalProperty("output", JsonValue.from("42"))
         .putAdditionalProperty("tokens", JsonValue.from(7))
         .putAdditionalProperty("cost", JsonValue.from(0.02))
         .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
-        .build()))
+        .build())
     .build();
 InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(params);
 ```
@@ -249,7 +246,7 @@ This library is typed for convenient access to the documented API. If you need t
 
 To make requests using undocumented parameters, you can provide or override parameters on the params object while building it.
 
-```kotlin
+```java
 FooCreateParams address = FooCreateParams.builder()
     .id("my_id")
     .putAdditionalProperty("secret_prop", JsonValue.from("hello"))
@@ -280,13 +277,9 @@ $ export OPENLAYER_LOG=debug
 
 This package generally follows [SemVer](https://semver.org/spec/v2.0.0.html) conventions, though certain backwards-incompatible changes may be released as minor versions:
 
-1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals)_.
+1. Changes to library internals which are technically public but not intended or documented for external use. _(Please open a GitHub issue to let us know if you are relying on such internals.)_
 2. Changes that we do not expect to impact the vast majority of users in practice.
 
 We take backwards-compatibility seriously and work hard to ensure you can rely on a smooth upgrade experience.
 
 We are keen for your feedback; please open an [issue](https://www.github.com/openlayer-ai/openlayer-java/issues) with questions, bugs, or suggestions.
-
-## Requirements
-
-This library requires Java 8 or later.

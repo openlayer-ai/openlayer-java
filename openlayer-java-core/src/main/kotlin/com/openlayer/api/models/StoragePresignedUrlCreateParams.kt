@@ -4,12 +4,14 @@ package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Retrieve a presigned url to post storage artifacts. */
 class StoragePresignedUrlCreateParams
 constructor(
     private val objectName: String,
@@ -18,6 +20,7 @@ constructor(
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
+    /** The name of the object. */
     fun objectName(): String = objectName
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -27,9 +30,8 @@ constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     @JvmSynthetic
-    internal fun getBody(): Optional<Map<String, JsonValue>> {
-        return Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
-    }
+    internal fun getBody(): Optional<Map<String, JsonValue>> =
+        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -192,7 +194,7 @@ constructor(
 
         fun build(): StoragePresignedUrlCreateParams =
             StoragePresignedUrlCreateParams(
-                checkNotNull(objectName) { "`objectName` is required but was not set" },
+                checkRequired("objectName", objectName),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
