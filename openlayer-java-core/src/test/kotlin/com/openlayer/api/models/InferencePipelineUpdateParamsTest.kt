@@ -28,9 +28,9 @@ class InferencePipelineUpdateParamsTest {
                 .build()
         val body = params.getBody()
         assertThat(body).isNotNull
-        assertThat(body.description()).isEqualTo("This pipeline is used for production.")
-        assertThat(body.name()).isEqualTo("production")
-        assertThat(body.referenceDatasetUri()).isEqualTo("referenceDatasetUri")
+        assertThat(body.description()).contains("This pipeline is used for production.")
+        assertThat(body.name()).contains("production")
+        assertThat(body.referenceDatasetUri()).contains("referenceDatasetUri")
     }
 
     @Test

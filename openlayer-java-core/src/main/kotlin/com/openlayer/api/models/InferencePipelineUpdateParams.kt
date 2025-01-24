@@ -4,51 +4,63 @@ package com.openlayer.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
+import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Update inference pipeline. */
 class InferencePipelineUpdateParams
 constructor(
     private val inferencePipelineId: String,
-    private val description: String?,
-    private val name: String?,
-    private val referenceDatasetUri: String?,
+    private val body: InferencePipelineUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun inferencePipelineId(): String = inferencePipelineId
 
-    fun description(): Optional<String> = Optional.ofNullable(description)
+    /** The inference pipeline description. */
+    fun description(): Optional<String> = body.description()
 
-    fun name(): Optional<String> = Optional.ofNullable(name)
+    /** The inference pipeline name. */
+    fun name(): Optional<String> = body.name()
 
-    fun referenceDatasetUri(): Optional<String> = Optional.ofNullable(referenceDatasetUri)
+    /**
+     * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
+     * handle your reference dataset updates.
+     */
+    fun referenceDatasetUri(): Optional<String> = body.referenceDatasetUri()
+
+    /** The inference pipeline description. */
+    fun _description(): JsonField<String> = body._description()
+
+    /** The inference pipeline name. */
+    fun _name(): JsonField<String> = body._name()
+
+    /**
+     * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
+     * handle your reference dataset updates.
+     */
+    fun _referenceDatasetUri(): JsonField<String> = body._referenceDatasetUri()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    @JvmSynthetic
-    internal fun getBody(): InferencePipelineUpdateBody {
-        return InferencePipelineUpdateBody(
-            description,
-            name,
-            referenceDatasetUri,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): InferencePipelineUpdateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -61,32 +73,69 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = InferencePipelineUpdateBody.Builder::class)
     @NoAutoDetect
     class InferencePipelineUpdateBody
+    @JsonCreator
     internal constructor(
-        private val description: String?,
-        private val name: String?,
-        private val referenceDatasetUri: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("referenceDatasetUri")
+        @ExcludeMissing
+        private val referenceDatasetUri: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The inference pipeline description. */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
 
         /** The inference pipeline name. */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+
+        /**
+         * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
+         * handle your reference dataset updates.
+         */
+        fun referenceDatasetUri(): Optional<String> =
+            Optional.ofNullable(referenceDatasetUri.getNullable("referenceDatasetUri"))
+
+        /** The inference pipeline description. */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
+
+        /** The inference pipeline name. */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
          * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
          * handle your reference dataset updates.
          */
         @JsonProperty("referenceDatasetUri")
-        fun referenceDatasetUri(): String? = referenceDatasetUri
+        @ExcludeMissing
+        fun _referenceDatasetUri(): JsonField<String> = referenceDatasetUri
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): InferencePipelineUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            description()
+            name()
+            referenceDatasetUri()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -97,47 +146,76 @@ constructor(
 
         class Builder {
 
-            private var description: String? = null
-            private var name: String? = null
-            private var referenceDatasetUri: String? = null
+            private var description: JsonField<String> = JsonMissing.of()
+            private var name: JsonField<String> = JsonMissing.of()
+            private var referenceDatasetUri: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(inferencePipelineUpdateBody: InferencePipelineUpdateBody) = apply {
-                this.description = inferencePipelineUpdateBody.description
-                this.name = inferencePipelineUpdateBody.name
-                this.referenceDatasetUri = inferencePipelineUpdateBody.referenceDatasetUri
-                additionalProperties(inferencePipelineUpdateBody.additionalProperties)
+                description = inferencePipelineUpdateBody.description
+                name = inferencePipelineUpdateBody.name
+                referenceDatasetUri = inferencePipelineUpdateBody.referenceDatasetUri
+                additionalProperties =
+                    inferencePipelineUpdateBody.additionalProperties.toMutableMap()
             }
 
             /** The inference pipeline description. */
-            @JsonProperty("description")
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** The inference pipeline description. */
+            fun description(description: Optional<String>) = description(description.orElse(null))
+
+            /** The inference pipeline description. */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
 
             /** The inference pipeline name. */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** The inference pipeline name. */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
              * The storage uri of your reference dataset. We recommend using the Python SDK or the
              * UI to handle your reference dataset updates.
              */
-            @JsonProperty("referenceDatasetUri")
-            fun referenceDatasetUri(referenceDatasetUri: String) = apply {
+            fun referenceDatasetUri(referenceDatasetUri: String?) =
+                referenceDatasetUri(JsonField.ofNullable(referenceDatasetUri))
+
+            /**
+             * The storage uri of your reference dataset. We recommend using the Python SDK or the
+             * UI to handle your reference dataset updates.
+             */
+            fun referenceDatasetUri(referenceDatasetUri: Optional<String>) =
+                referenceDatasetUri(referenceDatasetUri.orElse(null))
+
+            /**
+             * The storage uri of your reference dataset. We recommend using the Python SDK or the
+             * UI to handle your reference dataset updates.
+             */
+            fun referenceDatasetUri(referenceDatasetUri: JsonField<String>) = apply {
                 this.referenceDatasetUri = referenceDatasetUri
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
             }
 
             fun build(): InferencePipelineUpdateBody =
@@ -178,23 +256,17 @@ constructor(
     class Builder {
 
         private var inferencePipelineId: String? = null
-        private var description: String? = null
-        private var name: String? = null
-        private var referenceDatasetUri: String? = null
+        private var body: InferencePipelineUpdateBody.Builder =
+            InferencePipelineUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(inferencePipelineUpdateParams: InferencePipelineUpdateParams) = apply {
             inferencePipelineId = inferencePipelineUpdateParams.inferencePipelineId
-            description = inferencePipelineUpdateParams.description
-            name = inferencePipelineUpdateParams.name
-            referenceDatasetUri = inferencePipelineUpdateParams.referenceDatasetUri
+            body = inferencePipelineUpdateParams.body.toBuilder()
             additionalHeaders = inferencePipelineUpdateParams.additionalHeaders.toBuilder()
             additionalQueryParams = inferencePipelineUpdateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties =
-                inferencePipelineUpdateParams.additionalBodyProperties.toMutableMap()
         }
 
         fun inferencePipelineId(inferencePipelineId: String) = apply {
@@ -202,17 +274,60 @@ constructor(
         }
 
         /** The inference pipeline description. */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String?) = apply { body.description(description) }
+
+        /** The inference pipeline description. */
+        fun description(description: Optional<String>) = description(description.orElse(null))
+
+        /** The inference pipeline description. */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** The inference pipeline name. */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply { body.name(name) }
+
+        /** The inference pipeline name. */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
          * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
          * handle your reference dataset updates.
          */
-        fun referenceDatasetUri(referenceDatasetUri: String) = apply {
-            this.referenceDatasetUri = referenceDatasetUri
+        fun referenceDatasetUri(referenceDatasetUri: String?) = apply {
+            body.referenceDatasetUri(referenceDatasetUri)
+        }
+
+        /**
+         * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
+         * handle your reference dataset updates.
+         */
+        fun referenceDatasetUri(referenceDatasetUri: Optional<String>) =
+            referenceDatasetUri(referenceDatasetUri.orElse(null))
+
+        /**
+         * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
+         * handle your reference dataset updates.
+         */
+        fun referenceDatasetUri(referenceDatasetUri: JsonField<String>) = apply {
+            body.referenceDatasetUri(referenceDatasetUri)
+        }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
         }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
@@ -313,39 +428,12 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): InferencePipelineUpdateParams =
             InferencePipelineUpdateParams(
-                checkNotNull(inferencePipelineId) {
-                    "`inferencePipelineId` is required but was not set"
-                },
-                description,
-                name,
-                referenceDatasetUri,
+                checkRequired("inferencePipelineId", inferencePipelineId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
@@ -354,11 +442,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineUpdateParams && inferencePipelineId == other.inferencePipelineId && description == other.description && name == other.name && referenceDatasetUri == other.referenceDatasetUri && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineUpdateParams && inferencePipelineId == other.inferencePipelineId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, description, name, referenceDatasetUri, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "InferencePipelineUpdateParams{inferencePipelineId=$inferencePipelineId, description=$description, name=$name, referenceDatasetUri=$referenceDatasetUri, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "InferencePipelineUpdateParams{inferencePipelineId=$inferencePipelineId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

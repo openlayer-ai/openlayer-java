@@ -6,13 +6,14 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.LocalDate
@@ -20,29 +21,33 @@ import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = ProjectInferencePipelineListResponse.Builder::class)
 @NoAutoDetect
 class ProjectInferencePipelineListResponse
+@JsonCreator
 private constructor(
-    private val items: JsonField<List<Item>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("items")
+    @ExcludeMissing
+    private val items: JsonField<List<Item>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun items(): List<Item> = items.getRequired("items")
 
-    @JsonProperty("items") @ExcludeMissing fun _items() = items
+    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): ProjectInferencePipelineListResponse = apply {
-        if (!validated) {
-            items().forEach { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        items().forEach { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -54,119 +59,161 @@ private constructor(
 
     class Builder {
 
-        private var items: JsonField<List<Item>> = JsonMissing.of()
+        private var items: JsonField<MutableList<Item>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(
             projectInferencePipelineListResponse: ProjectInferencePipelineListResponse
         ) = apply {
-            this.items = projectInferencePipelineListResponse.items
-            additionalProperties(projectInferencePipelineListResponse.additionalProperties)
+            items = projectInferencePipelineListResponse.items.map { it.toMutableList() }
+            additionalProperties =
+                projectInferencePipelineListResponse.additionalProperties.toMutableMap()
         }
 
         fun items(items: List<Item>) = items(JsonField.of(items))
 
-        @JsonProperty("items")
-        @ExcludeMissing
-        fun items(items: JsonField<List<Item>>) = apply { this.items = items }
+        fun items(items: JsonField<List<Item>>) = apply {
+            this.items = items.map { it.toMutableList() }
+        }
+
+        fun addItem(item: Item) = apply {
+            items =
+                (items ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(item)
+                }
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): ProjectInferencePipelineListResponse =
             ProjectInferencePipelineListResponse(
-                items.map { it.toImmutable() },
+                checkRequired("items", items).map { it.toImmutable() },
                 additionalProperties.toImmutable()
             )
     }
 
-    @JsonDeserialize(builder = Item.Builder::class)
     @NoAutoDetect
     class Item
+    @JsonCreator
     private constructor(
-        private val id: JsonField<String>,
-        private val projectId: JsonField<String>,
-        private val workspaceId: JsonField<String>,
-        private val project: JsonField<Project>,
-        private val workspace: JsonField<Workspace>,
-        private val name: JsonField<String>,
-        private val dateCreated: JsonField<OffsetDateTime>,
-        private val dateUpdated: JsonField<OffsetDateTime>,
-        private val dateLastSampleReceived: JsonField<OffsetDateTime>,
-        private val description: JsonField<String>,
-        private val dateLastEvaluated: JsonField<OffsetDateTime>,
-        private val dateOfNextEvaluation: JsonField<OffsetDateTime>,
-        private val passingGoalCount: JsonField<Long>,
-        private val failingGoalCount: JsonField<Long>,
-        private val totalGoalCount: JsonField<Long>,
-        private val status: JsonField<Status>,
-        private val statusMessage: JsonField<String>,
-        private val links: JsonField<Links>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateLastEvaluated")
+        @ExcludeMissing
+        private val dateLastEvaluated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateLastSampleReceived")
+        @ExcludeMissing
+        private val dateLastSampleReceived: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateOfNextEvaluation")
+        @ExcludeMissing
+        private val dateOfNextEvaluation: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        private val failingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("links")
+        @ExcludeMissing
+        private val links: JsonField<Links> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("projectId")
+        @ExcludeMissing
+        private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        private val statusMessage: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        private val totalGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("project")
+        @ExcludeMissing
+        private val project: JsonField<Project> = JsonMissing.of(),
+        @JsonProperty("workspace")
+        @ExcludeMissing
+        private val workspace: JsonField<Workspace> = JsonMissing.of(),
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        private val workspaceId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         /** The inference pipeline id. */
         fun id(): String = id.getRequired("id")
 
-        /** The project id. */
-        fun projectId(): String = projectId.getRequired("projectId")
-
-        /** The workspace id. */
-        fun workspaceId(): Optional<String> =
-            Optional.ofNullable(workspaceId.getNullable("workspaceId"))
-
-        fun project(): Optional<Project> = Optional.ofNullable(project.getNullable("project"))
-
-        fun workspace(): Optional<Workspace> =
-            Optional.ofNullable(workspace.getNullable("workspace"))
-
-        /** The inference pipeline name. */
-        fun name(): String = name.getRequired("name")
-
         /** The creation date. */
         fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
-
-        /** The last updated date. */
-        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
-
-        /** The last data sample received date. */
-        fun dateLastSampleReceived(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
-
-        /** The inference pipeline description. */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
 
         /** The last test evaluation date. */
         fun dateLastEvaluated(): Optional<OffsetDateTime> =
             Optional.ofNullable(dateLastEvaluated.getNullable("dateLastEvaluated"))
 
+        /** The last data sample received date. */
+        fun dateLastSampleReceived(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
+
         /** The next test evaluation date. */
         fun dateOfNextEvaluation(): Optional<OffsetDateTime> =
             Optional.ofNullable(dateOfNextEvaluation.getNullable("dateOfNextEvaluation"))
 
-        /** The number of tests passing. */
-        fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
+        /** The last updated date. */
+        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
+
+        /** The inference pipeline description. */
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
 
         /** The number of tests failing. */
         fun failingGoalCount(): Long = failingGoalCount.getRequired("failingGoalCount")
 
-        /** The total number of tests. */
-        fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
+        fun links(): Links = links.getRequired("links")
+
+        /** The inference pipeline name. */
+        fun name(): String = name.getRequired("name")
+
+        /** The number of tests passing. */
+        fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
+
+        /** The project id. */
+        fun projectId(): String = projectId.getRequired("projectId")
 
         /** The status of test evaluation for the inference pipeline. */
         fun status(): Status = status.getRequired("status")
@@ -175,91 +222,123 @@ private constructor(
         fun statusMessage(): Optional<String> =
             Optional.ofNullable(statusMessage.getNullable("statusMessage"))
 
-        fun links(): Links = links.getRequired("links")
+        /** The total number of tests. */
+        fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
 
-        /** The inference pipeline id. */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
+        fun project(): Optional<Project> = Optional.ofNullable(project.getNullable("project"))
 
-        /** The project id. */
-        @JsonProperty("projectId") @ExcludeMissing fun _projectId() = projectId
+        fun workspace(): Optional<Workspace> =
+            Optional.ofNullable(workspace.getNullable("workspace"))
 
         /** The workspace id. */
-        @JsonProperty("workspaceId") @ExcludeMissing fun _workspaceId() = workspaceId
+        fun workspaceId(): Optional<String> =
+            Optional.ofNullable(workspaceId.getNullable("workspaceId"))
 
-        @JsonProperty("project") @ExcludeMissing fun _project() = project
-
-        @JsonProperty("workspace") @ExcludeMissing fun _workspace() = workspace
-
-        /** The inference pipeline name. */
-        @JsonProperty("name") @ExcludeMissing fun _name() = name
+        /** The inference pipeline id. */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
         /** The creation date. */
-        @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
-
-        /** The last updated date. */
-        @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
-
-        /** The last data sample received date. */
-        @JsonProperty("dateLastSampleReceived")
+        @JsonProperty("dateCreated")
         @ExcludeMissing
-        fun _dateLastSampleReceived() = dateLastSampleReceived
-
-        /** The inference pipeline description. */
-        @JsonProperty("description") @ExcludeMissing fun _description() = description
+        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
         /** The last test evaluation date. */
         @JsonProperty("dateLastEvaluated")
         @ExcludeMissing
-        fun _dateLastEvaluated() = dateLastEvaluated
+        fun _dateLastEvaluated(): JsonField<OffsetDateTime> = dateLastEvaluated
+
+        /** The last data sample received date. */
+        @JsonProperty("dateLastSampleReceived")
+        @ExcludeMissing
+        fun _dateLastSampleReceived(): JsonField<OffsetDateTime> = dateLastSampleReceived
 
         /** The next test evaluation date. */
         @JsonProperty("dateOfNextEvaluation")
         @ExcludeMissing
-        fun _dateOfNextEvaluation() = dateOfNextEvaluation
+        fun _dateOfNextEvaluation(): JsonField<OffsetDateTime> = dateOfNextEvaluation
 
-        /** The number of tests passing. */
-        @JsonProperty("passingGoalCount") @ExcludeMissing fun _passingGoalCount() = passingGoalCount
+        /** The last updated date. */
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
+
+        /** The inference pipeline description. */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
 
         /** The number of tests failing. */
-        @JsonProperty("failingGoalCount") @ExcludeMissing fun _failingGoalCount() = failingGoalCount
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        fun _failingGoalCount(): JsonField<Long> = failingGoalCount
 
-        /** The total number of tests. */
-        @JsonProperty("totalGoalCount") @ExcludeMissing fun _totalGoalCount() = totalGoalCount
+        @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
+
+        /** The inference pipeline name. */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /** The number of tests passing. */
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        fun _passingGoalCount(): JsonField<Long> = passingGoalCount
+
+        /** The project id. */
+        @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
 
         /** The status of test evaluation for the inference pipeline. */
-        @JsonProperty("status") @ExcludeMissing fun _status() = status
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
         /** The status message of test evaluation for the inference pipeline. */
-        @JsonProperty("statusMessage") @ExcludeMissing fun _statusMessage() = statusMessage
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        fun _statusMessage(): JsonField<String> = statusMessage
 
-        @JsonProperty("links") @ExcludeMissing fun _links() = links
+        /** The total number of tests. */
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        fun _totalGoalCount(): JsonField<Long> = totalGoalCount
+
+        @JsonProperty("project") @ExcludeMissing fun _project(): JsonField<Project> = project
+
+        @JsonProperty("workspace")
+        @ExcludeMissing
+        fun _workspace(): JsonField<Workspace> = workspace
+
+        /** The workspace id. */
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        fun _workspaceId(): JsonField<String> = workspaceId
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Item = apply {
-            if (!validated) {
-                id()
-                projectId()
-                workspaceId()
-                project().map { it.validate() }
-                workspace().map { it.validate() }
-                name()
-                dateCreated()
-                dateUpdated()
-                dateLastSampleReceived()
-                description()
-                dateLastEvaluated()
-                dateOfNextEvaluation()
-                passingGoalCount()
-                failingGoalCount()
-                totalGoalCount()
-                status()
-                statusMessage()
-                links().validate()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            id()
+            dateCreated()
+            dateLastEvaluated()
+            dateLastSampleReceived()
+            dateOfNextEvaluation()
+            dateUpdated()
+            description()
+            failingGoalCount()
+            links().validate()
+            name()
+            passingGoalCount()
+            projectId()
+            status()
+            statusMessage()
+            totalGoalCount()
+            project().ifPresent { it.validate() }
+            workspace().ifPresent { it.validate() }
+            workspaceId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -271,167 +350,119 @@ private constructor(
 
         class Builder {
 
-            private var id: JsonField<String> = JsonMissing.of()
-            private var projectId: JsonField<String> = JsonMissing.of()
-            private var workspaceId: JsonField<String> = JsonMissing.of()
+            private var id: JsonField<String>? = null
+            private var dateCreated: JsonField<OffsetDateTime>? = null
+            private var dateLastEvaluated: JsonField<OffsetDateTime>? = null
+            private var dateLastSampleReceived: JsonField<OffsetDateTime>? = null
+            private var dateOfNextEvaluation: JsonField<OffsetDateTime>? = null
+            private var dateUpdated: JsonField<OffsetDateTime>? = null
+            private var description: JsonField<String>? = null
+            private var failingGoalCount: JsonField<Long>? = null
+            private var links: JsonField<Links>? = null
+            private var name: JsonField<String>? = null
+            private var passingGoalCount: JsonField<Long>? = null
+            private var projectId: JsonField<String>? = null
+            private var status: JsonField<Status>? = null
+            private var statusMessage: JsonField<String>? = null
+            private var totalGoalCount: JsonField<Long>? = null
             private var project: JsonField<Project> = JsonMissing.of()
             private var workspace: JsonField<Workspace> = JsonMissing.of()
-            private var name: JsonField<String> = JsonMissing.of()
-            private var dateCreated: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var dateLastSampleReceived: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var description: JsonField<String> = JsonMissing.of()
-            private var dateLastEvaluated: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var dateOfNextEvaluation: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var passingGoalCount: JsonField<Long> = JsonMissing.of()
-            private var failingGoalCount: JsonField<Long> = JsonMissing.of()
-            private var totalGoalCount: JsonField<Long> = JsonMissing.of()
-            private var status: JsonField<Status> = JsonMissing.of()
-            private var statusMessage: JsonField<String> = JsonMissing.of()
-            private var links: JsonField<Links> = JsonMissing.of()
+            private var workspaceId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(item: Item) = apply {
-                this.id = item.id
-                this.projectId = item.projectId
-                this.workspaceId = item.workspaceId
-                this.project = item.project
-                this.workspace = item.workspace
-                this.name = item.name
-                this.dateCreated = item.dateCreated
-                this.dateUpdated = item.dateUpdated
-                this.dateLastSampleReceived = item.dateLastSampleReceived
-                this.description = item.description
-                this.dateLastEvaluated = item.dateLastEvaluated
-                this.dateOfNextEvaluation = item.dateOfNextEvaluation
-                this.passingGoalCount = item.passingGoalCount
-                this.failingGoalCount = item.failingGoalCount
-                this.totalGoalCount = item.totalGoalCount
-                this.status = item.status
-                this.statusMessage = item.statusMessage
-                this.links = item.links
-                additionalProperties(item.additionalProperties)
+                id = item.id
+                dateCreated = item.dateCreated
+                dateLastEvaluated = item.dateLastEvaluated
+                dateLastSampleReceived = item.dateLastSampleReceived
+                dateOfNextEvaluation = item.dateOfNextEvaluation
+                dateUpdated = item.dateUpdated
+                description = item.description
+                failingGoalCount = item.failingGoalCount
+                links = item.links
+                name = item.name
+                passingGoalCount = item.passingGoalCount
+                projectId = item.projectId
+                status = item.status
+                statusMessage = item.statusMessage
+                totalGoalCount = item.totalGoalCount
+                project = item.project
+                workspace = item.workspace
+                workspaceId = item.workspaceId
+                additionalProperties = item.additionalProperties.toMutableMap()
             }
 
             /** The inference pipeline id. */
             fun id(id: String) = id(JsonField.of(id))
 
             /** The inference pipeline id. */
-            @JsonProperty("id")
-            @ExcludeMissing
             fun id(id: JsonField<String>) = apply { this.id = id }
-
-            /** The project id. */
-            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
-
-            /** The project id. */
-            @JsonProperty("projectId")
-            @ExcludeMissing
-            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
-
-            /** The workspace id. */
-            fun workspaceId(workspaceId: String) = workspaceId(JsonField.of(workspaceId))
-
-            /** The workspace id. */
-            @JsonProperty("workspaceId")
-            @ExcludeMissing
-            fun workspaceId(workspaceId: JsonField<String>) = apply {
-                this.workspaceId = workspaceId
-            }
-
-            fun project(project: Project) = project(JsonField.of(project))
-
-            @JsonProperty("project")
-            @ExcludeMissing
-            fun project(project: JsonField<Project>) = apply { this.project = project }
-
-            fun workspace(workspace: Workspace) = workspace(JsonField.of(workspace))
-
-            @JsonProperty("workspace")
-            @ExcludeMissing
-            fun workspace(workspace: JsonField<Workspace>) = apply { this.workspace = workspace }
-
-            /** The inference pipeline name. */
-            fun name(name: String) = name(JsonField.of(name))
-
-            /** The inference pipeline name. */
-            @JsonProperty("name")
-            @ExcludeMissing
-            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The creation date. */
             fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
 
             /** The creation date. */
-            @JsonProperty("dateCreated")
-            @ExcludeMissing
             fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                 this.dateCreated = dateCreated
+            }
+
+            /** The last test evaluation date. */
+            fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime?) =
+                dateLastEvaluated(JsonField.ofNullable(dateLastEvaluated))
+
+            /** The last test evaluation date. */
+            fun dateLastEvaluated(dateLastEvaluated: Optional<OffsetDateTime>) =
+                dateLastEvaluated(dateLastEvaluated.orElse(null))
+
+            /** The last test evaluation date. */
+            fun dateLastEvaluated(dateLastEvaluated: JsonField<OffsetDateTime>) = apply {
+                this.dateLastEvaluated = dateLastEvaluated
+            }
+
+            /** The last data sample received date. */
+            fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime?) =
+                dateLastSampleReceived(JsonField.ofNullable(dateLastSampleReceived))
+
+            /** The last data sample received date. */
+            fun dateLastSampleReceived(dateLastSampleReceived: Optional<OffsetDateTime>) =
+                dateLastSampleReceived(dateLastSampleReceived.orElse(null))
+
+            /** The last data sample received date. */
+            fun dateLastSampleReceived(dateLastSampleReceived: JsonField<OffsetDateTime>) = apply {
+                this.dateLastSampleReceived = dateLastSampleReceived
+            }
+
+            /** The next test evaluation date. */
+            fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime?) =
+                dateOfNextEvaluation(JsonField.ofNullable(dateOfNextEvaluation))
+
+            /** The next test evaluation date. */
+            fun dateOfNextEvaluation(dateOfNextEvaluation: Optional<OffsetDateTime>) =
+                dateOfNextEvaluation(dateOfNextEvaluation.orElse(null))
+
+            /** The next test evaluation date. */
+            fun dateOfNextEvaluation(dateOfNextEvaluation: JsonField<OffsetDateTime>) = apply {
+                this.dateOfNextEvaluation = dateOfNextEvaluation
             }
 
             /** The last updated date. */
             fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
             /** The last updated date. */
-            @JsonProperty("dateUpdated")
-            @ExcludeMissing
             fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                 this.dateUpdated = dateUpdated
             }
 
-            /** The last data sample received date. */
-            fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime) =
-                dateLastSampleReceived(JsonField.of(dateLastSampleReceived))
-
-            /** The last data sample received date. */
-            @JsonProperty("dateLastSampleReceived")
-            @ExcludeMissing
-            fun dateLastSampleReceived(dateLastSampleReceived: JsonField<OffsetDateTime>) = apply {
-                this.dateLastSampleReceived = dateLastSampleReceived
-            }
+            /** The inference pipeline description. */
+            fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** The inference pipeline description. */
-            fun description(description: String) = description(JsonField.of(description))
+            fun description(description: Optional<String>) = description(description.orElse(null))
 
             /** The inference pipeline description. */
-            @JsonProperty("description")
-            @ExcludeMissing
             fun description(description: JsonField<String>) = apply {
                 this.description = description
-            }
-
-            /** The last test evaluation date. */
-            fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime) =
-                dateLastEvaluated(JsonField.of(dateLastEvaluated))
-
-            /** The last test evaluation date. */
-            @JsonProperty("dateLastEvaluated")
-            @ExcludeMissing
-            fun dateLastEvaluated(dateLastEvaluated: JsonField<OffsetDateTime>) = apply {
-                this.dateLastEvaluated = dateLastEvaluated
-            }
-
-            /** The next test evaluation date. */
-            fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime) =
-                dateOfNextEvaluation(JsonField.of(dateOfNextEvaluation))
-
-            /** The next test evaluation date. */
-            @JsonProperty("dateOfNextEvaluation")
-            @ExcludeMissing
-            fun dateOfNextEvaluation(dateOfNextEvaluation: JsonField<OffsetDateTime>) = apply {
-                this.dateOfNextEvaluation = dateOfNextEvaluation
-            }
-
-            /** The number of tests passing. */
-            fun passingGoalCount(passingGoalCount: Long) =
-                passingGoalCount(JsonField.of(passingGoalCount))
-
-            /** The number of tests passing. */
-            @JsonProperty("passingGoalCount")
-            @ExcludeMissing
-            fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
-                this.passingGoalCount = passingGoalCount
             }
 
             /** The number of tests failing. */
@@ -439,107 +470,153 @@ private constructor(
                 failingGoalCount(JsonField.of(failingGoalCount))
 
             /** The number of tests failing. */
-            @JsonProperty("failingGoalCount")
-            @ExcludeMissing
             fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
                 this.failingGoalCount = failingGoalCount
+            }
+
+            fun links(links: Links) = links(JsonField.of(links))
+
+            fun links(links: JsonField<Links>) = apply { this.links = links }
+
+            /** The inference pipeline name. */
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** The inference pipeline name. */
+            fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** The number of tests passing. */
+            fun passingGoalCount(passingGoalCount: Long) =
+                passingGoalCount(JsonField.of(passingGoalCount))
+
+            /** The number of tests passing. */
+            fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
+                this.passingGoalCount = passingGoalCount
+            }
+
+            /** The project id. */
+            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+            /** The project id. */
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+
+            /** The status of test evaluation for the inference pipeline. */
+            fun status(status: Status) = status(JsonField.of(status))
+
+            /** The status of test evaluation for the inference pipeline. */
+            fun status(status: JsonField<Status>) = apply { this.status = status }
+
+            /** The status message of test evaluation for the inference pipeline. */
+            fun statusMessage(statusMessage: String?) =
+                statusMessage(JsonField.ofNullable(statusMessage))
+
+            /** The status message of test evaluation for the inference pipeline. */
+            fun statusMessage(statusMessage: Optional<String>) =
+                statusMessage(statusMessage.orElse(null))
+
+            /** The status message of test evaluation for the inference pipeline. */
+            fun statusMessage(statusMessage: JsonField<String>) = apply {
+                this.statusMessage = statusMessage
             }
 
             /** The total number of tests. */
             fun totalGoalCount(totalGoalCount: Long) = totalGoalCount(JsonField.of(totalGoalCount))
 
             /** The total number of tests. */
-            @JsonProperty("totalGoalCount")
-            @ExcludeMissing
             fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
                 this.totalGoalCount = totalGoalCount
             }
 
-            /** The status of test evaluation for the inference pipeline. */
-            fun status(status: Status) = status(JsonField.of(status))
+            fun project(project: Project?) = project(JsonField.ofNullable(project))
 
-            /** The status of test evaluation for the inference pipeline. */
-            @JsonProperty("status")
-            @ExcludeMissing
-            fun status(status: JsonField<Status>) = apply { this.status = status }
+            fun project(project: Optional<Project>) = project(project.orElse(null))
 
-            /** The status message of test evaluation for the inference pipeline. */
-            fun statusMessage(statusMessage: String) = statusMessage(JsonField.of(statusMessage))
+            fun project(project: JsonField<Project>) = apply { this.project = project }
 
-            /** The status message of test evaluation for the inference pipeline. */
-            @JsonProperty("statusMessage")
-            @ExcludeMissing
-            fun statusMessage(statusMessage: JsonField<String>) = apply {
-                this.statusMessage = statusMessage
+            fun workspace(workspace: Workspace?) = workspace(JsonField.ofNullable(workspace))
+
+            fun workspace(workspace: Optional<Workspace>) = workspace(workspace.orElse(null))
+
+            fun workspace(workspace: JsonField<Workspace>) = apply { this.workspace = workspace }
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: String) = workspaceId(JsonField.of(workspaceId))
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: JsonField<String>) = apply {
+                this.workspaceId = workspaceId
             }
-
-            fun links(links: Links) = links(JsonField.of(links))
-
-            @JsonProperty("links")
-            @ExcludeMissing
-            fun links(links: JsonField<Links>) = apply { this.links = links }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Item =
                 Item(
-                    id,
-                    projectId,
-                    workspaceId,
+                    checkRequired("id", id),
+                    checkRequired("dateCreated", dateCreated),
+                    checkRequired("dateLastEvaluated", dateLastEvaluated),
+                    checkRequired("dateLastSampleReceived", dateLastSampleReceived),
+                    checkRequired("dateOfNextEvaluation", dateOfNextEvaluation),
+                    checkRequired("dateUpdated", dateUpdated),
+                    checkRequired("description", description),
+                    checkRequired("failingGoalCount", failingGoalCount),
+                    checkRequired("links", links),
+                    checkRequired("name", name),
+                    checkRequired("passingGoalCount", passingGoalCount),
+                    checkRequired("projectId", projectId),
+                    checkRequired("status", status),
+                    checkRequired("statusMessage", statusMessage),
+                    checkRequired("totalGoalCount", totalGoalCount),
                     project,
                     workspace,
-                    name,
-                    dateCreated,
-                    dateUpdated,
-                    dateLastSampleReceived,
-                    description,
-                    dateLastEvaluated,
-                    dateOfNextEvaluation,
-                    passingGoalCount,
-                    failingGoalCount,
-                    totalGoalCount,
-                    status,
-                    statusMessage,
-                    links,
+                    workspaceId,
                     additionalProperties.toImmutable(),
                 )
         }
 
-        @JsonDeserialize(builder = Links.Builder::class)
         @NoAutoDetect
         class Links
+        @JsonCreator
         private constructor(
-            private val app: JsonField<String>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("app")
+            @ExcludeMissing
+            private val app: JsonField<String> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             fun app(): String = app.getRequired("app")
 
-            @JsonProperty("app") @ExcludeMissing fun _app() = app
+            @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): Links = apply {
-                if (!validated) {
-                    app()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                app()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -551,29 +628,26 @@ private constructor(
 
             class Builder {
 
-                private var app: JsonField<String> = JsonMissing.of()
+                private var app: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(links: Links) = apply {
-                    this.app = links.app
-                    additionalProperties(links.additionalProperties)
+                    app = links.app
+                    additionalProperties = links.additionalProperties.toMutableMap()
                 }
 
                 fun app(app: String) = app(JsonField.of(app))
 
-                @JsonProperty("app")
-                @ExcludeMissing
                 fun app(app: JsonField<String>) = apply { this.app = app }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -581,7 +655,16 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
-                fun build(): Links = Links(app, additionalProperties.toImmutable())
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                fun build(): Links =
+                    Links(checkRequired("app", app), additionalProperties.toImmutable())
             }
 
             override fun equals(other: Any?): Boolean {
@@ -601,6 +684,7 @@ private constructor(
             override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
         }
 
+        /** The status of test evaluation for the inference pipeline. */
         class Status
         @JsonCreator
         private constructor(
@@ -682,44 +766,68 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        @JsonDeserialize(builder = Project.Builder::class)
         @NoAutoDetect
         class Project
+        @JsonCreator
         private constructor(
-            private val id: JsonField<String>,
-            private val workspaceId: JsonField<String>,
-            private val creatorId: JsonField<String>,
-            private val name: JsonField<String>,
-            private val dateCreated: JsonField<OffsetDateTime>,
-            private val dateUpdated: JsonField<OffsetDateTime>,
-            private val description: JsonField<String>,
-            private val source: JsonField<Source>,
-            private val taskType: JsonField<TaskType>,
-            private val versionCount: JsonField<Long>,
-            private val inferencePipelineCount: JsonField<Long>,
-            private val goalCount: JsonField<Long>,
-            private val developmentGoalCount: JsonField<Long>,
-            private val monitoringGoalCount: JsonField<Long>,
-            private val links: JsonField<Links>,
-            private val gitRepo: JsonField<GitRepo>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("id")
+            @ExcludeMissing
+            private val id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            private val creatorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("developmentGoalCount")
+            @ExcludeMissing
+            private val developmentGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("goalCount")
+            @ExcludeMissing
+            private val goalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("inferencePipelineCount")
+            @ExcludeMissing
+            private val inferencePipelineCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("links")
+            @ExcludeMissing
+            private val links: JsonField<Links> = JsonMissing.of(),
+            @JsonProperty("monitoringGoalCount")
+            @ExcludeMissing
+            private val monitoringGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("source")
+            @ExcludeMissing
+            private val source: JsonField<Source> = JsonMissing.of(),
+            @JsonProperty("taskType")
+            @ExcludeMissing
+            private val taskType: JsonField<TaskType> = JsonMissing.of(),
+            @JsonProperty("versionCount")
+            @ExcludeMissing
+            private val versionCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("workspaceId")
+            @ExcludeMissing
+            private val workspaceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            private val description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("gitRepo")
+            @ExcludeMissing
+            private val gitRepo: JsonField<GitRepo> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The project id. */
             fun id(): String = id.getRequired("id")
 
-            /** The workspace id. */
-            fun workspaceId(): Optional<String> =
-                Optional.ofNullable(workspaceId.getNullable("workspaceId"))
-
             /** The project creator id. */
             fun creatorId(): Optional<String> =
                 Optional.ofNullable(creatorId.getNullable("creatorId"))
-
-            /** The project name. */
-            fun name(): String = name.getRequired("name")
 
             /** The project creation date. */
             fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
@@ -727,9 +835,25 @@ private constructor(
             /** The project last updated date. */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-            /** The project description. */
-            fun description(): Optional<String> =
-                Optional.ofNullable(description.getNullable("description"))
+            /** The number of tests in the development mode of the project. */
+            fun developmentGoalCount(): Long =
+                developmentGoalCount.getRequired("developmentGoalCount")
+
+            /** The total number of tests in the project. */
+            fun goalCount(): Long = goalCount.getRequired("goalCount")
+
+            /** The number of inference pipelines in the project. */
+            fun inferencePipelineCount(): Long =
+                inferencePipelineCount.getRequired("inferencePipelineCount")
+
+            /** Links to the project. */
+            fun links(): Links = links.getRequired("links")
+
+            /** The number of tests in the monitoring mode of the project. */
+            fun monitoringGoalCount(): Long = monitoringGoalCount.getRequired("monitoringGoalCount")
+
+            /** The project name. */
+            fun name(): String = name.getRequired("name")
 
             /** The source of the project. */
             fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
@@ -740,102 +864,111 @@ private constructor(
             /** The number of versions (commits) in the project. */
             fun versionCount(): Long = versionCount.getRequired("versionCount")
 
-            /** The number of inference pipelines in the project. */
-            fun inferencePipelineCount(): Long =
-                inferencePipelineCount.getRequired("inferencePipelineCount")
+            /** The workspace id. */
+            fun workspaceId(): Optional<String> =
+                Optional.ofNullable(workspaceId.getNullable("workspaceId"))
 
-            /** The total number of tests in the project. */
-            fun goalCount(): Long = goalCount.getRequired("goalCount")
-
-            /** The number of tests in the development mode of the project. */
-            fun developmentGoalCount(): Long =
-                developmentGoalCount.getRequired("developmentGoalCount")
-
-            /** The number of tests in the monitoring mode of the project. */
-            fun monitoringGoalCount(): Long = monitoringGoalCount.getRequired("monitoringGoalCount")
-
-            /** Links to the project. */
-            fun links(): Links = links.getRequired("links")
+            /** The project description. */
+            fun description(): Optional<String> =
+                Optional.ofNullable(description.getNullable("description"))
 
             fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
 
             /** The project id. */
-            @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-            /** The workspace id. */
-            @JsonProperty("workspaceId") @ExcludeMissing fun _workspaceId() = workspaceId
+            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
             /** The project creator id. */
-            @JsonProperty("creatorId") @ExcludeMissing fun _creatorId() = creatorId
-
-            /** The project name. */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            fun _creatorId(): JsonField<String> = creatorId
 
             /** The project creation date. */
-            @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
             /** The project last updated date. */
-            @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
-
-            /** The project description. */
-            @JsonProperty("description") @ExcludeMissing fun _description() = description
-
-            /** The source of the project. */
-            @JsonProperty("source") @ExcludeMissing fun _source() = source
-
-            /** The task type of the project. */
-            @JsonProperty("taskType") @ExcludeMissing fun _taskType() = taskType
-
-            /** The number of versions (commits) in the project. */
-            @JsonProperty("versionCount") @ExcludeMissing fun _versionCount() = versionCount
-
-            /** The number of inference pipelines in the project. */
-            @JsonProperty("inferencePipelineCount")
+            @JsonProperty("dateUpdated")
             @ExcludeMissing
-            fun _inferencePipelineCount() = inferencePipelineCount
-
-            /** The total number of tests in the project. */
-            @JsonProperty("goalCount") @ExcludeMissing fun _goalCount() = goalCount
+            fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
             /** The number of tests in the development mode of the project. */
             @JsonProperty("developmentGoalCount")
             @ExcludeMissing
-            fun _developmentGoalCount() = developmentGoalCount
+            fun _developmentGoalCount(): JsonField<Long> = developmentGoalCount
+
+            /** The total number of tests in the project. */
+            @JsonProperty("goalCount") @ExcludeMissing fun _goalCount(): JsonField<Long> = goalCount
+
+            /** The number of inference pipelines in the project. */
+            @JsonProperty("inferencePipelineCount")
+            @ExcludeMissing
+            fun _inferencePipelineCount(): JsonField<Long> = inferencePipelineCount
+
+            /** Links to the project. */
+            @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
 
             /** The number of tests in the monitoring mode of the project. */
             @JsonProperty("monitoringGoalCount")
             @ExcludeMissing
-            fun _monitoringGoalCount() = monitoringGoalCount
+            fun _monitoringGoalCount(): JsonField<Long> = monitoringGoalCount
 
-            /** Links to the project. */
-            @JsonProperty("links") @ExcludeMissing fun _links() = links
+            /** The project name. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-            @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo() = gitRepo
+            /** The source of the project. */
+            @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<Source> = source
+
+            /** The task type of the project. */
+            @JsonProperty("taskType")
+            @ExcludeMissing
+            fun _taskType(): JsonField<TaskType> = taskType
+
+            /** The number of versions (commits) in the project. */
+            @JsonProperty("versionCount")
+            @ExcludeMissing
+            fun _versionCount(): JsonField<Long> = versionCount
+
+            /** The workspace id. */
+            @JsonProperty("workspaceId")
+            @ExcludeMissing
+            fun _workspaceId(): JsonField<String> = workspaceId
+
+            /** The project description. */
+            @JsonProperty("description")
+            @ExcludeMissing
+            fun _description(): JsonField<String> = description
+
+            @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo(): JsonField<GitRepo> = gitRepo
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): Project = apply {
-                if (!validated) {
-                    id()
-                    workspaceId()
-                    creatorId()
-                    name()
-                    dateCreated()
-                    dateUpdated()
-                    description()
-                    source()
-                    taskType()
-                    versionCount()
-                    inferencePipelineCount()
-                    goalCount()
-                    developmentGoalCount()
-                    monitoringGoalCount()
-                    links().validate()
-                    gitRepo().map { it.validate() }
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                id()
+                creatorId()
+                dateCreated()
+                dateUpdated()
+                developmentGoalCount()
+                goalCount()
+                inferencePipelineCount()
+                links().validate()
+                monitoringGoalCount()
+                name()
+                source()
+                taskType()
+                versionCount()
+                workspaceId()
+                description()
+                gitRepo().ifPresent { it.validate() }
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -847,86 +980,65 @@ private constructor(
 
             class Builder {
 
-                private var id: JsonField<String> = JsonMissing.of()
-                private var workspaceId: JsonField<String> = JsonMissing.of()
-                private var creatorId: JsonField<String> = JsonMissing.of()
-                private var name: JsonField<String> = JsonMissing.of()
-                private var dateCreated: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
+                private var id: JsonField<String>? = null
+                private var creatorId: JsonField<String>? = null
+                private var dateCreated: JsonField<OffsetDateTime>? = null
+                private var dateUpdated: JsonField<OffsetDateTime>? = null
+                private var developmentGoalCount: JsonField<Long>? = null
+                private var goalCount: JsonField<Long>? = null
+                private var inferencePipelineCount: JsonField<Long>? = null
+                private var links: JsonField<Links>? = null
+                private var monitoringGoalCount: JsonField<Long>? = null
+                private var name: JsonField<String>? = null
+                private var source: JsonField<Source>? = null
+                private var taskType: JsonField<TaskType>? = null
+                private var versionCount: JsonField<Long>? = null
+                private var workspaceId: JsonField<String>? = null
                 private var description: JsonField<String> = JsonMissing.of()
-                private var source: JsonField<Source> = JsonMissing.of()
-                private var taskType: JsonField<TaskType> = JsonMissing.of()
-                private var versionCount: JsonField<Long> = JsonMissing.of()
-                private var inferencePipelineCount: JsonField<Long> = JsonMissing.of()
-                private var goalCount: JsonField<Long> = JsonMissing.of()
-                private var developmentGoalCount: JsonField<Long> = JsonMissing.of()
-                private var monitoringGoalCount: JsonField<Long> = JsonMissing.of()
-                private var links: JsonField<Links> = JsonMissing.of()
                 private var gitRepo: JsonField<GitRepo> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(project: Project) = apply {
-                    this.id = project.id
-                    this.workspaceId = project.workspaceId
-                    this.creatorId = project.creatorId
-                    this.name = project.name
-                    this.dateCreated = project.dateCreated
-                    this.dateUpdated = project.dateUpdated
-                    this.description = project.description
-                    this.source = project.source
-                    this.taskType = project.taskType
-                    this.versionCount = project.versionCount
-                    this.inferencePipelineCount = project.inferencePipelineCount
-                    this.goalCount = project.goalCount
-                    this.developmentGoalCount = project.developmentGoalCount
-                    this.monitoringGoalCount = project.monitoringGoalCount
-                    this.links = project.links
-                    this.gitRepo = project.gitRepo
-                    additionalProperties(project.additionalProperties)
+                    id = project.id
+                    creatorId = project.creatorId
+                    dateCreated = project.dateCreated
+                    dateUpdated = project.dateUpdated
+                    developmentGoalCount = project.developmentGoalCount
+                    goalCount = project.goalCount
+                    inferencePipelineCount = project.inferencePipelineCount
+                    links = project.links
+                    monitoringGoalCount = project.monitoringGoalCount
+                    name = project.name
+                    source = project.source
+                    taskType = project.taskType
+                    versionCount = project.versionCount
+                    workspaceId = project.workspaceId
+                    description = project.description
+                    gitRepo = project.gitRepo
+                    additionalProperties = project.additionalProperties.toMutableMap()
                 }
 
                 /** The project id. */
                 fun id(id: String) = id(JsonField.of(id))
 
                 /** The project id. */
-                @JsonProperty("id")
-                @ExcludeMissing
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
-                /** The workspace id. */
-                fun workspaceId(workspaceId: String) = workspaceId(JsonField.of(workspaceId))
-
-                /** The workspace id. */
-                @JsonProperty("workspaceId")
-                @ExcludeMissing
-                fun workspaceId(workspaceId: JsonField<String>) = apply {
-                    this.workspaceId = workspaceId
-                }
+                /** The project creator id. */
+                fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
                 /** The project creator id. */
-                fun creatorId(creatorId: String) = creatorId(JsonField.of(creatorId))
+                fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
 
                 /** The project creator id. */
-                @JsonProperty("creatorId")
-                @ExcludeMissing
                 fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
-
-                /** The project name. */
-                fun name(name: String) = name(JsonField.of(name))
-
-                /** The project name. */
-                @JsonProperty("name")
-                @ExcludeMissing
-                fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** The project creation date. */
                 fun dateCreated(dateCreated: OffsetDateTime) =
                     dateCreated(JsonField.of(dateCreated))
 
                 /** The project creation date. */
-                @JsonProperty("dateCreated")
-                @ExcludeMissing
                 fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                     this.dateCreated = dateCreated
                 }
@@ -936,111 +1048,117 @@ private constructor(
                     dateUpdated(JsonField.of(dateUpdated))
 
                 /** The project last updated date. */
-                @JsonProperty("dateUpdated")
-                @ExcludeMissing
                 fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                     this.dateUpdated = dateUpdated
                 }
-
-                /** The project description. */
-                fun description(description: String) = description(JsonField.of(description))
-
-                /** The project description. */
-                @JsonProperty("description")
-                @ExcludeMissing
-                fun description(description: JsonField<String>) = apply {
-                    this.description = description
-                }
-
-                /** The source of the project. */
-                fun source(source: Source) = source(JsonField.of(source))
-
-                /** The source of the project. */
-                @JsonProperty("source")
-                @ExcludeMissing
-                fun source(source: JsonField<Source>) = apply { this.source = source }
-
-                /** The task type of the project. */
-                fun taskType(taskType: TaskType) = taskType(JsonField.of(taskType))
-
-                /** The task type of the project. */
-                @JsonProperty("taskType")
-                @ExcludeMissing
-                fun taskType(taskType: JsonField<TaskType>) = apply { this.taskType = taskType }
-
-                /** The number of versions (commits) in the project. */
-                fun versionCount(versionCount: Long) = versionCount(JsonField.of(versionCount))
-
-                /** The number of versions (commits) in the project. */
-                @JsonProperty("versionCount")
-                @ExcludeMissing
-                fun versionCount(versionCount: JsonField<Long>) = apply {
-                    this.versionCount = versionCount
-                }
-
-                /** The number of inference pipelines in the project. */
-                fun inferencePipelineCount(inferencePipelineCount: Long) =
-                    inferencePipelineCount(JsonField.of(inferencePipelineCount))
-
-                /** The number of inference pipelines in the project. */
-                @JsonProperty("inferencePipelineCount")
-                @ExcludeMissing
-                fun inferencePipelineCount(inferencePipelineCount: JsonField<Long>) = apply {
-                    this.inferencePipelineCount = inferencePipelineCount
-                }
-
-                /** The total number of tests in the project. */
-                fun goalCount(goalCount: Long) = goalCount(JsonField.of(goalCount))
-
-                /** The total number of tests in the project. */
-                @JsonProperty("goalCount")
-                @ExcludeMissing
-                fun goalCount(goalCount: JsonField<Long>) = apply { this.goalCount = goalCount }
 
                 /** The number of tests in the development mode of the project. */
                 fun developmentGoalCount(developmentGoalCount: Long) =
                     developmentGoalCount(JsonField.of(developmentGoalCount))
 
                 /** The number of tests in the development mode of the project. */
-                @JsonProperty("developmentGoalCount")
-                @ExcludeMissing
                 fun developmentGoalCount(developmentGoalCount: JsonField<Long>) = apply {
                     this.developmentGoalCount = developmentGoalCount
                 }
 
-                /** The number of tests in the monitoring mode of the project. */
-                fun monitoringGoalCount(monitoringGoalCount: Long) =
-                    monitoringGoalCount(JsonField.of(monitoringGoalCount))
+                /** The total number of tests in the project. */
+                fun goalCount(goalCount: Long) = goalCount(JsonField.of(goalCount))
 
-                /** The number of tests in the monitoring mode of the project. */
-                @JsonProperty("monitoringGoalCount")
-                @ExcludeMissing
-                fun monitoringGoalCount(monitoringGoalCount: JsonField<Long>) = apply {
-                    this.monitoringGoalCount = monitoringGoalCount
+                /** The total number of tests in the project. */
+                fun goalCount(goalCount: JsonField<Long>) = apply { this.goalCount = goalCount }
+
+                /** The number of inference pipelines in the project. */
+                fun inferencePipelineCount(inferencePipelineCount: Long) =
+                    inferencePipelineCount(JsonField.of(inferencePipelineCount))
+
+                /** The number of inference pipelines in the project. */
+                fun inferencePipelineCount(inferencePipelineCount: JsonField<Long>) = apply {
+                    this.inferencePipelineCount = inferencePipelineCount
                 }
 
                 /** Links to the project. */
                 fun links(links: Links) = links(JsonField.of(links))
 
                 /** Links to the project. */
-                @JsonProperty("links")
-                @ExcludeMissing
                 fun links(links: JsonField<Links>) = apply { this.links = links }
 
-                fun gitRepo(gitRepo: GitRepo) = gitRepo(JsonField.of(gitRepo))
+                /** The number of tests in the monitoring mode of the project. */
+                fun monitoringGoalCount(monitoringGoalCount: Long) =
+                    monitoringGoalCount(JsonField.of(monitoringGoalCount))
 
-                @JsonProperty("gitRepo")
-                @ExcludeMissing
+                /** The number of tests in the monitoring mode of the project. */
+                fun monitoringGoalCount(monitoringGoalCount: JsonField<Long>) = apply {
+                    this.monitoringGoalCount = monitoringGoalCount
+                }
+
+                /** The project name. */
+                fun name(name: String) = name(JsonField.of(name))
+
+                /** The project name. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                /** The source of the project. */
+                fun source(source: Source?) = source(JsonField.ofNullable(source))
+
+                /** The source of the project. */
+                fun source(source: Optional<Source>) = source(source.orElse(null))
+
+                /** The source of the project. */
+                fun source(source: JsonField<Source>) = apply { this.source = source }
+
+                /** The task type of the project. */
+                fun taskType(taskType: TaskType) = taskType(JsonField.of(taskType))
+
+                /** The task type of the project. */
+                fun taskType(taskType: JsonField<TaskType>) = apply { this.taskType = taskType }
+
+                /** The number of versions (commits) in the project. */
+                fun versionCount(versionCount: Long) = versionCount(JsonField.of(versionCount))
+
+                /** The number of versions (commits) in the project. */
+                fun versionCount(versionCount: JsonField<Long>) = apply {
+                    this.versionCount = versionCount
+                }
+
+                /** The workspace id. */
+                fun workspaceId(workspaceId: String?) =
+                    workspaceId(JsonField.ofNullable(workspaceId))
+
+                /** The workspace id. */
+                fun workspaceId(workspaceId: Optional<String>) =
+                    workspaceId(workspaceId.orElse(null))
+
+                /** The workspace id. */
+                fun workspaceId(workspaceId: JsonField<String>) = apply {
+                    this.workspaceId = workspaceId
+                }
+
+                /** The project description. */
+                fun description(description: String?) =
+                    description(JsonField.ofNullable(description))
+
+                /** The project description. */
+                fun description(description: Optional<String>) =
+                    description(description.orElse(null))
+
+                /** The project description. */
+                fun description(description: JsonField<String>) = apply {
+                    this.description = description
+                }
+
+                fun gitRepo(gitRepo: GitRepo?) = gitRepo(JsonField.ofNullable(gitRepo))
+
+                fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.orElse(null))
+
                 fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1048,52 +1166,65 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): Project =
                     Project(
-                        id,
-                        workspaceId,
-                        creatorId,
-                        name,
-                        dateCreated,
-                        dateUpdated,
+                        checkRequired("id", id),
+                        checkRequired("creatorId", creatorId),
+                        checkRequired("dateCreated", dateCreated),
+                        checkRequired("dateUpdated", dateUpdated),
+                        checkRequired("developmentGoalCount", developmentGoalCount),
+                        checkRequired("goalCount", goalCount),
+                        checkRequired("inferencePipelineCount", inferencePipelineCount),
+                        checkRequired("links", links),
+                        checkRequired("monitoringGoalCount", monitoringGoalCount),
+                        checkRequired("name", name),
+                        checkRequired("source", source),
+                        checkRequired("taskType", taskType),
+                        checkRequired("versionCount", versionCount),
+                        checkRequired("workspaceId", workspaceId),
                         description,
-                        source,
-                        taskType,
-                        versionCount,
-                        inferencePipelineCount,
-                        goalCount,
-                        developmentGoalCount,
-                        monitoringGoalCount,
-                        links,
                         gitRepo,
                         additionalProperties.toImmutable(),
                     )
             }
 
             /** Links to the project. */
-            @JsonDeserialize(builder = Links.Builder::class)
             @NoAutoDetect
             class Links
+            @JsonCreator
             private constructor(
-                private val app: JsonField<String>,
-                private val additionalProperties: Map<String, JsonValue>,
+                @JsonProperty("app")
+                @ExcludeMissing
+                private val app: JsonField<String> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
-
-                private var validated: Boolean = false
 
                 fun app(): String = app.getRequired("app")
 
-                @JsonProperty("app") @ExcludeMissing fun _app() = app
+                @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+                private var validated: Boolean = false
+
                 fun validate(): Links = apply {
-                    if (!validated) {
-                        app()
-                        validated = true
+                    if (validated) {
+                        return@apply
                     }
+
+                    app()
+                    validated = true
                 }
 
                 fun toBuilder() = Builder().from(this)
@@ -1105,29 +1236,26 @@ private constructor(
 
                 class Builder {
 
-                    private var app: JsonField<String> = JsonMissing.of()
+                    private var app: JsonField<String>? = null
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(links: Links) = apply {
-                        this.app = links.app
-                        additionalProperties(links.additionalProperties)
+                        app = links.app
+                        additionalProperties = links.additionalProperties.toMutableMap()
                     }
 
                     fun app(app: String) = app(JsonField.of(app))
 
-                    @JsonProperty("app")
-                    @ExcludeMissing
                     fun app(app: JsonField<String>) = apply { this.app = app }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
+                        putAllAdditionalProperties(additionalProperties)
                     }
 
-                    @JsonAnySetter
                     fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
+                        additionalProperties.put(key, value)
                     }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1135,7 +1263,16 @@ private constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
-                    fun build(): Links = Links(app, additionalProperties.toImmutable())
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    fun build(): Links =
+                        Links(checkRequired("app", app), additionalProperties.toImmutable())
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -1156,6 +1293,7 @@ private constructor(
                     "Links{app=$app, additionalProperties=$additionalProperties}"
             }
 
+            /** The source of the project. */
             class Source
             @JsonCreator
             private constructor(
@@ -1219,6 +1357,7 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
+            /** The task type of the project. */
             class TaskType
             @JsonCreator
             private constructor(
@@ -1288,96 +1427,133 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
-            @JsonDeserialize(builder = GitRepo.Builder::class)
             @NoAutoDetect
             class GitRepo
+            @JsonCreator
             private constructor(
-                private val id: JsonField<String>,
-                private val gitId: JsonField<Long>,
-                private val dateConnected: JsonField<OffsetDateTime>,
-                private val dateUpdated: JsonField<OffsetDateTime>,
-                private val branch: JsonField<String>,
-                private val name: JsonField<String>,
-                private val private_: JsonField<Boolean>,
-                private val slug: JsonField<String>,
-                private val url: JsonField<String>,
-                private val rootDir: JsonField<String>,
-                private val projectId: JsonField<String>,
-                private val gitAccountId: JsonField<String>,
-                private val additionalProperties: Map<String, JsonValue>,
+                @JsonProperty("id")
+                @ExcludeMissing
+                private val id: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("dateConnected")
+                @ExcludeMissing
+                private val dateConnected: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("dateUpdated")
+                @ExcludeMissing
+                private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("gitAccountId")
+                @ExcludeMissing
+                private val gitAccountId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("gitId")
+                @ExcludeMissing
+                private val gitId: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("name")
+                @ExcludeMissing
+                private val name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("private")
+                @ExcludeMissing
+                private val private_: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("projectId")
+                @ExcludeMissing
+                private val projectId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("slug")
+                @ExcludeMissing
+                private val slug: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("url")
+                @ExcludeMissing
+                private val url: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("branch")
+                @ExcludeMissing
+                private val branch: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("rootDir")
+                @ExcludeMissing
+                private val rootDir: JsonField<String> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                private var validated: Boolean = false
-
                 fun id(): String = id.getRequired("id")
-
-                fun gitId(): Long = gitId.getRequired("gitId")
 
                 fun dateConnected(): OffsetDateTime = dateConnected.getRequired("dateConnected")
 
                 fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-                fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
+                fun gitAccountId(): String = gitAccountId.getRequired("gitAccountId")
+
+                fun gitId(): Long = gitId.getRequired("gitId")
 
                 fun name(): String = name.getRequired("name")
 
                 fun private_(): Boolean = private_.getRequired("private")
 
+                fun projectId(): String = projectId.getRequired("projectId")
+
                 fun slug(): String = slug.getRequired("slug")
 
                 fun url(): String = url.getRequired("url")
 
+                fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
+
                 fun rootDir(): Optional<String> =
                     Optional.ofNullable(rootDir.getNullable("rootDir"))
 
-                fun projectId(): String = projectId.getRequired("projectId")
+                @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-                fun gitAccountId(): String = gitAccountId.getRequired("gitAccountId")
+                @JsonProperty("dateConnected")
+                @ExcludeMissing
+                fun _dateConnected(): JsonField<OffsetDateTime> = dateConnected
 
-                @JsonProperty("id") @ExcludeMissing fun _id() = id
+                @JsonProperty("dateUpdated")
+                @ExcludeMissing
+                fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
-                @JsonProperty("gitId") @ExcludeMissing fun _gitId() = gitId
+                @JsonProperty("gitAccountId")
+                @ExcludeMissing
+                fun _gitAccountId(): JsonField<String> = gitAccountId
 
-                @JsonProperty("dateConnected") @ExcludeMissing fun _dateConnected() = dateConnected
+                @JsonProperty("gitId") @ExcludeMissing fun _gitId(): JsonField<Long> = gitId
 
-                @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
+                @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-                @JsonProperty("branch") @ExcludeMissing fun _branch() = branch
+                @JsonProperty("private")
+                @ExcludeMissing
+                fun _private_(): JsonField<Boolean> = private_
 
-                @JsonProperty("name") @ExcludeMissing fun _name() = name
+                @JsonProperty("projectId")
+                @ExcludeMissing
+                fun _projectId(): JsonField<String> = projectId
 
-                @JsonProperty("private") @ExcludeMissing fun _private_() = private_
+                @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
-                @JsonProperty("slug") @ExcludeMissing fun _slug() = slug
+                @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
-                @JsonProperty("url") @ExcludeMissing fun _url() = url
+                @JsonProperty("branch") @ExcludeMissing fun _branch(): JsonField<String> = branch
 
-                @JsonProperty("rootDir") @ExcludeMissing fun _rootDir() = rootDir
-
-                @JsonProperty("projectId") @ExcludeMissing fun _projectId() = projectId
-
-                @JsonProperty("gitAccountId") @ExcludeMissing fun _gitAccountId() = gitAccountId
+                @JsonProperty("rootDir") @ExcludeMissing fun _rootDir(): JsonField<String> = rootDir
 
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+                private var validated: Boolean = false
+
                 fun validate(): GitRepo = apply {
-                    if (!validated) {
-                        id()
-                        gitId()
-                        dateConnected()
-                        dateUpdated()
-                        branch()
-                        name()
-                        private_()
-                        slug()
-                        url()
-                        rootDir()
-                        projectId()
-                        gitAccountId()
-                        validated = true
+                    if (validated) {
+                        return@apply
                     }
+
+                    id()
+                    dateConnected()
+                    dateUpdated()
+                    gitAccountId()
+                    gitId()
+                    name()
+                    private_()
+                    projectId()
+                    slug()
+                    url()
+                    branch()
+                    rootDir()
+                    validated = true
                 }
 
                 fun toBuilder() = Builder().from(this)
@@ -1389,54 +1565,44 @@ private constructor(
 
                 class Builder {
 
-                    private var id: JsonField<String> = JsonMissing.of()
-                    private var gitId: JsonField<Long> = JsonMissing.of()
-                    private var dateConnected: JsonField<OffsetDateTime> = JsonMissing.of()
-                    private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
+                    private var id: JsonField<String>? = null
+                    private var dateConnected: JsonField<OffsetDateTime>? = null
+                    private var dateUpdated: JsonField<OffsetDateTime>? = null
+                    private var gitAccountId: JsonField<String>? = null
+                    private var gitId: JsonField<Long>? = null
+                    private var name: JsonField<String>? = null
+                    private var private_: JsonField<Boolean>? = null
+                    private var projectId: JsonField<String>? = null
+                    private var slug: JsonField<String>? = null
+                    private var url: JsonField<String>? = null
                     private var branch: JsonField<String> = JsonMissing.of()
-                    private var name: JsonField<String> = JsonMissing.of()
-                    private var private_: JsonField<Boolean> = JsonMissing.of()
-                    private var slug: JsonField<String> = JsonMissing.of()
-                    private var url: JsonField<String> = JsonMissing.of()
                     private var rootDir: JsonField<String> = JsonMissing.of()
-                    private var projectId: JsonField<String> = JsonMissing.of()
-                    private var gitAccountId: JsonField<String> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(gitRepo: GitRepo) = apply {
-                        this.id = gitRepo.id
-                        this.gitId = gitRepo.gitId
-                        this.dateConnected = gitRepo.dateConnected
-                        this.dateUpdated = gitRepo.dateUpdated
-                        this.branch = gitRepo.branch
-                        this.name = gitRepo.name
-                        this.private_ = gitRepo.private_
-                        this.slug = gitRepo.slug
-                        this.url = gitRepo.url
-                        this.rootDir = gitRepo.rootDir
-                        this.projectId = gitRepo.projectId
-                        this.gitAccountId = gitRepo.gitAccountId
-                        additionalProperties(gitRepo.additionalProperties)
+                        id = gitRepo.id
+                        dateConnected = gitRepo.dateConnected
+                        dateUpdated = gitRepo.dateUpdated
+                        gitAccountId = gitRepo.gitAccountId
+                        gitId = gitRepo.gitId
+                        name = gitRepo.name
+                        private_ = gitRepo.private_
+                        projectId = gitRepo.projectId
+                        slug = gitRepo.slug
+                        url = gitRepo.url
+                        branch = gitRepo.branch
+                        rootDir = gitRepo.rootDir
+                        additionalProperties = gitRepo.additionalProperties.toMutableMap()
                     }
 
                     fun id(id: String) = id(JsonField.of(id))
 
-                    @JsonProperty("id")
-                    @ExcludeMissing
                     fun id(id: JsonField<String>) = apply { this.id = id }
-
-                    fun gitId(gitId: Long) = gitId(JsonField.of(gitId))
-
-                    @JsonProperty("gitId")
-                    @ExcludeMissing
-                    fun gitId(gitId: JsonField<Long>) = apply { this.gitId = gitId }
 
                     fun dateConnected(dateConnected: OffsetDateTime) =
                         dateConnected(JsonField.of(dateConnected))
 
-                    @JsonProperty("dateConnected")
-                    @ExcludeMissing
                     fun dateConnected(dateConnected: JsonField<OffsetDateTime>) = apply {
                         this.dateConnected = dateConnected
                     }
@@ -1444,73 +1610,58 @@ private constructor(
                     fun dateUpdated(dateUpdated: OffsetDateTime) =
                         dateUpdated(JsonField.of(dateUpdated))
 
-                    @JsonProperty("dateUpdated")
-                    @ExcludeMissing
                     fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                         this.dateUpdated = dateUpdated
-                    }
-
-                    fun branch(branch: String) = branch(JsonField.of(branch))
-
-                    @JsonProperty("branch")
-                    @ExcludeMissing
-                    fun branch(branch: JsonField<String>) = apply { this.branch = branch }
-
-                    fun name(name: String) = name(JsonField.of(name))
-
-                    @JsonProperty("name")
-                    @ExcludeMissing
-                    fun name(name: JsonField<String>) = apply { this.name = name }
-
-                    fun private_(private_: Boolean) = private_(JsonField.of(private_))
-
-                    @JsonProperty("private")
-                    @ExcludeMissing
-                    fun private_(private_: JsonField<Boolean>) = apply { this.private_ = private_ }
-
-                    fun slug(slug: String) = slug(JsonField.of(slug))
-
-                    @JsonProperty("slug")
-                    @ExcludeMissing
-                    fun slug(slug: JsonField<String>) = apply { this.slug = slug }
-
-                    fun url(url: String) = url(JsonField.of(url))
-
-                    @JsonProperty("url")
-                    @ExcludeMissing
-                    fun url(url: JsonField<String>) = apply { this.url = url }
-
-                    fun rootDir(rootDir: String) = rootDir(JsonField.of(rootDir))
-
-                    @JsonProperty("rootDir")
-                    @ExcludeMissing
-                    fun rootDir(rootDir: JsonField<String>) = apply { this.rootDir = rootDir }
-
-                    fun projectId(projectId: String) = projectId(JsonField.of(projectId))
-
-                    @JsonProperty("projectId")
-                    @ExcludeMissing
-                    fun projectId(projectId: JsonField<String>) = apply {
-                        this.projectId = projectId
                     }
 
                     fun gitAccountId(gitAccountId: String) =
                         gitAccountId(JsonField.of(gitAccountId))
 
-                    @JsonProperty("gitAccountId")
-                    @ExcludeMissing
                     fun gitAccountId(gitAccountId: JsonField<String>) = apply {
                         this.gitAccountId = gitAccountId
                     }
 
-                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                        this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
+                    fun gitId(gitId: Long) = gitId(JsonField.of(gitId))
+
+                    fun gitId(gitId: JsonField<Long>) = apply { this.gitId = gitId }
+
+                    fun name(name: String) = name(JsonField.of(name))
+
+                    fun name(name: JsonField<String>) = apply { this.name = name }
+
+                    fun private_(private_: Boolean) = private_(JsonField.of(private_))
+
+                    fun private_(private_: JsonField<Boolean>) = apply { this.private_ = private_ }
+
+                    fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+                    fun projectId(projectId: JsonField<String>) = apply {
+                        this.projectId = projectId
                     }
 
-                    @JsonAnySetter
+                    fun slug(slug: String) = slug(JsonField.of(slug))
+
+                    fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+                    fun url(url: String) = url(JsonField.of(url))
+
+                    fun url(url: JsonField<String>) = apply { this.url = url }
+
+                    fun branch(branch: String) = branch(JsonField.of(branch))
+
+                    fun branch(branch: JsonField<String>) = apply { this.branch = branch }
+
+                    fun rootDir(rootDir: String) = rootDir(JsonField.of(rootDir))
+
+                    fun rootDir(rootDir: JsonField<String>) = apply { this.rootDir = rootDir }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
                     fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
+                        additionalProperties.put(key, value)
                     }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1518,20 +1669,28 @@ private constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
                     fun build(): GitRepo =
                         GitRepo(
-                            id,
-                            gitId,
-                            dateConnected,
-                            dateUpdated,
+                            checkRequired("id", id),
+                            checkRequired("dateConnected", dateConnected),
+                            checkRequired("dateUpdated", dateUpdated),
+                            checkRequired("gitAccountId", gitAccountId),
+                            checkRequired("gitId", gitId),
+                            checkRequired("name", name),
+                            checkRequired("private_", private_),
+                            checkRequired("projectId", projectId),
+                            checkRequired("slug", slug),
+                            checkRequired("url", url),
                             branch,
-                            name,
-                            private_,
-                            slug,
-                            url,
                             rootDir,
-                            projectId,
-                            gitAccountId,
                             additionalProperties.toImmutable(),
                         )
                 }
@@ -1541,17 +1700,17 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is GitRepo && id == other.id && gitId == other.gitId && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && branch == other.branch && name == other.name && private_ == other.private_ && slug == other.slug && url == other.url && rootDir == other.rootDir && projectId == other.projectId && gitAccountId == other.gitAccountId && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is GitRepo && id == other.id && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && gitAccountId == other.gitAccountId && gitId == other.gitId && name == other.name && private_ == other.private_ && projectId == other.projectId && slug == other.slug && url == other.url && branch == other.branch && rootDir == other.rootDir && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(id, gitId, dateConnected, dateUpdated, branch, name, private_, slug, url, rootDir, projectId, gitAccountId, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(id, dateConnected, dateUpdated, gitAccountId, gitId, name, private_, projectId, slug, url, branch, rootDir, additionalProperties) }
                 /* spotless:on */
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
+                    "GitRepo{id=$id, dateConnected=$dateConnected, dateUpdated=$dateUpdated, gitAccountId=$gitAccountId, gitId=$gitId, name=$name, private_=$private_, projectId=$projectId, slug=$slug, url=$url, branch=$branch, rootDir=$rootDir, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1559,52 +1718,81 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Project && id == other.id && workspaceId == other.workspaceId && creatorId == other.creatorId && name == other.name && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && description == other.description && source == other.source && taskType == other.taskType && versionCount == other.versionCount && inferencePipelineCount == other.inferencePipelineCount && goalCount == other.goalCount && developmentGoalCount == other.developmentGoalCount && monitoringGoalCount == other.monitoringGoalCount && links == other.links && gitRepo == other.gitRepo && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Project && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && developmentGoalCount == other.developmentGoalCount && goalCount == other.goalCount && inferencePipelineCount == other.inferencePipelineCount && links == other.links && monitoringGoalCount == other.monitoringGoalCount && name == other.name && source == other.source && taskType == other.taskType && versionCount == other.versionCount && workspaceId == other.workspaceId && description == other.description && gitRepo == other.gitRepo && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(id, workspaceId, creatorId, name, dateCreated, dateUpdated, description, source, taskType, versionCount, inferencePipelineCount, goalCount, developmentGoalCount, monitoringGoalCount, links, gitRepo, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, developmentGoalCount, goalCount, inferencePipelineCount, links, monitoringGoalCount, name, source, taskType, versionCount, workspaceId, description, gitRepo, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Project{id=$id, workspaceId=$workspaceId, creatorId=$creatorId, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, source=$source, taskType=$taskType, versionCount=$versionCount, inferencePipelineCount=$inferencePipelineCount, goalCount=$goalCount, developmentGoalCount=$developmentGoalCount, monitoringGoalCount=$monitoringGoalCount, links=$links, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
+                "Project{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, description=$description, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
         }
 
-        @JsonDeserialize(builder = Workspace.Builder::class)
         @NoAutoDetect
         class Workspace
+        @JsonCreator
         private constructor(
-            private val id: JsonField<String>,
-            private val name: JsonField<String>,
-            private val slug: JsonField<String>,
-            private val dateCreated: JsonField<OffsetDateTime>,
-            private val dateUpdated: JsonField<OffsetDateTime>,
-            private val creatorId: JsonField<String>,
-            private val inviteCode: JsonField<String>,
-            private val wildcardDomains: JsonField<List<String>>,
-            private val projectCount: JsonField<Long>,
-            private val memberCount: JsonField<Long>,
-            private val monthlyUsage: JsonField<List<MonthlyUsage>>,
-            private val inviteCount: JsonField<Long>,
-            private val periodStartDate: JsonField<OffsetDateTime>,
-            private val periodEndDate: JsonField<OffsetDateTime>,
-            private val samlOnlyAccess: JsonField<Boolean>,
-            private val status: JsonField<Status>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("id")
+            @ExcludeMissing
+            private val id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            private val creatorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("inviteCount")
+            @ExcludeMissing
+            private val inviteCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("memberCount")
+            @ExcludeMissing
+            private val memberCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("periodEndDate")
+            @ExcludeMissing
+            private val periodEndDate: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("periodStartDate")
+            @ExcludeMissing
+            private val periodStartDate: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("projectCount")
+            @ExcludeMissing
+            private val projectCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("slug")
+            @ExcludeMissing
+            private val slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status")
+            @ExcludeMissing
+            private val status: JsonField<Status> = JsonMissing.of(),
+            @JsonProperty("inviteCode")
+            @ExcludeMissing
+            private val inviteCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("monthlyUsage")
+            @ExcludeMissing
+            private val monthlyUsage: JsonField<List<MonthlyUsage>> = JsonMissing.of(),
+            @JsonProperty("samlOnlyAccess")
+            @ExcludeMissing
+            private val samlOnlyAccess: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("wildcardDomains")
+            @ExcludeMissing
+            private val wildcardDomains: JsonField<List<String>> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The workspace id. */
             fun id(): String = id.getRequired("id")
 
-            /** The workspace name. */
-            fun name(): String = name.getRequired("name")
-
-            /** The workspace slug. */
-            fun slug(): String = slug.getRequired("slug")
+            /** The workspace creator id. */
+            fun creatorId(): Optional<String> =
+                Optional.ofNullable(creatorId.getNullable("creatorId"))
 
             /** The workspace creation date. */
             fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
@@ -1612,116 +1800,142 @@ private constructor(
             /** The workspace last updated date. */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-            /** The workspace creator id. */
-            fun creatorId(): Optional<String> =
-                Optional.ofNullable(creatorId.getNullable("creatorId"))
-
-            /** The workspace invite code. */
-            fun inviteCode(): Optional<String> =
-                Optional.ofNullable(inviteCode.getNullable("inviteCode"))
-
-            fun wildcardDomains(): Optional<List<String>> =
-                Optional.ofNullable(wildcardDomains.getNullable("wildcardDomains"))
-
-            /** The number of projects in the workspace. */
-            fun projectCount(): Long = projectCount.getRequired("projectCount")
+            /** The number of invites in the workspace. */
+            fun inviteCount(): Long = inviteCount.getRequired("inviteCount")
 
             /** The number of members in the workspace. */
             fun memberCount(): Long = memberCount.getRequired("memberCount")
 
-            fun monthlyUsage(): Optional<List<MonthlyUsage>> =
-                Optional.ofNullable(monthlyUsage.getNullable("monthlyUsage"))
-
-            /** The number of invites in the workspace. */
-            fun inviteCount(): Long = inviteCount.getRequired("inviteCount")
-
-            /** The start date of the current billing period. */
-            fun periodStartDate(): Optional<OffsetDateTime> =
-                Optional.ofNullable(periodStartDate.getNullable("periodStartDate"))
+            /** The workspace name. */
+            fun name(): String = name.getRequired("name")
 
             /** The end date of the current billing period. */
             fun periodEndDate(): Optional<OffsetDateTime> =
                 Optional.ofNullable(periodEndDate.getNullable("periodEndDate"))
 
+            /** The start date of the current billing period. */
+            fun periodStartDate(): Optional<OffsetDateTime> =
+                Optional.ofNullable(periodStartDate.getNullable("periodStartDate"))
+
+            /** The number of projects in the workspace. */
+            fun projectCount(): Long = projectCount.getRequired("projectCount")
+
+            /** The workspace slug. */
+            fun slug(): String = slug.getRequired("slug")
+
+            fun status(): Status = status.getRequired("status")
+
+            /** The workspace invite code. */
+            fun inviteCode(): Optional<String> =
+                Optional.ofNullable(inviteCode.getNullable("inviteCode"))
+
+            fun monthlyUsage(): Optional<List<MonthlyUsage>> =
+                Optional.ofNullable(monthlyUsage.getNullable("monthlyUsage"))
+
             /** Whether the workspace only allows SAML authentication. */
             fun samlOnlyAccess(): Optional<Boolean> =
                 Optional.ofNullable(samlOnlyAccess.getNullable("samlOnlyAccess"))
 
-            fun status(): Status = status.getRequired("status")
+            fun wildcardDomains(): Optional<List<String>> =
+                Optional.ofNullable(wildcardDomains.getNullable("wildcardDomains"))
 
             /** The workspace id. */
-            @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-            /** The workspace name. */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
-
-            /** The workspace slug. */
-            @JsonProperty("slug") @ExcludeMissing fun _slug() = slug
-
-            /** The workspace creation date. */
-            @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
-
-            /** The workspace last updated date. */
-            @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
+            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
             /** The workspace creator id. */
-            @JsonProperty("creatorId") @ExcludeMissing fun _creatorId() = creatorId
-
-            /** The workspace invite code. */
-            @JsonProperty("inviteCode") @ExcludeMissing fun _inviteCode() = inviteCode
-
-            @JsonProperty("wildcardDomains")
+            @JsonProperty("creatorId")
             @ExcludeMissing
-            fun _wildcardDomains() = wildcardDomains
+            fun _creatorId(): JsonField<String> = creatorId
 
-            /** The number of projects in the workspace. */
-            @JsonProperty("projectCount") @ExcludeMissing fun _projectCount() = projectCount
+            /** The workspace creation date. */
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
-            /** The number of members in the workspace. */
-            @JsonProperty("memberCount") @ExcludeMissing fun _memberCount() = memberCount
-
-            @JsonProperty("monthlyUsage") @ExcludeMissing fun _monthlyUsage() = monthlyUsage
+            /** The workspace last updated date. */
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
             /** The number of invites in the workspace. */
-            @JsonProperty("inviteCount") @ExcludeMissing fun _inviteCount() = inviteCount
+            @JsonProperty("inviteCount")
+            @ExcludeMissing
+            fun _inviteCount(): JsonField<Long> = inviteCount
+
+            /** The number of members in the workspace. */
+            @JsonProperty("memberCount")
+            @ExcludeMissing
+            fun _memberCount(): JsonField<Long> = memberCount
+
+            /** The workspace name. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /** The end date of the current billing period. */
+            @JsonProperty("periodEndDate")
+            @ExcludeMissing
+            fun _periodEndDate(): JsonField<OffsetDateTime> = periodEndDate
 
             /** The start date of the current billing period. */
             @JsonProperty("periodStartDate")
             @ExcludeMissing
-            fun _periodStartDate() = periodStartDate
+            fun _periodStartDate(): JsonField<OffsetDateTime> = periodStartDate
 
-            /** The end date of the current billing period. */
-            @JsonProperty("periodEndDate") @ExcludeMissing fun _periodEndDate() = periodEndDate
+            /** The number of projects in the workspace. */
+            @JsonProperty("projectCount")
+            @ExcludeMissing
+            fun _projectCount(): JsonField<Long> = projectCount
+
+            /** The workspace slug. */
+            @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+            @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+            /** The workspace invite code. */
+            @JsonProperty("inviteCode")
+            @ExcludeMissing
+            fun _inviteCode(): JsonField<String> = inviteCode
+
+            @JsonProperty("monthlyUsage")
+            @ExcludeMissing
+            fun _monthlyUsage(): JsonField<List<MonthlyUsage>> = monthlyUsage
 
             /** Whether the workspace only allows SAML authentication. */
-            @JsonProperty("samlOnlyAccess") @ExcludeMissing fun _samlOnlyAccess() = samlOnlyAccess
+            @JsonProperty("samlOnlyAccess")
+            @ExcludeMissing
+            fun _samlOnlyAccess(): JsonField<Boolean> = samlOnlyAccess
 
-            @JsonProperty("status") @ExcludeMissing fun _status() = status
+            @JsonProperty("wildcardDomains")
+            @ExcludeMissing
+            fun _wildcardDomains(): JsonField<List<String>> = wildcardDomains
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): Workspace = apply {
-                if (!validated) {
-                    id()
-                    name()
-                    slug()
-                    dateCreated()
-                    dateUpdated()
-                    creatorId()
-                    inviteCode()
-                    wildcardDomains()
-                    projectCount()
-                    memberCount()
-                    monthlyUsage().map { it.forEach { it.validate() } }
-                    inviteCount()
-                    periodStartDate()
-                    periodEndDate()
-                    samlOnlyAccess()
-                    status()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                id()
+                creatorId()
+                dateCreated()
+                dateUpdated()
+                inviteCount()
+                memberCount()
+                name()
+                periodEndDate()
+                periodStartDate()
+                projectCount()
+                slug()
+                status()
+                inviteCode()
+                monthlyUsage().ifPresent { it.forEach { it.validate() } }
+                samlOnlyAccess()
+                wildcardDomains()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -1733,76 +1947,65 @@ private constructor(
 
             class Builder {
 
-                private var id: JsonField<String> = JsonMissing.of()
-                private var name: JsonField<String> = JsonMissing.of()
-                private var slug: JsonField<String> = JsonMissing.of()
-                private var dateCreated: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var creatorId: JsonField<String> = JsonMissing.of()
+                private var id: JsonField<String>? = null
+                private var creatorId: JsonField<String>? = null
+                private var dateCreated: JsonField<OffsetDateTime>? = null
+                private var dateUpdated: JsonField<OffsetDateTime>? = null
+                private var inviteCount: JsonField<Long>? = null
+                private var memberCount: JsonField<Long>? = null
+                private var name: JsonField<String>? = null
+                private var periodEndDate: JsonField<OffsetDateTime>? = null
+                private var periodStartDate: JsonField<OffsetDateTime>? = null
+                private var projectCount: JsonField<Long>? = null
+                private var slug: JsonField<String>? = null
+                private var status: JsonField<Status>? = null
                 private var inviteCode: JsonField<String> = JsonMissing.of()
-                private var wildcardDomains: JsonField<List<String>> = JsonMissing.of()
-                private var projectCount: JsonField<Long> = JsonMissing.of()
-                private var memberCount: JsonField<Long> = JsonMissing.of()
-                private var monthlyUsage: JsonField<List<MonthlyUsage>> = JsonMissing.of()
-                private var inviteCount: JsonField<Long> = JsonMissing.of()
-                private var periodStartDate: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var periodEndDate: JsonField<OffsetDateTime> = JsonMissing.of()
+                private var monthlyUsage: JsonField<MutableList<MonthlyUsage>>? = null
                 private var samlOnlyAccess: JsonField<Boolean> = JsonMissing.of()
-                private var status: JsonField<Status> = JsonMissing.of()
+                private var wildcardDomains: JsonField<MutableList<String>>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(workspace: Workspace) = apply {
-                    this.id = workspace.id
-                    this.name = workspace.name
-                    this.slug = workspace.slug
-                    this.dateCreated = workspace.dateCreated
-                    this.dateUpdated = workspace.dateUpdated
-                    this.creatorId = workspace.creatorId
-                    this.inviteCode = workspace.inviteCode
-                    this.wildcardDomains = workspace.wildcardDomains
-                    this.projectCount = workspace.projectCount
-                    this.memberCount = workspace.memberCount
-                    this.monthlyUsage = workspace.monthlyUsage
-                    this.inviteCount = workspace.inviteCount
-                    this.periodStartDate = workspace.periodStartDate
-                    this.periodEndDate = workspace.periodEndDate
-                    this.samlOnlyAccess = workspace.samlOnlyAccess
-                    this.status = workspace.status
-                    additionalProperties(workspace.additionalProperties)
+                    id = workspace.id
+                    creatorId = workspace.creatorId
+                    dateCreated = workspace.dateCreated
+                    dateUpdated = workspace.dateUpdated
+                    inviteCount = workspace.inviteCount
+                    memberCount = workspace.memberCount
+                    name = workspace.name
+                    periodEndDate = workspace.periodEndDate
+                    periodStartDate = workspace.periodStartDate
+                    projectCount = workspace.projectCount
+                    slug = workspace.slug
+                    status = workspace.status
+                    inviteCode = workspace.inviteCode
+                    monthlyUsage = workspace.monthlyUsage.map { it.toMutableList() }
+                    samlOnlyAccess = workspace.samlOnlyAccess
+                    wildcardDomains = workspace.wildcardDomains.map { it.toMutableList() }
+                    additionalProperties = workspace.additionalProperties.toMutableMap()
                 }
 
                 /** The workspace id. */
                 fun id(id: String) = id(JsonField.of(id))
 
                 /** The workspace id. */
-                @JsonProperty("id")
-                @ExcludeMissing
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
-                /** The workspace name. */
-                fun name(name: String) = name(JsonField.of(name))
+                /** The workspace creator id. */
+                fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
-                /** The workspace name. */
-                @JsonProperty("name")
-                @ExcludeMissing
-                fun name(name: JsonField<String>) = apply { this.name = name }
+                /** The workspace creator id. */
+                fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
 
-                /** The workspace slug. */
-                fun slug(slug: String) = slug(JsonField.of(slug))
-
-                /** The workspace slug. */
-                @JsonProperty("slug")
-                @ExcludeMissing
-                fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+                /** The workspace creator id. */
+                fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
                 /** The workspace creation date. */
                 fun dateCreated(dateCreated: OffsetDateTime) =
                     dateCreated(JsonField.of(dateCreated))
 
                 /** The workspace creation date. */
-                @JsonProperty("dateCreated")
-                @ExcludeMissing
                 fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                     this.dateCreated = dateCreated
                 }
@@ -1812,98 +2015,102 @@ private constructor(
                     dateUpdated(JsonField.of(dateUpdated))
 
                 /** The workspace last updated date. */
-                @JsonProperty("dateUpdated")
-                @ExcludeMissing
                 fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                     this.dateUpdated = dateUpdated
-                }
-
-                /** The workspace creator id. */
-                fun creatorId(creatorId: String) = creatorId(JsonField.of(creatorId))
-
-                /** The workspace creator id. */
-                @JsonProperty("creatorId")
-                @ExcludeMissing
-                fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
-
-                /** The workspace invite code. */
-                fun inviteCode(inviteCode: String) = inviteCode(JsonField.of(inviteCode))
-
-                /** The workspace invite code. */
-                @JsonProperty("inviteCode")
-                @ExcludeMissing
-                fun inviteCode(inviteCode: JsonField<String>) = apply {
-                    this.inviteCode = inviteCode
-                }
-
-                fun wildcardDomains(wildcardDomains: List<String>) =
-                    wildcardDomains(JsonField.of(wildcardDomains))
-
-                @JsonProperty("wildcardDomains")
-                @ExcludeMissing
-                fun wildcardDomains(wildcardDomains: JsonField<List<String>>) = apply {
-                    this.wildcardDomains = wildcardDomains
-                }
-
-                /** The number of projects in the workspace. */
-                fun projectCount(projectCount: Long) = projectCount(JsonField.of(projectCount))
-
-                /** The number of projects in the workspace. */
-                @JsonProperty("projectCount")
-                @ExcludeMissing
-                fun projectCount(projectCount: JsonField<Long>) = apply {
-                    this.projectCount = projectCount
-                }
-
-                /** The number of members in the workspace. */
-                fun memberCount(memberCount: Long) = memberCount(JsonField.of(memberCount))
-
-                /** The number of members in the workspace. */
-                @JsonProperty("memberCount")
-                @ExcludeMissing
-                fun memberCount(memberCount: JsonField<Long>) = apply {
-                    this.memberCount = memberCount
-                }
-
-                fun monthlyUsage(monthlyUsage: List<MonthlyUsage>) =
-                    monthlyUsage(JsonField.of(monthlyUsage))
-
-                @JsonProperty("monthlyUsage")
-                @ExcludeMissing
-                fun monthlyUsage(monthlyUsage: JsonField<List<MonthlyUsage>>) = apply {
-                    this.monthlyUsage = monthlyUsage
                 }
 
                 /** The number of invites in the workspace. */
                 fun inviteCount(inviteCount: Long) = inviteCount(JsonField.of(inviteCount))
 
                 /** The number of invites in the workspace. */
-                @JsonProperty("inviteCount")
-                @ExcludeMissing
                 fun inviteCount(inviteCount: JsonField<Long>) = apply {
                     this.inviteCount = inviteCount
                 }
 
-                /** The start date of the current billing period. */
-                fun periodStartDate(periodStartDate: OffsetDateTime) =
-                    periodStartDate(JsonField.of(periodStartDate))
+                /** The number of members in the workspace. */
+                fun memberCount(memberCount: Long) = memberCount(JsonField.of(memberCount))
+
+                /** The number of members in the workspace. */
+                fun memberCount(memberCount: JsonField<Long>) = apply {
+                    this.memberCount = memberCount
+                }
+
+                /** The workspace name. */
+                fun name(name: String) = name(JsonField.of(name))
+
+                /** The workspace name. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                /** The end date of the current billing period. */
+                fun periodEndDate(periodEndDate: OffsetDateTime?) =
+                    periodEndDate(JsonField.ofNullable(periodEndDate))
+
+                /** The end date of the current billing period. */
+                fun periodEndDate(periodEndDate: Optional<OffsetDateTime>) =
+                    periodEndDate(periodEndDate.orElse(null))
+
+                /** The end date of the current billing period. */
+                fun periodEndDate(periodEndDate: JsonField<OffsetDateTime>) = apply {
+                    this.periodEndDate = periodEndDate
+                }
 
                 /** The start date of the current billing period. */
-                @JsonProperty("periodStartDate")
-                @ExcludeMissing
+                fun periodStartDate(periodStartDate: OffsetDateTime?) =
+                    periodStartDate(JsonField.ofNullable(periodStartDate))
+
+                /** The start date of the current billing period. */
+                fun periodStartDate(periodStartDate: Optional<OffsetDateTime>) =
+                    periodStartDate(periodStartDate.orElse(null))
+
+                /** The start date of the current billing period. */
                 fun periodStartDate(periodStartDate: JsonField<OffsetDateTime>) = apply {
                     this.periodStartDate = periodStartDate
                 }
 
-                /** The end date of the current billing period. */
-                fun periodEndDate(periodEndDate: OffsetDateTime) =
-                    periodEndDate(JsonField.of(periodEndDate))
+                /** The number of projects in the workspace. */
+                fun projectCount(projectCount: Long) = projectCount(JsonField.of(projectCount))
 
-                /** The end date of the current billing period. */
-                @JsonProperty("periodEndDate")
-                @ExcludeMissing
-                fun periodEndDate(periodEndDate: JsonField<OffsetDateTime>) = apply {
-                    this.periodEndDate = periodEndDate
+                /** The number of projects in the workspace. */
+                fun projectCount(projectCount: JsonField<Long>) = apply {
+                    this.projectCount = projectCount
+                }
+
+                /** The workspace slug. */
+                fun slug(slug: String) = slug(JsonField.of(slug))
+
+                /** The workspace slug. */
+                fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+                fun status(status: Status) = status(JsonField.of(status))
+
+                fun status(status: JsonField<Status>) = apply { this.status = status }
+
+                /** The workspace invite code. */
+                fun inviteCode(inviteCode: String) = inviteCode(JsonField.of(inviteCode))
+
+                /** The workspace invite code. */
+                fun inviteCode(inviteCode: JsonField<String>) = apply {
+                    this.inviteCode = inviteCode
+                }
+
+                fun monthlyUsage(monthlyUsage: List<MonthlyUsage>) =
+                    monthlyUsage(JsonField.of(monthlyUsage))
+
+                fun monthlyUsage(monthlyUsage: JsonField<List<MonthlyUsage>>) = apply {
+                    this.monthlyUsage = monthlyUsage.map { it.toMutableList() }
+                }
+
+                fun addMonthlyUsage(monthlyUsage: MonthlyUsage) = apply {
+                    this.monthlyUsage =
+                        (this.monthlyUsage ?: JsonField.of(mutableListOf())).apply {
+                            asKnown()
+                                .orElseThrow {
+                                    IllegalStateException(
+                                        "Field was set to non-list type: ${javaClass.simpleName}"
+                                    )
+                                }
+                                .add(monthlyUsage)
+                        }
                 }
 
                 /** Whether the workspace only allows SAML authentication. */
@@ -1911,26 +2118,37 @@ private constructor(
                     samlOnlyAccess(JsonField.of(samlOnlyAccess))
 
                 /** Whether the workspace only allows SAML authentication. */
-                @JsonProperty("samlOnlyAccess")
-                @ExcludeMissing
                 fun samlOnlyAccess(samlOnlyAccess: JsonField<Boolean>) = apply {
                     this.samlOnlyAccess = samlOnlyAccess
                 }
 
-                fun status(status: Status) = status(JsonField.of(status))
+                fun wildcardDomains(wildcardDomains: List<String>) =
+                    wildcardDomains(JsonField.of(wildcardDomains))
 
-                @JsonProperty("status")
-                @ExcludeMissing
-                fun status(status: JsonField<Status>) = apply { this.status = status }
+                fun wildcardDomains(wildcardDomains: JsonField<List<String>>) = apply {
+                    this.wildcardDomains = wildcardDomains.map { it.toMutableList() }
+                }
+
+                fun addWildcardDomain(wildcardDomain: String) = apply {
+                    wildcardDomains =
+                        (wildcardDomains ?: JsonField.of(mutableListOf())).apply {
+                            asKnown()
+                                .orElseThrow {
+                                    IllegalStateException(
+                                        "Field was set to non-list type: ${javaClass.simpleName}"
+                                    )
+                                }
+                                .add(wildcardDomain)
+                        }
+                }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                     this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                    putAllAdditionalProperties(additionalProperties)
                 }
 
-                @JsonAnySetter
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1938,24 +2156,32 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): Workspace =
                     Workspace(
-                        id,
-                        name,
-                        slug,
-                        dateCreated,
-                        dateUpdated,
-                        creatorId,
+                        checkRequired("id", id),
+                        checkRequired("creatorId", creatorId),
+                        checkRequired("dateCreated", dateCreated),
+                        checkRequired("dateUpdated", dateUpdated),
+                        checkRequired("inviteCount", inviteCount),
+                        checkRequired("memberCount", memberCount),
+                        checkRequired("name", name),
+                        checkRequired("periodEndDate", periodEndDate),
+                        checkRequired("periodStartDate", periodStartDate),
+                        checkRequired("projectCount", projectCount),
+                        checkRequired("slug", slug),
+                        checkRequired("status", status),
                         inviteCode,
-                        wildcardDomains.map { it.toImmutable() },
-                        projectCount,
-                        memberCount,
-                        monthlyUsage.map { it.toImmutable() },
-                        inviteCount,
-                        periodStartDate,
-                        periodEndDate,
+                        (monthlyUsage ?: JsonMissing.of()).map { it.toImmutable() },
                         samlOnlyAccess,
-                        status,
+                        (wildcardDomains ?: JsonMissing.of()).map { it.toImmutable() },
                         additionalProperties.toImmutable(),
                     )
             }
@@ -2053,17 +2279,25 @@ private constructor(
                 override fun toString() = value.toString()
             }
 
-            @JsonDeserialize(builder = MonthlyUsage.Builder::class)
             @NoAutoDetect
             class MonthlyUsage
+            @JsonCreator
             private constructor(
-                private val monthYear: JsonField<LocalDate>,
-                private val predictionCount: JsonField<Long>,
-                private val executionTimeMs: JsonField<Long>,
-                private val additionalProperties: Map<String, JsonValue>,
+                @JsonProperty("executionTimeMs")
+                @ExcludeMissing
+                private val executionTimeMs: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("monthYear")
+                @ExcludeMissing
+                private val monthYear: JsonField<LocalDate> = JsonMissing.of(),
+                @JsonProperty("predictionCount")
+                @ExcludeMissing
+                private val predictionCount: JsonField<Long> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                private var validated: Boolean = false
+                fun executionTimeMs(): Optional<Long> =
+                    Optional.ofNullable(executionTimeMs.getNullable("executionTimeMs"))
 
                 fun monthYear(): Optional<LocalDate> =
                     Optional.ofNullable(monthYear.getNullable("monthYear"))
@@ -2071,30 +2305,33 @@ private constructor(
                 fun predictionCount(): Optional<Long> =
                     Optional.ofNullable(predictionCount.getNullable("predictionCount"))
 
-                fun executionTimeMs(): Optional<Long> =
-                    Optional.ofNullable(executionTimeMs.getNullable("executionTimeMs"))
+                @JsonProperty("executionTimeMs")
+                @ExcludeMissing
+                fun _executionTimeMs(): JsonField<Long> = executionTimeMs
 
-                @JsonProperty("monthYear") @ExcludeMissing fun _monthYear() = monthYear
+                @JsonProperty("monthYear")
+                @ExcludeMissing
+                fun _monthYear(): JsonField<LocalDate> = monthYear
 
                 @JsonProperty("predictionCount")
                 @ExcludeMissing
-                fun _predictionCount() = predictionCount
-
-                @JsonProperty("executionTimeMs")
-                @ExcludeMissing
-                fun _executionTimeMs() = executionTimeMs
+                fun _predictionCount(): JsonField<Long> = predictionCount
 
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+                private var validated: Boolean = false
+
                 fun validate(): MonthlyUsage = apply {
-                    if (!validated) {
-                        monthYear()
-                        predictionCount()
-                        executionTimeMs()
-                        validated = true
+                    if (validated) {
+                        return@apply
                     }
+
+                    executionTimeMs()
+                    monthYear()
+                    predictionCount()
+                    validated = true
                 }
 
                 fun toBuilder() = Builder().from(this)
@@ -2106,23 +2343,35 @@ private constructor(
 
                 class Builder {
 
+                    private var executionTimeMs: JsonField<Long> = JsonMissing.of()
                     private var monthYear: JsonField<LocalDate> = JsonMissing.of()
                     private var predictionCount: JsonField<Long> = JsonMissing.of()
-                    private var executionTimeMs: JsonField<Long> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(monthlyUsage: MonthlyUsage) = apply {
-                        this.monthYear = monthlyUsage.monthYear
-                        this.predictionCount = monthlyUsage.predictionCount
-                        this.executionTimeMs = monthlyUsage.executionTimeMs
-                        additionalProperties(monthlyUsage.additionalProperties)
+                        executionTimeMs = monthlyUsage.executionTimeMs
+                        monthYear = monthlyUsage.monthYear
+                        predictionCount = monthlyUsage.predictionCount
+                        additionalProperties = monthlyUsage.additionalProperties.toMutableMap()
+                    }
+
+                    fun executionTimeMs(executionTimeMs: Long?) =
+                        executionTimeMs(JsonField.ofNullable(executionTimeMs))
+
+                    fun executionTimeMs(executionTimeMs: Long) =
+                        executionTimeMs(executionTimeMs as Long?)
+
+                    @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                    fun executionTimeMs(executionTimeMs: Optional<Long>) =
+                        executionTimeMs(executionTimeMs.orElse(null) as Long?)
+
+                    fun executionTimeMs(executionTimeMs: JsonField<Long>) = apply {
+                        this.executionTimeMs = executionTimeMs
                     }
 
                     fun monthYear(monthYear: LocalDate) = monthYear(JsonField.of(monthYear))
 
-                    @JsonProperty("monthYear")
-                    @ExcludeMissing
                     fun monthYear(monthYear: JsonField<LocalDate>) = apply {
                         this.monthYear = monthYear
                     }
@@ -2130,29 +2379,17 @@ private constructor(
                     fun predictionCount(predictionCount: Long) =
                         predictionCount(JsonField.of(predictionCount))
 
-                    @JsonProperty("predictionCount")
-                    @ExcludeMissing
                     fun predictionCount(predictionCount: JsonField<Long>) = apply {
                         this.predictionCount = predictionCount
                     }
 
-                    fun executionTimeMs(executionTimeMs: Long) =
-                        executionTimeMs(JsonField.of(executionTimeMs))
-
-                    @JsonProperty("executionTimeMs")
-                    @ExcludeMissing
-                    fun executionTimeMs(executionTimeMs: JsonField<Long>) = apply {
-                        this.executionTimeMs = executionTimeMs
-                    }
-
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
+                        putAllAdditionalProperties(additionalProperties)
                     }
 
-                    @JsonAnySetter
                     fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
+                        additionalProperties.put(key, value)
                     }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -2160,11 +2397,19 @@ private constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
                     fun build(): MonthlyUsage =
                         MonthlyUsage(
+                            executionTimeMs,
                             monthYear,
                             predictionCount,
-                            executionTimeMs,
                             additionalProperties.toImmutable(),
                         )
                 }
@@ -2174,17 +2419,17 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is MonthlyUsage && monthYear == other.monthYear && predictionCount == other.predictionCount && executionTimeMs == other.executionTimeMs && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is MonthlyUsage && executionTimeMs == other.executionTimeMs && monthYear == other.monthYear && predictionCount == other.predictionCount && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(monthYear, predictionCount, executionTimeMs, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(executionTimeMs, monthYear, predictionCount, additionalProperties) }
                 /* spotless:on */
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "MonthlyUsage{monthYear=$monthYear, predictionCount=$predictionCount, executionTimeMs=$executionTimeMs, additionalProperties=$additionalProperties}"
+                    "MonthlyUsage{executionTimeMs=$executionTimeMs, monthYear=$monthYear, predictionCount=$predictionCount, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2192,17 +2437,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Workspace && id == other.id && name == other.name && slug == other.slug && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && creatorId == other.creatorId && inviteCode == other.inviteCode && wildcardDomains == other.wildcardDomains && projectCount == other.projectCount && memberCount == other.memberCount && monthlyUsage == other.monthlyUsage && inviteCount == other.inviteCount && periodStartDate == other.periodStartDate && periodEndDate == other.periodEndDate && samlOnlyAccess == other.samlOnlyAccess && status == other.status && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Workspace && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && inviteCount == other.inviteCount && memberCount == other.memberCount && name == other.name && periodEndDate == other.periodEndDate && periodStartDate == other.periodStartDate && projectCount == other.projectCount && slug == other.slug && status == other.status && inviteCode == other.inviteCode && monthlyUsage == other.monthlyUsage && samlOnlyAccess == other.samlOnlyAccess && wildcardDomains == other.wildcardDomains && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(id, name, slug, dateCreated, dateUpdated, creatorId, inviteCode, wildcardDomains, projectCount, memberCount, monthlyUsage, inviteCount, periodStartDate, periodEndDate, samlOnlyAccess, status, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, inviteCount, memberCount, name, periodEndDate, periodStartDate, projectCount, slug, status, inviteCode, monthlyUsage, samlOnlyAccess, wildcardDomains, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Workspace{id=$id, name=$name, slug=$slug, dateCreated=$dateCreated, dateUpdated=$dateUpdated, creatorId=$creatorId, inviteCode=$inviteCode, wildcardDomains=$wildcardDomains, projectCount=$projectCount, memberCount=$memberCount, monthlyUsage=$monthlyUsage, inviteCount=$inviteCount, periodStartDate=$periodStartDate, periodEndDate=$periodEndDate, samlOnlyAccess=$samlOnlyAccess, status=$status, additionalProperties=$additionalProperties}"
+                "Workspace{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, inviteCount=$inviteCount, memberCount=$memberCount, name=$name, periodEndDate=$periodEndDate, periodStartDate=$periodStartDate, projectCount=$projectCount, slug=$slug, status=$status, inviteCode=$inviteCode, monthlyUsage=$monthlyUsage, samlOnlyAccess=$samlOnlyAccess, wildcardDomains=$wildcardDomains, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -2210,17 +2455,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Item && id == other.id && projectId == other.projectId && workspaceId == other.workspaceId && project == other.project && workspace == other.workspace && name == other.name && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && dateLastSampleReceived == other.dateLastSampleReceived && description == other.description && dateLastEvaluated == other.dateLastEvaluated && dateOfNextEvaluation == other.dateOfNextEvaluation && passingGoalCount == other.passingGoalCount && failingGoalCount == other.failingGoalCount && totalGoalCount == other.totalGoalCount && status == other.status && statusMessage == other.statusMessage && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Item && id == other.id && dateCreated == other.dateCreated && dateLastEvaluated == other.dateLastEvaluated && dateLastSampleReceived == other.dateLastSampleReceived && dateOfNextEvaluation == other.dateOfNextEvaluation && dateUpdated == other.dateUpdated && description == other.description && failingGoalCount == other.failingGoalCount && links == other.links && name == other.name && passingGoalCount == other.passingGoalCount && projectId == other.projectId && status == other.status && statusMessage == other.statusMessage && totalGoalCount == other.totalGoalCount && project == other.project && workspace == other.workspace && workspaceId == other.workspaceId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, projectId, workspaceId, project, workspace, name, dateCreated, dateUpdated, dateLastSampleReceived, description, dateLastEvaluated, dateOfNextEvaluation, passingGoalCount, failingGoalCount, totalGoalCount, status, statusMessage, links, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateLastEvaluated, dateLastSampleReceived, dateOfNextEvaluation, dateUpdated, description, failingGoalCount, links, name, passingGoalCount, projectId, status, statusMessage, totalGoalCount, project, workspace, workspaceId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Item{id=$id, projectId=$projectId, workspaceId=$workspaceId, project=$project, workspace=$workspace, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateLastSampleReceived=$dateLastSampleReceived, description=$description, dateLastEvaluated=$dateLastEvaluated, dateOfNextEvaluation=$dateOfNextEvaluation, passingGoalCount=$passingGoalCount, failingGoalCount=$failingGoalCount, totalGoalCount=$totalGoalCount, status=$status, statusMessage=$statusMessage, links=$links, additionalProperties=$additionalProperties}"
+            "Item{id=$id, dateCreated=$dateCreated, dateLastEvaluated=$dateLastEvaluated, dateLastSampleReceived=$dateLastSampleReceived, dateOfNextEvaluation=$dateOfNextEvaluation, dateUpdated=$dateUpdated, description=$description, failingGoalCount=$failingGoalCount, links=$links, name=$name, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, totalGoalCount=$totalGoalCount, project=$project, workspace=$workspace, workspaceId=$workspaceId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

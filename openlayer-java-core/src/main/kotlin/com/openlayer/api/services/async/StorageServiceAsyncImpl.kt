@@ -7,7 +7,7 @@ import com.openlayer.api.services.async.storage.PresignedUrlServiceAsync
 import com.openlayer.api.services.async.storage.PresignedUrlServiceAsyncImpl
 
 class StorageServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : StorageServiceAsync {
 

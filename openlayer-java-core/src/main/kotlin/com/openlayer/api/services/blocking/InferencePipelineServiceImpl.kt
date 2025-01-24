@@ -26,7 +26,7 @@ import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
 import com.openlayer.api.services.blocking.inferencePipelines.TestResultServiceImpl
 
 class InferencePipelineServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : InferencePipelineService {
 

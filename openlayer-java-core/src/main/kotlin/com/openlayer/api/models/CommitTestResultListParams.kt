@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** List the test results for a project commit (project version). */
 class CommitTestResultListParams
 constructor(
     private val projectVersionId: String,
@@ -26,14 +28,25 @@ constructor(
 
     fun projectVersionId(): String = projectVersionId
 
+    /** Include archived goals. */
     fun includeArchived(): Optional<Boolean> = Optional.ofNullable(includeArchived)
 
+    /** The page to return in a paginated query. */
     fun page(): Optional<Long> = Optional.ofNullable(page)
 
+    /** Maximum number of items to return per page. */
     fun perPage(): Optional<Long> = Optional.ofNullable(perPage)
 
+    /**
+     * Filter list of test results by status. Available statuses are `running`, `passing`,
+     * `failing`, `skipped`, and `error`.
+     */
     fun status(): Optional<Status> = Optional.ofNullable(status)
 
+    /**
+     * Filter objects by test type. Available types are `integrity`, `consistency`, `performance`,
+     * `fairness`, and `robustness`.
+     */
     fun type(): Optional<Type> = Optional.ofNullable(type)
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -97,27 +110,61 @@ constructor(
         }
 
         /** Include archived goals. */
-        fun includeArchived(includeArchived: Boolean) = apply {
+        fun includeArchived(includeArchived: Boolean?) = apply {
             this.includeArchived = includeArchived
         }
 
+        /** Include archived goals. */
+        fun includeArchived(includeArchived: Boolean) = includeArchived(includeArchived as Boolean?)
+
+        /** Include archived goals. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun includeArchived(includeArchived: Optional<Boolean>) =
+            includeArchived(includeArchived.orElse(null) as Boolean?)
+
         /** The page to return in a paginated query. */
-        fun page(page: Long) = apply { this.page = page }
+        fun page(page: Long?) = apply { this.page = page }
+
+        /** The page to return in a paginated query. */
+        fun page(page: Long) = page(page as Long?)
+
+        /** The page to return in a paginated query. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun page(page: Optional<Long>) = page(page.orElse(null) as Long?)
 
         /** Maximum number of items to return per page. */
-        fun perPage(perPage: Long) = apply { this.perPage = perPage }
+        fun perPage(perPage: Long?) = apply { this.perPage = perPage }
+
+        /** Maximum number of items to return per page. */
+        fun perPage(perPage: Long) = perPage(perPage as Long?)
+
+        /** Maximum number of items to return per page. */
+        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+        fun perPage(perPage: Optional<Long>) = perPage(perPage.orElse(null) as Long?)
 
         /**
          * Filter list of test results by status. Available statuses are `running`, `passing`,
          * `failing`, `skipped`, and `error`.
          */
-        fun status(status: Status) = apply { this.status = status }
+        fun status(status: Status?) = apply { this.status = status }
+
+        /**
+         * Filter list of test results by status. Available statuses are `running`, `passing`,
+         * `failing`, `skipped`, and `error`.
+         */
+        fun status(status: Optional<Status>) = status(status.orElse(null))
 
         /**
          * Filter objects by test type. Available types are `integrity`, `consistency`,
          * `performance`, `fairness`, and `robustness`.
          */
-        fun type(type: Type) = apply { this.type = type }
+        fun type(type: Type?) = apply { this.type = type }
+
+        /**
+         * Filter objects by test type. Available types are `integrity`, `consistency`,
+         * `performance`, `fairness`, and `robustness`.
+         */
+        fun type(type: Optional<Type>) = type(type.orElse(null))
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -219,7 +266,7 @@ constructor(
 
         fun build(): CommitTestResultListParams =
             CommitTestResultListParams(
-                checkNotNull(projectVersionId) { "`projectVersionId` is required but was not set" },
+                checkRequired("projectVersionId", projectVersionId),
                 includeArchived,
                 page,
                 perPage,
@@ -230,6 +277,10 @@ constructor(
             )
     }
 
+    /**
+     * Filter list of test results by status. Available statuses are `running`, `passing`,
+     * `failing`, `skipped`, and `error`.
+     */
     class Status
     @JsonCreator
     private constructor(
@@ -305,6 +356,10 @@ constructor(
         override fun toString() = value.toString()
     }
 
+    /**
+     * Filter objects by test type. Available types are `integrity`, `consistency`, `performance`,
+     * `fairness`, and `robustness`.
+     */
     class Type
     @JsonCreator
     private constructor(

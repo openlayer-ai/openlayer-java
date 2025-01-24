@@ -17,7 +17,7 @@ import com.openlayer.api.models.InferencePipelineDataStreamResponse
 import java.util.concurrent.CompletableFuture
 
 class DataServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : DataServiceAsync {
 

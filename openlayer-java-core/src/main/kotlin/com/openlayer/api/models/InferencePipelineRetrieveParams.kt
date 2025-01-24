@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.toImmutable
@@ -13,6 +14,7 @@ import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
 
+/** Retrieve inference pipeline. */
 class InferencePipelineRetrieveParams
 constructor(
     private val inferencePipelineId: String,
@@ -23,6 +25,7 @@ constructor(
 
     fun inferencePipelineId(): String = inferencePipelineId
 
+    /** Expand specific nested objects. */
     fun expand(): Optional<List<Expand>> = Optional.ofNullable(expand)
 
     fun _additionalHeaders(): Headers = additionalHeaders
@@ -57,7 +60,7 @@ constructor(
     class Builder {
 
         private var inferencePipelineId: String? = null
-        private var expand: MutableList<Expand> = mutableListOf()
+        private var expand: MutableList<Expand>? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -65,7 +68,7 @@ constructor(
         internal fun from(inferencePipelineRetrieveParams: InferencePipelineRetrieveParams) =
             apply {
                 inferencePipelineId = inferencePipelineRetrieveParams.inferencePipelineId
-                expand = inferencePipelineRetrieveParams.expand?.toMutableList() ?: mutableListOf()
+                expand = inferencePipelineRetrieveParams.expand?.toMutableList()
                 additionalHeaders = inferencePipelineRetrieveParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     inferencePipelineRetrieveParams.additionalQueryParams.toBuilder()
@@ -76,13 +79,15 @@ constructor(
         }
 
         /** Expand specific nested objects. */
-        fun expand(expand: List<Expand>) = apply {
-            this.expand.clear()
-            this.expand.addAll(expand)
-        }
+        fun expand(expand: List<Expand>?) = apply { this.expand = expand?.toMutableList() }
 
         /** Expand specific nested objects. */
-        fun addExpand(expand: Expand) = apply { this.expand.add(expand) }
+        fun expand(expand: Optional<List<Expand>>) = expand(expand.orElse(null))
+
+        /** Expand specific nested objects. */
+        fun addExpand(expand: Expand) = apply {
+            this.expand = (this.expand ?: mutableListOf()).apply { add(expand) }
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -184,10 +189,8 @@ constructor(
 
         fun build(): InferencePipelineRetrieveParams =
             InferencePipelineRetrieveParams(
-                checkNotNull(inferencePipelineId) {
-                    "`inferencePipelineId` is required but was not set"
-                },
-                expand.toImmutable().ifEmpty { null },
+                checkRequired("inferencePipelineId", inferencePipelineId),
+                expand?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )

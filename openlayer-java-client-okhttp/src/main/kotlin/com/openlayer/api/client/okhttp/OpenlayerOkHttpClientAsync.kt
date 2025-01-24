@@ -11,6 +11,7 @@ import com.openlayer.api.core.http.QueryParams
 import java.net.Proxy
 import java.time.Clock
 import java.time.Duration
+import java.util.Optional
 
 class OpenlayerOkHttpClientAsync private constructor() {
 
@@ -129,6 +130,8 @@ class OpenlayerOkHttpClientAsync private constructor() {
         }
 
         fun apiKey(apiKey: String?) = apply { clientOptions.apiKey(apiKey) }
+
+        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.orElse(null))
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 

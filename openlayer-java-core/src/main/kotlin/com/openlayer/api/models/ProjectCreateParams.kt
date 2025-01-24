@@ -6,78 +6,114 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
+import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
+/** Create a project in your workspace. */
 class ProjectCreateParams
 constructor(
-    private val name: String,
-    private val taskType: TaskType,
-    private val description: String?,
+    private val body: ProjectCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
-    fun name(): String = name
+    /** The project name. */
+    fun name(): String = body.name()
 
-    fun taskType(): TaskType = taskType
+    /** The task type of the project. */
+    fun taskType(): TaskType = body.taskType()
 
-    fun description(): Optional<String> = Optional.ofNullable(description)
+    /** The project description. */
+    fun description(): Optional<String> = body.description()
+
+    /** The project name. */
+    fun _name(): JsonField<String> = body._name()
+
+    /** The task type of the project. */
+    fun _taskType(): JsonField<TaskType> = body._taskType()
+
+    /** The project description. */
+    fun _description(): JsonField<String> = body._description()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    @JvmSynthetic
-    internal fun getBody(): ProjectCreateBody {
-        return ProjectCreateBody(
-            name,
-            taskType,
-            description,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): ProjectCreateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
     @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
 
-    @JsonDeserialize(builder = ProjectCreateBody.Builder::class)
     @NoAutoDetect
     class ProjectCreateBody
+    @JsonCreator
     internal constructor(
-        private val name: String?,
-        private val taskType: TaskType?,
-        private val description: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("taskType")
+        @ExcludeMissing
+        private val taskType: JsonField<TaskType> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        private val description: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
         /** The project name. */
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String = name.getRequired("name")
 
         /** The task type of the project. */
-        @JsonProperty("taskType") fun taskType(): TaskType? = taskType
+        fun taskType(): TaskType = taskType.getRequired("taskType")
 
         /** The project description. */
-        @JsonProperty("description") fun description(): String? = description
+        fun description(): Optional<String> =
+            Optional.ofNullable(description.getNullable("description"))
+
+        /** The project name. */
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /** The task type of the project. */
+        @JsonProperty("taskType") @ExcludeMissing fun _taskType(): JsonField<TaskType> = taskType
+
+        /** The project description. */
+        @JsonProperty("description")
+        @ExcludeMissing
+        fun _description(): JsonField<String> = description
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): ProjectCreateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            name()
+            taskType()
+            description()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -88,48 +124,65 @@ constructor(
 
         class Builder {
 
-            private var name: String? = null
-            private var taskType: TaskType? = null
-            private var description: String? = null
+            private var name: JsonField<String>? = null
+            private var taskType: JsonField<TaskType>? = null
+            private var description: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(projectCreateBody: ProjectCreateBody) = apply {
-                this.name = projectCreateBody.name
-                this.taskType = projectCreateBody.taskType
-                this.description = projectCreateBody.description
-                additionalProperties(projectCreateBody.additionalProperties)
+                name = projectCreateBody.name
+                taskType = projectCreateBody.taskType
+                description = projectCreateBody.description
+                additionalProperties = projectCreateBody.additionalProperties.toMutableMap()
             }
 
             /** The project name. */
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun name(name: String) = name(JsonField.of(name))
+
+            /** The project name. */
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The task type of the project. */
-            @JsonProperty("taskType")
-            fun taskType(taskType: TaskType) = apply { this.taskType = taskType }
+            fun taskType(taskType: TaskType) = taskType(JsonField.of(taskType))
+
+            /** The task type of the project. */
+            fun taskType(taskType: JsonField<TaskType>) = apply { this.taskType = taskType }
 
             /** The project description. */
-            @JsonProperty("description")
-            fun description(description: String) = apply { this.description = description }
+            fun description(description: String?) = description(JsonField.ofNullable(description))
+
+            /** The project description. */
+            fun description(description: Optional<String>) = description(description.orElse(null))
+
+            /** The project description. */
+            fun description(description: JsonField<String>) = apply {
+                this.description = description
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): ProjectCreateBody =
                 ProjectCreateBody(
-                    checkNotNull(name) { "`name` is required but was not set" },
-                    checkNotNull(taskType) { "`taskType` is required but was not set" },
+                    checkRequired("name", name),
+                    checkRequired("taskType", taskType),
                     description,
                     additionalProperties.toImmutable(),
                 )
@@ -163,31 +216,56 @@ constructor(
     @NoAutoDetect
     class Builder {
 
-        private var name: String? = null
-        private var taskType: TaskType? = null
-        private var description: String? = null
+        private var body: ProjectCreateBody.Builder = ProjectCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(projectCreateParams: ProjectCreateParams) = apply {
-            name = projectCreateParams.name
-            taskType = projectCreateParams.taskType
-            description = projectCreateParams.description
+            body = projectCreateParams.body.toBuilder()
             additionalHeaders = projectCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = projectCreateParams.additionalQueryParams.toBuilder()
-            additionalBodyProperties = projectCreateParams.additionalBodyProperties.toMutableMap()
         }
 
         /** The project name. */
-        fun name(name: String) = apply { this.name = name }
+        fun name(name: String) = apply { body.name(name) }
+
+        /** The project name. */
+        fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /** The task type of the project. */
-        fun taskType(taskType: TaskType) = apply { this.taskType = taskType }
+        fun taskType(taskType: TaskType) = apply { body.taskType(taskType) }
+
+        /** The task type of the project. */
+        fun taskType(taskType: JsonField<TaskType>) = apply { body.taskType(taskType) }
 
         /** The project description. */
-        fun description(description: String) = apply { this.description = description }
+        fun description(description: String?) = apply { body.description(description) }
+
+        /** The project description. */
+        fun description(description: Optional<String>) = description(description.orElse(null))
+
+        /** The project description. */
+        fun description(description: JsonField<String>) = apply { body.description(description) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -287,53 +365,42 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): ProjectCreateParams =
             ProjectCreateParams(
-                checkNotNull(name) { "`name` is required but was not set" },
-                checkNotNull(taskType) { "`taskType` is required but was not set" },
-                description,
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
     /** Links to the project. */
-    @JsonDeserialize(builder = Links.Builder::class)
     @NoAutoDetect
     class Links
+    @JsonCreator
     private constructor(
-        private val app: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("app") @ExcludeMissing private val app: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("app") fun app(): String? = app
+        fun app(): String = app.getRequired("app")
+
+        @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Links = apply {
+            if (validated) {
+                return@apply
+            }
+
+            app()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -344,36 +411,40 @@ constructor(
 
         class Builder {
 
-            private var app: String? = null
+            private var app: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(links: Links) = apply {
-                this.app = links.app
-                additionalProperties(links.additionalProperties)
+                app = links.app
+                additionalProperties = links.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("app") fun app(app: String) = apply { this.app = app }
+            fun app(app: String) = app(JsonField.of(app))
+
+            fun app(app: JsonField<String>) = apply { this.app = app }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Links =
-                Links(
-                    checkNotNull(app) { "`app` is required but was not set" },
-                    additionalProperties.toImmutable()
-                )
+                Links(checkRequired("app", app), additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -393,6 +464,7 @@ constructor(
         override fun toString() = "Links{app=$app, additionalProperties=$additionalProperties}"
     }
 
+    /** The source of the project. */
     class Source
     @JsonCreator
     private constructor(
@@ -456,6 +528,7 @@ constructor(
         override fun toString() = value.toString()
     }
 
+    /** The task type of the project. */
     class TaskType
     @JsonCreator
     private constructor(
@@ -525,52 +598,125 @@ constructor(
         override fun toString() = value.toString()
     }
 
-    @JsonDeserialize(builder = GitRepo.Builder::class)
     @NoAutoDetect
     class GitRepo
+    @JsonCreator
     private constructor(
-        private val id: String?,
-        private val gitId: Long?,
-        private val dateConnected: OffsetDateTime?,
-        private val dateUpdated: OffsetDateTime?,
-        private val branch: String?,
-        private val name: String?,
-        private val private_: Boolean?,
-        private val slug: String?,
-        private val url: String?,
-        private val rootDir: String?,
-        private val projectId: String?,
-        private val gitAccountId: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateConnected")
+        @ExcludeMissing
+        private val dateConnected: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("gitAccountId")
+        @ExcludeMissing
+        private val gitAccountId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("gitId")
+        @ExcludeMissing
+        private val gitId: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("name")
+        @ExcludeMissing
+        private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("private")
+        @ExcludeMissing
+        private val private_: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("projectId")
+        @ExcludeMissing
+        private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("slug")
+        @ExcludeMissing
+        private val slug: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("url") @ExcludeMissing private val url: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("branch")
+        @ExcludeMissing
+        private val branch: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("rootDir")
+        @ExcludeMissing
+        private val rootDir: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("id") fun id(): String? = id
+        fun id(): String = id.getRequired("id")
 
-        @JsonProperty("gitId") fun gitId(): Long? = gitId
+        fun dateConnected(): OffsetDateTime = dateConnected.getRequired("dateConnected")
 
-        @JsonProperty("dateConnected") fun dateConnected(): OffsetDateTime? = dateConnected
+        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-        @JsonProperty("dateUpdated") fun dateUpdated(): OffsetDateTime? = dateUpdated
+        fun gitAccountId(): String = gitAccountId.getRequired("gitAccountId")
 
-        @JsonProperty("branch") fun branch(): String? = branch
+        fun gitId(): Long = gitId.getRequired("gitId")
 
-        @JsonProperty("name") fun name(): String? = name
+        fun name(): String = name.getRequired("name")
 
-        @JsonProperty("private") fun private_(): Boolean? = private_
+        fun private_(): Boolean = private_.getRequired("private")
 
-        @JsonProperty("slug") fun slug(): String? = slug
+        fun projectId(): String = projectId.getRequired("projectId")
 
-        @JsonProperty("url") fun url(): String? = url
+        fun slug(): String = slug.getRequired("slug")
 
-        @JsonProperty("rootDir") fun rootDir(): String? = rootDir
+        fun url(): String = url.getRequired("url")
 
-        @JsonProperty("projectId") fun projectId(): String? = projectId
+        fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
 
-        @JsonProperty("gitAccountId") fun gitAccountId(): String? = gitAccountId
+        fun rootDir(): Optional<String> = Optional.ofNullable(rootDir.getNullable("rootDir"))
+
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        @JsonProperty("dateConnected")
+        @ExcludeMissing
+        fun _dateConnected(): JsonField<OffsetDateTime> = dateConnected
+
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
+
+        @JsonProperty("gitAccountId")
+        @ExcludeMissing
+        fun _gitAccountId(): JsonField<String> = gitAccountId
+
+        @JsonProperty("gitId") @ExcludeMissing fun _gitId(): JsonField<Long> = gitId
+
+        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        @JsonProperty("private") @ExcludeMissing fun _private_(): JsonField<Boolean> = private_
+
+        @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+
+        @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+        @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
+
+        @JsonProperty("branch") @ExcludeMissing fun _branch(): JsonField<String> = branch
+
+        @JsonProperty("rootDir") @ExcludeMissing fun _rootDir(): JsonField<String> = rootDir
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): GitRepo = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            dateConnected()
+            dateUpdated()
+            gitAccountId()
+            gitId()
+            name()
+            private_()
+            projectId()
+            slug()
+            url()
+            branch()
+            rootDir()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -581,96 +727,125 @@ constructor(
 
         class Builder {
 
-            private var id: String? = null
-            private var gitId: Long? = null
-            private var dateConnected: OffsetDateTime? = null
-            private var dateUpdated: OffsetDateTime? = null
-            private var branch: String? = null
-            private var name: String? = null
-            private var private_: Boolean? = null
-            private var slug: String? = null
-            private var url: String? = null
-            private var rootDir: String? = null
-            private var projectId: String? = null
-            private var gitAccountId: String? = null
+            private var id: JsonField<String>? = null
+            private var dateConnected: JsonField<OffsetDateTime>? = null
+            private var dateUpdated: JsonField<OffsetDateTime>? = null
+            private var gitAccountId: JsonField<String>? = null
+            private var gitId: JsonField<Long>? = null
+            private var name: JsonField<String>? = null
+            private var private_: JsonField<Boolean>? = null
+            private var projectId: JsonField<String>? = null
+            private var slug: JsonField<String>? = null
+            private var url: JsonField<String>? = null
+            private var branch: JsonField<String> = JsonMissing.of()
+            private var rootDir: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(gitRepo: GitRepo) = apply {
-                this.id = gitRepo.id
-                this.gitId = gitRepo.gitId
-                this.dateConnected = gitRepo.dateConnected
-                this.dateUpdated = gitRepo.dateUpdated
-                this.branch = gitRepo.branch
-                this.name = gitRepo.name
-                this.private_ = gitRepo.private_
-                this.slug = gitRepo.slug
-                this.url = gitRepo.url
-                this.rootDir = gitRepo.rootDir
-                this.projectId = gitRepo.projectId
-                this.gitAccountId = gitRepo.gitAccountId
-                additionalProperties(gitRepo.additionalProperties)
+                id = gitRepo.id
+                dateConnected = gitRepo.dateConnected
+                dateUpdated = gitRepo.dateUpdated
+                gitAccountId = gitRepo.gitAccountId
+                gitId = gitRepo.gitId
+                name = gitRepo.name
+                private_ = gitRepo.private_
+                projectId = gitRepo.projectId
+                slug = gitRepo.slug
+                url = gitRepo.url
+                branch = gitRepo.branch
+                rootDir = gitRepo.rootDir
+                additionalProperties = gitRepo.additionalProperties.toMutableMap()
             }
 
-            @JsonProperty("id") fun id(id: String) = apply { this.id = id }
+            fun id(id: String) = id(JsonField.of(id))
 
-            @JsonProperty("gitId") fun gitId(gitId: Long) = apply { this.gitId = gitId }
+            fun id(id: JsonField<String>) = apply { this.id = id }
 
-            @JsonProperty("dateConnected")
-            fun dateConnected(dateConnected: OffsetDateTime) = apply {
+            fun dateConnected(dateConnected: OffsetDateTime) =
+                dateConnected(JsonField.of(dateConnected))
+
+            fun dateConnected(dateConnected: JsonField<OffsetDateTime>) = apply {
                 this.dateConnected = dateConnected
             }
 
-            @JsonProperty("dateUpdated")
-            fun dateUpdated(dateUpdated: OffsetDateTime) = apply { this.dateUpdated = dateUpdated }
+            fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
-            @JsonProperty("branch") fun branch(branch: String) = apply { this.branch = branch }
+            fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
+                this.dateUpdated = dateUpdated
+            }
 
-            @JsonProperty("name") fun name(name: String) = apply { this.name = name }
+            fun gitAccountId(gitAccountId: String) = gitAccountId(JsonField.of(gitAccountId))
 
-            @JsonProperty("private")
-            fun private_(private_: Boolean) = apply { this.private_ = private_ }
+            fun gitAccountId(gitAccountId: JsonField<String>) = apply {
+                this.gitAccountId = gitAccountId
+            }
 
-            @JsonProperty("slug") fun slug(slug: String) = apply { this.slug = slug }
+            fun gitId(gitId: Long) = gitId(JsonField.of(gitId))
 
-            @JsonProperty("url") fun url(url: String) = apply { this.url = url }
+            fun gitId(gitId: JsonField<Long>) = apply { this.gitId = gitId }
 
-            @JsonProperty("rootDir") fun rootDir(rootDir: String) = apply { this.rootDir = rootDir }
+            fun name(name: String) = name(JsonField.of(name))
 
-            @JsonProperty("projectId")
-            fun projectId(projectId: String) = apply { this.projectId = projectId }
+            fun name(name: JsonField<String>) = apply { this.name = name }
 
-            @JsonProperty("gitAccountId")
-            fun gitAccountId(gitAccountId: String) = apply { this.gitAccountId = gitAccountId }
+            fun private_(private_: Boolean) = private_(JsonField.of(private_))
+
+            fun private_(private_: JsonField<Boolean>) = apply { this.private_ = private_ }
+
+            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+
+            fun slug(slug: String) = slug(JsonField.of(slug))
+
+            fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+            fun url(url: String) = url(JsonField.of(url))
+
+            fun url(url: JsonField<String>) = apply { this.url = url }
+
+            fun branch(branch: String) = branch(JsonField.of(branch))
+
+            fun branch(branch: JsonField<String>) = apply { this.branch = branch }
+
+            fun rootDir(rootDir: String) = rootDir(JsonField.of(rootDir))
+
+            fun rootDir(rootDir: JsonField<String>) = apply { this.rootDir = rootDir }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): GitRepo =
                 GitRepo(
-                    checkNotNull(id) { "`id` is required but was not set" },
-                    checkNotNull(gitId) { "`gitId` is required but was not set" },
-                    checkNotNull(dateConnected) { "`dateConnected` is required but was not set" },
-                    checkNotNull(dateUpdated) { "`dateUpdated` is required but was not set" },
+                    checkRequired("id", id),
+                    checkRequired("dateConnected", dateConnected),
+                    checkRequired("dateUpdated", dateUpdated),
+                    checkRequired("gitAccountId", gitAccountId),
+                    checkRequired("gitId", gitId),
+                    checkRequired("name", name),
+                    checkRequired("private_", private_),
+                    checkRequired("projectId", projectId),
+                    checkRequired("slug", slug),
+                    checkRequired("url", url),
                     branch,
-                    checkNotNull(name) { "`name` is required but was not set" },
-                    checkNotNull(private_) { "`private_` is required but was not set" },
-                    checkNotNull(slug) { "`slug` is required but was not set" },
-                    checkNotNull(url) { "`url` is required but was not set" },
                     rootDir,
-                    checkNotNull(projectId) { "`projectId` is required but was not set" },
-                    checkNotNull(gitAccountId) { "`gitAccountId` is required but was not set" },
                     additionalProperties.toImmutable(),
                 )
         }
@@ -680,17 +855,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is GitRepo && id == other.id && gitId == other.gitId && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && branch == other.branch && name == other.name && private_ == other.private_ && slug == other.slug && url == other.url && rootDir == other.rootDir && projectId == other.projectId && gitAccountId == other.gitAccountId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is GitRepo && id == other.id && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && gitAccountId == other.gitAccountId && gitId == other.gitId && name == other.name && private_ == other.private_ && projectId == other.projectId && slug == other.slug && url == other.url && branch == other.branch && rootDir == other.rootDir && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, gitId, dateConnected, dateUpdated, branch, name, private_, slug, url, rootDir, projectId, gitAccountId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, dateConnected, dateUpdated, gitAccountId, gitId, name, private_, projectId, slug, url, branch, rootDir, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "GitRepo{id=$id, gitId=$gitId, dateConnected=$dateConnected, dateUpdated=$dateUpdated, branch=$branch, name=$name, private_=$private_, slug=$slug, url=$url, rootDir=$rootDir, projectId=$projectId, gitAccountId=$gitAccountId, additionalProperties=$additionalProperties}"
+            "GitRepo{id=$id, dateConnected=$dateConnected, dateUpdated=$dateUpdated, gitAccountId=$gitAccountId, gitId=$gitId, name=$name, private_=$private_, projectId=$projectId, slug=$slug, url=$url, branch=$branch, rootDir=$rootDir, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -698,11 +873,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectCreateParams && name == other.name && taskType == other.taskType && description == other.description && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is ProjectCreateParams && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, taskType, description, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "ProjectCreateParams{name=$name, taskType=$taskType, description=$description, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "ProjectCreateParams{body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

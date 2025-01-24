@@ -19,7 +19,7 @@ import com.openlayer.api.models.ProjectInferencePipelineListResponse
 import java.util.concurrent.CompletableFuture
 
 class InferencePipelineServiceAsyncImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : InferencePipelineServiceAsync {
 

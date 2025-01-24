@@ -2,7 +2,6 @@
 
 package com.openlayer.api.models
 
-import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -13,20 +12,7 @@ class ProjectCommitCreateParamsTest {
         ProjectCommitCreateParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .commit(
-                ProjectCommitCreateParams.Commit.builder()
-                    .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                    .fileSize(1024L)
-                    .message("Updated the prompt.")
-                    .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .storageUri("s3://...")
-                    .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                    .gitCommitRef("main")
-                    .gitCommitSha(0L)
-                    .gitCommitUrl("gitCommitUrl")
-                    .build()
+                ProjectCommitCreateParams.Commit.builder().message("Updated the prompt.").build()
             )
             .storageUri("s3://...")
             .archived(false)
@@ -41,18 +27,7 @@ class ProjectCommitCreateParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .commit(
                     ProjectCommitCreateParams.Commit.builder()
-                        .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                        .fileSize(1024L)
                         .message("Updated the prompt.")
-                        .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .storageUri("s3://...")
-                        .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                        .gitCommitRef("main")
-                        .gitCommitSha(0L)
-                        .gitCommitUrl("gitCommitUrl")
                         .build()
                 )
                 .storageUri("s3://...")
@@ -63,24 +38,11 @@ class ProjectCommitCreateParamsTest {
         assertThat(body).isNotNull
         assertThat(body.commit())
             .isEqualTo(
-                ProjectCommitCreateParams.Commit.builder()
-                    .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                    .fileSize(1024L)
-                    .message("Updated the prompt.")
-                    .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .storageUri("s3://...")
-                    .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                    .gitCommitRef("main")
-                    .gitCommitSha(0L)
-                    .gitCommitUrl("gitCommitUrl")
-                    .build()
+                ProjectCommitCreateParams.Commit.builder().message("Updated the prompt.").build()
             )
         assertThat(body.storageUri()).isEqualTo("s3://...")
-        assertThat(body.archived()).isEqualTo(false)
-        assertThat(body.deploymentStatus()).isEqualTo("Deployed")
+        assertThat(body.archived()).contains(false)
+        assertThat(body.deploymentStatus()).contains("Deployed")
     }
 
     @Test
@@ -90,14 +52,7 @@ class ProjectCommitCreateParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .commit(
                     ProjectCommitCreateParams.Commit.builder()
-                        .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                        .fileSize(1024L)
                         .message("Updated the prompt.")
-                        .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .storageUri("s3://...")
-                        .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .build()
                 )
                 .storageUri("s3://...")
@@ -106,16 +61,7 @@ class ProjectCommitCreateParamsTest {
         assertThat(body).isNotNull
         assertThat(body.commit())
             .isEqualTo(
-                ProjectCommitCreateParams.Commit.builder()
-                    .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                    .fileSize(1024L)
-                    .message("Updated the prompt.")
-                    .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .storageUri("s3://...")
-                    .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .build()
+                ProjectCommitCreateParams.Commit.builder().message("Updated the prompt.").build()
             )
         assertThat(body.storageUri()).isEqualTo("s3://...")
     }
@@ -127,14 +73,7 @@ class ProjectCommitCreateParamsTest {
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .commit(
                     ProjectCommitCreateParams.Commit.builder()
-                        .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                        .fileSize(1024L)
                         .message("Updated the prompt.")
-                        .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .storageUri("s3://...")
-                        .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .build()
                 )
                 .storageUri("s3://...")

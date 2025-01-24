@@ -4,50 +4,49 @@ package com.openlayer.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
+import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
+/** Update an inference data point in an inference pipeline. */
 class InferencePipelineRowUpdateParams
 constructor(
     private val inferencePipelineId: String,
     private val inferenceId: String,
-    private val row: JsonValue,
-    private val config: Config?,
+    private val body: InferencePipelineRowUpdateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
 ) {
 
     fun inferencePipelineId(): String = inferencePipelineId
 
+    /** Specify the inference id as a query param. */
     fun inferenceId(): String = inferenceId
 
-    fun row(): JsonValue = row
+    fun _row(): JsonValue = body._row()
 
-    fun config(): Optional<Config> = Optional.ofNullable(config)
+    fun config(): Optional<Config> = body.config()
+
+    fun _config(): JsonField<Config> = body._config()
+
+    fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
-
-    @JvmSynthetic
-    internal fun getBody(): InferencePipelineRowUpdateBody {
-        return InferencePipelineRowUpdateBody(
-            row,
-            config,
-            additionalBodyProperties,
-        )
-    }
+    @JvmSynthetic internal fun getBody(): InferencePipelineRowUpdateBody = body
 
     @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
 
@@ -66,22 +65,38 @@ constructor(
         }
     }
 
-    @JsonDeserialize(builder = InferencePipelineRowUpdateBody.Builder::class)
     @NoAutoDetect
     class InferencePipelineRowUpdateBody
+    @JsonCreator
     internal constructor(
-        private val row: JsonValue?,
-        private val config: Config?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("row") @ExcludeMissing private val row: JsonValue = JsonMissing.of(),
+        @JsonProperty("config")
+        @ExcludeMissing
+        private val config: JsonField<Config> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        @JsonProperty("row") fun row(): JsonValue? = row
+        @JsonProperty("row") @ExcludeMissing fun _row(): JsonValue = row
 
-        @JsonProperty("config") fun config(): Config? = config
+        fun config(): Optional<Config> = Optional.ofNullable(config.getNullable("config"))
+
+        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): InferencePipelineRowUpdateBody = apply {
+            if (validated) {
+                return@apply
+            }
+
+            config().ifPresent { it.validate() }
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -93,38 +108,48 @@ constructor(
         class Builder {
 
             private var row: JsonValue? = null
-            private var config: Config? = null
+            private var config: JsonField<Config> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(inferencePipelineRowUpdateBody: InferencePipelineRowUpdateBody) =
                 apply {
-                    this.row = inferencePipelineRowUpdateBody.row
-                    this.config = inferencePipelineRowUpdateBody.config
-                    additionalProperties(inferencePipelineRowUpdateBody.additionalProperties)
+                    row = inferencePipelineRowUpdateBody.row
+                    config = inferencePipelineRowUpdateBody.config
+                    additionalProperties =
+                        inferencePipelineRowUpdateBody.additionalProperties.toMutableMap()
                 }
 
-            @JsonProperty("row") fun row(row: JsonValue) = apply { this.row = row }
+            fun row(row: JsonValue) = apply { this.row = row }
 
-            @JsonProperty("config") fun config(config: Config) = apply { this.config = config }
+            fun config(config: Config?) = config(JsonField.ofNullable(config))
+
+            fun config(config: Optional<Config>) = config(config.orElse(null))
+
+            fun config(config: JsonField<Config>) = apply { this.config = config }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): InferencePipelineRowUpdateBody =
                 InferencePipelineRowUpdateBody(
-                    checkNotNull(row) { "`row` is required but was not set" },
+                    checkRequired("row", row),
                     config,
                     additionalProperties.toImmutable(),
                 )
@@ -160,24 +185,20 @@ constructor(
 
         private var inferencePipelineId: String? = null
         private var inferenceId: String? = null
-        private var row: JsonValue? = null
-        private var config: Config? = null
+        private var body: InferencePipelineRowUpdateBody.Builder =
+            InferencePipelineRowUpdateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
-        private var additionalBodyProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(inferencePipelineRowUpdateParams: InferencePipelineRowUpdateParams) =
             apply {
                 inferencePipelineId = inferencePipelineRowUpdateParams.inferencePipelineId
                 inferenceId = inferencePipelineRowUpdateParams.inferenceId
-                row = inferencePipelineRowUpdateParams.row
-                config = inferencePipelineRowUpdateParams.config
+                body = inferencePipelineRowUpdateParams.body.toBuilder()
                 additionalHeaders = inferencePipelineRowUpdateParams.additionalHeaders.toBuilder()
                 additionalQueryParams =
                     inferencePipelineRowUpdateParams.additionalQueryParams.toBuilder()
-                additionalBodyProperties =
-                    inferencePipelineRowUpdateParams.additionalBodyProperties.toMutableMap()
             }
 
         fun inferencePipelineId(inferencePipelineId: String) = apply {
@@ -187,9 +208,32 @@ constructor(
         /** Specify the inference id as a query param. */
         fun inferenceId(inferenceId: String) = apply { this.inferenceId = inferenceId }
 
-        fun row(row: JsonValue) = apply { this.row = row }
+        fun row(row: JsonValue) = apply { body.row(row) }
 
-        fun config(config: Config) = apply { this.config = config }
+        fun config(config: Config?) = apply { body.config(config) }
+
+        fun config(config: Optional<Config>) = config(config.orElse(null))
+
+        fun config(config: JsonField<Config>) = apply { body.config(config) }
+
+        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
+            body.additionalProperties(additionalBodyProperties)
+        }
+
+        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
+            body.putAdditionalProperty(key, value)
+        }
+
+        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
+            apply {
+                body.putAllAdditionalProperties(additionalBodyProperties)
+            }
+
+        fun removeAdditionalBodyProperty(key: String) = apply { body.removeAdditionalProperty(key) }
+
+        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
+            body.removeAllAdditionalProperties(keys)
+        }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -289,82 +333,114 @@ constructor(
             additionalQueryParams.removeAll(keys)
         }
 
-        fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
-            this.additionalBodyProperties.clear()
-            putAllAdditionalBodyProperties(additionalBodyProperties)
-        }
-
-        fun putAdditionalBodyProperty(key: String, value: JsonValue) = apply {
-            additionalBodyProperties.put(key, value)
-        }
-
-        fun putAllAdditionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) =
-            apply {
-                this.additionalBodyProperties.putAll(additionalBodyProperties)
-            }
-
-        fun removeAdditionalBodyProperty(key: String) = apply {
-            additionalBodyProperties.remove(key)
-        }
-
-        fun removeAllAdditionalBodyProperties(keys: Set<String>) = apply {
-            keys.forEach(::removeAdditionalBodyProperty)
-        }
-
         fun build(): InferencePipelineRowUpdateParams =
             InferencePipelineRowUpdateParams(
-                checkNotNull(inferencePipelineId) {
-                    "`inferencePipelineId` is required but was not set"
-                },
-                checkNotNull(inferenceId) { "`inferenceId` is required but was not set" },
-                checkNotNull(row) { "`row` is required but was not set" },
-                config,
+                checkRequired("inferencePipelineId", inferencePipelineId),
+                checkRequired("inferenceId", inferenceId),
+                body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
             )
     }
 
-    @JsonDeserialize(builder = Config.Builder::class)
     @NoAutoDetect
     class Config
+    @JsonCreator
     private constructor(
-        private val inferenceIdColumnName: String?,
-        private val latencyColumnName: String?,
-        private val timestampColumnName: String?,
-        private val groundTruthColumnName: String?,
-        private val humanFeedbackColumnName: String?,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("groundTruthColumnName")
+        @ExcludeMissing
+        private val groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("humanFeedbackColumnName")
+        @ExcludeMissing
+        private val humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("inferenceIdColumnName")
+        @ExcludeMissing
+        private val inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("latencyColumnName")
+        @ExcludeMissing
+        private val latencyColumnName: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("timestampColumnName")
+        @ExcludeMissing
+        private val timestampColumnName: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
+
+        /** Name of the column with the ground truths. */
+        fun groundTruthColumnName(): Optional<String> =
+            Optional.ofNullable(groundTruthColumnName.getNullable("groundTruthColumnName"))
+
+        /** Name of the column with human feedback. */
+        fun humanFeedbackColumnName(): Optional<String> =
+            Optional.ofNullable(humanFeedbackColumnName.getNullable("humanFeedbackColumnName"))
+
+        /**
+         * Name of the column with the inference ids. This is useful if you want to update rows at a
+         * later point in time. If not provided, a unique id is generated by Openlayer.
+         */
+        fun inferenceIdColumnName(): Optional<String> =
+            Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
+
+        /** Name of the column with the latencies. */
+        fun latencyColumnName(): Optional<String> =
+            Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
+
+        /**
+         * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
+         * provided, the upload timestamp is used.
+         */
+        fun timestampColumnName(): Optional<String> =
+            Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
+
+        /** Name of the column with the ground truths. */
+        @JsonProperty("groundTruthColumnName")
+        @ExcludeMissing
+        fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
+
+        /** Name of the column with human feedback. */
+        @JsonProperty("humanFeedbackColumnName")
+        @ExcludeMissing
+        fun _humanFeedbackColumnName(): JsonField<String> = humanFeedbackColumnName
 
         /**
          * Name of the column with the inference ids. This is useful if you want to update rows at a
          * later point in time. If not provided, a unique id is generated by Openlayer.
          */
         @JsonProperty("inferenceIdColumnName")
-        fun inferenceIdColumnName(): String? = inferenceIdColumnName
+        @ExcludeMissing
+        fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
 
         /** Name of the column with the latencies. */
-        @JsonProperty("latencyColumnName") fun latencyColumnName(): String? = latencyColumnName
+        @JsonProperty("latencyColumnName")
+        @ExcludeMissing
+        fun _latencyColumnName(): JsonField<String> = latencyColumnName
 
         /**
          * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
          * provided, the upload timestamp is used.
          */
         @JsonProperty("timestampColumnName")
-        fun timestampColumnName(): String? = timestampColumnName
-
-        /** Name of the column with the ground truths. */
-        @JsonProperty("groundTruthColumnName")
-        fun groundTruthColumnName(): String? = groundTruthColumnName
-
-        /** Name of the column with human feedback. */
-        @JsonProperty("humanFeedbackColumnName")
-        fun humanFeedbackColumnName(): String? = humanFeedbackColumnName
+        @ExcludeMissing
+        fun _timestampColumnName(): JsonField<String> = timestampColumnName
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
+
+        private var validated: Boolean = false
+
+        fun validate(): Config = apply {
+            if (validated) {
+                return@apply
+            }
+
+            groundTruthColumnName()
+            humanFeedbackColumnName()
+            inferenceIdColumnName()
+            latencyColumnName()
+            timestampColumnName()
+            validated = true
+        }
 
         fun toBuilder() = Builder().from(this)
 
@@ -375,35 +451,81 @@ constructor(
 
         class Builder {
 
-            private var inferenceIdColumnName: String? = null
-            private var latencyColumnName: String? = null
-            private var timestampColumnName: String? = null
-            private var groundTruthColumnName: String? = null
-            private var humanFeedbackColumnName: String? = null
+            private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
+            private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()
+            private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
+            private var latencyColumnName: JsonField<String> = JsonMissing.of()
+            private var timestampColumnName: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(config: Config) = apply {
-                this.inferenceIdColumnName = config.inferenceIdColumnName
-                this.latencyColumnName = config.latencyColumnName
-                this.timestampColumnName = config.timestampColumnName
-                this.groundTruthColumnName = config.groundTruthColumnName
-                this.humanFeedbackColumnName = config.humanFeedbackColumnName
-                additionalProperties(config.additionalProperties)
+                groundTruthColumnName = config.groundTruthColumnName
+                humanFeedbackColumnName = config.humanFeedbackColumnName
+                inferenceIdColumnName = config.inferenceIdColumnName
+                latencyColumnName = config.latencyColumnName
+                timestampColumnName = config.timestampColumnName
+                additionalProperties = config.additionalProperties.toMutableMap()
+            }
+
+            /** Name of the column with the ground truths. */
+            fun groundTruthColumnName(groundTruthColumnName: String?) =
+                groundTruthColumnName(JsonField.ofNullable(groundTruthColumnName))
+
+            /** Name of the column with the ground truths. */
+            fun groundTruthColumnName(groundTruthColumnName: Optional<String>) =
+                groundTruthColumnName(groundTruthColumnName.orElse(null))
+
+            /** Name of the column with the ground truths. */
+            fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
+                this.groundTruthColumnName = groundTruthColumnName
+            }
+
+            /** Name of the column with human feedback. */
+            fun humanFeedbackColumnName(humanFeedbackColumnName: String?) =
+                humanFeedbackColumnName(JsonField.ofNullable(humanFeedbackColumnName))
+
+            /** Name of the column with human feedback. */
+            fun humanFeedbackColumnName(humanFeedbackColumnName: Optional<String>) =
+                humanFeedbackColumnName(humanFeedbackColumnName.orElse(null))
+
+            /** Name of the column with human feedback. */
+            fun humanFeedbackColumnName(humanFeedbackColumnName: JsonField<String>) = apply {
+                this.humanFeedbackColumnName = humanFeedbackColumnName
             }
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
              * at a later point in time. If not provided, a unique id is generated by Openlayer.
              */
-            @JsonProperty("inferenceIdColumnName")
-            fun inferenceIdColumnName(inferenceIdColumnName: String) = apply {
+            fun inferenceIdColumnName(inferenceIdColumnName: String?) =
+                inferenceIdColumnName(JsonField.ofNullable(inferenceIdColumnName))
+
+            /**
+             * Name of the column with the inference ids. This is useful if you want to update rows
+             * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             */
+            fun inferenceIdColumnName(inferenceIdColumnName: Optional<String>) =
+                inferenceIdColumnName(inferenceIdColumnName.orElse(null))
+
+            /**
+             * Name of the column with the inference ids. This is useful if you want to update rows
+             * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             */
+            fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
                 this.inferenceIdColumnName = inferenceIdColumnName
             }
 
             /** Name of the column with the latencies. */
-            @JsonProperty("latencyColumnName")
-            fun latencyColumnName(latencyColumnName: String) = apply {
+            fun latencyColumnName(latencyColumnName: String?) =
+                latencyColumnName(JsonField.ofNullable(latencyColumnName))
+
+            /** Name of the column with the latencies. */
+            fun latencyColumnName(latencyColumnName: Optional<String>) =
+                latencyColumnName(latencyColumnName.orElse(null))
+
+            /** Name of the column with the latencies. */
+            fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
                 this.latencyColumnName = latencyColumnName
             }
 
@@ -411,44 +533,50 @@ constructor(
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
              * provided, the upload timestamp is used.
              */
-            @JsonProperty("timestampColumnName")
-            fun timestampColumnName(timestampColumnName: String) = apply {
+            fun timestampColumnName(timestampColumnName: String?) =
+                timestampColumnName(JsonField.ofNullable(timestampColumnName))
+
+            /**
+             * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
+             * provided, the upload timestamp is used.
+             */
+            fun timestampColumnName(timestampColumnName: Optional<String>) =
+                timestampColumnName(timestampColumnName.orElse(null))
+
+            /**
+             * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
+             * provided, the upload timestamp is used.
+             */
+            fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
                 this.timestampColumnName = timestampColumnName
-            }
-
-            /** Name of the column with the ground truths. */
-            @JsonProperty("groundTruthColumnName")
-            fun groundTruthColumnName(groundTruthColumnName: String) = apply {
-                this.groundTruthColumnName = groundTruthColumnName
-            }
-
-            /** Name of the column with human feedback. */
-            @JsonProperty("humanFeedbackColumnName")
-            fun humanFeedbackColumnName(humanFeedbackColumnName: String) = apply {
-                this.humanFeedbackColumnName = humanFeedbackColumnName
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Config =
                 Config(
+                    groundTruthColumnName,
+                    humanFeedbackColumnName,
                     inferenceIdColumnName,
                     latencyColumnName,
                     timestampColumnName,
-                    groundTruthColumnName,
-                    humanFeedbackColumnName,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -458,17 +586,17 @@ constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Config && inferenceIdColumnName == other.inferenceIdColumnName && latencyColumnName == other.latencyColumnName && timestampColumnName == other.timestampColumnName && groundTruthColumnName == other.groundTruthColumnName && humanFeedbackColumnName == other.humanFeedbackColumnName && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Config && groundTruthColumnName == other.groundTruthColumnName && humanFeedbackColumnName == other.humanFeedbackColumnName && inferenceIdColumnName == other.inferenceIdColumnName && latencyColumnName == other.latencyColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(inferenceIdColumnName, latencyColumnName, timestampColumnName, groundTruthColumnName, humanFeedbackColumnName, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(groundTruthColumnName, humanFeedbackColumnName, inferenceIdColumnName, latencyColumnName, timestampColumnName, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Config{inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, additionalProperties=$additionalProperties}"
+            "Config{groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -476,11 +604,11 @@ constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineRowUpdateParams && inferencePipelineId == other.inferencePipelineId && inferenceId == other.inferenceId && row == other.row && config == other.config && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams && additionalBodyProperties == other.additionalBodyProperties /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineRowUpdateParams && inferencePipelineId == other.inferencePipelineId && inferenceId == other.inferenceId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, inferenceId, row, config, additionalHeaders, additionalQueryParams, additionalBodyProperties) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, inferenceId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "InferencePipelineRowUpdateParams{inferencePipelineId=$inferencePipelineId, inferenceId=$inferenceId, row=$row, config=$config, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams, additionalBodyProperties=$additionalBodyProperties}"
+        "InferencePipelineRowUpdateParams{inferencePipelineId=$inferencePipelineId, inferenceId=$inferenceId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

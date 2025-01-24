@@ -21,36 +21,42 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
 
-@JsonDeserialize(builder = InferencePipelineTestResultListResponse.Builder::class)
 @NoAutoDetect
 class InferencePipelineTestResultListResponse
+@JsonCreator
 private constructor(
-    private val items: JsonField<List<Item>>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("items")
+    @ExcludeMissing
+    private val items: JsonField<List<Item>> = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
 
     fun items(): List<Item> = items.getRequired("items")
 
-    @JsonProperty("items") @ExcludeMissing fun _items() = items
+    @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): InferencePipelineTestResultListResponse = apply {
-        if (!validated) {
-            items().forEach { it.validate() }
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        items().forEach { it.validate() }
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -62,93 +68,124 @@ private constructor(
 
     class Builder {
 
-        private var items: JsonField<List<Item>> = JsonMissing.of()
+        private var items: JsonField<MutableList<Item>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(
             inferencePipelineTestResultListResponse: InferencePipelineTestResultListResponse
         ) = apply {
-            this.items = inferencePipelineTestResultListResponse.items
-            additionalProperties(inferencePipelineTestResultListResponse.additionalProperties)
+            items = inferencePipelineTestResultListResponse.items.map { it.toMutableList() }
+            additionalProperties =
+                inferencePipelineTestResultListResponse.additionalProperties.toMutableMap()
         }
 
         fun items(items: List<Item>) = items(JsonField.of(items))
 
-        @JsonProperty("items")
-        @ExcludeMissing
-        fun items(items: JsonField<List<Item>>) = apply { this.items = items }
+        fun items(items: JsonField<List<Item>>) = apply {
+            this.items = items.map { it.toMutableList() }
+        }
+
+        fun addItem(item: Item) = apply {
+            items =
+                (items ?: JsonField.of(mutableListOf())).apply {
+                    asKnown()
+                        .orElseThrow {
+                            IllegalStateException(
+                                "Field was set to non-list type: ${javaClass.simpleName}"
+                            )
+                        }
+                        .add(item)
+                }
+        }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): InferencePipelineTestResultListResponse =
             InferencePipelineTestResultListResponse(
-                items.map { it.toImmutable() },
+                checkRequired("items", items).map { it.toImmutable() },
                 additionalProperties.toImmutable()
             )
     }
 
-    @JsonDeserialize(builder = Item.Builder::class)
     @NoAutoDetect
     class Item
+    @JsonCreator
     private constructor(
-        private val id: JsonField<String>,
-        private val goal: JsonField<Goal>,
-        private val goalId: JsonField<String>,
-        private val projectVersionId: JsonField<String>,
-        private val inferencePipelineId: JsonField<String>,
-        private val dateCreated: JsonField<OffsetDateTime>,
-        private val dateUpdated: JsonField<OffsetDateTime>,
-        private val dateDataStarts: JsonField<OffsetDateTime>,
-        private val dateDataEnds: JsonField<OffsetDateTime>,
-        private val status: JsonField<Status>,
-        private val statusMessage: JsonField<String>,
-        private val additionalProperties: Map<String, JsonValue>,
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateDataEnds")
+        @ExcludeMissing
+        private val dateDataEnds: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateDataStarts")
+        @ExcludeMissing
+        private val dateDataStarts: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("inferencePipelineId")
+        @ExcludeMissing
+        private val inferencePipelineId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("projectVersionId")
+        @ExcludeMissing
+        private val projectVersionId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        private val statusMessage: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("goal") @ExcludeMissing private val goal: JsonField<Goal> = JsonMissing.of(),
+        @JsonProperty("goalId")
+        @ExcludeMissing
+        private val goalId: JsonField<String> = JsonMissing.of(),
+        @JsonAnySetter
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
-
-        private var validated: Boolean = false
 
         /** Project version (commit) id. */
         fun id(): String = id.getRequired("id")
 
-        fun goal(): Optional<Goal> = Optional.ofNullable(goal.getNullable("goal"))
-
-        /** The test id. */
-        fun goalId(): Optional<String> = Optional.ofNullable(goalId.getNullable("goalId"))
-
-        /** The project version (commit) id. */
-        fun projectVersionId(): Optional<String> =
-            Optional.ofNullable(projectVersionId.getNullable("projectVersionId"))
-
-        /** The inference pipeline id. */
-        fun inferencePipelineId(): Optional<String> =
-            Optional.ofNullable(inferencePipelineId.getNullable("inferencePipelineId"))
-
         /** The creation date. */
         fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
-        /** The last updated date. */
-        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
+        /** The data end date. */
+        fun dateDataEnds(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateDataEnds.getNullable("dateDataEnds"))
 
         /** The data start date. */
         fun dateDataStarts(): Optional<OffsetDateTime> =
             Optional.ofNullable(dateDataStarts.getNullable("dateDataStarts"))
 
-        /** The data end date. */
-        fun dateDataEnds(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateDataEnds.getNullable("dateDataEnds"))
+        /** The last updated date. */
+        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
+
+        /** The inference pipeline id. */
+        fun inferencePipelineId(): Optional<String> =
+            Optional.ofNullable(inferencePipelineId.getNullable("inferencePipelineId"))
+
+        /** The project version (commit) id. */
+        fun projectVersionId(): Optional<String> =
+            Optional.ofNullable(projectVersionId.getNullable("projectVersionId"))
 
         /** The status of the test. */
         fun status(): Status = status.getRequired("status")
@@ -157,59 +194,80 @@ private constructor(
         fun statusMessage(): Optional<String> =
             Optional.ofNullable(statusMessage.getNullable("statusMessage"))
 
-        /** Project version (commit) id. */
-        @JsonProperty("id") @ExcludeMissing fun _id() = id
-
-        @JsonProperty("goal") @ExcludeMissing fun _goal() = goal
+        fun goal(): Optional<Goal> = Optional.ofNullable(goal.getNullable("goal"))
 
         /** The test id. */
-        @JsonProperty("goalId") @ExcludeMissing fun _goalId() = goalId
+        fun goalId(): Optional<String> = Optional.ofNullable(goalId.getNullable("goalId"))
 
-        /** The project version (commit) id. */
-        @JsonProperty("projectVersionId") @ExcludeMissing fun _projectVersionId() = projectVersionId
+        /** Project version (commit) id. */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        /** The creation date. */
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+        /** The data end date. */
+        @JsonProperty("dateDataEnds")
+        @ExcludeMissing
+        fun _dateDataEnds(): JsonField<OffsetDateTime> = dateDataEnds
+
+        /** The data start date. */
+        @JsonProperty("dateDataStarts")
+        @ExcludeMissing
+        fun _dateDataStarts(): JsonField<OffsetDateTime> = dateDataStarts
+
+        /** The last updated date. */
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
         /** The inference pipeline id. */
         @JsonProperty("inferencePipelineId")
         @ExcludeMissing
-        fun _inferencePipelineId() = inferencePipelineId
+        fun _inferencePipelineId(): JsonField<String> = inferencePipelineId
 
-        /** The creation date. */
-        @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
-
-        /** The last updated date. */
-        @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
-
-        /** The data start date. */
-        @JsonProperty("dateDataStarts") @ExcludeMissing fun _dateDataStarts() = dateDataStarts
-
-        /** The data end date. */
-        @JsonProperty("dateDataEnds") @ExcludeMissing fun _dateDataEnds() = dateDataEnds
+        /** The project version (commit) id. */
+        @JsonProperty("projectVersionId")
+        @ExcludeMissing
+        fun _projectVersionId(): JsonField<String> = projectVersionId
 
         /** The status of the test. */
-        @JsonProperty("status") @ExcludeMissing fun _status() = status
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
         /** The status message. */
-        @JsonProperty("statusMessage") @ExcludeMissing fun _statusMessage() = statusMessage
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        fun _statusMessage(): JsonField<String> = statusMessage
+
+        @JsonProperty("goal") @ExcludeMissing fun _goal(): JsonField<Goal> = goal
+
+        /** The test id. */
+        @JsonProperty("goalId") @ExcludeMissing fun _goalId(): JsonField<String> = goalId
 
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+        private var validated: Boolean = false
+
         fun validate(): Item = apply {
-            if (!validated) {
-                id()
-                goal().map { it.validate() }
-                goalId()
-                projectVersionId()
-                inferencePipelineId()
-                dateCreated()
-                dateUpdated()
-                dateDataStarts()
-                dateDataEnds()
-                status()
-                statusMessage()
-                validated = true
+            if (validated) {
+                return@apply
             }
+
+            id()
+            dateCreated()
+            dateDataEnds()
+            dateDataStarts()
+            dateUpdated()
+            inferencePipelineId()
+            projectVersionId()
+            status()
+            statusMessage()
+            goal().ifPresent { it.validate() }
+            goalId()
+            validated = true
         }
 
         fun toBuilder() = Builder().from(this)
@@ -221,170 +279,178 @@ private constructor(
 
         class Builder {
 
-            private var id: JsonField<String> = JsonMissing.of()
+            private var id: JsonField<String>? = null
+            private var dateCreated: JsonField<OffsetDateTime>? = null
+            private var dateDataEnds: JsonField<OffsetDateTime>? = null
+            private var dateDataStarts: JsonField<OffsetDateTime>? = null
+            private var dateUpdated: JsonField<OffsetDateTime>? = null
+            private var inferencePipelineId: JsonField<String>? = null
+            private var projectVersionId: JsonField<String>? = null
+            private var status: JsonField<Status>? = null
+            private var statusMessage: JsonField<String>? = null
             private var goal: JsonField<Goal> = JsonMissing.of()
             private var goalId: JsonField<String> = JsonMissing.of()
-            private var projectVersionId: JsonField<String> = JsonMissing.of()
-            private var inferencePipelineId: JsonField<String> = JsonMissing.of()
-            private var dateCreated: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var dateDataStarts: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var dateDataEnds: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var status: JsonField<Status> = JsonMissing.of()
-            private var statusMessage: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(item: Item) = apply {
-                this.id = item.id
-                this.goal = item.goal
-                this.goalId = item.goalId
-                this.projectVersionId = item.projectVersionId
-                this.inferencePipelineId = item.inferencePipelineId
-                this.dateCreated = item.dateCreated
-                this.dateUpdated = item.dateUpdated
-                this.dateDataStarts = item.dateDataStarts
-                this.dateDataEnds = item.dateDataEnds
-                this.status = item.status
-                this.statusMessage = item.statusMessage
-                additionalProperties(item.additionalProperties)
+                id = item.id
+                dateCreated = item.dateCreated
+                dateDataEnds = item.dateDataEnds
+                dateDataStarts = item.dateDataStarts
+                dateUpdated = item.dateUpdated
+                inferencePipelineId = item.inferencePipelineId
+                projectVersionId = item.projectVersionId
+                status = item.status
+                statusMessage = item.statusMessage
+                goal = item.goal
+                goalId = item.goalId
+                additionalProperties = item.additionalProperties.toMutableMap()
             }
 
             /** Project version (commit) id. */
             fun id(id: String) = id(JsonField.of(id))
 
             /** Project version (commit) id. */
-            @JsonProperty("id")
-            @ExcludeMissing
             fun id(id: JsonField<String>) = apply { this.id = id }
-
-            fun goal(goal: Goal) = goal(JsonField.of(goal))
-
-            @JsonProperty("goal")
-            @ExcludeMissing
-            fun goal(goal: JsonField<Goal>) = apply { this.goal = goal }
-
-            /** The test id. */
-            fun goalId(goalId: String) = goalId(JsonField.of(goalId))
-
-            /** The test id. */
-            @JsonProperty("goalId")
-            @ExcludeMissing
-            fun goalId(goalId: JsonField<String>) = apply { this.goalId = goalId }
-
-            /** The project version (commit) id. */
-            fun projectVersionId(projectVersionId: String) =
-                projectVersionId(JsonField.of(projectVersionId))
-
-            /** The project version (commit) id. */
-            @JsonProperty("projectVersionId")
-            @ExcludeMissing
-            fun projectVersionId(projectVersionId: JsonField<String>) = apply {
-                this.projectVersionId = projectVersionId
-            }
-
-            /** The inference pipeline id. */
-            fun inferencePipelineId(inferencePipelineId: String) =
-                inferencePipelineId(JsonField.of(inferencePipelineId))
-
-            /** The inference pipeline id. */
-            @JsonProperty("inferencePipelineId")
-            @ExcludeMissing
-            fun inferencePipelineId(inferencePipelineId: JsonField<String>) = apply {
-                this.inferencePipelineId = inferencePipelineId
-            }
 
             /** The creation date. */
             fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
 
             /** The creation date. */
-            @JsonProperty("dateCreated")
-            @ExcludeMissing
             fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                 this.dateCreated = dateCreated
+            }
+
+            /** The data end date. */
+            fun dateDataEnds(dateDataEnds: OffsetDateTime?) =
+                dateDataEnds(JsonField.ofNullable(dateDataEnds))
+
+            /** The data end date. */
+            fun dateDataEnds(dateDataEnds: Optional<OffsetDateTime>) =
+                dateDataEnds(dateDataEnds.orElse(null))
+
+            /** The data end date. */
+            fun dateDataEnds(dateDataEnds: JsonField<OffsetDateTime>) = apply {
+                this.dateDataEnds = dateDataEnds
+            }
+
+            /** The data start date. */
+            fun dateDataStarts(dateDataStarts: OffsetDateTime?) =
+                dateDataStarts(JsonField.ofNullable(dateDataStarts))
+
+            /** The data start date. */
+            fun dateDataStarts(dateDataStarts: Optional<OffsetDateTime>) =
+                dateDataStarts(dateDataStarts.orElse(null))
+
+            /** The data start date. */
+            fun dateDataStarts(dateDataStarts: JsonField<OffsetDateTime>) = apply {
+                this.dateDataStarts = dateDataStarts
             }
 
             /** The last updated date. */
             fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
             /** The last updated date. */
-            @JsonProperty("dateUpdated")
-            @ExcludeMissing
             fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                 this.dateUpdated = dateUpdated
             }
 
-            /** The data start date. */
-            fun dateDataStarts(dateDataStarts: OffsetDateTime) =
-                dateDataStarts(JsonField.of(dateDataStarts))
+            /** The inference pipeline id. */
+            fun inferencePipelineId(inferencePipelineId: String?) =
+                inferencePipelineId(JsonField.ofNullable(inferencePipelineId))
 
-            /** The data start date. */
-            @JsonProperty("dateDataStarts")
-            @ExcludeMissing
-            fun dateDataStarts(dateDataStarts: JsonField<OffsetDateTime>) = apply {
-                this.dateDataStarts = dateDataStarts
+            /** The inference pipeline id. */
+            fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+                inferencePipelineId(inferencePipelineId.orElse(null))
+
+            /** The inference pipeline id. */
+            fun inferencePipelineId(inferencePipelineId: JsonField<String>) = apply {
+                this.inferencePipelineId = inferencePipelineId
             }
 
-            /** The data end date. */
-            fun dateDataEnds(dateDataEnds: OffsetDateTime) =
-                dateDataEnds(JsonField.of(dateDataEnds))
+            /** The project version (commit) id. */
+            fun projectVersionId(projectVersionId: String?) =
+                projectVersionId(JsonField.ofNullable(projectVersionId))
 
-            /** The data end date. */
-            @JsonProperty("dateDataEnds")
-            @ExcludeMissing
-            fun dateDataEnds(dateDataEnds: JsonField<OffsetDateTime>) = apply {
-                this.dateDataEnds = dateDataEnds
+            /** The project version (commit) id. */
+            fun projectVersionId(projectVersionId: Optional<String>) =
+                projectVersionId(projectVersionId.orElse(null))
+
+            /** The project version (commit) id. */
+            fun projectVersionId(projectVersionId: JsonField<String>) = apply {
+                this.projectVersionId = projectVersionId
             }
 
             /** The status of the test. */
             fun status(status: Status) = status(JsonField.of(status))
 
             /** The status of the test. */
-            @JsonProperty("status")
-            @ExcludeMissing
             fun status(status: JsonField<Status>) = apply { this.status = status }
 
             /** The status message. */
-            fun statusMessage(statusMessage: String) = statusMessage(JsonField.of(statusMessage))
+            fun statusMessage(statusMessage: String?) =
+                statusMessage(JsonField.ofNullable(statusMessage))
 
             /** The status message. */
-            @JsonProperty("statusMessage")
-            @ExcludeMissing
+            fun statusMessage(statusMessage: Optional<String>) =
+                statusMessage(statusMessage.orElse(null))
+
+            /** The status message. */
             fun statusMessage(statusMessage: JsonField<String>) = apply {
                 this.statusMessage = statusMessage
             }
 
+            fun goal(goal: Goal) = goal(JsonField.of(goal))
+
+            fun goal(goal: JsonField<Goal>) = apply { this.goal = goal }
+
+            /** The test id. */
+            fun goalId(goalId: String?) = goalId(JsonField.ofNullable(goalId))
+
+            /** The test id. */
+            fun goalId(goalId: Optional<String>) = goalId(goalId.orElse(null))
+
+            /** The test id. */
+            fun goalId(goalId: JsonField<String>) = apply { this.goalId = goalId }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
-                this.additionalProperties.putAll(additionalProperties)
+                putAllAdditionalProperties(additionalProperties)
             }
 
-            @JsonAnySetter
             fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                this.additionalProperties.put(key, value)
+                additionalProperties.put(key, value)
             }
 
             fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.putAll(additionalProperties)
             }
 
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
             fun build(): Item =
                 Item(
-                    id,
+                    checkRequired("id", id),
+                    checkRequired("dateCreated", dateCreated),
+                    checkRequired("dateDataEnds", dateDataEnds),
+                    checkRequired("dateDataStarts", dateDataStarts),
+                    checkRequired("dateUpdated", dateUpdated),
+                    checkRequired("inferencePipelineId", inferencePipelineId),
+                    checkRequired("projectVersionId", projectVersionId),
+                    checkRequired("status", status),
+                    checkRequired("statusMessage", statusMessage),
                     goal,
                     goalId,
-                    projectVersionId,
-                    inferencePipelineId,
-                    dateCreated,
-                    dateUpdated,
-                    dateDataStarts,
-                    dateDataEnds,
-                    status,
-                    statusMessage,
                     additionalProperties.toImmutable(),
                 )
         }
 
+        /** The status of the test. */
         class Status
         @JsonCreator
         private constructor(
@@ -460,45 +526,93 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        @JsonDeserialize(builder = Goal.Builder::class)
         @NoAutoDetect
         class Goal
+        @JsonCreator
         private constructor(
-            private val id: JsonField<String>,
-            private val number: JsonField<Long>,
-            private val name: JsonField<String>,
-            private val dateCreated: JsonField<OffsetDateTime>,
-            private val dateUpdated: JsonField<OffsetDateTime>,
-            private val description: JsonValue,
-            private val evaluationWindow: JsonField<Double>,
-            private val delayWindow: JsonField<Double>,
-            private val type: JsonField<String>,
-            private val subtype: JsonField<String>,
-            private val creatorId: JsonField<String>,
-            private val originProjectVersionId: JsonField<String>,
-            private val thresholds: JsonField<List<Threshold>>,
-            private val archived: JsonField<Boolean>,
-            private val dateArchived: JsonField<OffsetDateTime>,
-            private val suggested: JsonField<Boolean>,
-            private val commentCount: JsonField<Long>,
-            private val usesMlModel: JsonField<Boolean>,
-            private val usesValidationDataset: JsonField<Boolean>,
-            private val usesTrainingDataset: JsonField<Boolean>,
-            private val usesReferenceDataset: JsonField<Boolean>,
-            private val usesProductionData: JsonField<Boolean>,
-            private val additionalProperties: Map<String, JsonValue>,
+            @JsonProperty("id")
+            @ExcludeMissing
+            private val id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("commentCount")
+            @ExcludeMissing
+            private val commentCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            private val creatorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateArchived")
+            @ExcludeMissing
+            private val dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            private val description: JsonValue = JsonMissing.of(),
+            @JsonProperty("name")
+            @ExcludeMissing
+            private val name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("number")
+            @ExcludeMissing
+            private val number: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("originProjectVersionId")
+            @ExcludeMissing
+            private val originProjectVersionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("subtype")
+            @ExcludeMissing
+            private val subtype: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("suggested")
+            @ExcludeMissing
+            private val suggested: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("thresholds")
+            @ExcludeMissing
+            private val thresholds: JsonField<List<Threshold>> = JsonMissing.of(),
+            @JsonProperty("type")
+            @ExcludeMissing
+            private val type: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("archived")
+            @ExcludeMissing
+            private val archived: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("delayWindow")
+            @ExcludeMissing
+            private val delayWindow: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("evaluationWindow")
+            @ExcludeMissing
+            private val evaluationWindow: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("usesMlModel")
+            @ExcludeMissing
+            private val usesMlModel: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("usesProductionData")
+            @ExcludeMissing
+            private val usesProductionData: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("usesReferenceDataset")
+            @ExcludeMissing
+            private val usesReferenceDataset: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("usesTrainingDataset")
+            @ExcludeMissing
+            private val usesTrainingDataset: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("usesValidationDataset")
+            @ExcludeMissing
+            private val usesValidationDataset: JsonField<Boolean> = JsonMissing.of(),
+            @JsonAnySetter
+            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
-
-            private var validated: Boolean = false
 
             /** The test id. */
             fun id(): String = id.getRequired("id")
 
-            /** The test number. */
-            fun number(): Long = number.getRequired("number")
+            /** The number of comments on the test. */
+            fun commentCount(): Long = commentCount.getRequired("commentCount")
 
-            /** The test name. */
-            fun name(): String = name.getRequired("name")
+            /** The test creator id. */
+            fun creatorId(): Optional<String> =
+                Optional.ofNullable(creatorId.getNullable("creatorId"))
+
+            /** The date the test was archived. */
+            fun dateArchived(): Optional<OffsetDateTime> =
+                Optional.ofNullable(dateArchived.getNullable("dateArchived"))
 
             /** The creation date. */
             fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
@@ -506,170 +620,187 @@ private constructor(
             /** The last updated date. */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-            /** The evaluation window in seconds. Only applies to tests that use production data. */
-            fun evaluationWindow(): Optional<Double> =
-                Optional.ofNullable(evaluationWindow.getNullable("evaluationWindow"))
+            /** The test description. */
+            @JsonProperty("description") @ExcludeMissing fun _description(): JsonValue = description
 
-            /** The delay window in seconds. Only applies to tests that use production data. */
-            fun delayWindow(): Optional<Double> =
-                Optional.ofNullable(delayWindow.getNullable("delayWindow"))
+            /** The test name. */
+            fun name(): String = name.getRequired("name")
 
-            /** The test type. */
-            fun type(): String = type.getRequired("type")
-
-            /** The test subtype. */
-            fun subtype(): String = subtype.getRequired("subtype")
-
-            /** The test creator id. */
-            fun creatorId(): Optional<String> =
-                Optional.ofNullable(creatorId.getNullable("creatorId"))
+            /** The test number. */
+            fun number(): Long = number.getRequired("number")
 
             /** The project version (commit) id where the test was created. */
             fun originProjectVersionId(): Optional<String> =
                 Optional.ofNullable(originProjectVersionId.getNullable("originProjectVersionId"))
 
+            /** The test subtype. */
+            fun subtype(): String = subtype.getRequired("subtype")
+
+            /** Whether the test is suggested or user-created. */
+            fun suggested(): Boolean = suggested.getRequired("suggested")
+
             fun thresholds(): List<Threshold> = thresholds.getRequired("thresholds")
+
+            /** The test type. */
+            fun type(): String = type.getRequired("type")
 
             /** Whether the test is archived. */
             fun archived(): Optional<Boolean> =
                 Optional.ofNullable(archived.getNullable("archived"))
 
-            /** The date the test was archived. */
-            fun dateArchived(): Optional<OffsetDateTime> =
-                Optional.ofNullable(dateArchived.getNullable("dateArchived"))
+            /** The delay window in seconds. Only applies to tests that use production data. */
+            fun delayWindow(): Optional<Double> =
+                Optional.ofNullable(delayWindow.getNullable("delayWindow"))
 
-            /** Whether the test is suggested or user-created. */
-            fun suggested(): Boolean = suggested.getRequired("suggested")
-
-            /** The number of comments on the test. */
-            fun commentCount(): Long = commentCount.getRequired("commentCount")
+            /** The evaluation window in seconds. Only applies to tests that use production data. */
+            fun evaluationWindow(): Optional<Double> =
+                Optional.ofNullable(evaluationWindow.getNullable("evaluationWindow"))
 
             /** Whether the test uses an ML model. */
             fun usesMlModel(): Optional<Boolean> =
                 Optional.ofNullable(usesMlModel.getNullable("usesMlModel"))
 
-            /** Whether the test uses a validation dataset. */
-            fun usesValidationDataset(): Optional<Boolean> =
-                Optional.ofNullable(usesValidationDataset.getNullable("usesValidationDataset"))
-
-            /** Whether the test uses a training dataset. */
-            fun usesTrainingDataset(): Optional<Boolean> =
-                Optional.ofNullable(usesTrainingDataset.getNullable("usesTrainingDataset"))
+            /** Whether the test uses production data (monitoring mode only). */
+            fun usesProductionData(): Optional<Boolean> =
+                Optional.ofNullable(usesProductionData.getNullable("usesProductionData"))
 
             /** Whether the test uses a reference dataset (monitoring mode only). */
             fun usesReferenceDataset(): Optional<Boolean> =
                 Optional.ofNullable(usesReferenceDataset.getNullable("usesReferenceDataset"))
 
-            /** Whether the test uses production data (monitoring mode only). */
-            fun usesProductionData(): Optional<Boolean> =
-                Optional.ofNullable(usesProductionData.getNullable("usesProductionData"))
+            /** Whether the test uses a training dataset. */
+            fun usesTrainingDataset(): Optional<Boolean> =
+                Optional.ofNullable(usesTrainingDataset.getNullable("usesTrainingDataset"))
+
+            /** Whether the test uses a validation dataset. */
+            fun usesValidationDataset(): Optional<Boolean> =
+                Optional.ofNullable(usesValidationDataset.getNullable("usesValidationDataset"))
 
             /** The test id. */
-            @JsonProperty("id") @ExcludeMissing fun _id() = id
+            @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-            /** The test number. */
-            @JsonProperty("number") @ExcludeMissing fun _number() = number
-
-            /** The test name. */
-            @JsonProperty("name") @ExcludeMissing fun _name() = name
-
-            /** The creation date. */
-            @JsonProperty("dateCreated") @ExcludeMissing fun _dateCreated() = dateCreated
-
-            /** The last updated date. */
-            @JsonProperty("dateUpdated") @ExcludeMissing fun _dateUpdated() = dateUpdated
-
-            /** The test description. */
-            @JsonProperty("description") @ExcludeMissing fun _description() = description
-
-            /** The evaluation window in seconds. Only applies to tests that use production data. */
-            @JsonProperty("evaluationWindow")
+            /** The number of comments on the test. */
+            @JsonProperty("commentCount")
             @ExcludeMissing
-            fun _evaluationWindow() = evaluationWindow
-
-            /** The delay window in seconds. Only applies to tests that use production data. */
-            @JsonProperty("delayWindow") @ExcludeMissing fun _delayWindow() = delayWindow
-
-            /** The test type. */
-            @JsonProperty("type") @ExcludeMissing fun _type() = type
-
-            /** The test subtype. */
-            @JsonProperty("subtype") @ExcludeMissing fun _subtype() = subtype
+            fun _commentCount(): JsonField<Long> = commentCount
 
             /** The test creator id. */
-            @JsonProperty("creatorId") @ExcludeMissing fun _creatorId() = creatorId
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            fun _creatorId(): JsonField<String> = creatorId
+
+            /** The date the test was archived. */
+            @JsonProperty("dateArchived")
+            @ExcludeMissing
+            fun _dateArchived(): JsonField<OffsetDateTime> = dateArchived
+
+            /** The creation date. */
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+            /** The last updated date. */
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
+
+            /** The test name. */
+            @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+            /** The test number. */
+            @JsonProperty("number") @ExcludeMissing fun _number(): JsonField<Long> = number
 
             /** The project version (commit) id where the test was created. */
             @JsonProperty("originProjectVersionId")
             @ExcludeMissing
-            fun _originProjectVersionId() = originProjectVersionId
+            fun _originProjectVersionId(): JsonField<String> = originProjectVersionId
 
-            @JsonProperty("thresholds") @ExcludeMissing fun _thresholds() = thresholds
-
-            /** Whether the test is archived. */
-            @JsonProperty("archived") @ExcludeMissing fun _archived() = archived
-
-            /** The date the test was archived. */
-            @JsonProperty("dateArchived") @ExcludeMissing fun _dateArchived() = dateArchived
+            /** The test subtype. */
+            @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<String> = subtype
 
             /** Whether the test is suggested or user-created. */
-            @JsonProperty("suggested") @ExcludeMissing fun _suggested() = suggested
+            @JsonProperty("suggested")
+            @ExcludeMissing
+            fun _suggested(): JsonField<Boolean> = suggested
 
-            /** The number of comments on the test. */
-            @JsonProperty("commentCount") @ExcludeMissing fun _commentCount() = commentCount
+            @JsonProperty("thresholds")
+            @ExcludeMissing
+            fun _thresholds(): JsonField<List<Threshold>> = thresholds
+
+            /** The test type. */
+            @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
+
+            /** Whether the test is archived. */
+            @JsonProperty("archived") @ExcludeMissing fun _archived(): JsonField<Boolean> = archived
+
+            /** The delay window in seconds. Only applies to tests that use production data. */
+            @JsonProperty("delayWindow")
+            @ExcludeMissing
+            fun _delayWindow(): JsonField<Double> = delayWindow
+
+            /** The evaluation window in seconds. Only applies to tests that use production data. */
+            @JsonProperty("evaluationWindow")
+            @ExcludeMissing
+            fun _evaluationWindow(): JsonField<Double> = evaluationWindow
 
             /** Whether the test uses an ML model. */
-            @JsonProperty("usesMlModel") @ExcludeMissing fun _usesMlModel() = usesMlModel
-
-            /** Whether the test uses a validation dataset. */
-            @JsonProperty("usesValidationDataset")
+            @JsonProperty("usesMlModel")
             @ExcludeMissing
-            fun _usesValidationDataset() = usesValidationDataset
-
-            /** Whether the test uses a training dataset. */
-            @JsonProperty("usesTrainingDataset")
-            @ExcludeMissing
-            fun _usesTrainingDataset() = usesTrainingDataset
-
-            /** Whether the test uses a reference dataset (monitoring mode only). */
-            @JsonProperty("usesReferenceDataset")
-            @ExcludeMissing
-            fun _usesReferenceDataset() = usesReferenceDataset
+            fun _usesMlModel(): JsonField<Boolean> = usesMlModel
 
             /** Whether the test uses production data (monitoring mode only). */
             @JsonProperty("usesProductionData")
             @ExcludeMissing
-            fun _usesProductionData() = usesProductionData
+            fun _usesProductionData(): JsonField<Boolean> = usesProductionData
+
+            /** Whether the test uses a reference dataset (monitoring mode only). */
+            @JsonProperty("usesReferenceDataset")
+            @ExcludeMissing
+            fun _usesReferenceDataset(): JsonField<Boolean> = usesReferenceDataset
+
+            /** Whether the test uses a training dataset. */
+            @JsonProperty("usesTrainingDataset")
+            @ExcludeMissing
+            fun _usesTrainingDataset(): JsonField<Boolean> = usesTrainingDataset
+
+            /** Whether the test uses a validation dataset. */
+            @JsonProperty("usesValidationDataset")
+            @ExcludeMissing
+            fun _usesValidationDataset(): JsonField<Boolean> = usesValidationDataset
 
             @JsonAnyGetter
             @ExcludeMissing
             fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+            private var validated: Boolean = false
+
             fun validate(): Goal = apply {
-                if (!validated) {
-                    id()
-                    number()
-                    name()
-                    dateCreated()
-                    dateUpdated()
-                    evaluationWindow()
-                    delayWindow()
-                    type()
-                    subtype()
-                    creatorId()
-                    originProjectVersionId()
-                    thresholds().forEach { it.validate() }
-                    archived()
-                    dateArchived()
-                    suggested()
-                    commentCount()
-                    usesMlModel()
-                    usesValidationDataset()
-                    usesTrainingDataset()
-                    usesReferenceDataset()
-                    usesProductionData()
-                    validated = true
+                if (validated) {
+                    return@apply
                 }
+
+                id()
+                commentCount()
+                creatorId()
+                dateArchived()
+                dateCreated()
+                dateUpdated()
+                name()
+                number()
+                originProjectVersionId()
+                subtype()
+                suggested()
+                thresholds().forEach { it.validate() }
+                type()
+                archived()
+                delayWindow()
+                evaluationWindow()
+                usesMlModel()
+                usesProductionData()
+                usesReferenceDataset()
+                usesTrainingDataset()
+                usesValidationDataset()
+                validated = true
             }
 
             fun toBuilder() = Builder().from(this)
@@ -681,88 +812,98 @@ private constructor(
 
             class Builder {
 
-                private var id: JsonField<String> = JsonMissing.of()
-                private var number: JsonField<Long> = JsonMissing.of()
-                private var name: JsonField<String> = JsonMissing.of()
-                private var dateCreated: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var description: JsonValue = JsonMissing.of()
-                private var evaluationWindow: JsonField<Double> = JsonMissing.of()
-                private var delayWindow: JsonField<Double> = JsonMissing.of()
-                private var type: JsonField<String> = JsonMissing.of()
-                private var subtype: JsonField<String> = JsonMissing.of()
-                private var creatorId: JsonField<String> = JsonMissing.of()
-                private var originProjectVersionId: JsonField<String> = JsonMissing.of()
-                private var thresholds: JsonField<List<Threshold>> = JsonMissing.of()
+                private var id: JsonField<String>? = null
+                private var commentCount: JsonField<Long>? = null
+                private var creatorId: JsonField<String>? = null
+                private var dateArchived: JsonField<OffsetDateTime>? = null
+                private var dateCreated: JsonField<OffsetDateTime>? = null
+                private var dateUpdated: JsonField<OffsetDateTime>? = null
+                private var description: JsonValue? = null
+                private var name: JsonField<String>? = null
+                private var number: JsonField<Long>? = null
+                private var originProjectVersionId: JsonField<String>? = null
+                private var subtype: JsonField<String>? = null
+                private var suggested: JsonField<Boolean>? = null
+                private var thresholds: JsonField<MutableList<Threshold>>? = null
+                private var type: JsonField<String>? = null
                 private var archived: JsonField<Boolean> = JsonMissing.of()
-                private var dateArchived: JsonField<OffsetDateTime> = JsonMissing.of()
-                private var suggested: JsonField<Boolean> = JsonMissing.of()
-                private var commentCount: JsonField<Long> = JsonMissing.of()
+                private var delayWindow: JsonField<Double> = JsonMissing.of()
+                private var evaluationWindow: JsonField<Double> = JsonMissing.of()
                 private var usesMlModel: JsonField<Boolean> = JsonMissing.of()
-                private var usesValidationDataset: JsonField<Boolean> = JsonMissing.of()
-                private var usesTrainingDataset: JsonField<Boolean> = JsonMissing.of()
-                private var usesReferenceDataset: JsonField<Boolean> = JsonMissing.of()
                 private var usesProductionData: JsonField<Boolean> = JsonMissing.of()
+                private var usesReferenceDataset: JsonField<Boolean> = JsonMissing.of()
+                private var usesTrainingDataset: JsonField<Boolean> = JsonMissing.of()
+                private var usesValidationDataset: JsonField<Boolean> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
                 internal fun from(goal: Goal) = apply {
-                    this.id = goal.id
-                    this.number = goal.number
-                    this.name = goal.name
-                    this.dateCreated = goal.dateCreated
-                    this.dateUpdated = goal.dateUpdated
-                    this.description = goal.description
-                    this.evaluationWindow = goal.evaluationWindow
-                    this.delayWindow = goal.delayWindow
-                    this.type = goal.type
-                    this.subtype = goal.subtype
-                    this.creatorId = goal.creatorId
-                    this.originProjectVersionId = goal.originProjectVersionId
-                    this.thresholds = goal.thresholds
-                    this.archived = goal.archived
-                    this.dateArchived = goal.dateArchived
-                    this.suggested = goal.suggested
-                    this.commentCount = goal.commentCount
-                    this.usesMlModel = goal.usesMlModel
-                    this.usesValidationDataset = goal.usesValidationDataset
-                    this.usesTrainingDataset = goal.usesTrainingDataset
-                    this.usesReferenceDataset = goal.usesReferenceDataset
-                    this.usesProductionData = goal.usesProductionData
-                    additionalProperties(goal.additionalProperties)
+                    id = goal.id
+                    commentCount = goal.commentCount
+                    creatorId = goal.creatorId
+                    dateArchived = goal.dateArchived
+                    dateCreated = goal.dateCreated
+                    dateUpdated = goal.dateUpdated
+                    description = goal.description
+                    name = goal.name
+                    number = goal.number
+                    originProjectVersionId = goal.originProjectVersionId
+                    subtype = goal.subtype
+                    suggested = goal.suggested
+                    thresholds = goal.thresholds.map { it.toMutableList() }
+                    type = goal.type
+                    archived = goal.archived
+                    delayWindow = goal.delayWindow
+                    evaluationWindow = goal.evaluationWindow
+                    usesMlModel = goal.usesMlModel
+                    usesProductionData = goal.usesProductionData
+                    usesReferenceDataset = goal.usesReferenceDataset
+                    usesTrainingDataset = goal.usesTrainingDataset
+                    usesValidationDataset = goal.usesValidationDataset
+                    additionalProperties = goal.additionalProperties.toMutableMap()
                 }
 
                 /** The test id. */
                 fun id(id: String) = id(JsonField.of(id))
 
                 /** The test id. */
-                @JsonProperty("id")
-                @ExcludeMissing
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
-                /** The test number. */
-                fun number(number: Long) = number(JsonField.of(number))
+                /** The number of comments on the test. */
+                fun commentCount(commentCount: Long) = commentCount(JsonField.of(commentCount))
 
-                /** The test number. */
-                @JsonProperty("number")
-                @ExcludeMissing
-                fun number(number: JsonField<Long>) = apply { this.number = number }
+                /** The number of comments on the test. */
+                fun commentCount(commentCount: JsonField<Long>) = apply {
+                    this.commentCount = commentCount
+                }
 
-                /** The test name. */
-                fun name(name: String) = name(JsonField.of(name))
+                /** The test creator id. */
+                fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
-                /** The test name. */
-                @JsonProperty("name")
-                @ExcludeMissing
-                fun name(name: JsonField<String>) = apply { this.name = name }
+                /** The test creator id. */
+                fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+
+                /** The test creator id. */
+                fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
+
+                /** The date the test was archived. */
+                fun dateArchived(dateArchived: OffsetDateTime?) =
+                    dateArchived(JsonField.ofNullable(dateArchived))
+
+                /** The date the test was archived. */
+                fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
+                    dateArchived(dateArchived.orElse(null))
+
+                /** The date the test was archived. */
+                fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
+                    this.dateArchived = dateArchived
+                }
 
                 /** The creation date. */
                 fun dateCreated(dateCreated: OffsetDateTime) =
                     dateCreated(JsonField.of(dateCreated))
 
                 /** The creation date. */
-                @JsonProperty("dateCreated")
-                @ExcludeMissing
                 fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                     this.dateCreated = dateCreated
                 }
@@ -772,163 +913,130 @@ private constructor(
                     dateUpdated(JsonField.of(dateUpdated))
 
                 /** The last updated date. */
-                @JsonProperty("dateUpdated")
-                @ExcludeMissing
                 fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                     this.dateUpdated = dateUpdated
                 }
 
                 /** The test description. */
-                @JsonProperty("description")
-                @ExcludeMissing
                 fun description(description: JsonValue) = apply { this.description = description }
 
-                /**
-                 * The evaluation window in seconds. Only applies to tests that use production data.
-                 */
-                fun evaluationWindow(evaluationWindow: Double) =
-                    evaluationWindow(JsonField.of(evaluationWindow))
+                /** The test name. */
+                fun name(name: String) = name(JsonField.of(name))
 
-                /**
-                 * The evaluation window in seconds. Only applies to tests that use production data.
-                 */
-                @JsonProperty("evaluationWindow")
-                @ExcludeMissing
-                fun evaluationWindow(evaluationWindow: JsonField<Double>) = apply {
-                    this.evaluationWindow = evaluationWindow
+                /** The test name. */
+                fun name(name: JsonField<String>) = apply { this.name = name }
+
+                /** The test number. */
+                fun number(number: Long) = number(JsonField.of(number))
+
+                /** The test number. */
+                fun number(number: JsonField<Long>) = apply { this.number = number }
+
+                /** The project version (commit) id where the test was created. */
+                fun originProjectVersionId(originProjectVersionId: String?) =
+                    originProjectVersionId(JsonField.ofNullable(originProjectVersionId))
+
+                /** The project version (commit) id where the test was created. */
+                fun originProjectVersionId(originProjectVersionId: Optional<String>) =
+                    originProjectVersionId(originProjectVersionId.orElse(null))
+
+                /** The project version (commit) id where the test was created. */
+                fun originProjectVersionId(originProjectVersionId: JsonField<String>) = apply {
+                    this.originProjectVersionId = originProjectVersionId
                 }
 
-                /** The delay window in seconds. Only applies to tests that use production data. */
-                fun delayWindow(delayWindow: Double) = delayWindow(JsonField.of(delayWindow))
+                /** The test subtype. */
+                fun subtype(subtype: String) = subtype(JsonField.of(subtype))
 
-                /** The delay window in seconds. Only applies to tests that use production data. */
-                @JsonProperty("delayWindow")
-                @ExcludeMissing
-                fun delayWindow(delayWindow: JsonField<Double>) = apply {
-                    this.delayWindow = delayWindow
+                /** The test subtype. */
+                fun subtype(subtype: JsonField<String>) = apply { this.subtype = subtype }
+
+                /** Whether the test is suggested or user-created. */
+                fun suggested(suggested: Boolean) = suggested(JsonField.of(suggested))
+
+                /** Whether the test is suggested or user-created. */
+                fun suggested(suggested: JsonField<Boolean>) = apply { this.suggested = suggested }
+
+                fun thresholds(thresholds: List<Threshold>) = thresholds(JsonField.of(thresholds))
+
+                fun thresholds(thresholds: JsonField<List<Threshold>>) = apply {
+                    this.thresholds = thresholds.map { it.toMutableList() }
+                }
+
+                fun addThreshold(threshold: Threshold) = apply {
+                    thresholds =
+                        (thresholds ?: JsonField.of(mutableListOf())).apply {
+                            asKnown()
+                                .orElseThrow {
+                                    IllegalStateException(
+                                        "Field was set to non-list type: ${javaClass.simpleName}"
+                                    )
+                                }
+                                .add(threshold)
+                        }
                 }
 
                 /** The test type. */
                 fun type(type: String) = type(JsonField.of(type))
 
                 /** The test type. */
-                @JsonProperty("type")
-                @ExcludeMissing
                 fun type(type: JsonField<String>) = apply { this.type = type }
-
-                /** The test subtype. */
-                fun subtype(subtype: String) = subtype(JsonField.of(subtype))
-
-                /** The test subtype. */
-                @JsonProperty("subtype")
-                @ExcludeMissing
-                fun subtype(subtype: JsonField<String>) = apply { this.subtype = subtype }
-
-                /** The test creator id. */
-                fun creatorId(creatorId: String) = creatorId(JsonField.of(creatorId))
-
-                /** The test creator id. */
-                @JsonProperty("creatorId")
-                @ExcludeMissing
-                fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
-
-                /** The project version (commit) id where the test was created. */
-                fun originProjectVersionId(originProjectVersionId: String) =
-                    originProjectVersionId(JsonField.of(originProjectVersionId))
-
-                /** The project version (commit) id where the test was created. */
-                @JsonProperty("originProjectVersionId")
-                @ExcludeMissing
-                fun originProjectVersionId(originProjectVersionId: JsonField<String>) = apply {
-                    this.originProjectVersionId = originProjectVersionId
-                }
-
-                fun thresholds(thresholds: List<Threshold>) = thresholds(JsonField.of(thresholds))
-
-                @JsonProperty("thresholds")
-                @ExcludeMissing
-                fun thresholds(thresholds: JsonField<List<Threshold>>) = apply {
-                    this.thresholds = thresholds
-                }
 
                 /** Whether the test is archived. */
                 fun archived(archived: Boolean) = archived(JsonField.of(archived))
 
                 /** Whether the test is archived. */
-                @JsonProperty("archived")
-                @ExcludeMissing
                 fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
 
-                /** The date the test was archived. */
-                fun dateArchived(dateArchived: OffsetDateTime) =
-                    dateArchived(JsonField.of(dateArchived))
+                /** The delay window in seconds. Only applies to tests that use production data. */
+                fun delayWindow(delayWindow: Double?) =
+                    delayWindow(JsonField.ofNullable(delayWindow))
 
-                /** The date the test was archived. */
-                @JsonProperty("dateArchived")
-                @ExcludeMissing
-                fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
-                    this.dateArchived = dateArchived
+                /** The delay window in seconds. Only applies to tests that use production data. */
+                fun delayWindow(delayWindow: Double) = delayWindow(delayWindow as Double?)
+
+                /** The delay window in seconds. Only applies to tests that use production data. */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun delayWindow(delayWindow: Optional<Double>) =
+                    delayWindow(delayWindow.orElse(null) as Double?)
+
+                /** The delay window in seconds. Only applies to tests that use production data. */
+                fun delayWindow(delayWindow: JsonField<Double>) = apply {
+                    this.delayWindow = delayWindow
                 }
 
-                /** Whether the test is suggested or user-created. */
-                fun suggested(suggested: Boolean) = suggested(JsonField.of(suggested))
+                /**
+                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 */
+                fun evaluationWindow(evaluationWindow: Double?) =
+                    evaluationWindow(JsonField.ofNullable(evaluationWindow))
 
-                /** Whether the test is suggested or user-created. */
-                @JsonProperty("suggested")
-                @ExcludeMissing
-                fun suggested(suggested: JsonField<Boolean>) = apply { this.suggested = suggested }
+                /**
+                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 */
+                fun evaluationWindow(evaluationWindow: Double) =
+                    evaluationWindow(evaluationWindow as Double?)
 
-                /** The number of comments on the test. */
-                fun commentCount(commentCount: Long) = commentCount(JsonField.of(commentCount))
+                /**
+                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 */
+                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
+                fun evaluationWindow(evaluationWindow: Optional<Double>) =
+                    evaluationWindow(evaluationWindow.orElse(null) as Double?)
 
-                /** The number of comments on the test. */
-                @JsonProperty("commentCount")
-                @ExcludeMissing
-                fun commentCount(commentCount: JsonField<Long>) = apply {
-                    this.commentCount = commentCount
+                /**
+                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 */
+                fun evaluationWindow(evaluationWindow: JsonField<Double>) = apply {
+                    this.evaluationWindow = evaluationWindow
                 }
 
                 /** Whether the test uses an ML model. */
                 fun usesMlModel(usesMlModel: Boolean) = usesMlModel(JsonField.of(usesMlModel))
 
                 /** Whether the test uses an ML model. */
-                @JsonProperty("usesMlModel")
-                @ExcludeMissing
                 fun usesMlModel(usesMlModel: JsonField<Boolean>) = apply {
                     this.usesMlModel = usesMlModel
-                }
-
-                /** Whether the test uses a validation dataset. */
-                fun usesValidationDataset(usesValidationDataset: Boolean) =
-                    usesValidationDataset(JsonField.of(usesValidationDataset))
-
-                /** Whether the test uses a validation dataset. */
-                @JsonProperty("usesValidationDataset")
-                @ExcludeMissing
-                fun usesValidationDataset(usesValidationDataset: JsonField<Boolean>) = apply {
-                    this.usesValidationDataset = usesValidationDataset
-                }
-
-                /** Whether the test uses a training dataset. */
-                fun usesTrainingDataset(usesTrainingDataset: Boolean) =
-                    usesTrainingDataset(JsonField.of(usesTrainingDataset))
-
-                /** Whether the test uses a training dataset. */
-                @JsonProperty("usesTrainingDataset")
-                @ExcludeMissing
-                fun usesTrainingDataset(usesTrainingDataset: JsonField<Boolean>) = apply {
-                    this.usesTrainingDataset = usesTrainingDataset
-                }
-
-                /** Whether the test uses a reference dataset (monitoring mode only). */
-                fun usesReferenceDataset(usesReferenceDataset: Boolean) =
-                    usesReferenceDataset(JsonField.of(usesReferenceDataset))
-
-                /** Whether the test uses a reference dataset (monitoring mode only). */
-                @JsonProperty("usesReferenceDataset")
-                @ExcludeMissing
-                fun usesReferenceDataset(usesReferenceDataset: JsonField<Boolean>) = apply {
-                    this.usesReferenceDataset = usesReferenceDataset
                 }
 
                 /** Whether the test uses production data (monitoring mode only). */
@@ -936,20 +1044,44 @@ private constructor(
                     usesProductionData(JsonField.of(usesProductionData))
 
                 /** Whether the test uses production data (monitoring mode only). */
-                @JsonProperty("usesProductionData")
-                @ExcludeMissing
                 fun usesProductionData(usesProductionData: JsonField<Boolean>) = apply {
                     this.usesProductionData = usesProductionData
                 }
 
-                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                    this.additionalProperties.clear()
-                    this.additionalProperties.putAll(additionalProperties)
+                /** Whether the test uses a reference dataset (monitoring mode only). */
+                fun usesReferenceDataset(usesReferenceDataset: Boolean) =
+                    usesReferenceDataset(JsonField.of(usesReferenceDataset))
+
+                /** Whether the test uses a reference dataset (monitoring mode only). */
+                fun usesReferenceDataset(usesReferenceDataset: JsonField<Boolean>) = apply {
+                    this.usesReferenceDataset = usesReferenceDataset
                 }
 
-                @JsonAnySetter
+                /** Whether the test uses a training dataset. */
+                fun usesTrainingDataset(usesTrainingDataset: Boolean) =
+                    usesTrainingDataset(JsonField.of(usesTrainingDataset))
+
+                /** Whether the test uses a training dataset. */
+                fun usesTrainingDataset(usesTrainingDataset: JsonField<Boolean>) = apply {
+                    this.usesTrainingDataset = usesTrainingDataset
+                }
+
+                /** Whether the test uses a validation dataset. */
+                fun usesValidationDataset(usesValidationDataset: Boolean) =
+                    usesValidationDataset(JsonField.of(usesValidationDataset))
+
+                /** Whether the test uses a validation dataset. */
+                fun usesValidationDataset(usesValidationDataset: JsonField<Boolean>) = apply {
+                    this.usesValidationDataset = usesValidationDataset
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
                 fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                    this.additionalProperties.put(key, value)
+                    additionalProperties.put(key, value)
                 }
 
                 fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -957,51 +1089,64 @@ private constructor(
                         this.additionalProperties.putAll(additionalProperties)
                     }
 
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
                 fun build(): Goal =
                     Goal(
-                        id,
-                        number,
-                        name,
-                        dateCreated,
-                        dateUpdated,
-                        description,
-                        evaluationWindow,
-                        delayWindow,
-                        type,
-                        subtype,
-                        creatorId,
-                        originProjectVersionId,
-                        thresholds.map { it.toImmutable() },
+                        checkRequired("id", id),
+                        checkRequired("commentCount", commentCount),
+                        checkRequired("creatorId", creatorId),
+                        checkRequired("dateArchived", dateArchived),
+                        checkRequired("dateCreated", dateCreated),
+                        checkRequired("dateUpdated", dateUpdated),
+                        checkRequired("description", description),
+                        checkRequired("name", name),
+                        checkRequired("number", number),
+                        checkRequired("originProjectVersionId", originProjectVersionId),
+                        checkRequired("subtype", subtype),
+                        checkRequired("suggested", suggested),
+                        checkRequired("thresholds", thresholds).map { it.toImmutable() },
+                        checkRequired("type", type),
                         archived,
-                        dateArchived,
-                        suggested,
-                        commentCount,
+                        delayWindow,
+                        evaluationWindow,
                         usesMlModel,
-                        usesValidationDataset,
-                        usesTrainingDataset,
-                        usesReferenceDataset,
                         usesProductionData,
+                        usesReferenceDataset,
+                        usesTrainingDataset,
+                        usesValidationDataset,
                         additionalProperties.toImmutable(),
                     )
             }
 
-            @JsonDeserialize(builder = Threshold.Builder::class)
             @NoAutoDetect
             class Threshold
+            @JsonCreator
             private constructor(
-                private val measurement: JsonField<String>,
-                private val insightName: JsonField<String>,
-                private val insightParameters: JsonField<List<JsonValue>>,
-                private val operator: JsonField<String>,
-                private val value: JsonField<Value>,
-                private val additionalProperties: Map<String, JsonValue>,
+                @JsonProperty("insightName")
+                @ExcludeMissing
+                private val insightName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("insightParameters")
+                @ExcludeMissing
+                private val insightParameters: JsonField<List<JsonValue>> = JsonMissing.of(),
+                @JsonProperty("measurement")
+                @ExcludeMissing
+                private val measurement: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("operator")
+                @ExcludeMissing
+                private val operator: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("value")
+                @ExcludeMissing
+                private val value: JsonField<Value> = JsonMissing.of(),
+                @JsonAnySetter
+                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
-
-                private var validated: Boolean = false
-
-                /** The measurement to be evaluated. */
-                fun measurement(): Optional<String> =
-                    Optional.ofNullable(measurement.getNullable("measurement"))
 
                 /** The insight name to be evaluated. */
                 fun insightName(): Optional<String> =
@@ -1010,6 +1155,10 @@ private constructor(
                 fun insightParameters(): Optional<List<JsonValue>> =
                     Optional.ofNullable(insightParameters.getNullable("insightParameters"))
 
+                /** The measurement to be evaluated. */
+                fun measurement(): Optional<String> =
+                    Optional.ofNullable(measurement.getNullable("measurement"))
+
                 /** The operator to be used for the evaluation. */
                 fun operator(): Optional<String> =
                     Optional.ofNullable(operator.getNullable("operator"))
@@ -1017,35 +1166,45 @@ private constructor(
                 /** The value to be compared. */
                 fun value(): Optional<Value> = Optional.ofNullable(value.getNullable("value"))
 
-                /** The measurement to be evaluated. */
-                @JsonProperty("measurement") @ExcludeMissing fun _measurement() = measurement
-
                 /** The insight name to be evaluated. */
-                @JsonProperty("insightName") @ExcludeMissing fun _insightName() = insightName
+                @JsonProperty("insightName")
+                @ExcludeMissing
+                fun _insightName(): JsonField<String> = insightName
 
                 @JsonProperty("insightParameters")
                 @ExcludeMissing
-                fun _insightParameters() = insightParameters
+                fun _insightParameters(): JsonField<List<JsonValue>> = insightParameters
+
+                /** The measurement to be evaluated. */
+                @JsonProperty("measurement")
+                @ExcludeMissing
+                fun _measurement(): JsonField<String> = measurement
 
                 /** The operator to be used for the evaluation. */
-                @JsonProperty("operator") @ExcludeMissing fun _operator() = operator
+                @JsonProperty("operator")
+                @ExcludeMissing
+                fun _operator(): JsonField<String> = operator
 
                 /** The value to be compared. */
-                @JsonProperty("value") @ExcludeMissing fun _value() = value
+                @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
 
                 @JsonAnyGetter
                 @ExcludeMissing
                 fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+                private var validated: Boolean = false
+
                 fun validate(): Threshold = apply {
-                    if (!validated) {
-                        measurement()
-                        insightName()
-                        insightParameters()
-                        operator()
-                        value()
-                        validated = true
+                    if (validated) {
+                        return@apply
                     }
+
+                    insightName()
+                    insightParameters()
+                    measurement()
+                    operator()
+                    value().ifPresent { it.validate() }
+                    validated = true
                 }
 
                 fun toBuilder() = Builder().from(this)
@@ -1057,39 +1216,27 @@ private constructor(
 
                 class Builder {
 
-                    private var measurement: JsonField<String> = JsonMissing.of()
                     private var insightName: JsonField<String> = JsonMissing.of()
-                    private var insightParameters: JsonField<List<JsonValue>> = JsonMissing.of()
+                    private var insightParameters: JsonField<MutableList<JsonValue>>? = null
+                    private var measurement: JsonField<String> = JsonMissing.of()
                     private var operator: JsonField<String> = JsonMissing.of()
                     private var value: JsonField<Value> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                     @JvmSynthetic
                     internal fun from(threshold: Threshold) = apply {
-                        this.measurement = threshold.measurement
-                        this.insightName = threshold.insightName
-                        this.insightParameters = threshold.insightParameters
-                        this.operator = threshold.operator
-                        this.value = threshold.value
-                        additionalProperties(threshold.additionalProperties)
-                    }
-
-                    /** The measurement to be evaluated. */
-                    fun measurement(measurement: String) = measurement(JsonField.of(measurement))
-
-                    /** The measurement to be evaluated. */
-                    @JsonProperty("measurement")
-                    @ExcludeMissing
-                    fun measurement(measurement: JsonField<String>) = apply {
-                        this.measurement = measurement
+                        insightName = threshold.insightName
+                        insightParameters = threshold.insightParameters.map { it.toMutableList() }
+                        measurement = threshold.measurement
+                        operator = threshold.operator
+                        value = threshold.value
+                        additionalProperties = threshold.additionalProperties.toMutableMap()
                     }
 
                     /** The insight name to be evaluated. */
                     fun insightName(insightName: String) = insightName(JsonField.of(insightName))
 
                     /** The insight name to be evaluated. */
-                    @JsonProperty("insightName")
-                    @ExcludeMissing
                     fun insightName(insightName: JsonField<String>) = apply {
                         this.insightName = insightName
                     }
@@ -1097,36 +1244,62 @@ private constructor(
                     fun insightParameters(insightParameters: List<JsonValue>) =
                         insightParameters(JsonField.of(insightParameters))
 
-                    @JsonProperty("insightParameters")
-                    @ExcludeMissing
                     fun insightParameters(insightParameters: JsonField<List<JsonValue>>) = apply {
-                        this.insightParameters = insightParameters
+                        this.insightParameters = insightParameters.map { it.toMutableList() }
+                    }
+
+                    fun addInsightParameter(insightParameter: JsonValue) = apply {
+                        insightParameters =
+                            (insightParameters ?: JsonField.of(mutableListOf())).apply {
+                                asKnown()
+                                    .orElseThrow {
+                                        IllegalStateException(
+                                            "Field was set to non-list type: ${javaClass.simpleName}"
+                                        )
+                                    }
+                                    .add(insightParameter)
+                            }
+                    }
+
+                    /** The measurement to be evaluated. */
+                    fun measurement(measurement: String) = measurement(JsonField.of(measurement))
+
+                    /** The measurement to be evaluated. */
+                    fun measurement(measurement: JsonField<String>) = apply {
+                        this.measurement = measurement
                     }
 
                     /** The operator to be used for the evaluation. */
                     fun operator(operator: String) = operator(JsonField.of(operator))
 
                     /** The operator to be used for the evaluation. */
-                    @JsonProperty("operator")
-                    @ExcludeMissing
                     fun operator(operator: JsonField<String>) = apply { this.operator = operator }
 
                     /** The value to be compared. */
                     fun value(value: Value) = value(JsonField.of(value))
 
                     /** The value to be compared. */
-                    @JsonProperty("value")
-                    @ExcludeMissing
                     fun value(value: JsonField<Value>) = apply { this.value = value }
+
+                    /** The value to be compared. */
+                    fun value(number: Double) = value(Value.ofNumber(number))
+
+                    /** The value to be compared. */
+                    fun value(bool: Boolean) = value(Value.ofBool(bool))
+
+                    /** The value to be compared. */
+                    fun value(string: String) = value(Value.ofString(string))
+
+                    /** The value to be compared. */
+                    fun valueOfStrings(strings: List<String>) = value(Value.ofStrings(strings))
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                         this.additionalProperties.clear()
-                        this.additionalProperties.putAll(additionalProperties)
+                        putAllAdditionalProperties(additionalProperties)
                     }
 
-                    @JsonAnySetter
                     fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                        this.additionalProperties.put(key, value)
+                        additionalProperties.put(key, value)
                     }
 
                     fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
@@ -1134,17 +1307,26 @@ private constructor(
                             this.additionalProperties.putAll(additionalProperties)
                         }
 
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
                     fun build(): Threshold =
                         Threshold(
-                            measurement,
                             insightName,
-                            insightParameters.map { it.toImmutable() },
+                            (insightParameters ?: JsonMissing.of()).map { it.toImmutable() },
+                            measurement,
                             operator,
                             value,
                             additionalProperties.toImmutable(),
                         )
                 }
 
+                /** The value to be compared. */
                 @JsonDeserialize(using = Value.Deserializer::class)
                 @JsonSerialize(using = Value.Serializer::class)
                 class Value
@@ -1155,8 +1337,6 @@ private constructor(
                     private val strings: List<String>? = null,
                     private val _json: JsonValue? = null,
                 ) {
-
-                    private var validated: Boolean = false
 
                     fun number(): Optional<Double> = Optional.ofNullable(number)
 
@@ -1194,15 +1374,25 @@ private constructor(
                         }
                     }
 
+                    private var validated: Boolean = false
+
                     fun validate(): Value = apply {
-                        if (!validated) {
-                            if (
-                                number == null && bool == null && string == null && strings == null
-                            ) {
-                                throw OpenlayerInvalidDataException("Unknown Value: $_json")
-                            }
-                            validated = true
+                        if (validated) {
+                            return@apply
                         }
+
+                        accept(
+                            object : Visitor<Unit> {
+                                override fun visitNumber(number: Double) {}
+
+                                override fun visitBool(bool: Boolean) {}
+
+                                override fun visitString(string: String) {}
+
+                                override fun visitStrings(strings: List<String>) {}
+                            }
+                        )
+                        validated = true
                     }
 
                     override fun equals(other: Any?): Boolean {
@@ -1297,17 +1487,17 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Threshold && measurement == other.measurement && insightName == other.insightName && insightParameters == other.insightParameters && operator == other.operator && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Threshold && insightName == other.insightName && insightParameters == other.insightParameters && measurement == other.measurement && operator == other.operator && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(measurement, insightName, insightParameters, operator, value, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(insightName, insightParameters, measurement, operator, value, additionalProperties) }
                 /* spotless:on */
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Threshold{measurement=$measurement, insightName=$insightName, insightParameters=$insightParameters, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
+                    "Threshold{insightName=$insightName, insightParameters=$insightParameters, measurement=$measurement, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
@@ -1315,17 +1505,17 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Goal && id == other.id && number == other.number && name == other.name && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && description == other.description && evaluationWindow == other.evaluationWindow && delayWindow == other.delayWindow && type == other.type && subtype == other.subtype && creatorId == other.creatorId && originProjectVersionId == other.originProjectVersionId && thresholds == other.thresholds && archived == other.archived && dateArchived == other.dateArchived && suggested == other.suggested && commentCount == other.commentCount && usesMlModel == other.usesMlModel && usesValidationDataset == other.usesValidationDataset && usesTrainingDataset == other.usesTrainingDataset && usesReferenceDataset == other.usesReferenceDataset && usesProductionData == other.usesProductionData && additionalProperties == other.additionalProperties /* spotless:on */
+                return /* spotless:off */ other is Goal && id == other.id && commentCount == other.commentCount && creatorId == other.creatorId && dateArchived == other.dateArchived && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && description == other.description && name == other.name && number == other.number && originProjectVersionId == other.originProjectVersionId && subtype == other.subtype && suggested == other.suggested && thresholds == other.thresholds && type == other.type && archived == other.archived && delayWindow == other.delayWindow && evaluationWindow == other.evaluationWindow && usesMlModel == other.usesMlModel && usesProductionData == other.usesProductionData && usesReferenceDataset == other.usesReferenceDataset && usesTrainingDataset == other.usesTrainingDataset && usesValidationDataset == other.usesValidationDataset && additionalProperties == other.additionalProperties /* spotless:on */
             }
 
             /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(id, number, name, dateCreated, dateUpdated, description, evaluationWindow, delayWindow, type, subtype, creatorId, originProjectVersionId, thresholds, archived, dateArchived, suggested, commentCount, usesMlModel, usesValidationDataset, usesTrainingDataset, usesReferenceDataset, usesProductionData, additionalProperties) }
+            private val hashCode: Int by lazy { Objects.hash(id, commentCount, creatorId, dateArchived, dateCreated, dateUpdated, description, name, number, originProjectVersionId, subtype, suggested, thresholds, type, archived, delayWindow, evaluationWindow, usesMlModel, usesProductionData, usesReferenceDataset, usesTrainingDataset, usesValidationDataset, additionalProperties) }
             /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "Goal{id=$id, number=$number, name=$name, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, evaluationWindow=$evaluationWindow, delayWindow=$delayWindow, type=$type, subtype=$subtype, creatorId=$creatorId, originProjectVersionId=$originProjectVersionId, thresholds=$thresholds, archived=$archived, dateArchived=$dateArchived, suggested=$suggested, commentCount=$commentCount, usesMlModel=$usesMlModel, usesValidationDataset=$usesValidationDataset, usesTrainingDataset=$usesTrainingDataset, usesReferenceDataset=$usesReferenceDataset, usesProductionData=$usesProductionData, additionalProperties=$additionalProperties}"
+                "Goal{id=$id, commentCount=$commentCount, creatorId=$creatorId, dateArchived=$dateArchived, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, name=$name, number=$number, originProjectVersionId=$originProjectVersionId, subtype=$subtype, suggested=$suggested, thresholds=$thresholds, type=$type, archived=$archived, delayWindow=$delayWindow, evaluationWindow=$evaluationWindow, usesMlModel=$usesMlModel, usesProductionData=$usesProductionData, usesReferenceDataset=$usesReferenceDataset, usesTrainingDataset=$usesTrainingDataset, usesValidationDataset=$usesValidationDataset, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1333,17 +1523,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Item && id == other.id && goal == other.goal && goalId == other.goalId && projectVersionId == other.projectVersionId && inferencePipelineId == other.inferencePipelineId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && dateDataStarts == other.dateDataStarts && dateDataEnds == other.dateDataEnds && status == other.status && statusMessage == other.statusMessage && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Item && id == other.id && dateCreated == other.dateCreated && dateDataEnds == other.dateDataEnds && dateDataStarts == other.dateDataStarts && dateUpdated == other.dateUpdated && inferencePipelineId == other.inferencePipelineId && projectVersionId == other.projectVersionId && status == other.status && statusMessage == other.statusMessage && goal == other.goal && goalId == other.goalId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, goal, goalId, projectVersionId, inferencePipelineId, dateCreated, dateUpdated, dateDataStarts, dateDataEnds, status, statusMessage, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateDataEnds, dateDataStarts, dateUpdated, inferencePipelineId, projectVersionId, status, statusMessage, goal, goalId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Item{id=$id, goal=$goal, goalId=$goalId, projectVersionId=$projectVersionId, inferencePipelineId=$inferencePipelineId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, dateDataStarts=$dateDataStarts, dateDataEnds=$dateDataEnds, status=$status, statusMessage=$statusMessage, additionalProperties=$additionalProperties}"
+            "Item{id=$id, dateCreated=$dateCreated, dateDataEnds=$dateDataEnds, dateDataStarts=$dateDataStarts, dateUpdated=$dateUpdated, inferencePipelineId=$inferencePipelineId, projectVersionId=$projectVersionId, status=$status, statusMessage=$statusMessage, goal=$goal, goalId=$goalId, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {

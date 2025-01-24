@@ -16,7 +16,7 @@ import com.openlayer.api.models.InferencePipelineDataStreamParams
 import com.openlayer.api.models.InferencePipelineDataStreamResponse
 
 class DataServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : DataService {
 

@@ -7,7 +7,7 @@ import com.openlayer.api.services.blocking.storage.PresignedUrlService
 import com.openlayer.api.services.blocking.storage.PresignedUrlServiceImpl
 
 class StorageServiceImpl
-constructor(
+internal constructor(
     private val clientOptions: ClientOptions,
 ) : StorageService {
 

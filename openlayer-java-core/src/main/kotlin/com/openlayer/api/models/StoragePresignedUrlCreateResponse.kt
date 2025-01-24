@@ -4,53 +4,59 @@ package com.openlayer.api.models
 
 import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 
-@JsonDeserialize(builder = StoragePresignedUrlCreateResponse.Builder::class)
 @NoAutoDetect
 class StoragePresignedUrlCreateResponse
+@JsonCreator
 private constructor(
-    private val url: JsonField<String>,
-    private val fields: JsonValue,
-    private val storageUri: JsonField<String>,
-    private val additionalProperties: Map<String, JsonValue>,
+    @JsonProperty("storageUri")
+    @ExcludeMissing
+    private val storageUri: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("url") @ExcludeMissing private val url: JsonField<String> = JsonMissing.of(),
+    @JsonProperty("fields") @ExcludeMissing private val fields: JsonValue = JsonMissing.of(),
+    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
-
-    private var validated: Boolean = false
-
-    /** The presigned url. */
-    fun url(): String = url.getRequired("url")
 
     /** The storage URI to send back to the backend after the upload was completed. */
     fun storageUri(): String = storageUri.getRequired("storageUri")
 
     /** The presigned url. */
-    @JsonProperty("url") @ExcludeMissing fun _url() = url
+    fun url(): String = url.getRequired("url")
 
     /** Fields to include in the body of the upload. Only needed by s3 */
-    @JsonProperty("fields") @ExcludeMissing fun _fields() = fields
+    @JsonProperty("fields") @ExcludeMissing fun _fields(): JsonValue = fields
 
     /** The storage URI to send back to the backend after the upload was completed. */
-    @JsonProperty("storageUri") @ExcludeMissing fun _storageUri() = storageUri
+    @JsonProperty("storageUri") @ExcludeMissing fun _storageUri(): JsonField<String> = storageUri
+
+    /** The presigned url. */
+    @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
     @JsonAnyGetter
     @ExcludeMissing
     fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
+    private var validated: Boolean = false
+
     fun validate(): StoragePresignedUrlCreateResponse = apply {
-        if (!validated) {
-            url()
-            storageUri()
-            validated = true
+        if (validated) {
+            return@apply
         }
+
+        storageUri()
+        url()
+        validated = true
     }
 
     fun toBuilder() = Builder().from(this)
@@ -62,60 +68,60 @@ private constructor(
 
     class Builder {
 
-        private var url: JsonField<String> = JsonMissing.of()
+        private var storageUri: JsonField<String>? = null
+        private var url: JsonField<String>? = null
         private var fields: JsonValue = JsonMissing.of()
-        private var storageUri: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(storagePresignedUrlCreateResponse: StoragePresignedUrlCreateResponse) =
             apply {
-                this.url = storagePresignedUrlCreateResponse.url
-                this.fields = storagePresignedUrlCreateResponse.fields
-                this.storageUri = storagePresignedUrlCreateResponse.storageUri
-                additionalProperties(storagePresignedUrlCreateResponse.additionalProperties)
+                storageUri = storagePresignedUrlCreateResponse.storageUri
+                url = storagePresignedUrlCreateResponse.url
+                fields = storagePresignedUrlCreateResponse.fields
+                additionalProperties =
+                    storagePresignedUrlCreateResponse.additionalProperties.toMutableMap()
             }
-
-        /** The presigned url. */
-        fun url(url: String) = url(JsonField.of(url))
-
-        /** The presigned url. */
-        @JsonProperty("url")
-        @ExcludeMissing
-        fun url(url: JsonField<String>) = apply { this.url = url }
-
-        /** Fields to include in the body of the upload. Only needed by s3 */
-        @JsonProperty("fields")
-        @ExcludeMissing
-        fun fields(fields: JsonValue) = apply { this.fields = fields }
 
         /** The storage URI to send back to the backend after the upload was completed. */
         fun storageUri(storageUri: String) = storageUri(JsonField.of(storageUri))
 
         /** The storage URI to send back to the backend after the upload was completed. */
-        @JsonProperty("storageUri")
-        @ExcludeMissing
         fun storageUri(storageUri: JsonField<String>) = apply { this.storageUri = storageUri }
+
+        /** The presigned url. */
+        fun url(url: String) = url(JsonField.of(url))
+
+        /** The presigned url. */
+        fun url(url: JsonField<String>) = apply { this.url = url }
+
+        /** Fields to include in the body of the upload. Only needed by s3 */
+        fun fields(fields: JsonValue) = apply { this.fields = fields }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.clear()
-            this.additionalProperties.putAll(additionalProperties)
+            putAllAdditionalProperties(additionalProperties)
         }
 
-        @JsonAnySetter
         fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-            this.additionalProperties.put(key, value)
+            additionalProperties.put(key, value)
         }
 
         fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
             this.additionalProperties.putAll(additionalProperties)
         }
 
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
         fun build(): StoragePresignedUrlCreateResponse =
             StoragePresignedUrlCreateResponse(
-                url,
+                checkRequired("storageUri", storageUri),
+                checkRequired("url", url),
                 fields,
-                storageUri,
                 additionalProperties.toImmutable(),
             )
     }
@@ -125,15 +131,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is StoragePresignedUrlCreateResponse && url == other.url && fields == other.fields && storageUri == other.storageUri && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is StoragePresignedUrlCreateResponse && storageUri == other.storageUri && url == other.url && fields == other.fields && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(url, fields, storageUri, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(storageUri, url, fields, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "StoragePresignedUrlCreateResponse{url=$url, fields=$fields, storageUri=$storageUri, additionalProperties=$additionalProperties}"
+        "StoragePresignedUrlCreateResponse{storageUri=$storageUri, url=$url, fields=$fields, additionalProperties=$additionalProperties}"
 }
