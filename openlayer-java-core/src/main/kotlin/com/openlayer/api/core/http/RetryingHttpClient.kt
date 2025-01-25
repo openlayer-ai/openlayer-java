@@ -1,6 +1,7 @@
 package com.openlayer.api.core.http
 
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.errors.OpenlayerIoException
 import java.io.IOException
 import java.time.Clock
@@ -259,7 +260,7 @@ private constructor(
 
         fun build(): HttpClient =
             RetryingHttpClient(
-                checkNotNull(httpClient) { "`httpClient` is required but was not set" },
+                checkRequired("httpClient", httpClient),
                 clock,
                 maxRetries,
                 idempotencyHeader,
