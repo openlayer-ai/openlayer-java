@@ -30,6 +30,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [OpenlayerError]. */
     class Builder internal constructor() {
 
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

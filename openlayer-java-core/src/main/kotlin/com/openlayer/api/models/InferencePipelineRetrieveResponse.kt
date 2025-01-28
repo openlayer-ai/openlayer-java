@@ -241,6 +241,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [InferencePipelineRetrieveResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -515,6 +516,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Links]. */
         class Builder internal constructor() {
 
             private var app: JsonField<String>? = null
@@ -577,6 +579,14 @@ private constructor(
         private val value: JsonField<String>,
     ) : Enum {
 
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
         @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
         companion object {
@@ -596,6 +606,7 @@ private constructor(
             @JvmStatic fun of(value: String) = Status(JsonField.of(value))
         }
 
+        /** An enum containing [Status]'s known values. */
         enum class Known {
             QUEUED,
             RUNNING,
@@ -605,6 +616,15 @@ private constructor(
             UNKNOWN,
         }
 
+        /**
+         * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Status] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
         enum class Value {
             QUEUED,
             RUNNING,
@@ -612,9 +632,17 @@ private constructor(
             FAILED,
             COMPLETED,
             UNKNOWN,
+            /** An enum member indicating that [Status] was instantiated with an unknown value. */
             _UNKNOWN,
         }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
         fun value(): Value =
             when (this) {
                 QUEUED -> Value.QUEUED
@@ -626,6 +654,15 @@ private constructor(
                 else -> Value._UNKNOWN
             }
 
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
         fun known(): Known =
             when (this) {
                 QUEUED -> Known.QUEUED
@@ -856,6 +893,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Project]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -1103,6 +1141,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [Links]. */
             class Builder internal constructor() {
 
                 private var app: JsonField<String>? = null
@@ -1168,6 +1207,14 @@ private constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
@@ -1181,19 +1228,39 @@ private constructor(
                 @JvmStatic fun of(value: String) = Source(JsonField.of(value))
             }
 
+            /** An enum containing [Source]'s known values. */
             enum class Known {
                 WEB,
                 API,
                 NULL,
             }
 
+            /**
+             * An enum containing [Source]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Source] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
                 WEB,
                 API,
                 NULL,
+                /**
+                 * An enum member indicating that [Source] was instantiated with an unknown value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
                     WEB -> Value.WEB
@@ -1202,6 +1269,15 @@ private constructor(
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
             fun known(): Known =
                 when (this) {
                     WEB -> Known.WEB
@@ -1232,6 +1308,14 @@ private constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
@@ -1247,6 +1331,7 @@ private constructor(
                 @JvmStatic fun of(value: String) = TaskType(JsonField.of(value))
             }
 
+            /** An enum containing [TaskType]'s known values. */
             enum class Known {
                 LLM_BASE,
                 TABULAR_CLASSIFICATION,
@@ -1254,14 +1339,33 @@ private constructor(
                 TEXT_CLASSIFICATION,
             }
 
+            /**
+             * An enum containing [TaskType]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [TaskType] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
                 LLM_BASE,
                 TABULAR_CLASSIFICATION,
                 TABULAR_REGRESSION,
                 TEXT_CLASSIFICATION,
+                /**
+                 * An enum member indicating that [TaskType] was instantiated with an unknown value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
                     LLM_BASE -> Value.LLM_BASE
@@ -1271,6 +1375,15 @@ private constructor(
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
             fun known(): Known =
                 when (this) {
                     LLM_BASE -> Known.LLM_BASE
@@ -1428,6 +1541,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [GitRepo]. */
             class Builder internal constructor() {
 
                 private var id: JsonField<String>? = null
@@ -1802,6 +1916,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Workspace]. */
         class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
@@ -2038,6 +2153,14 @@ private constructor(
             private val value: JsonField<String>,
         ) : Enum {
 
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
             @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
 
             companion object {
@@ -2061,6 +2184,7 @@ private constructor(
                 @JvmStatic fun of(value: String) = Status(JsonField.of(value))
             }
 
+            /** An enum containing [Status]'s known values. */
             enum class Known {
                 ACTIVE,
                 PAST_DUE,
@@ -2072,6 +2196,15 @@ private constructor(
                 PAUSED,
             }
 
+            /**
+             * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [Status] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
             enum class Value {
                 ACTIVE,
                 PAST_DUE,
@@ -2081,9 +2214,19 @@ private constructor(
                 INCOMPLETE_EXPIRED,
                 TRIALING,
                 PAUSED,
+                /**
+                 * An enum member indicating that [Status] was instantiated with an unknown value.
+                 */
                 _UNKNOWN,
             }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
             fun value(): Value =
                 when (this) {
                     ACTIVE -> Value.ACTIVE
@@ -2097,6 +2240,15 @@ private constructor(
                     else -> Value._UNKNOWN
                 }
 
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
             fun known(): Known =
                 when (this) {
                     ACTIVE -> Known.ACTIVE
@@ -2187,6 +2339,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [MonthlyUsage]. */
             class Builder internal constructor() {
 
                 private var executionTimeMs: JsonField<Long> = JsonMissing.of()
