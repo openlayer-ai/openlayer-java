@@ -48,4 +48,6 @@ constructor(
     override fun inferencePipelines(): InferencePipelineService = inferencePipelines
 
     override fun storage(): StorageService = storage
+
+    override fun close() = clientOptions.httpClient.close()
 }
