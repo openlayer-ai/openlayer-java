@@ -11,7 +11,7 @@ import java.util.Optional
 
 /** List the commits (project versions) in a project. */
 class ProjectCommitListParams
-constructor(
+private constructor(
     private val projectId: String,
     private val page: Long?,
     private val perPage: Long?,
@@ -57,7 +57,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
         private var page: Long? = null

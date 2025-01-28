@@ -13,7 +13,7 @@ import java.util.Optional
 
 /** Retrieve a presigned url to post storage artifacts. */
 class StoragePresignedUrlCreateParams
-constructor(
+private constructor(
     private val objectName: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -51,7 +51,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var objectName: String? = null
         private var additionalHeaders: Headers.Builder = Headers.builder()

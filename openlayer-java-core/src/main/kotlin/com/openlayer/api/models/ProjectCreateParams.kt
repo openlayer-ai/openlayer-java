@@ -24,7 +24,7 @@ import java.util.Optional
 
 /** Create a project in your workspace. */
 class ProjectCreateParams
-constructor(
+private constructor(
     private val body: ProjectCreateBody,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
@@ -122,7 +122,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var name: JsonField<String>? = null
             private var taskType: JsonField<TaskType>? = null
@@ -214,7 +214,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var body: ProjectCreateBody.Builder = ProjectCreateBody.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
@@ -409,7 +409,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var app: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -725,7 +725,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
             private var dateConnected: JsonField<OffsetDateTime>? = null

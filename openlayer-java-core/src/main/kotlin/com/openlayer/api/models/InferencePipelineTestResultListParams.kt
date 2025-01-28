@@ -15,7 +15,7 @@ import java.util.Optional
 
 /** List the latest test results for an inference pipeline. */
 class InferencePipelineTestResultListParams
-constructor(
+private constructor(
     private val inferencePipelineId: String,
     private val page: Long?,
     private val perPage: Long?,
@@ -77,7 +77,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
         private var page: Long? = null

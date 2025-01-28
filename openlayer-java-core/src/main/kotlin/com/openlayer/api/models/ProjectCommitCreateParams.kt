@@ -24,7 +24,7 @@ import java.util.Optional
 
 /** Create a new commit (project version) in a project. */
 class ProjectCommitCreateParams
-constructor(
+private constructor(
     private val projectId: String,
     private val body: ProjectCommitCreateBody,
     private val additionalHeaders: Headers,
@@ -150,7 +150,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var commit: JsonField<Commit>? = null
             private var storageUri: JsonField<String>? = null
@@ -256,7 +256,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
         private var body: ProjectCommitCreateBody.Builder = ProjectCommitCreateBody.builder()
@@ -602,7 +602,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
             private var authorId: JsonField<String>? = null
@@ -914,7 +914,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var app: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

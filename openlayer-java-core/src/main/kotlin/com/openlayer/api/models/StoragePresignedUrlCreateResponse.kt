@@ -66,7 +66,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var storageUri: JsonField<String>? = null
         private var url: JsonField<String>? = null
