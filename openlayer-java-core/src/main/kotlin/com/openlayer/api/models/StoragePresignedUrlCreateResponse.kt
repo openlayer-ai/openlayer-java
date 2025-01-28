@@ -66,6 +66,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [StoragePresignedUrlCreateResponse]. */
     class Builder internal constructor() {
 
         private var storageUri: JsonField<String>? = null

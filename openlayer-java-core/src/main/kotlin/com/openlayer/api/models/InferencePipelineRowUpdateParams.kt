@@ -105,6 +105,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [InferencePipelineRowUpdateBody]. */
         class Builder internal constructor() {
 
             private var row: JsonValue? = null
@@ -180,6 +181,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [InferencePipelineRowUpdateParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
@@ -449,6 +451,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Config]. */
         class Builder internal constructor() {
 
             private var groundTruthColumnName: JsonField<String> = JsonMissing.of()

@@ -22,6 +22,7 @@ class OpenlayerOkHttpClient private constructor() {
         @JvmStatic fun fromEnv(): OpenlayerClient = builder().fromEnv().build()
     }
 
+    /** A builder for [OpenlayerOkHttpClient]. */
     class Builder internal constructor() {
 
         private var clientOptions: ClientOptions.Builder = ClientOptions.builder()

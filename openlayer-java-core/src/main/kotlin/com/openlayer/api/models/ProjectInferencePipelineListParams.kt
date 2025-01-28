@@ -61,6 +61,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [ProjectInferencePipelineListParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 

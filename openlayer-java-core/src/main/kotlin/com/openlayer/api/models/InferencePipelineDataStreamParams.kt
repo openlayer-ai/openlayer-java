@@ -121,6 +121,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [InferencePipelineDataStreamBody]. */
         class Builder internal constructor() {
 
             private var config: JsonField<Config>? = null
@@ -243,6 +244,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [InferencePipelineDataStreamParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
@@ -557,6 +559,7 @@ private constructor(
                 Config(textClassificationData = textClassificationData)
         }
 
+        /** An interface that defines how to map each variant of [Config] to a value of type [T]. */
         interface Visitor<out T> {
 
             fun visitLlmData(llmData: LlmData): T
@@ -569,6 +572,16 @@ private constructor(
 
             fun visitTextClassificationData(textClassificationData: TextClassificationData): T
 
+            /**
+             * Maps an unknown variant of [Config] to a value of type [T].
+             *
+             * An instance of [Config] can contain an unknown variant if it was deserialized from
+             * data that doesn't match any known variant. For example, if the SDK is on an older
+             * version than the API, then the API may respond with new variants that the SDK is
+             * unaware of.
+             *
+             * @throws OpenlayerInvalidDataException in the default implementation.
+             */
             fun unknown(json: JsonValue?): T {
                 throw OpenlayerInvalidDataException("Unknown Config: $json")
             }
@@ -819,6 +832,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [LlmData]. */
             class Builder internal constructor() {
 
                 private var outputColumnName: JsonField<String>? = null
@@ -1107,6 +1121,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
+                /** A builder for [Prompt]. */
                 class Builder internal constructor() {
 
                     private var content: JsonField<String> = JsonMissing.of()
@@ -1385,6 +1400,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [TabularClassificationData]. */
             class Builder internal constructor() {
 
                 private var classNames: JsonField<MutableList<String>>? = null
@@ -1789,6 +1805,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [TabularRegressionData]. */
             class Builder internal constructor() {
 
                 private var categoricalFeatureNames: JsonField<MutableList<String>>? = null
@@ -2156,6 +2173,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
+            /** A builder for [TextClassificationData]. */
             class Builder internal constructor() {
 
                 private var classNames: JsonField<MutableList<String>>? = null
@@ -2393,6 +2411,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [Row]. */
         class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()

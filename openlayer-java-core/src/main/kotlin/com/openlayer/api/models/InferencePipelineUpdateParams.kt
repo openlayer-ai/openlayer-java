@@ -144,6 +144,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
+        /** A builder for [InferencePipelineUpdateBody]. */
         class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
@@ -252,6 +253,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
+    /** A builder for [InferencePipelineUpdateParams]. */
     @NoAutoDetect
     class Builder internal constructor() {
 
