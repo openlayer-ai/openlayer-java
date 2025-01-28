@@ -21,7 +21,7 @@ import java.util.Optional
 
 /** Update an inference data point in an inference pipeline. */
 class InferencePipelineRowUpdateParams
-constructor(
+private constructor(
     private val inferencePipelineId: String,
     private val inferenceId: String,
     private val body: InferencePipelineRowUpdateBody,
@@ -105,7 +105,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var row: JsonValue? = null
             private var config: JsonField<Config> = JsonMissing.of()
@@ -181,7 +181,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
         private var inferenceId: String? = null
@@ -449,7 +449,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
             private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()

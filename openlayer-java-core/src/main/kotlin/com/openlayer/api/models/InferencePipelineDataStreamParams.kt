@@ -32,7 +32,7 @@ import java.util.Optional
 
 /** Publish an inference data point to an inference pipeline. */
 class InferencePipelineDataStreamParams
-constructor(
+private constructor(
     private val inferencePipelineId: String,
     private val body: InferencePipelineDataStreamBody,
     private val additionalHeaders: Headers,
@@ -121,7 +121,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var config: JsonField<Config>? = null
             private var rows: JsonField<MutableList<Row>>? = null
@@ -244,7 +244,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
         private var body: InferencePipelineDataStreamBody.Builder =
@@ -574,7 +574,7 @@ constructor(
             }
         }
 
-        class Deserializer : BaseDeserializer<Config>(Config::class) {
+        internal class Deserializer : BaseDeserializer<Config>(Config::class) {
 
             override fun ObjectCodec.deserialize(node: JsonNode): Config {
                 val json = JsonValue.fromJsonNode(node)
@@ -600,7 +600,7 @@ constructor(
             }
         }
 
-        class Serializer : BaseSerializer<Config>(Config::class) {
+        internal class Serializer : BaseSerializer<Config>(Config::class) {
 
             override fun serialize(
                 value: Config,
@@ -819,7 +819,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var outputColumnName: JsonField<String>? = null
                 private var contextColumnName: JsonField<String> = JsonMissing.of()
@@ -1107,7 +1107,7 @@ constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var content: JsonField<String> = JsonMissing.of()
                     private var role: JsonField<String> = JsonMissing.of()
@@ -1385,7 +1385,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var classNames: JsonField<MutableList<String>>? = null
                 private var categoricalFeatureNames: JsonField<MutableList<String>>? = null
@@ -1789,7 +1789,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var categoricalFeatureNames: JsonField<MutableList<String>>? = null
                 private var featureNames: JsonField<MutableList<String>>? = null
@@ -2156,7 +2156,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var classNames: JsonField<MutableList<String>>? = null
                 private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
@@ -2393,7 +2393,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 

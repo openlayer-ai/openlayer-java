@@ -66,7 +66,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private var items: JsonField<MutableList<Item>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -277,7 +277,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
             private var dateCreated: JsonField<OffsetDateTime>? = null
@@ -810,7 +810,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var id: JsonField<String>? = null
                 private var commentCount: JsonField<Long>? = null
@@ -1214,7 +1214,7 @@ private constructor(
                     @JvmStatic fun builder() = Builder()
                 }
 
-                class Builder {
+                class Builder internal constructor() {
 
                     private var insightName: JsonField<String> = JsonMissing.of()
                     private var insightParameters: JsonField<MutableList<JsonValue>>? = null
@@ -1441,7 +1441,7 @@ private constructor(
                         }
                     }
 
-                    class Deserializer : BaseDeserializer<Value>(Value::class) {
+                    internal class Deserializer : BaseDeserializer<Value>(Value::class) {
 
                         override fun ObjectCodec.deserialize(node: JsonNode): Value {
                             val json = JsonValue.fromJsonNode(node)
@@ -1463,7 +1463,7 @@ private constructor(
                         }
                     }
 
-                    class Serializer : BaseSerializer<Value>(Value::class) {
+                    internal class Serializer : BaseSerializer<Value>(Value::class) {
 
                         override fun serialize(
                             value: Value,

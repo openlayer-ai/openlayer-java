@@ -15,7 +15,7 @@ import java.util.Optional
 
 /** List the test results for a project commit (project version). */
 class CommitTestResultListParams
-constructor(
+private constructor(
     private val projectVersionId: String,
     private val includeArchived: Boolean?,
     private val page: Long?,
@@ -82,7 +82,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectVersionId: String? = null
         private var includeArchived: Boolean? = null

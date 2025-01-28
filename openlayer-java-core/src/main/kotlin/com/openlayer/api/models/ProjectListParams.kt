@@ -14,7 +14,7 @@ import java.util.Optional
 
 /** List your workspace's projects. */
 class ProjectListParams
-constructor(
+private constructor(
     private val name: String?,
     private val page: Long?,
     private val perPage: Long?,
@@ -60,7 +60,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var name: String? = null
         private var page: Long? = null

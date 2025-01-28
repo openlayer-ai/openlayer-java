@@ -13,8 +13,7 @@ import com.openlayer.api.services.async.ProjectServiceAsyncImpl
 import com.openlayer.api.services.async.StorageServiceAsync
 import com.openlayer.api.services.async.StorageServiceAsyncImpl
 
-class OpenlayerClientAsyncImpl
-constructor(
+class OpenlayerClientAsyncImpl(
     private val clientOptions: ClientOptions,
 ) : OpenlayerClientAsync {
 

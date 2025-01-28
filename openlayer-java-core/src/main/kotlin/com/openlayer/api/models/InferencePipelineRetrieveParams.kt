@@ -16,7 +16,7 @@ import java.util.Optional
 
 /** Retrieve inference pipeline. */
 class InferencePipelineRetrieveParams
-constructor(
+private constructor(
     private val inferencePipelineId: String,
     private val expand: List<Expand>?,
     private val additionalHeaders: Headers,
@@ -57,7 +57,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
         private var expand: MutableList<Expand>? = null

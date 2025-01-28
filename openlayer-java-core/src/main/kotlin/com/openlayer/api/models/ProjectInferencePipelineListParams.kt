@@ -11,7 +11,7 @@ import java.util.Optional
 
 /** List the inference pipelines in a project. */
 class ProjectInferencePipelineListParams
-constructor(
+private constructor(
     private val projectId: String,
     private val name: String?,
     private val page: Long?,
@@ -62,7 +62,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
         private var name: String? = null

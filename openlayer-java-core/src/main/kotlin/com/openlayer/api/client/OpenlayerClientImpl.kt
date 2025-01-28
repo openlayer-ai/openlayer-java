@@ -13,8 +13,7 @@ import com.openlayer.api.services.blocking.ProjectServiceImpl
 import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.StorageServiceImpl
 
-class OpenlayerClientImpl
-constructor(
+class OpenlayerClientImpl(
     private val clientOptions: ClientOptions,
 ) : OpenlayerClient {
 

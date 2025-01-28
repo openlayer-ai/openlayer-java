@@ -25,7 +25,7 @@ import java.util.Optional
 
 /** Create an inference pipeline in a project. */
 class ProjectInferencePipelineCreateParams
-constructor(
+private constructor(
     private val projectId: String,
     private val body: ProjectInferencePipelineCreateBody,
     private val additionalHeaders: Headers,
@@ -144,7 +144,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var description: JsonField<String>? = null
             private var name: JsonField<String>? = null
@@ -248,7 +248,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var projectId: String? = null
         private var body: ProjectInferencePipelineCreateBody.Builder =
@@ -457,7 +457,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var app: JsonField<String>? = null
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -798,7 +798,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
             private var creatorId: JsonField<String>? = null
@@ -1045,7 +1045,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var app: JsonField<String>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -1370,7 +1370,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var id: JsonField<String>? = null
                 private var dateConnected: JsonField<OffsetDateTime>? = null
@@ -1744,7 +1744,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var id: JsonField<String>? = null
             private var creatorId: JsonField<String>? = null
@@ -2129,7 +2129,7 @@ constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            class Builder {
+            class Builder internal constructor() {
 
                 private var executionTimeMs: JsonField<Long> = JsonMissing.of()
                 private var monthYear: JsonField<LocalDate> = JsonMissing.of()

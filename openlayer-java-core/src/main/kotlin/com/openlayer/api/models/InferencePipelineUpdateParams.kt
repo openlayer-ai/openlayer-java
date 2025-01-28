@@ -21,7 +21,7 @@ import java.util.Optional
 
 /** Update inference pipeline. */
 class InferencePipelineUpdateParams
-constructor(
+private constructor(
     private val inferencePipelineId: String,
     private val body: InferencePipelineUpdateBody,
     private val additionalHeaders: Headers,
@@ -144,7 +144,7 @@ constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        class Builder {
+        class Builder internal constructor() {
 
             private var description: JsonField<String> = JsonMissing.of()
             private var name: JsonField<String> = JsonMissing.of()
@@ -253,7 +253,7 @@ constructor(
     }
 
     @NoAutoDetect
-    class Builder {
+    class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
         private var body: InferencePipelineUpdateBody.Builder =
