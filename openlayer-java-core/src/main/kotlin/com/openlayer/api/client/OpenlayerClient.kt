@@ -23,6 +23,12 @@ import com.openlayer.api.services.blocking.StorageService
  */
 interface OpenlayerClient {
 
+    /**
+     * Returns a version of this client that uses asynchronous execution.
+     *
+     * The returned client shares its resources, like its connection pool and thread pools, with
+     * this client.
+     */
     fun async(): OpenlayerClientAsync
 
     fun projects(): ProjectService

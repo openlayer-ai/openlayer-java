@@ -23,6 +23,12 @@ import com.openlayer.api.services.async.StorageServiceAsync
  */
 interface OpenlayerClientAsync {
 
+    /**
+     * Returns a version of this client that uses synchronous execution.
+     *
+     * The returned client shares its resources, like its connection pool and thread pools, with
+     * this client.
+     */
     fun sync(): OpenlayerClient
 
     fun projects(): ProjectServiceAsync
