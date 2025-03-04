@@ -12,14 +12,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 class TestResultServiceTest {
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val testResultService = client.inferencePipelines().testResults()
-        val inferencePipelineTestResultListResponse =
+
+        val testResult =
             testResultService.list(
                 InferencePipelineTestResultListParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -29,7 +30,7 @@ class TestResultServiceTest {
                     .type(InferencePipelineTestResultListParams.Type.INTEGRITY)
                     .build()
             )
-        println(inferencePipelineTestResultListResponse)
-        inferencePipelineTestResultListResponse.validate()
+
+        testResult.validate()
     }
 }

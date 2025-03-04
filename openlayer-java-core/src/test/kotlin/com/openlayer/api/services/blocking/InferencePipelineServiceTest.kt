@@ -14,33 +14,35 @@ import org.junit.jupiter.api.extension.ExtendWith
 class InferencePipelineServiceTest {
 
     @Test
-    fun callRetrieve() {
+    fun retrieve() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val inferencePipelineService = client.inferencePipelines()
-        val inferencePipelineRetrieveResponse =
+
+        val inferencePipeline =
             inferencePipelineService.retrieve(
                 InferencePipelineRetrieveParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .addExpand(InferencePipelineRetrieveParams.Expand.PROJECT)
                     .build()
             )
-        println(inferencePipelineRetrieveResponse)
-        inferencePipelineRetrieveResponse.validate()
+
+        inferencePipeline.validate()
     }
 
     @Test
-    fun callUpdate() {
+    fun update() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val inferencePipelineService = client.inferencePipelines()
-        val inferencePipelineUpdateResponse =
+
+        val inferencePipeline =
             inferencePipelineService.update(
                 InferencePipelineUpdateParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -49,18 +51,19 @@ class InferencePipelineServiceTest {
                     .referenceDatasetUri("referenceDatasetUri")
                     .build()
             )
-        println(inferencePipelineUpdateResponse)
-        inferencePipelineUpdateResponse.validate()
+
+        inferencePipeline.validate()
     }
 
     @Test
-    fun callDelete() {
+    fun delete() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val inferencePipelineService = client.inferencePipelines()
+
         inferencePipelineService.delete(
             InferencePipelineDeleteParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")

@@ -4,6 +4,7 @@ package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -18,7 +19,7 @@ private constructor(
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
-) {
+) : Params {
 
     /** The name of the object. */
     fun objectName(): String = objectName
@@ -30,13 +31,12 @@ private constructor(
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
     @JvmSynthetic
-    internal fun getBody(): Optional<Map<String, JsonValue>> =
+    internal fun _body(): Optional<Map<String, JsonValue>> =
         Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.objectName.let { queryParams.put("objectName", listOf(it.toString())) }
         queryParams.putAll(additionalQueryParams)

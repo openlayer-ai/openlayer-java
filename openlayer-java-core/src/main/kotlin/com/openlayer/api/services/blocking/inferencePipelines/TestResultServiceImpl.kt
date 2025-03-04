@@ -10,14 +10,13 @@ import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
+import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineTestResultListParams
 import com.openlayer.api.models.InferencePipelineTestResultListResponse
 
-class TestResultServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : TestResultService {
+class TestResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    TestResultService {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -28,25 +27,21 @@ internal constructor(
     /** List the latest test results for an inference pipeline. */
     override fun list(
         params: InferencePipelineTestResultListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): InferencePipelineTestResultListResponse {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("inference-pipelines", params.getPathParam(0), "results")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+                .prepare(clientOptions, params)
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { listHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 }

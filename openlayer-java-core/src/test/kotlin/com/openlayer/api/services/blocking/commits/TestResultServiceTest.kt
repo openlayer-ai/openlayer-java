@@ -12,14 +12,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 class TestResultServiceTest {
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val testResultService = client.commits().testResults()
-        val commitTestResultListResponse =
+
+        val testResult =
             testResultService.list(
                 CommitTestResultListParams.builder()
                     .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -30,7 +31,7 @@ class TestResultServiceTest {
                     .type(CommitTestResultListParams.Type.INTEGRITY)
                     .build()
             )
-        println(commitTestResultListResponse)
-        commitTestResultListResponse.validate()
+
+        testResult.validate()
     }
 }

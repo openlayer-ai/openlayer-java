@@ -15,6 +15,6 @@ interface TestResultServiceAsync {
     @JvmOverloads
     fun list(
         params: CommitTestResultListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CommitTestResultListResponse>
 }

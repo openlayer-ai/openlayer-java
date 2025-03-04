@@ -26,20 +26,20 @@ interface InferencePipelineService {
     @JvmOverloads
     fun retrieve(
         params: InferencePipelineRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineRetrieveResponse
 
     /** Update inference pipeline. */
     @JvmOverloads
     fun update(
         params: InferencePipelineUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineUpdateResponse
 
     /** Delete inference pipeline. */
     @JvmOverloads
     fun delete(
         params: InferencePipelineDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     )
 }

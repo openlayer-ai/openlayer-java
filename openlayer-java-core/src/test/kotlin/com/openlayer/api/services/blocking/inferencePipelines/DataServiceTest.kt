@@ -13,14 +13,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 class DataServiceTest {
 
     @Test
-    fun callStream() {
+    fun stream() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val dataService = client.inferencePipelines().data()
-        val inferencePipelineDataStreamResponse =
+
+        val response =
             dataService.stream(
                 InferencePipelineDataStreamParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -56,7 +57,7 @@ class DataServiceTest {
                     )
                     .build()
             )
-        println(inferencePipelineDataStreamResponse)
-        inferencePipelineDataStreamResponse.validate()
+
+        response.validate()
     }
 }

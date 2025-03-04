@@ -11,6 +11,7 @@ import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.json
+import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.ProjectCommitCreateParams
 import com.openlayer.api.models.ProjectCommitCreateResponse
@@ -18,10 +19,8 @@ import com.openlayer.api.models.ProjectCommitListParams
 import com.openlayer.api.models.ProjectCommitListResponse
 import java.util.concurrent.CompletableFuture
 
-class CommitServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : CommitServiceAsync {
+class CommitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    CommitServiceAsync {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -32,28 +31,26 @@ internal constructor(
     /** Create a new commit (project version) in a project. */
     override fun create(
         params: ProjectCommitCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectCommitCreateResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("projects", params.getPathParam(0), "versions")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { createHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 
     private val listHandler: Handler<ProjectCommitListResponse> =
@@ -63,26 +60,24 @@ internal constructor(
     /** List the commits (project versions) in a project. */
     override fun list(
         params: ProjectCommitListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectCommitListResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("projects", params.getPathParam(0), "versions")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 }

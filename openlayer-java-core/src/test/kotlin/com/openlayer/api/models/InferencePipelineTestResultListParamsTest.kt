@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class InferencePipelineTestResultListParamsTest {
 
     @Test
-    fun createInferencePipelineTestResultListParams() {
+    fun create() {
         InferencePipelineTestResultListParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .page(1L)
@@ -20,7 +20,7 @@ class InferencePipelineTestResultListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             InferencePipelineTestResultListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -34,17 +34,17 @@ class InferencePipelineTestResultListParamsTest {
         expected.put("perPage", "1")
         expected.put("status", InferencePipelineTestResultListParams.Status.RUNNING.toString())
         expected.put("type", InferencePipelineTestResultListParams.Type.INTEGRITY.toString())
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             InferencePipelineTestResultListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

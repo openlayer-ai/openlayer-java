@@ -11,16 +11,15 @@ import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.json
+import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.ProjectInferencePipelineCreateParams
 import com.openlayer.api.models.ProjectInferencePipelineCreateResponse
 import com.openlayer.api.models.ProjectInferencePipelineListParams
 import com.openlayer.api.models.ProjectInferencePipelineListResponse
 
-class InferencePipelineServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : InferencePipelineService {
+class InferencePipelineServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    InferencePipelineService {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -31,27 +30,23 @@ internal constructor(
     /** Create an inference pipeline in a project. */
     override fun create(
         params: ProjectInferencePipelineCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectInferencePipelineCreateResponse {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("projects", params.getPathParam(0), "inference-pipelines")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { createHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+                .prepare(clientOptions, params)
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { createHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 
     private val listHandler: Handler<ProjectInferencePipelineListResponse> =
@@ -61,25 +56,21 @@ internal constructor(
     /** List the inference pipelines in a project. */
     override fun list(
         params: ProjectInferencePipelineListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): ProjectInferencePipelineListResponse {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("projects", params.getPathParam(0), "inference-pipelines")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+                .prepare(clientOptions, params)
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { listHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 }

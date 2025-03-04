@@ -6,10 +6,8 @@ import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.services.async.commits.TestResultServiceAsync
 import com.openlayer.api.services.async.commits.TestResultServiceAsyncImpl
 
-class CommitServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : CommitServiceAsync {
+class CommitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    CommitServiceAsync {
 
     private val testResults: TestResultServiceAsync by lazy {
         TestResultServiceAsyncImpl(clientOptions)

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
@@ -21,7 +22,7 @@ private constructor(
     private val taskType: TaskType?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     /** Filter list of items by project name. */
     fun name(): Optional<String> = Optional.ofNullable(name)
@@ -39,10 +40,9 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.name?.let { queryParams.put("name", listOf(it.toString())) }
         this.page?.let { queryParams.put("page", listOf(it.toString())) }
@@ -55,6 +55,8 @@ private constructor(
     fun toBuilder() = Builder().from(this)
 
     companion object {
+
+        @JvmStatic fun none(): ProjectListParams = builder().build()
 
         @JvmStatic fun builder() = Builder()
     }
@@ -222,11 +224,7 @@ private constructor(
     }
 
     /** Filter list of items by task type. */
-    class TaskType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class TaskType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -311,7 +309,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

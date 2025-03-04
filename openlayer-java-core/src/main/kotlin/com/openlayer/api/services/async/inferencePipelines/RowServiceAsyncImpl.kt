@@ -11,15 +11,14 @@ import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.json
+import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineRowUpdateParams
 import com.openlayer.api.models.InferencePipelineRowUpdateResponse
 import java.util.concurrent.CompletableFuture
 
-class RowServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : RowServiceAsync {
+class RowServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    RowServiceAsync {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,27 +29,25 @@ internal constructor(
     /** Update an inference data point in an inference pipeline. */
     override fun update(
         params: InferencePipelineRowUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<InferencePipelineRowUpdateResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.PUT)
                 .addPathSegments("inference-pipelines", params.getPathParam(0), "rows")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { updateHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { updateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 }

@@ -12,6 +12,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -26,18 +27,57 @@ import java.util.Optional
 class ProjectCommitCreateParams
 private constructor(
     private val projectId: String,
-    private val body: ProjectCommitCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun projectId(): String = projectId
+
+    /** The project version (commit) id. */
+    fun id(): String = body.id()
 
     /** The details of a commit (project version). */
     fun commit(): Commit = body.commit()
 
+    /** The commit archive date. */
+    fun dateArchived(): Optional<OffsetDateTime> = body.dateArchived()
+
+    /** The project version (commit) creation date. */
+    fun dateCreated(): OffsetDateTime = body.dateCreated()
+
+    /** The number of tests that are failing for the commit. */
+    fun failingGoalCount(): Long = body.failingGoalCount()
+
+    /** The model id. */
+    fun mlModelId(): Optional<String> = body.mlModelId()
+
+    /** The number of tests that are passing for the commit. */
+    fun passingGoalCount(): Long = body.passingGoalCount()
+
+    /** The project id. */
+    fun projectId(): String = body.projectId()
+
+    /**
+     * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+     * Finally, it can be `paused`, `failed`, or `completed`.
+     */
+    fun status(): Status = body.status()
+
+    /** The commit status message. */
+    fun statusMessage(): Optional<String> = body.statusMessage()
+
     /** The storage URI where the commit bundle is stored. */
     fun storageUri(): String = body.storageUri()
+
+    /** The total number of tests for the commit. */
+    fun totalGoalCount(): Long = body.totalGoalCount()
+
+    /** The training dataset id. */
+    fun trainingDatasetId(): Optional<String> = body.trainingDatasetId()
+
+    /** The validation dataset id. */
+    fun validationDatasetId(): Optional<String> = body.validationDatasetId()
 
     /** Whether the commit is archived. */
     fun archived(): Optional<Boolean> = body.archived()
@@ -45,11 +85,52 @@ private constructor(
     /** The deployment status associated with the commit's model. */
     fun deploymentStatus(): Optional<String> = body.deploymentStatus()
 
+    fun links(): Optional<Links> = body.links()
+
+    /** The project version (commit) id. */
+    fun _id(): JsonField<String> = body._id()
+
     /** The details of a commit (project version). */
     fun _commit(): JsonField<Commit> = body._commit()
 
+    /** The commit archive date. */
+    fun _dateArchived(): JsonField<OffsetDateTime> = body._dateArchived()
+
+    /** The project version (commit) creation date. */
+    fun _dateCreated(): JsonField<OffsetDateTime> = body._dateCreated()
+
+    /** The number of tests that are failing for the commit. */
+    fun _failingGoalCount(): JsonField<Long> = body._failingGoalCount()
+
+    /** The model id. */
+    fun _mlModelId(): JsonField<String> = body._mlModelId()
+
+    /** The number of tests that are passing for the commit. */
+    fun _passingGoalCount(): JsonField<Long> = body._passingGoalCount()
+
+    /** The project id. */
+    fun _projectId(): JsonField<String> = body._projectId()
+
+    /**
+     * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+     * Finally, it can be `paused`, `failed`, or `completed`.
+     */
+    fun _status(): JsonField<Status> = body._status()
+
+    /** The commit status message. */
+    fun _statusMessage(): JsonField<String> = body._statusMessage()
+
     /** The storage URI where the commit bundle is stored. */
     fun _storageUri(): JsonField<String> = body._storageUri()
+
+    /** The total number of tests for the commit. */
+    fun _totalGoalCount(): JsonField<Long> = body._totalGoalCount()
+
+    /** The training dataset id. */
+    fun _trainingDatasetId(): JsonField<String> = body._trainingDatasetId()
+
+    /** The validation dataset id. */
+    fun _validationDatasetId(): JsonField<String> = body._validationDatasetId()
 
     /** Whether the commit is archived. */
     fun _archived(): JsonField<Boolean> = body._archived()
@@ -57,17 +138,19 @@ private constructor(
     /** The deployment status associated with the commit's model. */
     fun _deploymentStatus(): JsonField<String> = body._deploymentStatus()
 
+    fun _links(): JsonField<Links> = body._links()
+
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): ProjectCommitCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -77,30 +160,110 @@ private constructor(
     }
 
     @NoAutoDetect
-    class ProjectCommitCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
         @JsonProperty("commit")
         @ExcludeMissing
         private val commit: JsonField<Commit> = JsonMissing.of(),
+        @JsonProperty("dateArchived")
+        @ExcludeMissing
+        private val dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        private val failingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("mlModelId")
+        @ExcludeMissing
+        private val mlModelId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("projectId")
+        @ExcludeMissing
+        private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        private val statusMessage: JsonField<String> = JsonMissing.of(),
         @JsonProperty("storageUri")
         @ExcludeMissing
         private val storageUri: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        private val totalGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("trainingDatasetId")
+        @ExcludeMissing
+        private val trainingDatasetId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("validationDatasetId")
+        @ExcludeMissing
+        private val validationDatasetId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("archived")
         @ExcludeMissing
         private val archived: JsonField<Boolean> = JsonMissing.of(),
         @JsonProperty("deploymentStatus")
         @ExcludeMissing
         private val deploymentStatus: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("links")
+        @ExcludeMissing
+        private val links: JsonField<Links> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /** The project version (commit) id. */
+        fun id(): String = id.getRequired("id")
+
         /** The details of a commit (project version). */
         fun commit(): Commit = commit.getRequired("commit")
 
+        /** The commit archive date. */
+        fun dateArchived(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateArchived.getNullable("dateArchived"))
+
+        /** The project version (commit) creation date. */
+        fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
+
+        /** The number of tests that are failing for the commit. */
+        fun failingGoalCount(): Long = failingGoalCount.getRequired("failingGoalCount")
+
+        /** The model id. */
+        fun mlModelId(): Optional<String> = Optional.ofNullable(mlModelId.getNullable("mlModelId"))
+
+        /** The number of tests that are passing for the commit. */
+        fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
+
+        /** The project id. */
+        fun projectId(): String = projectId.getRequired("projectId")
+
+        /**
+         * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+         * Finally, it can be `paused`, `failed`, or `completed`.
+         */
+        fun status(): Status = status.getRequired("status")
+
+        /** The commit status message. */
+        fun statusMessage(): Optional<String> =
+            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+
         /** The storage URI where the commit bundle is stored. */
         fun storageUri(): String = storageUri.getRequired("storageUri")
+
+        /** The total number of tests for the commit. */
+        fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
+
+        /** The training dataset id. */
+        fun trainingDatasetId(): Optional<String> =
+            Optional.ofNullable(trainingDatasetId.getNullable("trainingDatasetId"))
+
+        /** The validation dataset id. */
+        fun validationDatasetId(): Optional<String> =
+            Optional.ofNullable(validationDatasetId.getNullable("validationDatasetId"))
 
         /** Whether the commit is archived. */
         fun archived(): Optional<Boolean> = Optional.ofNullable(archived.getNullable("archived"))
@@ -109,13 +272,70 @@ private constructor(
         fun deploymentStatus(): Optional<String> =
             Optional.ofNullable(deploymentStatus.getNullable("deploymentStatus"))
 
+        fun links(): Optional<Links> = Optional.ofNullable(links.getNullable("links"))
+
+        /** The project version (commit) id. */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
         /** The details of a commit (project version). */
         @JsonProperty("commit") @ExcludeMissing fun _commit(): JsonField<Commit> = commit
+
+        /** The commit archive date. */
+        @JsonProperty("dateArchived")
+        @ExcludeMissing
+        fun _dateArchived(): JsonField<OffsetDateTime> = dateArchived
+
+        /** The project version (commit) creation date. */
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+        /** The number of tests that are failing for the commit. */
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        fun _failingGoalCount(): JsonField<Long> = failingGoalCount
+
+        /** The model id. */
+        @JsonProperty("mlModelId") @ExcludeMissing fun _mlModelId(): JsonField<String> = mlModelId
+
+        /** The number of tests that are passing for the commit. */
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        fun _passingGoalCount(): JsonField<Long> = passingGoalCount
+
+        /** The project id. */
+        @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+
+        /**
+         * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+         * Finally, it can be `paused`, `failed`, or `completed`.
+         */
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+        /** The commit status message. */
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        fun _statusMessage(): JsonField<String> = statusMessage
 
         /** The storage URI where the commit bundle is stored. */
         @JsonProperty("storageUri")
         @ExcludeMissing
         fun _storageUri(): JsonField<String> = storageUri
+
+        /** The total number of tests for the commit. */
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        fun _totalGoalCount(): JsonField<Long> = totalGoalCount
+
+        /** The training dataset id. */
+        @JsonProperty("trainingDatasetId")
+        @ExcludeMissing
+        fun _trainingDatasetId(): JsonField<String> = trainingDatasetId
+
+        /** The validation dataset id. */
+        @JsonProperty("validationDatasetId")
+        @ExcludeMissing
+        fun _validationDatasetId(): JsonField<String> = validationDatasetId
 
         /** Whether the commit is archived. */
         @JsonProperty("archived") @ExcludeMissing fun _archived(): JsonField<Boolean> = archived
@@ -125,21 +345,36 @@ private constructor(
         @ExcludeMissing
         fun _deploymentStatus(): JsonField<String> = deploymentStatus
 
+        @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
+
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         private var validated: Boolean = false
 
-        fun validate(): ProjectCommitCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
 
+            id()
             commit().validate()
+            dateArchived()
+            dateCreated()
+            failingGoalCount()
+            mlModelId()
+            passingGoalCount()
+            projectId()
+            status()
+            statusMessage()
             storageUri()
+            totalGoalCount()
+            trainingDatasetId()
+            validationDatasetId()
             archived()
             deploymentStatus()
+            links().ifPresent { it.validate() }
             validated = true
         }
 
@@ -150,23 +385,55 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ProjectCommitCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var id: JsonField<String>? = null
             private var commit: JsonField<Commit>? = null
+            private var dateArchived: JsonField<OffsetDateTime>? = null
+            private var dateCreated: JsonField<OffsetDateTime>? = null
+            private var failingGoalCount: JsonField<Long>? = null
+            private var mlModelId: JsonField<String>? = null
+            private var passingGoalCount: JsonField<Long>? = null
+            private var projectId: JsonField<String>? = null
+            private var status: JsonField<Status>? = null
+            private var statusMessage: JsonField<String>? = null
             private var storageUri: JsonField<String>? = null
+            private var totalGoalCount: JsonField<Long>? = null
+            private var trainingDatasetId: JsonField<String>? = null
+            private var validationDatasetId: JsonField<String>? = null
             private var archived: JsonField<Boolean> = JsonMissing.of()
             private var deploymentStatus: JsonField<String> = JsonMissing.of()
+            private var links: JsonField<Links> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(projectCommitCreateBody: ProjectCommitCreateBody) = apply {
-                commit = projectCommitCreateBody.commit
-                storageUri = projectCommitCreateBody.storageUri
-                archived = projectCommitCreateBody.archived
-                deploymentStatus = projectCommitCreateBody.deploymentStatus
-                additionalProperties = projectCommitCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                id = body.id
+                commit = body.commit
+                dateArchived = body.dateArchived
+                dateCreated = body.dateCreated
+                failingGoalCount = body.failingGoalCount
+                mlModelId = body.mlModelId
+                passingGoalCount = body.passingGoalCount
+                projectId = body.projectId
+                status = body.status
+                statusMessage = body.statusMessage
+                storageUri = body.storageUri
+                totalGoalCount = body.totalGoalCount
+                trainingDatasetId = body.trainingDatasetId
+                validationDatasetId = body.validationDatasetId
+                archived = body.archived
+                deploymentStatus = body.deploymentStatus
+                links = body.links
+                additionalProperties = body.additionalProperties.toMutableMap()
             }
+
+            /** The project version (commit) id. */
+            fun id(id: String) = id(JsonField.of(id))
+
+            /** The project version (commit) id. */
+            fun id(id: JsonField<String>) = apply { this.id = id }
 
             /** The details of a commit (project version). */
             fun commit(commit: Commit) = commit(JsonField.of(commit))
@@ -174,11 +441,124 @@ private constructor(
             /** The details of a commit (project version). */
             fun commit(commit: JsonField<Commit>) = apply { this.commit = commit }
 
+            /** The commit archive date. */
+            fun dateArchived(dateArchived: OffsetDateTime?) =
+                dateArchived(JsonField.ofNullable(dateArchived))
+
+            /** The commit archive date. */
+            fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
+                dateArchived(dateArchived.orElse(null))
+
+            /** The commit archive date. */
+            fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
+                this.dateArchived = dateArchived
+            }
+
+            /** The project version (commit) creation date. */
+            fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
+
+            /** The project version (commit) creation date. */
+            fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+                this.dateCreated = dateCreated
+            }
+
+            /** The number of tests that are failing for the commit. */
+            fun failingGoalCount(failingGoalCount: Long) =
+                failingGoalCount(JsonField.of(failingGoalCount))
+
+            /** The number of tests that are failing for the commit. */
+            fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
+                this.failingGoalCount = failingGoalCount
+            }
+
+            /** The model id. */
+            fun mlModelId(mlModelId: String?) = mlModelId(JsonField.ofNullable(mlModelId))
+
+            /** The model id. */
+            fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.orElse(null))
+
+            /** The model id. */
+            fun mlModelId(mlModelId: JsonField<String>) = apply { this.mlModelId = mlModelId }
+
+            /** The number of tests that are passing for the commit. */
+            fun passingGoalCount(passingGoalCount: Long) =
+                passingGoalCount(JsonField.of(passingGoalCount))
+
+            /** The number of tests that are passing for the commit. */
+            fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
+                this.passingGoalCount = passingGoalCount
+            }
+
+            /** The project id. */
+            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+            /** The project id. */
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+
+            /**
+             * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+             * Finally, it can be `paused`, `failed`, or `completed`.
+             */
+            fun status(status: Status) = status(JsonField.of(status))
+
+            /**
+             * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+             * Finally, it can be `paused`, `failed`, or `completed`.
+             */
+            fun status(status: JsonField<Status>) = apply { this.status = status }
+
+            /** The commit status message. */
+            fun statusMessage(statusMessage: String?) =
+                statusMessage(JsonField.ofNullable(statusMessage))
+
+            /** The commit status message. */
+            fun statusMessage(statusMessage: Optional<String>) =
+                statusMessage(statusMessage.orElse(null))
+
+            /** The commit status message. */
+            fun statusMessage(statusMessage: JsonField<String>) = apply {
+                this.statusMessage = statusMessage
+            }
+
             /** The storage URI where the commit bundle is stored. */
             fun storageUri(storageUri: String) = storageUri(JsonField.of(storageUri))
 
             /** The storage URI where the commit bundle is stored. */
             fun storageUri(storageUri: JsonField<String>) = apply { this.storageUri = storageUri }
+
+            /** The total number of tests for the commit. */
+            fun totalGoalCount(totalGoalCount: Long) = totalGoalCount(JsonField.of(totalGoalCount))
+
+            /** The total number of tests for the commit. */
+            fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
+                this.totalGoalCount = totalGoalCount
+            }
+
+            /** The training dataset id. */
+            fun trainingDatasetId(trainingDatasetId: String?) =
+                trainingDatasetId(JsonField.ofNullable(trainingDatasetId))
+
+            /** The training dataset id. */
+            fun trainingDatasetId(trainingDatasetId: Optional<String>) =
+                trainingDatasetId(trainingDatasetId.orElse(null))
+
+            /** The training dataset id. */
+            fun trainingDatasetId(trainingDatasetId: JsonField<String>) = apply {
+                this.trainingDatasetId = trainingDatasetId
+            }
+
+            /** The validation dataset id. */
+            fun validationDatasetId(validationDatasetId: String?) =
+                validationDatasetId(JsonField.ofNullable(validationDatasetId))
+
+            /** The validation dataset id. */
+            fun validationDatasetId(validationDatasetId: Optional<String>) =
+                validationDatasetId(validationDatasetId.orElse(null))
+
+            /** The validation dataset id. */
+            fun validationDatasetId(validationDatasetId: JsonField<String>) = apply {
+                this.validationDatasetId = validationDatasetId
+            }
 
             /** Whether the commit is archived. */
             fun archived(archived: Boolean?) = archived(JsonField.ofNullable(archived))
@@ -202,6 +582,10 @@ private constructor(
                 this.deploymentStatus = deploymentStatus
             }
 
+            fun links(links: Links) = links(JsonField.of(links))
+
+            fun links(links: JsonField<Links>) = apply { this.links = links }
+
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
                 putAllAdditionalProperties(additionalProperties)
@@ -221,12 +605,25 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ProjectCommitCreateBody =
-                ProjectCommitCreateBody(
+            fun build(): Body =
+                Body(
+                    checkRequired("id", id),
                     checkRequired("commit", commit),
+                    checkRequired("dateArchived", dateArchived),
+                    checkRequired("dateCreated", dateCreated),
+                    checkRequired("failingGoalCount", failingGoalCount),
+                    checkRequired("mlModelId", mlModelId),
+                    checkRequired("passingGoalCount", passingGoalCount),
+                    checkRequired("projectId", projectId),
+                    checkRequired("status", status),
+                    checkRequired("statusMessage", statusMessage),
                     checkRequired("storageUri", storageUri),
+                    checkRequired("totalGoalCount", totalGoalCount),
+                    checkRequired("trainingDatasetId", trainingDatasetId),
+                    checkRequired("validationDatasetId", validationDatasetId),
                     archived,
                     deploymentStatus,
+                    links,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -236,17 +633,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectCommitCreateBody && commit == other.commit && storageUri == other.storageUri && archived == other.archived && deploymentStatus == other.deploymentStatus && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && id == other.id && commit == other.commit && dateArchived == other.dateArchived && dateCreated == other.dateCreated && failingGoalCount == other.failingGoalCount && mlModelId == other.mlModelId && passingGoalCount == other.passingGoalCount && projectId == other.projectId && status == other.status && statusMessage == other.statusMessage && storageUri == other.storageUri && totalGoalCount == other.totalGoalCount && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && archived == other.archived && deploymentStatus == other.deploymentStatus && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(commit, storageUri, archived, deploymentStatus, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, commit, dateArchived, dateCreated, failingGoalCount, mlModelId, passingGoalCount, projectId, status, statusMessage, storageUri, totalGoalCount, trainingDatasetId, validationDatasetId, archived, deploymentStatus, links, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ProjectCommitCreateBody{commit=$commit, storageUri=$storageUri, archived=$archived, deploymentStatus=$deploymentStatus, additionalProperties=$additionalProperties}"
+            "Body{id=$id, commit=$commit, dateArchived=$dateArchived, dateCreated=$dateCreated, failingGoalCount=$failingGoalCount, mlModelId=$mlModelId, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, storageUri=$storageUri, totalGoalCount=$totalGoalCount, trainingDatasetId=$trainingDatasetId, validationDatasetId=$validationDatasetId, archived=$archived, deploymentStatus=$deploymentStatus, links=$links, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -261,7 +658,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var projectId: String? = null
-        private var body: ProjectCommitCreateBody.Builder = ProjectCommitCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -275,17 +672,138 @@ private constructor(
 
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
+        /** The project version (commit) id. */
+        fun id(id: String) = apply { body.id(id) }
+
+        /** The project version (commit) id. */
+        fun id(id: JsonField<String>) = apply { body.id(id) }
+
         /** The details of a commit (project version). */
         fun commit(commit: Commit) = apply { body.commit(commit) }
 
         /** The details of a commit (project version). */
         fun commit(commit: JsonField<Commit>) = apply { body.commit(commit) }
 
+        /** The commit archive date. */
+        fun dateArchived(dateArchived: OffsetDateTime?) = apply { body.dateArchived(dateArchived) }
+
+        /** The commit archive date. */
+        fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
+            dateArchived(dateArchived.orElse(null))
+
+        /** The commit archive date. */
+        fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
+            body.dateArchived(dateArchived)
+        }
+
+        /** The project version (commit) creation date. */
+        fun dateCreated(dateCreated: OffsetDateTime) = apply { body.dateCreated(dateCreated) }
+
+        /** The project version (commit) creation date. */
+        fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+            body.dateCreated(dateCreated)
+        }
+
+        /** The number of tests that are failing for the commit. */
+        fun failingGoalCount(failingGoalCount: Long) = apply {
+            body.failingGoalCount(failingGoalCount)
+        }
+
+        /** The number of tests that are failing for the commit. */
+        fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
+            body.failingGoalCount(failingGoalCount)
+        }
+
+        /** The model id. */
+        fun mlModelId(mlModelId: String?) = apply { body.mlModelId(mlModelId) }
+
+        /** The model id. */
+        fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.orElse(null))
+
+        /** The model id. */
+        fun mlModelId(mlModelId: JsonField<String>) = apply { body.mlModelId(mlModelId) }
+
+        /** The number of tests that are passing for the commit. */
+        fun passingGoalCount(passingGoalCount: Long) = apply {
+            body.passingGoalCount(passingGoalCount)
+        }
+
+        /** The number of tests that are passing for the commit. */
+        fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
+            body.passingGoalCount(passingGoalCount)
+        }
+
+        /** The project id. */
+        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+
+        /** The project id. */
+        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
+
+        /**
+         * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+         * Finally, it can be `paused`, `failed`, or `completed`.
+         */
+        fun status(status: Status) = apply { body.status(status) }
+
+        /**
+         * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+         * Finally, it can be `paused`, `failed`, or `completed`.
+         */
+        fun status(status: JsonField<Status>) = apply { body.status(status) }
+
+        /** The commit status message. */
+        fun statusMessage(statusMessage: String?) = apply { body.statusMessage(statusMessage) }
+
+        /** The commit status message. */
+        fun statusMessage(statusMessage: Optional<String>) =
+            statusMessage(statusMessage.orElse(null))
+
+        /** The commit status message. */
+        fun statusMessage(statusMessage: JsonField<String>) = apply {
+            body.statusMessage(statusMessage)
+        }
+
         /** The storage URI where the commit bundle is stored. */
         fun storageUri(storageUri: String) = apply { body.storageUri(storageUri) }
 
         /** The storage URI where the commit bundle is stored. */
         fun storageUri(storageUri: JsonField<String>) = apply { body.storageUri(storageUri) }
+
+        /** The total number of tests for the commit. */
+        fun totalGoalCount(totalGoalCount: Long) = apply { body.totalGoalCount(totalGoalCount) }
+
+        /** The total number of tests for the commit. */
+        fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
+            body.totalGoalCount(totalGoalCount)
+        }
+
+        /** The training dataset id. */
+        fun trainingDatasetId(trainingDatasetId: String?) = apply {
+            body.trainingDatasetId(trainingDatasetId)
+        }
+
+        /** The training dataset id. */
+        fun trainingDatasetId(trainingDatasetId: Optional<String>) =
+            trainingDatasetId(trainingDatasetId.orElse(null))
+
+        /** The training dataset id. */
+        fun trainingDatasetId(trainingDatasetId: JsonField<String>) = apply {
+            body.trainingDatasetId(trainingDatasetId)
+        }
+
+        /** The validation dataset id. */
+        fun validationDatasetId(validationDatasetId: String?) = apply {
+            body.validationDatasetId(validationDatasetId)
+        }
+
+        /** The validation dataset id. */
+        fun validationDatasetId(validationDatasetId: Optional<String>) =
+            validationDatasetId(validationDatasetId.orElse(null))
+
+        /** The validation dataset id. */
+        fun validationDatasetId(validationDatasetId: JsonField<String>) = apply {
+            body.validationDatasetId(validationDatasetId)
+        }
 
         /** Whether the commit is archived. */
         fun archived(archived: Boolean?) = apply { body.archived(archived) }
@@ -309,6 +827,10 @@ private constructor(
         fun deploymentStatus(deploymentStatus: JsonField<String>) = apply {
             body.deploymentStatus(deploymentStatus)
         }
+
+        fun links(links: Links) = apply { body.links(links) }
+
+        fun links(links: JsonField<Links>) = apply { body.links(links) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -801,11 +1323,7 @@ private constructor(
      * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
      * Finally, it can be `paused`, `failed`, or `completed`.
      */
-    class Status
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -902,7 +1420,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

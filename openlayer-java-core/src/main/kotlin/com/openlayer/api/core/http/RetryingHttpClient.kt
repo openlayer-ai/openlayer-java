@@ -28,10 +28,7 @@ private constructor(
     private val idempotencyHeader: String?,
 ) : HttpClient {
 
-    override fun execute(
-        request: HttpRequest,
-        requestOptions: RequestOptions,
-    ): HttpResponse {
+    override fun execute(request: HttpRequest, requestOptions: RequestOptions): HttpResponse {
         if (!isRetryable(request) || maxRetries <= 0) {
             return httpClient.execute(request, requestOptions)
         }
@@ -57,15 +54,17 @@ private constructor(
                     }
 
                     response
-                } catch (t: Throwable) {
-                    if (++retries > maxRetries || !shouldRetry(t)) {
-                        throw t
+                } catch (throwable: Throwable) {
+                    if (++retries > maxRetries || !shouldRetry(throwable)) {
+                        throw throwable
                     }
 
                     null
                 }
 
             val backoffMillis = getRetryBackoffMillis(retries, response)
+            // All responses must be closed, so close the failed one before retrying.
+            response?.close()
             Thread.sleep(backoffMillis.toMillis())
         }
     }
@@ -98,7 +97,7 @@ private constructor(
                 .handleAsync(
                     fun(
                         response: HttpResponse?,
-                        throwable: Throwable?
+                        throwable: Throwable?,
                     ): CompletableFuture<HttpResponse> {
                         if (response != null) {
                             if (++retries > maxRetries || !shouldRetry(response)) {
@@ -113,10 +112,12 @@ private constructor(
                         }
 
                         val backoffMillis = getRetryBackoffMillis(retries, response)
+                        // All responses must be closed, so close the failed one before retrying.
+                        response?.close()
                         return sleepAsync(backoffMillis.toMillis()).thenCompose {
                             executeWithRetries(requestWithRetryCount, requestOptions)
                         }
-                    },
+                    }
                 ) {
                     // Run in the same thread.
                     it.run()
@@ -196,8 +197,8 @@ private constructor(
                                     OffsetDateTime.now(clock),
                                     OffsetDateTime.parse(
                                         retryAfter,
-                                        DateTimeFormatter.RFC_1123_DATE_TIME
-                                    )
+                                        DateTimeFormatter.RFC_1123_DATE_TIME,
+                                    ),
                                 )
                             } catch (e: DateTimeParseException) {
                                 null
@@ -223,22 +224,22 @@ private constructor(
         return Duration.ofNanos((TimeUnit.SECONDS.toNanos(1) * backoffSeconds * jitter).toLong())
     }
 
-    private fun sleepAsync(millis: Long): CompletableFuture<Void> {
-        val future = CompletableFuture<Void>()
-        TIMER.schedule(
-            object : TimerTask() {
-                override fun run() {
-                    future.complete(null)
-                }
-            },
-            millis
-        )
-        return future
-    }
-
     companion object {
 
         private val TIMER = Timer("RetryingHttpClient", true)
+
+        private fun sleepAsync(millis: Long): CompletableFuture<Void> {
+            val future = CompletableFuture<Void>()
+            TIMER.schedule(
+                object : TimerTask() {
+                    override fun run() {
+                        future.complete(null)
+                    }
+                },
+                millis,
+            )
+            return future
+        }
 
         @JvmStatic fun builder() = Builder()
     }

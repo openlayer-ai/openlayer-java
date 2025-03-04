@@ -12,6 +12,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -25,28 +26,104 @@ import java.util.Optional
 /** Create a project in your workspace. */
 class ProjectCreateParams
 private constructor(
-    private val body: ProjectCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
+
+    /** The project id. */
+    fun id(): String = body.id()
+
+    /** The project creator id. */
+    fun creatorId(): Optional<String> = body.creatorId()
+
+    /** The project creation date. */
+    fun dateCreated(): OffsetDateTime = body.dateCreated()
+
+    /** The project last updated date. */
+    fun dateUpdated(): OffsetDateTime = body.dateUpdated()
+
+    /** The number of tests in the development mode of the project. */
+    fun developmentGoalCount(): Long = body.developmentGoalCount()
+
+    /** The total number of tests in the project. */
+    fun goalCount(): Long = body.goalCount()
+
+    /** The number of inference pipelines in the project. */
+    fun inferencePipelineCount(): Long = body.inferencePipelineCount()
+
+    /** Links to the project. */
+    fun links(): Links = body.links()
+
+    /** The number of tests in the monitoring mode of the project. */
+    fun monitoringGoalCount(): Long = body.monitoringGoalCount()
 
     /** The project name. */
     fun name(): String = body.name()
 
+    /** The source of the project. */
+    fun source(): Optional<Source> = body.source()
+
     /** The task type of the project. */
     fun taskType(): TaskType = body.taskType()
+
+    /** The number of versions (commits) in the project. */
+    fun versionCount(): Long = body.versionCount()
+
+    /** The workspace id. */
+    fun workspaceId(): Optional<String> = body.workspaceId()
 
     /** The project description. */
     fun description(): Optional<String> = body.description()
 
+    fun gitRepo(): Optional<GitRepo> = body.gitRepo()
+
+    /** The project id. */
+    fun _id(): JsonField<String> = body._id()
+
+    /** The project creator id. */
+    fun _creatorId(): JsonField<String> = body._creatorId()
+
+    /** The project creation date. */
+    fun _dateCreated(): JsonField<OffsetDateTime> = body._dateCreated()
+
+    /** The project last updated date. */
+    fun _dateUpdated(): JsonField<OffsetDateTime> = body._dateUpdated()
+
+    /** The number of tests in the development mode of the project. */
+    fun _developmentGoalCount(): JsonField<Long> = body._developmentGoalCount()
+
+    /** The total number of tests in the project. */
+    fun _goalCount(): JsonField<Long> = body._goalCount()
+
+    /** The number of inference pipelines in the project. */
+    fun _inferencePipelineCount(): JsonField<Long> = body._inferencePipelineCount()
+
+    /** Links to the project. */
+    fun _links(): JsonField<Links> = body._links()
+
+    /** The number of tests in the monitoring mode of the project. */
+    fun _monitoringGoalCount(): JsonField<Long> = body._monitoringGoalCount()
+
     /** The project name. */
     fun _name(): JsonField<String> = body._name()
+
+    /** The source of the project. */
+    fun _source(): JsonField<Source> = body._source()
 
     /** The task type of the project. */
     fun _taskType(): JsonField<TaskType> = body._taskType()
 
+    /** The number of versions (commits) in the project. */
+    fun _versionCount(): JsonField<Long> = body._versionCount()
+
+    /** The workspace id. */
+    fun _workspaceId(): JsonField<String> = body._workspaceId()
+
     /** The project description. */
     fun _description(): JsonField<String> = body._description()
+
+    fun _gitRepo(): JsonField<GitRepo> = body._gitRepo()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -54,49 +131,178 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): ProjectCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     @NoAutoDetect
-    class ProjectCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("creatorId")
+        @ExcludeMissing
+        private val creatorId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("developmentGoalCount")
+        @ExcludeMissing
+        private val developmentGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("goalCount")
+        @ExcludeMissing
+        private val goalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("inferencePipelineCount")
+        @ExcludeMissing
+        private val inferencePipelineCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("links")
+        @ExcludeMissing
+        private val links: JsonField<Links> = JsonMissing.of(),
+        @JsonProperty("monitoringGoalCount")
+        @ExcludeMissing
+        private val monitoringGoalCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("source")
+        @ExcludeMissing
+        private val source: JsonField<Source> = JsonMissing.of(),
         @JsonProperty("taskType")
         @ExcludeMissing
         private val taskType: JsonField<TaskType> = JsonMissing.of(),
+        @JsonProperty("versionCount")
+        @ExcludeMissing
+        private val versionCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        private val workspaceId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("description")
         @ExcludeMissing
         private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("gitRepo")
+        @ExcludeMissing
+        private val gitRepo: JsonField<GitRepo> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /** The project id. */
+        fun id(): String = id.getRequired("id")
+
+        /** The project creator id. */
+        fun creatorId(): Optional<String> = Optional.ofNullable(creatorId.getNullable("creatorId"))
+
+        /** The project creation date. */
+        fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
+
+        /** The project last updated date. */
+        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
+
+        /** The number of tests in the development mode of the project. */
+        fun developmentGoalCount(): Long = developmentGoalCount.getRequired("developmentGoalCount")
+
+        /** The total number of tests in the project. */
+        fun goalCount(): Long = goalCount.getRequired("goalCount")
+
+        /** The number of inference pipelines in the project. */
+        fun inferencePipelineCount(): Long =
+            inferencePipelineCount.getRequired("inferencePipelineCount")
+
+        /** Links to the project. */
+        fun links(): Links = links.getRequired("links")
+
+        /** The number of tests in the monitoring mode of the project. */
+        fun monitoringGoalCount(): Long = monitoringGoalCount.getRequired("monitoringGoalCount")
+
         /** The project name. */
         fun name(): String = name.getRequired("name")
 
+        /** The source of the project. */
+        fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
+
         /** The task type of the project. */
         fun taskType(): TaskType = taskType.getRequired("taskType")
+
+        /** The number of versions (commits) in the project. */
+        fun versionCount(): Long = versionCount.getRequired("versionCount")
+
+        /** The workspace id. */
+        fun workspaceId(): Optional<String> =
+            Optional.ofNullable(workspaceId.getNullable("workspaceId"))
 
         /** The project description. */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
+        fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
+
+        /** The project id. */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        /** The project creator id. */
+        @JsonProperty("creatorId") @ExcludeMissing fun _creatorId(): JsonField<String> = creatorId
+
+        /** The project creation date. */
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+        /** The project last updated date. */
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
+
+        /** The number of tests in the development mode of the project. */
+        @JsonProperty("developmentGoalCount")
+        @ExcludeMissing
+        fun _developmentGoalCount(): JsonField<Long> = developmentGoalCount
+
+        /** The total number of tests in the project. */
+        @JsonProperty("goalCount") @ExcludeMissing fun _goalCount(): JsonField<Long> = goalCount
+
+        /** The number of inference pipelines in the project. */
+        @JsonProperty("inferencePipelineCount")
+        @ExcludeMissing
+        fun _inferencePipelineCount(): JsonField<Long> = inferencePipelineCount
+
+        /** Links to the project. */
+        @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
+
+        /** The number of tests in the monitoring mode of the project. */
+        @JsonProperty("monitoringGoalCount")
+        @ExcludeMissing
+        fun _monitoringGoalCount(): JsonField<Long> = monitoringGoalCount
+
         /** The project name. */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+        /** The source of the project. */
+        @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<Source> = source
+
         /** The task type of the project. */
         @JsonProperty("taskType") @ExcludeMissing fun _taskType(): JsonField<TaskType> = taskType
+
+        /** The number of versions (commits) in the project. */
+        @JsonProperty("versionCount")
+        @ExcludeMissing
+        fun _versionCount(): JsonField<Long> = versionCount
+
+        /** The workspace id. */
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        fun _workspaceId(): JsonField<String> = workspaceId
 
         /** The project description. */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
+
+        @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo(): JsonField<GitRepo> = gitRepo
 
         @JsonAnyGetter
         @ExcludeMissing
@@ -104,14 +310,27 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): ProjectCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
 
+            id()
+            creatorId()
+            dateCreated()
+            dateUpdated()
+            developmentGoalCount()
+            goalCount()
+            inferencePipelineCount()
+            links().validate()
+            monitoringGoalCount()
             name()
+            source()
             taskType()
+            versionCount()
+            workspaceId()
             description()
+            gitRepo().ifPresent { it.validate() }
             validated = true
         }
 
@@ -122,20 +341,116 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ProjectCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var id: JsonField<String>? = null
+            private var creatorId: JsonField<String>? = null
+            private var dateCreated: JsonField<OffsetDateTime>? = null
+            private var dateUpdated: JsonField<OffsetDateTime>? = null
+            private var developmentGoalCount: JsonField<Long>? = null
+            private var goalCount: JsonField<Long>? = null
+            private var inferencePipelineCount: JsonField<Long>? = null
+            private var links: JsonField<Links>? = null
+            private var monitoringGoalCount: JsonField<Long>? = null
             private var name: JsonField<String>? = null
+            private var source: JsonField<Source>? = null
             private var taskType: JsonField<TaskType>? = null
+            private var versionCount: JsonField<Long>? = null
+            private var workspaceId: JsonField<String>? = null
             private var description: JsonField<String> = JsonMissing.of()
+            private var gitRepo: JsonField<GitRepo> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(projectCreateBody: ProjectCreateBody) = apply {
-                name = projectCreateBody.name
-                taskType = projectCreateBody.taskType
-                description = projectCreateBody.description
-                additionalProperties = projectCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                id = body.id
+                creatorId = body.creatorId
+                dateCreated = body.dateCreated
+                dateUpdated = body.dateUpdated
+                developmentGoalCount = body.developmentGoalCount
+                goalCount = body.goalCount
+                inferencePipelineCount = body.inferencePipelineCount
+                links = body.links
+                monitoringGoalCount = body.monitoringGoalCount
+                name = body.name
+                source = body.source
+                taskType = body.taskType
+                versionCount = body.versionCount
+                workspaceId = body.workspaceId
+                description = body.description
+                gitRepo = body.gitRepo
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The project id. */
+            fun id(id: String) = id(JsonField.of(id))
+
+            /** The project id. */
+            fun id(id: JsonField<String>) = apply { this.id = id }
+
+            /** The project creator id. */
+            fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
+
+            /** The project creator id. */
+            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+
+            /** The project creator id. */
+            fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
+
+            /** The project creation date. */
+            fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
+
+            /** The project creation date. */
+            fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+                this.dateCreated = dateCreated
+            }
+
+            /** The project last updated date. */
+            fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
+
+            /** The project last updated date. */
+            fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
+                this.dateUpdated = dateUpdated
+            }
+
+            /** The number of tests in the development mode of the project. */
+            fun developmentGoalCount(developmentGoalCount: Long) =
+                developmentGoalCount(JsonField.of(developmentGoalCount))
+
+            /** The number of tests in the development mode of the project. */
+            fun developmentGoalCount(developmentGoalCount: JsonField<Long>) = apply {
+                this.developmentGoalCount = developmentGoalCount
+            }
+
+            /** The total number of tests in the project. */
+            fun goalCount(goalCount: Long) = goalCount(JsonField.of(goalCount))
+
+            /** The total number of tests in the project. */
+            fun goalCount(goalCount: JsonField<Long>) = apply { this.goalCount = goalCount }
+
+            /** The number of inference pipelines in the project. */
+            fun inferencePipelineCount(inferencePipelineCount: Long) =
+                inferencePipelineCount(JsonField.of(inferencePipelineCount))
+
+            /** The number of inference pipelines in the project. */
+            fun inferencePipelineCount(inferencePipelineCount: JsonField<Long>) = apply {
+                this.inferencePipelineCount = inferencePipelineCount
+            }
+
+            /** Links to the project. */
+            fun links(links: Links) = links(JsonField.of(links))
+
+            /** Links to the project. */
+            fun links(links: JsonField<Links>) = apply { this.links = links }
+
+            /** The number of tests in the monitoring mode of the project. */
+            fun monitoringGoalCount(monitoringGoalCount: Long) =
+                monitoringGoalCount(JsonField.of(monitoringGoalCount))
+
+            /** The number of tests in the monitoring mode of the project. */
+            fun monitoringGoalCount(monitoringGoalCount: JsonField<Long>) = apply {
+                this.monitoringGoalCount = monitoringGoalCount
             }
 
             /** The project name. */
@@ -144,11 +459,39 @@ private constructor(
             /** The project name. */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
+            /** The source of the project. */
+            fun source(source: Source?) = source(JsonField.ofNullable(source))
+
+            /** The source of the project. */
+            fun source(source: Optional<Source>) = source(source.orElse(null))
+
+            /** The source of the project. */
+            fun source(source: JsonField<Source>) = apply { this.source = source }
+
             /** The task type of the project. */
             fun taskType(taskType: TaskType) = taskType(JsonField.of(taskType))
 
             /** The task type of the project. */
             fun taskType(taskType: JsonField<TaskType>) = apply { this.taskType = taskType }
+
+            /** The number of versions (commits) in the project. */
+            fun versionCount(versionCount: Long) = versionCount(JsonField.of(versionCount))
+
+            /** The number of versions (commits) in the project. */
+            fun versionCount(versionCount: JsonField<Long>) = apply {
+                this.versionCount = versionCount
+            }
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: String?) = workspaceId(JsonField.ofNullable(workspaceId))
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.orElse(null))
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: JsonField<String>) = apply {
+                this.workspaceId = workspaceId
+            }
 
             /** The project description. */
             fun description(description: String?) = description(JsonField.ofNullable(description))
@@ -160,6 +503,12 @@ private constructor(
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
+
+            fun gitRepo(gitRepo: GitRepo?) = gitRepo(JsonField.ofNullable(gitRepo))
+
+            fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.orElse(null))
+
+            fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -180,11 +529,24 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ProjectCreateBody =
-                ProjectCreateBody(
+            fun build(): Body =
+                Body(
+                    checkRequired("id", id),
+                    checkRequired("creatorId", creatorId),
+                    checkRequired("dateCreated", dateCreated),
+                    checkRequired("dateUpdated", dateUpdated),
+                    checkRequired("developmentGoalCount", developmentGoalCount),
+                    checkRequired("goalCount", goalCount),
+                    checkRequired("inferencePipelineCount", inferencePipelineCount),
+                    checkRequired("links", links),
+                    checkRequired("monitoringGoalCount", monitoringGoalCount),
                     checkRequired("name", name),
+                    checkRequired("source", source),
                     checkRequired("taskType", taskType),
+                    checkRequired("versionCount", versionCount),
+                    checkRequired("workspaceId", workspaceId),
                     description,
+                    gitRepo,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -194,17 +556,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectCreateBody && name == other.name && taskType == other.taskType && description == other.description && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && developmentGoalCount == other.developmentGoalCount && goalCount == other.goalCount && inferencePipelineCount == other.inferencePipelineCount && links == other.links && monitoringGoalCount == other.monitoringGoalCount && name == other.name && source == other.source && taskType == other.taskType && versionCount == other.versionCount && workspaceId == other.workspaceId && description == other.description && gitRepo == other.gitRepo && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(name, taskType, description, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, developmentGoalCount, goalCount, inferencePipelineCount, links, monitoringGoalCount, name, source, taskType, versionCount, workspaceId, description, gitRepo, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ProjectCreateBody{name=$name, taskType=$taskType, description=$description, additionalProperties=$additionalProperties}"
+            "Body{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, description=$description, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -218,7 +580,7 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var body: ProjectCreateBody.Builder = ProjectCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -229,17 +591,114 @@ private constructor(
             additionalQueryParams = projectCreateParams.additionalQueryParams.toBuilder()
         }
 
+        /** The project id. */
+        fun id(id: String) = apply { body.id(id) }
+
+        /** The project id. */
+        fun id(id: JsonField<String>) = apply { body.id(id) }
+
+        /** The project creator id. */
+        fun creatorId(creatorId: String?) = apply { body.creatorId(creatorId) }
+
+        /** The project creator id. */
+        fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+
+        /** The project creator id. */
+        fun creatorId(creatorId: JsonField<String>) = apply { body.creatorId(creatorId) }
+
+        /** The project creation date. */
+        fun dateCreated(dateCreated: OffsetDateTime) = apply { body.dateCreated(dateCreated) }
+
+        /** The project creation date. */
+        fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+            body.dateCreated(dateCreated)
+        }
+
+        /** The project last updated date. */
+        fun dateUpdated(dateUpdated: OffsetDateTime) = apply { body.dateUpdated(dateUpdated) }
+
+        /** The project last updated date. */
+        fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
+            body.dateUpdated(dateUpdated)
+        }
+
+        /** The number of tests in the development mode of the project. */
+        fun developmentGoalCount(developmentGoalCount: Long) = apply {
+            body.developmentGoalCount(developmentGoalCount)
+        }
+
+        /** The number of tests in the development mode of the project. */
+        fun developmentGoalCount(developmentGoalCount: JsonField<Long>) = apply {
+            body.developmentGoalCount(developmentGoalCount)
+        }
+
+        /** The total number of tests in the project. */
+        fun goalCount(goalCount: Long) = apply { body.goalCount(goalCount) }
+
+        /** The total number of tests in the project. */
+        fun goalCount(goalCount: JsonField<Long>) = apply { body.goalCount(goalCount) }
+
+        /** The number of inference pipelines in the project. */
+        fun inferencePipelineCount(inferencePipelineCount: Long) = apply {
+            body.inferencePipelineCount(inferencePipelineCount)
+        }
+
+        /** The number of inference pipelines in the project. */
+        fun inferencePipelineCount(inferencePipelineCount: JsonField<Long>) = apply {
+            body.inferencePipelineCount(inferencePipelineCount)
+        }
+
+        /** Links to the project. */
+        fun links(links: Links) = apply { body.links(links) }
+
+        /** Links to the project. */
+        fun links(links: JsonField<Links>) = apply { body.links(links) }
+
+        /** The number of tests in the monitoring mode of the project. */
+        fun monitoringGoalCount(monitoringGoalCount: Long) = apply {
+            body.monitoringGoalCount(monitoringGoalCount)
+        }
+
+        /** The number of tests in the monitoring mode of the project. */
+        fun monitoringGoalCount(monitoringGoalCount: JsonField<Long>) = apply {
+            body.monitoringGoalCount(monitoringGoalCount)
+        }
+
         /** The project name. */
         fun name(name: String) = apply { body.name(name) }
 
         /** The project name. */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
+        /** The source of the project. */
+        fun source(source: Source?) = apply { body.source(source) }
+
+        /** The source of the project. */
+        fun source(source: Optional<Source>) = source(source.orElse(null))
+
+        /** The source of the project. */
+        fun source(source: JsonField<Source>) = apply { body.source(source) }
+
         /** The task type of the project. */
         fun taskType(taskType: TaskType) = apply { body.taskType(taskType) }
 
         /** The task type of the project. */
         fun taskType(taskType: JsonField<TaskType>) = apply { body.taskType(taskType) }
+
+        /** The number of versions (commits) in the project. */
+        fun versionCount(versionCount: Long) = apply { body.versionCount(versionCount) }
+
+        /** The number of versions (commits) in the project. */
+        fun versionCount(versionCount: JsonField<Long>) = apply { body.versionCount(versionCount) }
+
+        /** The workspace id. */
+        fun workspaceId(workspaceId: String?) = apply { body.workspaceId(workspaceId) }
+
+        /** The workspace id. */
+        fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.orElse(null))
+
+        /** The workspace id. */
+        fun workspaceId(workspaceId: JsonField<String>) = apply { body.workspaceId(workspaceId) }
 
         /** The project description. */
         fun description(description: String?) = apply { body.description(description) }
@@ -249,6 +708,12 @@ private constructor(
 
         /** The project description. */
         fun description(description: JsonField<String>) = apply { body.description(description) }
+
+        fun gitRepo(gitRepo: GitRepo?) = apply { body.gitRepo(gitRepo) }
+
+        fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.orElse(null))
+
+        fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { body.gitRepo(gitRepo) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -468,11 +933,7 @@ private constructor(
     }
 
     /** The source of the project. */
-    class Source
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Source @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -551,7 +1012,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -567,11 +1040,7 @@ private constructor(
     }
 
     /** The task type of the project. */
-    class TaskType
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class TaskType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -656,7 +1125,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

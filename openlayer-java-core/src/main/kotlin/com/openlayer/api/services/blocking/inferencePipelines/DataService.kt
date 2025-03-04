@@ -14,6 +14,6 @@ interface DataService {
     @JvmOverloads
     fun stream(
         params: InferencePipelineDataStreamParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineDataStreamResponse
 }

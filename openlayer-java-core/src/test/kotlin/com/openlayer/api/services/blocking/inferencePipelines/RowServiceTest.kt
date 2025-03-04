@@ -13,14 +13,15 @@ import org.junit.jupiter.api.extension.ExtendWith
 class RowServiceTest {
 
     @Test
-    fun callUpdate() {
+    fun update() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val rowService = client.inferencePipelines().rows()
-        val inferencePipelineRowUpdateResponse =
+
+        val row =
             rowService.update(
                 InferencePipelineRowUpdateParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -30,14 +31,13 @@ class RowServiceTest {
                         InferencePipelineRowUpdateParams.Config.builder()
                             .groundTruthColumnName("ground_truth")
                             .humanFeedbackColumnName("human_feedback")
-                            .inferenceIdColumnName("id")
                             .latencyColumnName("latency")
                             .timestampColumnName("timestamp")
                             .build()
                     )
                     .build()
             )
-        println(inferencePipelineRowUpdateResponse)
-        inferencePipelineRowUpdateResponse.validate()
+
+        row.validate()
     }
 }

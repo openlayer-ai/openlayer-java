@@ -242,7 +242,7 @@ class ErrorHandlingTest {
                 assertPermissionDenied(
                     e,
                     Headers.builder().put("Foo", "Bar").build(),
-                    OPENLAYER_ERROR
+                    OPENLAYER_ERROR,
                 )
             })
     }
@@ -342,7 +342,7 @@ class ErrorHandlingTest {
                 assertUnprocessableEntity(
                     e,
                     Headers.builder().put("Foo", "Bar").build(),
-                    OPENLAYER_ERROR
+                    OPENLAYER_ERROR,
                 )
             })
     }
@@ -442,7 +442,7 @@ class ErrorHandlingTest {
                 assertInternalServer(
                     e,
                     Headers.builder().put("Foo", "Bar").build(),
-                    OPENLAYER_ERROR
+                    OPENLAYER_ERROR,
                 )
             })
     }
@@ -495,7 +495,7 @@ class ErrorHandlingTest {
                     e,
                     999,
                     Headers.builder().put("Foo", "Bar").build(),
-                    toJson(OPENLAYER_ERROR)
+                    toJson(OPENLAYER_ERROR),
                 )
             })
     }
@@ -600,7 +600,7 @@ class ErrorHandlingTest {
         throwable: Throwable,
         statusCode: Int,
         headers: Headers,
-        responseBody: ByteArray
+        responseBody: ByteArray,
     ) {
         assertThat(throwable)
             .asInstanceOf(
@@ -636,7 +636,7 @@ class ErrorHandlingTest {
     private fun assertPermissionDenied(
         throwable: Throwable,
         headers: Headers,
-        error: OpenlayerError
+        error: OpenlayerError,
     ) {
         assertThat(throwable)
             .asInstanceOf(
@@ -662,7 +662,7 @@ class ErrorHandlingTest {
     private fun assertUnprocessableEntity(
         throwable: Throwable,
         headers: Headers,
-        error: OpenlayerError
+        error: OpenlayerError,
     ) {
         assertThat(throwable)
             .asInstanceOf(
@@ -688,7 +688,7 @@ class ErrorHandlingTest {
     private fun assertInternalServer(
         throwable: Throwable,
         headers: Headers,
-        error: OpenlayerError
+        error: OpenlayerError,
     ) {
         assertThat(throwable)
             .asInstanceOf(InstanceOfAssertFactories.throwable(InternalServerException::class.java))

@@ -12,6 +12,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -27,32 +28,114 @@ import java.util.Optional
 class ProjectInferencePipelineCreateParams
 private constructor(
     private val projectId: String,
-    private val body: ProjectInferencePipelineCreateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun projectId(): String = projectId
+
+    /** The inference pipeline id. */
+    fun id(): String = body.id()
+
+    /** The creation date. */
+    fun dateCreated(): OffsetDateTime = body.dateCreated()
+
+    /** The last test evaluation date. */
+    fun dateLastEvaluated(): Optional<OffsetDateTime> = body.dateLastEvaluated()
+
+    /** The last data sample received date. */
+    fun dateLastSampleReceived(): Optional<OffsetDateTime> = body.dateLastSampleReceived()
+
+    /** The next test evaluation date. */
+    fun dateOfNextEvaluation(): Optional<OffsetDateTime> = body.dateOfNextEvaluation()
+
+    /** The last updated date. */
+    fun dateUpdated(): OffsetDateTime = body.dateUpdated()
 
     /** The inference pipeline description. */
     fun description(): Optional<String> = body.description()
 
+    /** The number of tests failing. */
+    fun failingGoalCount(): Long = body.failingGoalCount()
+
+    fun links(): Links = body.links()
+
     /** The inference pipeline name. */
     fun name(): String = body.name()
+
+    /** The number of tests passing. */
+    fun passingGoalCount(): Long = body.passingGoalCount()
+
+    /** The project id. */
+    fun projectId(): String = body.projectId()
+
+    /** The status of test evaluation for the inference pipeline. */
+    fun status(): Status = body.status()
+
+    /** The status message of test evaluation for the inference pipeline. */
+    fun statusMessage(): Optional<String> = body.statusMessage()
+
+    /** The total number of tests. */
+    fun totalGoalCount(): Long = body.totalGoalCount()
 
     fun project(): Optional<Project> = body.project()
 
     fun workspace(): Optional<Workspace> = body.workspace()
 
+    /** The workspace id. */
+    fun workspaceId(): Optional<String> = body.workspaceId()
+
+    /** The inference pipeline id. */
+    fun _id(): JsonField<String> = body._id()
+
+    /** The creation date. */
+    fun _dateCreated(): JsonField<OffsetDateTime> = body._dateCreated()
+
+    /** The last test evaluation date. */
+    fun _dateLastEvaluated(): JsonField<OffsetDateTime> = body._dateLastEvaluated()
+
+    /** The last data sample received date. */
+    fun _dateLastSampleReceived(): JsonField<OffsetDateTime> = body._dateLastSampleReceived()
+
+    /** The next test evaluation date. */
+    fun _dateOfNextEvaluation(): JsonField<OffsetDateTime> = body._dateOfNextEvaluation()
+
+    /** The last updated date. */
+    fun _dateUpdated(): JsonField<OffsetDateTime> = body._dateUpdated()
+
     /** The inference pipeline description. */
     fun _description(): JsonField<String> = body._description()
+
+    /** The number of tests failing. */
+    fun _failingGoalCount(): JsonField<Long> = body._failingGoalCount()
+
+    fun _links(): JsonField<Links> = body._links()
 
     /** The inference pipeline name. */
     fun _name(): JsonField<String> = body._name()
 
+    /** The number of tests passing. */
+    fun _passingGoalCount(): JsonField<Long> = body._passingGoalCount()
+
+    /** The project id. */
+    fun _projectId(): JsonField<String> = body._projectId()
+
+    /** The status of test evaluation for the inference pipeline. */
+    fun _status(): JsonField<Status> = body._status()
+
+    /** The status message of test evaluation for the inference pipeline. */
+    fun _statusMessage(): JsonField<String> = body._statusMessage()
+
+    /** The total number of tests. */
+    fun _totalGoalCount(): JsonField<Long> = body._totalGoalCount()
+
     fun _project(): JsonField<Project> = body._project()
 
     fun _workspace(): JsonField<Workspace> = body._workspace()
+
+    /** The workspace id. */
+    fun _workspaceId(): JsonField<String> = body._workspaceId()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -60,11 +143,11 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): ProjectInferencePipelineCreateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -74,44 +157,186 @@ private constructor(
     }
 
     @NoAutoDetect
-    class ProjectInferencePipelineCreateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateLastEvaluated")
+        @ExcludeMissing
+        private val dateLastEvaluated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateLastSampleReceived")
+        @ExcludeMissing
+        private val dateLastSampleReceived: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateOfNextEvaluation")
+        @ExcludeMissing
+        private val dateOfNextEvaluation: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("description")
         @ExcludeMissing
         private val description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        private val failingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("links")
+        @ExcludeMissing
+        private val links: JsonField<Links> = JsonMissing.of(),
         @JsonProperty("name")
         @ExcludeMissing
         private val name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("projectId")
+        @ExcludeMissing
+        private val projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status")
+        @ExcludeMissing
+        private val status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        private val statusMessage: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        private val totalGoalCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("project")
         @ExcludeMissing
         private val project: JsonField<Project> = JsonMissing.of(),
         @JsonProperty("workspace")
         @ExcludeMissing
         private val workspace: JsonField<Workspace> = JsonMissing.of(),
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        private val workspaceId: JsonField<String> = JsonMissing.of(),
         @JsonAnySetter
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
+
+        /** The inference pipeline id. */
+        fun id(): String = id.getRequired("id")
+
+        /** The creation date. */
+        fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
+
+        /** The last test evaluation date. */
+        fun dateLastEvaluated(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateLastEvaluated.getNullable("dateLastEvaluated"))
+
+        /** The last data sample received date. */
+        fun dateLastSampleReceived(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
+
+        /** The next test evaluation date. */
+        fun dateOfNextEvaluation(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateOfNextEvaluation.getNullable("dateOfNextEvaluation"))
+
+        /** The last updated date. */
+        fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
         /** The inference pipeline description. */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
+        /** The number of tests failing. */
+        fun failingGoalCount(): Long = failingGoalCount.getRequired("failingGoalCount")
+
+        fun links(): Links = links.getRequired("links")
+
         /** The inference pipeline name. */
         fun name(): String = name.getRequired("name")
+
+        /** The number of tests passing. */
+        fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
+
+        /** The project id. */
+        fun projectId(): String = projectId.getRequired("projectId")
+
+        /** The status of test evaluation for the inference pipeline. */
+        fun status(): Status = status.getRequired("status")
+
+        /** The status message of test evaluation for the inference pipeline. */
+        fun statusMessage(): Optional<String> =
+            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+
+        /** The total number of tests. */
+        fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
 
         fun project(): Optional<Project> = Optional.ofNullable(project.getNullable("project"))
 
         fun workspace(): Optional<Workspace> =
             Optional.ofNullable(workspace.getNullable("workspace"))
 
+        /** The workspace id. */
+        fun workspaceId(): Optional<String> =
+            Optional.ofNullable(workspaceId.getNullable("workspaceId"))
+
+        /** The inference pipeline id. */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        /** The creation date. */
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+        /** The last test evaluation date. */
+        @JsonProperty("dateLastEvaluated")
+        @ExcludeMissing
+        fun _dateLastEvaluated(): JsonField<OffsetDateTime> = dateLastEvaluated
+
+        /** The last data sample received date. */
+        @JsonProperty("dateLastSampleReceived")
+        @ExcludeMissing
+        fun _dateLastSampleReceived(): JsonField<OffsetDateTime> = dateLastSampleReceived
+
+        /** The next test evaluation date. */
+        @JsonProperty("dateOfNextEvaluation")
+        @ExcludeMissing
+        fun _dateOfNextEvaluation(): JsonField<OffsetDateTime> = dateOfNextEvaluation
+
+        /** The last updated date. */
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
+
         /** The inference pipeline description. */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
+        /** The number of tests failing. */
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        fun _failingGoalCount(): JsonField<Long> = failingGoalCount
+
+        @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
+
         /** The inference pipeline name. */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+        /** The number of tests passing. */
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        fun _passingGoalCount(): JsonField<Long> = passingGoalCount
+
+        /** The project id. */
+        @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+
+        /** The status of test evaluation for the inference pipeline. */
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+        /** The status message of test evaluation for the inference pipeline. */
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        fun _statusMessage(): JsonField<String> = statusMessage
+
+        /** The total number of tests. */
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        fun _totalGoalCount(): JsonField<Long> = totalGoalCount
 
         @JsonProperty("project") @ExcludeMissing fun _project(): JsonField<Project> = project
 
@@ -119,21 +344,40 @@ private constructor(
         @ExcludeMissing
         fun _workspace(): JsonField<Workspace> = workspace
 
+        /** The workspace id. */
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        fun _workspaceId(): JsonField<String> = workspaceId
+
         @JsonAnyGetter
         @ExcludeMissing
         fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
 
         private var validated: Boolean = false
 
-        fun validate(): ProjectInferencePipelineCreateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
 
+            id()
+            dateCreated()
+            dateLastEvaluated()
+            dateLastSampleReceived()
+            dateOfNextEvaluation()
+            dateUpdated()
             description()
+            failingGoalCount()
+            links().validate()
             name()
+            passingGoalCount()
+            projectId()
+            status()
+            statusMessage()
+            totalGoalCount()
             project().ifPresent { it.validate() }
             workspace().ifPresent { it.validate() }
+            workspaceId()
             validated = true
         }
 
@@ -144,25 +388,111 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [ProjectInferencePipelineCreateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
+            private var id: JsonField<String>? = null
+            private var dateCreated: JsonField<OffsetDateTime>? = null
+            private var dateLastEvaluated: JsonField<OffsetDateTime>? = null
+            private var dateLastSampleReceived: JsonField<OffsetDateTime>? = null
+            private var dateOfNextEvaluation: JsonField<OffsetDateTime>? = null
+            private var dateUpdated: JsonField<OffsetDateTime>? = null
             private var description: JsonField<String>? = null
+            private var failingGoalCount: JsonField<Long>? = null
+            private var links: JsonField<Links>? = null
             private var name: JsonField<String>? = null
+            private var passingGoalCount: JsonField<Long>? = null
+            private var projectId: JsonField<String>? = null
+            private var status: JsonField<Status>? = null
+            private var statusMessage: JsonField<String>? = null
+            private var totalGoalCount: JsonField<Long>? = null
             private var project: JsonField<Project> = JsonMissing.of()
             private var workspace: JsonField<Workspace> = JsonMissing.of()
+            private var workspaceId: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(
-                projectInferencePipelineCreateBody: ProjectInferencePipelineCreateBody
-            ) = apply {
-                description = projectInferencePipelineCreateBody.description
-                name = projectInferencePipelineCreateBody.name
-                project = projectInferencePipelineCreateBody.project
-                workspace = projectInferencePipelineCreateBody.workspace
-                additionalProperties =
-                    projectInferencePipelineCreateBody.additionalProperties.toMutableMap()
+            internal fun from(body: Body) = apply {
+                id = body.id
+                dateCreated = body.dateCreated
+                dateLastEvaluated = body.dateLastEvaluated
+                dateLastSampleReceived = body.dateLastSampleReceived
+                dateOfNextEvaluation = body.dateOfNextEvaluation
+                dateUpdated = body.dateUpdated
+                description = body.description
+                failingGoalCount = body.failingGoalCount
+                links = body.links
+                name = body.name
+                passingGoalCount = body.passingGoalCount
+                projectId = body.projectId
+                status = body.status
+                statusMessage = body.statusMessage
+                totalGoalCount = body.totalGoalCount
+                project = body.project
+                workspace = body.workspace
+                workspaceId = body.workspaceId
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The inference pipeline id. */
+            fun id(id: String) = id(JsonField.of(id))
+
+            /** The inference pipeline id. */
+            fun id(id: JsonField<String>) = apply { this.id = id }
+
+            /** The creation date. */
+            fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
+
+            /** The creation date. */
+            fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+                this.dateCreated = dateCreated
+            }
+
+            /** The last test evaluation date. */
+            fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime?) =
+                dateLastEvaluated(JsonField.ofNullable(dateLastEvaluated))
+
+            /** The last test evaluation date. */
+            fun dateLastEvaluated(dateLastEvaluated: Optional<OffsetDateTime>) =
+                dateLastEvaluated(dateLastEvaluated.orElse(null))
+
+            /** The last test evaluation date. */
+            fun dateLastEvaluated(dateLastEvaluated: JsonField<OffsetDateTime>) = apply {
+                this.dateLastEvaluated = dateLastEvaluated
+            }
+
+            /** The last data sample received date. */
+            fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime?) =
+                dateLastSampleReceived(JsonField.ofNullable(dateLastSampleReceived))
+
+            /** The last data sample received date. */
+            fun dateLastSampleReceived(dateLastSampleReceived: Optional<OffsetDateTime>) =
+                dateLastSampleReceived(dateLastSampleReceived.orElse(null))
+
+            /** The last data sample received date. */
+            fun dateLastSampleReceived(dateLastSampleReceived: JsonField<OffsetDateTime>) = apply {
+                this.dateLastSampleReceived = dateLastSampleReceived
+            }
+
+            /** The next test evaluation date. */
+            fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime?) =
+                dateOfNextEvaluation(JsonField.ofNullable(dateOfNextEvaluation))
+
+            /** The next test evaluation date. */
+            fun dateOfNextEvaluation(dateOfNextEvaluation: Optional<OffsetDateTime>) =
+                dateOfNextEvaluation(dateOfNextEvaluation.orElse(null))
+
+            /** The next test evaluation date. */
+            fun dateOfNextEvaluation(dateOfNextEvaluation: JsonField<OffsetDateTime>) = apply {
+                this.dateOfNextEvaluation = dateOfNextEvaluation
+            }
+
+            /** The last updated date. */
+            fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
+
+            /** The last updated date. */
+            fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
+                this.dateUpdated = dateUpdated
             }
 
             /** The inference pipeline description. */
@@ -176,11 +506,66 @@ private constructor(
                 this.description = description
             }
 
+            /** The number of tests failing. */
+            fun failingGoalCount(failingGoalCount: Long) =
+                failingGoalCount(JsonField.of(failingGoalCount))
+
+            /** The number of tests failing. */
+            fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
+                this.failingGoalCount = failingGoalCount
+            }
+
+            fun links(links: Links) = links(JsonField.of(links))
+
+            fun links(links: JsonField<Links>) = apply { this.links = links }
+
             /** The inference pipeline name. */
             fun name(name: String) = name(JsonField.of(name))
 
             /** The inference pipeline name. */
             fun name(name: JsonField<String>) = apply { this.name = name }
+
+            /** The number of tests passing. */
+            fun passingGoalCount(passingGoalCount: Long) =
+                passingGoalCount(JsonField.of(passingGoalCount))
+
+            /** The number of tests passing. */
+            fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
+                this.passingGoalCount = passingGoalCount
+            }
+
+            /** The project id. */
+            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+            /** The project id. */
+            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+
+            /** The status of test evaluation for the inference pipeline. */
+            fun status(status: Status) = status(JsonField.of(status))
+
+            /** The status of test evaluation for the inference pipeline. */
+            fun status(status: JsonField<Status>) = apply { this.status = status }
+
+            /** The status message of test evaluation for the inference pipeline. */
+            fun statusMessage(statusMessage: String?) =
+                statusMessage(JsonField.ofNullable(statusMessage))
+
+            /** The status message of test evaluation for the inference pipeline. */
+            fun statusMessage(statusMessage: Optional<String>) =
+                statusMessage(statusMessage.orElse(null))
+
+            /** The status message of test evaluation for the inference pipeline. */
+            fun statusMessage(statusMessage: JsonField<String>) = apply {
+                this.statusMessage = statusMessage
+            }
+
+            /** The total number of tests. */
+            fun totalGoalCount(totalGoalCount: Long) = totalGoalCount(JsonField.of(totalGoalCount))
+
+            /** The total number of tests. */
+            fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
+                this.totalGoalCount = totalGoalCount
+            }
 
             fun project(project: Project?) = project(JsonField.ofNullable(project))
 
@@ -193,6 +578,14 @@ private constructor(
             fun workspace(workspace: Optional<Workspace>) = workspace(workspace.orElse(null))
 
             fun workspace(workspace: JsonField<Workspace>) = apply { this.workspace = workspace }
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: String) = workspaceId(JsonField.of(workspaceId))
+
+            /** The workspace id. */
+            fun workspaceId(workspaceId: JsonField<String>) = apply {
+                this.workspaceId = workspaceId
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -213,12 +606,26 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): ProjectInferencePipelineCreateBody =
-                ProjectInferencePipelineCreateBody(
+            fun build(): Body =
+                Body(
+                    checkRequired("id", id),
+                    checkRequired("dateCreated", dateCreated),
+                    checkRequired("dateLastEvaluated", dateLastEvaluated),
+                    checkRequired("dateLastSampleReceived", dateLastSampleReceived),
+                    checkRequired("dateOfNextEvaluation", dateOfNextEvaluation),
+                    checkRequired("dateUpdated", dateUpdated),
                     checkRequired("description", description),
+                    checkRequired("failingGoalCount", failingGoalCount),
+                    checkRequired("links", links),
                     checkRequired("name", name),
+                    checkRequired("passingGoalCount", passingGoalCount),
+                    checkRequired("projectId", projectId),
+                    checkRequired("status", status),
+                    checkRequired("statusMessage", statusMessage),
+                    checkRequired("totalGoalCount", totalGoalCount),
                     project,
                     workspace,
+                    workspaceId,
                     additionalProperties.toImmutable(),
                 )
         }
@@ -228,17 +635,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is ProjectInferencePipelineCreateBody && description == other.description && name == other.name && project == other.project && workspace == other.workspace && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && id == other.id && dateCreated == other.dateCreated && dateLastEvaluated == other.dateLastEvaluated && dateLastSampleReceived == other.dateLastSampleReceived && dateOfNextEvaluation == other.dateOfNextEvaluation && dateUpdated == other.dateUpdated && description == other.description && failingGoalCount == other.failingGoalCount && links == other.links && name == other.name && passingGoalCount == other.passingGoalCount && projectId == other.projectId && status == other.status && statusMessage == other.statusMessage && totalGoalCount == other.totalGoalCount && project == other.project && workspace == other.workspace && workspaceId == other.workspaceId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(description, name, project, workspace, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateLastEvaluated, dateLastSampleReceived, dateOfNextEvaluation, dateUpdated, description, failingGoalCount, links, name, passingGoalCount, projectId, status, statusMessage, totalGoalCount, project, workspace, workspaceId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "ProjectInferencePipelineCreateBody{description=$description, name=$name, project=$project, workspace=$workspace, additionalProperties=$additionalProperties}"
+            "Body{id=$id, dateCreated=$dateCreated, dateLastEvaluated=$dateLastEvaluated, dateLastSampleReceived=$dateLastSampleReceived, dateOfNextEvaluation=$dateOfNextEvaluation, dateUpdated=$dateUpdated, description=$description, failingGoalCount=$failingGoalCount, links=$links, name=$name, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, totalGoalCount=$totalGoalCount, project=$project, workspace=$workspace, workspaceId=$workspaceId, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -253,8 +660,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var projectId: String? = null
-        private var body: ProjectInferencePipelineCreateBody.Builder =
-            ProjectInferencePipelineCreateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -271,6 +677,70 @@ private constructor(
 
         fun projectId(projectId: String) = apply { this.projectId = projectId }
 
+        /** The inference pipeline id. */
+        fun id(id: String) = apply { body.id(id) }
+
+        /** The inference pipeline id. */
+        fun id(id: JsonField<String>) = apply { body.id(id) }
+
+        /** The creation date. */
+        fun dateCreated(dateCreated: OffsetDateTime) = apply { body.dateCreated(dateCreated) }
+
+        /** The creation date. */
+        fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+            body.dateCreated(dateCreated)
+        }
+
+        /** The last test evaluation date. */
+        fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime?) = apply {
+            body.dateLastEvaluated(dateLastEvaluated)
+        }
+
+        /** The last test evaluation date. */
+        fun dateLastEvaluated(dateLastEvaluated: Optional<OffsetDateTime>) =
+            dateLastEvaluated(dateLastEvaluated.orElse(null))
+
+        /** The last test evaluation date. */
+        fun dateLastEvaluated(dateLastEvaluated: JsonField<OffsetDateTime>) = apply {
+            body.dateLastEvaluated(dateLastEvaluated)
+        }
+
+        /** The last data sample received date. */
+        fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime?) = apply {
+            body.dateLastSampleReceived(dateLastSampleReceived)
+        }
+
+        /** The last data sample received date. */
+        fun dateLastSampleReceived(dateLastSampleReceived: Optional<OffsetDateTime>) =
+            dateLastSampleReceived(dateLastSampleReceived.orElse(null))
+
+        /** The last data sample received date. */
+        fun dateLastSampleReceived(dateLastSampleReceived: JsonField<OffsetDateTime>) = apply {
+            body.dateLastSampleReceived(dateLastSampleReceived)
+        }
+
+        /** The next test evaluation date. */
+        fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime?) = apply {
+            body.dateOfNextEvaluation(dateOfNextEvaluation)
+        }
+
+        /** The next test evaluation date. */
+        fun dateOfNextEvaluation(dateOfNextEvaluation: Optional<OffsetDateTime>) =
+            dateOfNextEvaluation(dateOfNextEvaluation.orElse(null))
+
+        /** The next test evaluation date. */
+        fun dateOfNextEvaluation(dateOfNextEvaluation: JsonField<OffsetDateTime>) = apply {
+            body.dateOfNextEvaluation(dateOfNextEvaluation)
+        }
+
+        /** The last updated date. */
+        fun dateUpdated(dateUpdated: OffsetDateTime) = apply { body.dateUpdated(dateUpdated) }
+
+        /** The last updated date. */
+        fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
+            body.dateUpdated(dateUpdated)
+        }
+
         /** The inference pipeline description. */
         fun description(description: String?) = apply { body.description(description) }
 
@@ -280,11 +750,67 @@ private constructor(
         /** The inference pipeline description. */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
+        /** The number of tests failing. */
+        fun failingGoalCount(failingGoalCount: Long) = apply {
+            body.failingGoalCount(failingGoalCount)
+        }
+
+        /** The number of tests failing. */
+        fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
+            body.failingGoalCount(failingGoalCount)
+        }
+
+        fun links(links: Links) = apply { body.links(links) }
+
+        fun links(links: JsonField<Links>) = apply { body.links(links) }
+
         /** The inference pipeline name. */
         fun name(name: String) = apply { body.name(name) }
 
         /** The inference pipeline name. */
         fun name(name: JsonField<String>) = apply { body.name(name) }
+
+        /** The number of tests passing. */
+        fun passingGoalCount(passingGoalCount: Long) = apply {
+            body.passingGoalCount(passingGoalCount)
+        }
+
+        /** The number of tests passing. */
+        fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
+            body.passingGoalCount(passingGoalCount)
+        }
+
+        /** The project id. */
+        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+
+        /** The project id. */
+        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
+
+        /** The status of test evaluation for the inference pipeline. */
+        fun status(status: Status) = apply { body.status(status) }
+
+        /** The status of test evaluation for the inference pipeline. */
+        fun status(status: JsonField<Status>) = apply { body.status(status) }
+
+        /** The status message of test evaluation for the inference pipeline. */
+        fun statusMessage(statusMessage: String?) = apply { body.statusMessage(statusMessage) }
+
+        /** The status message of test evaluation for the inference pipeline. */
+        fun statusMessage(statusMessage: Optional<String>) =
+            statusMessage(statusMessage.orElse(null))
+
+        /** The status message of test evaluation for the inference pipeline. */
+        fun statusMessage(statusMessage: JsonField<String>) = apply {
+            body.statusMessage(statusMessage)
+        }
+
+        /** The total number of tests. */
+        fun totalGoalCount(totalGoalCount: Long) = apply { body.totalGoalCount(totalGoalCount) }
+
+        /** The total number of tests. */
+        fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
+            body.totalGoalCount(totalGoalCount)
+        }
 
         fun project(project: Project?) = apply { body.project(project) }
 
@@ -297,6 +823,12 @@ private constructor(
         fun workspace(workspace: Optional<Workspace>) = workspace(workspace.orElse(null))
 
         fun workspace(workspace: JsonField<Workspace>) = apply { body.workspace(workspace) }
+
+        /** The workspace id. */
+        fun workspaceId(workspaceId: String) = apply { body.workspaceId(workspaceId) }
+
+        /** The workspace id. */
+        fun workspaceId(workspaceId: JsonField<String>) = apply { body.workspaceId(workspaceId) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -516,11 +1048,7 @@ private constructor(
     }
 
     /** The status of test evaluation for the inference pipeline. */
-    class Status
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -617,7 +1145,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1144,11 +1684,7 @@ private constructor(
         }
 
         /** The source of the project. */
-        class Source
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Source @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1229,7 +1765,19 @@ private constructor(
                     else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    OpenlayerInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1245,11 +1793,8 @@ private constructor(
         }
 
         /** The task type of the project. */
-        class TaskType
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class TaskType @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -1336,7 +1881,19 @@ private constructor(
                     else -> throw OpenlayerInvalidDataException("Unknown TaskType: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    OpenlayerInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -2090,11 +2647,7 @@ private constructor(
                 )
         }
 
-        class Status
-        @JsonCreator
-        private constructor(
-            private val value: JsonField<String>,
-        ) : Enum {
+        class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
              * Returns this class instance's raw value.
@@ -2205,7 +2758,19 @@ private constructor(
                     else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
                 }
 
-            fun asString(): String = _value().asStringOrThrow()
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    OpenlayerInvalidDataException("Value is not a String")
+                }
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {

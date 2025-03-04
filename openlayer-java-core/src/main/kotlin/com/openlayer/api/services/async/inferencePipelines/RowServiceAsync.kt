@@ -15,6 +15,6 @@ interface RowServiceAsync {
     @JvmOverloads
     fun update(
         params: InferencePipelineRowUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineRowUpdateResponse>
 }

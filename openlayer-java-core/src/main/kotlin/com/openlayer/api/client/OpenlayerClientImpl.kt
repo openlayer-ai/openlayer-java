@@ -13,9 +13,7 @@ import com.openlayer.api.services.blocking.ProjectServiceImpl
 import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.StorageServiceImpl
 
-class OpenlayerClientImpl(
-    private val clientOptions: ClientOptions,
-) : OpenlayerClient {
+class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerClient {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions

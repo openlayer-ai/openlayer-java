@@ -6,10 +6,8 @@ import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.services.blocking.commits.TestResultService
 import com.openlayer.api.services.blocking.commits.TestResultServiceImpl
 
-class CommitServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : CommitService {
+class CommitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    CommitService {
 
     private val testResults: TestResultService by lazy { TestResultServiceImpl(clientOptions) }
 

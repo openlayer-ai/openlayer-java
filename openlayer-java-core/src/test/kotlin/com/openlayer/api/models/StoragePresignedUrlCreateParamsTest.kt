@@ -9,23 +9,23 @@ import org.junit.jupiter.api.Test
 class StoragePresignedUrlCreateParamsTest {
 
     @Test
-    fun createStoragePresignedUrlCreateParams() {
+    fun create() {
         StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params = StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
         val expected = QueryParams.builder()
         expected.put("objectName", "objectName")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
         val expected = QueryParams.builder()
         expected.put("objectName", "objectName")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }

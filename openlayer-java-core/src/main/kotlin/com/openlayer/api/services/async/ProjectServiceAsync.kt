@@ -23,13 +23,17 @@ interface ProjectServiceAsync {
     @JvmOverloads
     fun create(
         params: ProjectCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectCreateResponse>
 
     /** List your workspace's projects. */
     @JvmOverloads
     fun list(
-        params: ProjectListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        params: ProjectListParams = ProjectListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectListResponse>
+
+    /** List your workspace's projects. */
+    fun list(requestOptions: RequestOptions): CompletableFuture<ProjectListResponse> =
+        list(ProjectListParams.none(), requestOptions)
 }

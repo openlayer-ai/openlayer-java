@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class ProjectCommitListParamsTest {
 
     @Test
-    fun createProjectCommitListParams() {
+    fun create() {
         ProjectCommitListParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .page(1L)
@@ -18,7 +18,7 @@ class ProjectCommitListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             ProjectCommitListParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -28,17 +28,17 @@ class ProjectCommitListParamsTest {
         val expected = QueryParams.builder()
         expected.put("page", "1")
         expected.put("perPage", "1")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             ProjectCommitListParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

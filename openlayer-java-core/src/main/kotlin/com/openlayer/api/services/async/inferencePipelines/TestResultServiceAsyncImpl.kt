@@ -10,15 +10,14 @@ import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
+import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineTestResultListParams
 import com.openlayer.api.models.InferencePipelineTestResultListResponse
 import java.util.concurrent.CompletableFuture
 
-class TestResultServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : TestResultServiceAsync {
+class TestResultServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    TestResultServiceAsync {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,26 +28,24 @@ internal constructor(
     /** List the latest test results for an inference pipeline. */
     override fun list(
         params: InferencePipelineTestResultListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<InferencePipelineTestResultListResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("inference-pipelines", params.getPathParam(0), "results")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 }
