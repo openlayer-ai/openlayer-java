@@ -22,13 +22,17 @@ interface ProjectService {
     @JvmOverloads
     fun create(
         params: ProjectCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectCreateResponse
 
     /** List your workspace's projects. */
     @JvmOverloads
     fun list(
-        params: ProjectListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        params: ProjectListParams = ProjectListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectListResponse
+
+    /** List your workspace's projects. */
+    fun list(requestOptions: RequestOptions): ProjectListResponse =
+        list(ProjectListParams.none(), requestOptions)
 }

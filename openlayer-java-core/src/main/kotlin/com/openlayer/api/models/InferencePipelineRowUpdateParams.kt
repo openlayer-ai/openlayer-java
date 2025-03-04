@@ -11,6 +11,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -24,10 +25,10 @@ class InferencePipelineRowUpdateParams
 private constructor(
     private val inferencePipelineId: String,
     private val inferenceId: String,
-    private val body: InferencePipelineRowUpdateBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun inferencePipelineId(): String = inferencePipelineId
 
@@ -46,12 +47,11 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): InferencePipelineRowUpdateBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.inferenceId.let { queryParams.put("inferenceId", listOf(it.toString())) }
         queryParams.putAll(additionalQueryParams)
@@ -66,9 +66,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class InferencePipelineRowUpdateBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("row") @ExcludeMissing private val row: JsonValue = JsonMissing.of(),
         @JsonProperty("config")
         @ExcludeMissing
@@ -89,7 +89,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): InferencePipelineRowUpdateBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -105,7 +105,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [InferencePipelineRowUpdateBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var row: JsonValue? = null
@@ -113,13 +113,11 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(inferencePipelineRowUpdateBody: InferencePipelineRowUpdateBody) =
-                apply {
-                    row = inferencePipelineRowUpdateBody.row
-                    config = inferencePipelineRowUpdateBody.config
-                    additionalProperties =
-                        inferencePipelineRowUpdateBody.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                row = body.row
+                config = body.config
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             fun row(row: JsonValue) = apply { this.row = row }
 
@@ -148,12 +146,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): InferencePipelineRowUpdateBody =
-                InferencePipelineRowUpdateBody(
-                    checkRequired("row", row),
-                    config,
-                    additionalProperties.toImmutable(),
-                )
+            fun build(): Body =
+                Body(checkRequired("row", row), config, additionalProperties.toImmutable())
         }
 
         override fun equals(other: Any?): Boolean {
@@ -161,7 +155,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InferencePipelineRowUpdateBody && row == other.row && config == other.config && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && row == other.row && config == other.config && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -171,7 +165,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "InferencePipelineRowUpdateBody{row=$row, config=$config, additionalProperties=$additionalProperties}"
+            "Body{row=$row, config=$config, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -187,8 +181,7 @@ private constructor(
 
         private var inferencePipelineId: String? = null
         private var inferenceId: String? = null
-        private var body: InferencePipelineRowUpdateBody.Builder =
-            InferencePipelineRowUpdateBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 

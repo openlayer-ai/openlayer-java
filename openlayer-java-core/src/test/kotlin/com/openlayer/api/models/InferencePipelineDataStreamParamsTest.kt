@@ -3,13 +3,14 @@
 package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class InferencePipelineDataStreamParamsTest {
 
     @Test
-    fun createInferencePipelineDataStreamParams() {
+    fun create() {
         InferencePipelineDataStreamParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .config(
@@ -46,7 +47,7 @@ class InferencePipelineDataStreamParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             InferencePipelineDataStreamParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -81,8 +82,10 @@ class InferencePipelineDataStreamParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.config())
             .isEqualTo(
                 InferencePipelineDataStreamParams.Config.ofLlmData(
@@ -122,7 +125,7 @@ class InferencePipelineDataStreamParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             InferencePipelineDataStreamParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -141,8 +144,10 @@ class InferencePipelineDataStreamParamsTest {
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.config())
             .isEqualTo(
                 InferencePipelineDataStreamParams.Config.ofLlmData(

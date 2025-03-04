@@ -17,13 +17,13 @@ interface CommitServiceAsync {
     @JvmOverloads
     fun create(
         params: ProjectCommitCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectCommitCreateResponse>
 
     /** List the commits (project versions) in a project. */
     @JvmOverloads
     fun list(
         params: ProjectCommitListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectCommitListResponse>
 }

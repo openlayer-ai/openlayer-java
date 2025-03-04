@@ -27,20 +27,20 @@ interface InferencePipelineServiceAsync {
     @JvmOverloads
     fun retrieve(
         params: InferencePipelineRetrieveParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineRetrieveResponse>
 
     /** Update inference pipeline. */
     @JvmOverloads
     fun update(
         params: InferencePipelineUpdateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineUpdateResponse>
 
     /** Delete inference pipeline. */
     @JvmOverloads
     fun delete(
         params: InferencePipelineDeleteParams,
-        requestOptions: RequestOptions = RequestOptions.none()
-    ): CompletableFuture<Void>
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Void?>
 }

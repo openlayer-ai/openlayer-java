@@ -4,13 +4,14 @@ package com.openlayer.api.models
 
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.http.QueryParams
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class InferencePipelineRowUpdateParamsTest {
 
     @Test
-    fun createInferencePipelineRowUpdateParams() {
+    fun create() {
         InferencePipelineRowUpdateParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .inferenceId("inferenceId")
@@ -19,7 +20,6 @@ class InferencePipelineRowUpdateParamsTest {
                 InferencePipelineRowUpdateParams.Config.builder()
                     .groundTruthColumnName("ground_truth")
                     .humanFeedbackColumnName("human_feedback")
-                    .inferenceIdColumnName("id")
                     .latencyColumnName("latency")
                     .timestampColumnName("timestamp")
                     .build()
@@ -28,7 +28,7 @@ class InferencePipelineRowUpdateParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -38,7 +38,6 @@ class InferencePipelineRowUpdateParamsTest {
                     InferencePipelineRowUpdateParams.Config.builder()
                         .groundTruthColumnName("ground_truth")
                         .humanFeedbackColumnName("human_feedback")
-                        .inferenceIdColumnName("id")
                         .latencyColumnName("latency")
                         .timestampColumnName("timestamp")
                         .build()
@@ -46,11 +45,11 @@ class InferencePipelineRowUpdateParamsTest {
                 .build()
         val expected = QueryParams.builder()
         expected.put("inferenceId", "inferenceId")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -59,11 +58,11 @@ class InferencePipelineRowUpdateParamsTest {
                 .build()
         val expected = QueryParams.builder()
         expected.put("inferenceId", "inferenceId")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -73,21 +72,21 @@ class InferencePipelineRowUpdateParamsTest {
                     InferencePipelineRowUpdateParams.Config.builder()
                         .groundTruthColumnName("ground_truth")
                         .humanFeedbackColumnName("human_feedback")
-                        .inferenceIdColumnName("id")
                         .latencyColumnName("latency")
                         .timestampColumnName("timestamp")
                         .build()
                 )
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.config())
             .contains(
                 InferencePipelineRowUpdateParams.Config.builder()
                     .groundTruthColumnName("ground_truth")
                     .humanFeedbackColumnName("human_feedback")
-                    .inferenceIdColumnName("id")
                     .latencyColumnName("latency")
                     .timestampColumnName("timestamp")
                     .build()
@@ -95,15 +94,17 @@ class InferencePipelineRowUpdateParamsTest {
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             InferencePipelineRowUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
     }
 

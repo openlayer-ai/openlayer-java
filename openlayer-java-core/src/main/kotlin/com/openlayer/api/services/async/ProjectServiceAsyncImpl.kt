@@ -11,6 +11,7 @@ import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.json
+import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.ProjectCreateParams
 import com.openlayer.api.models.ProjectCreateResponse
@@ -22,10 +23,8 @@ import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
-class ProjectServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : ProjectServiceAsync {
+class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    ProjectServiceAsync {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -45,28 +44,26 @@ internal constructor(
     /** Create a project in your workspace. */
     override fun create(
         params: ProjectCreateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectCreateResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("projects")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { createHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 
     private val listHandler: Handler<ProjectListResponse> =
@@ -75,26 +72,24 @@ internal constructor(
     /** List your workspace's projects. */
     override fun list(
         params: ProjectListParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<ProjectListResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.GET)
                 .addPathSegments("projects")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 }

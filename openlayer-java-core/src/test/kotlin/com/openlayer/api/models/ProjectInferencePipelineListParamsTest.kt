@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class ProjectInferencePipelineListParamsTest {
 
     @Test
-    fun createProjectInferencePipelineListParams() {
+    fun create() {
         ProjectInferencePipelineListParams.builder()
             .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .name("name")
@@ -19,7 +19,7 @@ class ProjectInferencePipelineListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             ProjectInferencePipelineListParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -31,17 +31,17 @@ class ProjectInferencePipelineListParamsTest {
         expected.put("name", "name")
         expected.put("page", "1")
         expected.put("perPage", "1")
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             ProjectInferencePipelineListParams.builder()
                 .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

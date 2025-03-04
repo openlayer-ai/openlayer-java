@@ -95,15 +95,11 @@ private constructor(
         fun build(): InferencePipelineDataStreamResponse =
             InferencePipelineDataStreamResponse(
                 checkRequired("success", success),
-                additionalProperties.toImmutable()
+                additionalProperties.toImmutable(),
             )
     }
 
-    class Success
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<Boolean>,
-    ) : Enum {
+    class Success @JsonCreator private constructor(private val value: JsonField<Boolean>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -124,7 +120,7 @@ private constructor(
 
         /** An enum containing [Success]'s known values. */
         enum class Known {
-            TRUE,
+            TRUE
         }
 
         /**
@@ -170,7 +166,16 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown Success: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asBoolean(): Boolean =
+            _value().asBoolean().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a Boolean")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

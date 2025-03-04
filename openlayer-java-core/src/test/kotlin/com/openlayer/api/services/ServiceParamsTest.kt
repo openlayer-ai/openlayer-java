@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services
 
-import com.fasterxml.jackson.databind.json.JsonMapper
 import com.github.tomakehurst.wiremock.client.WireMock.anyUrl
 import com.github.tomakehurst.wiremock.client.WireMock.equalTo
 import com.github.tomakehurst.wiremock.client.WireMock.matchingJsonPath
@@ -16,16 +15,12 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.openlayer.api.client.OpenlayerClient
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.jsonMapper
 import com.openlayer.api.models.InferencePipelineDataStreamParams
-import com.openlayer.api.models.InferencePipelineDataStreamResponse
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 @WireMockTest
-class ServiceParamsTest {
-
-    private val JSON_MAPPER: JsonMapper = jsonMapper()
+internal class ServiceParamsTest {
 
     private lateinit var client: OpenlayerClient
 
@@ -33,26 +28,17 @@ class ServiceParamsTest {
     fun beforeEach(wmRuntimeInfo: WireMockRuntimeInfo) {
         client =
             OpenlayerOkHttpClient.builder()
+                .baseUrl(wmRuntimeInfo.httpBaseUrl)
                 .apiKey("My API Key")
-                .baseUrl(wmRuntimeInfo.getHttpBaseUrl())
                 .build()
     }
 
     @Test
-    fun dataStreamWithAdditionalParams() {
-        val additionalHeaders = mutableMapOf<String, List<String>>()
+    fun stream() {
+        val dataService = client.inferencePipelines().data()
+        stubFor(post(anyUrl()).willReturn(ok("{}")))
 
-        additionalHeaders.put("x-test-header", listOf("abc1234"))
-
-        val additionalQueryParams = mutableMapOf<String, List<String>>()
-
-        additionalQueryParams.put("test_query_param", listOf("def567"))
-
-        val additionalBodyProperties = mutableMapOf<String, JsonValue>()
-
-        additionalBodyProperties.put("testBodyProperty", JsonValue.from("ghi890"))
-
-        val params =
+        dataService.stream(
             InferencePipelineDataStreamParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .config(
@@ -85,26 +71,17 @@ class ServiceParamsTest {
                         .putAdditionalProperty("timestamp", JsonValue.from("bar"))
                         .build()
                 )
-                .additionalHeaders(additionalHeaders)
-                .additionalBodyProperties(additionalBodyProperties)
-                .additionalQueryParams(additionalQueryParams)
+                .putAdditionalHeader("Secret-Header", "42")
+                .putAdditionalQueryParam("secret_query_param", "42")
+                .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
                 .build()
-
-        val apiResponse =
-            InferencePipelineDataStreamResponse.builder()
-                .success(InferencePipelineDataStreamResponse.Success.TRUE)
-                .build()
-
-        stubFor(
-            post(anyUrl())
-                .withHeader("x-test-header", equalTo("abc1234"))
-                .withQueryParam("test_query_param", equalTo("def567"))
-                .withRequestBody(matchingJsonPath("$.testBodyProperty", equalTo("ghi890")))
-                .willReturn(ok(JSON_MAPPER.writeValueAsString(apiResponse)))
         )
 
-        client.inferencePipelines().data().stream(params)
-
-        verify(postRequestedFor(anyUrl()))
+        verify(
+            postRequestedFor(anyUrl())
+                .withHeader("Secret-Header", equalTo("42"))
+                .withQueryParam("secret_query_param", equalTo("42"))
+                .withRequestBody(matchingJsonPath("$.secretProperty", equalTo("42")))
+        )
     }
 }

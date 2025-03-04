@@ -11,15 +11,14 @@ import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.json
+import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineDataStreamParams
 import com.openlayer.api.models.InferencePipelineDataStreamResponse
 import java.util.concurrent.CompletableFuture
 
-class DataServiceAsyncImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : DataServiceAsync {
+class DataServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
+    DataServiceAsync {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -30,27 +29,25 @@ internal constructor(
     /** Publish an inference data point to an inference pipeline. */
     override fun stream(
         params: InferencePipelineDataStreamParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): CompletableFuture<InferencePipelineDataStreamResponse> {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.POST)
                 .addPathSegments("inference-pipelines", params.getPathParam(0), "data-stream")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
-        return clientOptions.httpClient.executeAsync(request, requestOptions).thenApply { response
-            ->
-            response
-                .use { streamHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+                .prepareAsync(clientOptions, params)
+        return request
+            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+            .thenApply { response ->
+                response
+                    .use { streamHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                            it.validate()
+                        }
                     }
-                }
-        }
+            }
     }
 }

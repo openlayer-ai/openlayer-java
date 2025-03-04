@@ -14,6 +14,6 @@ interface TestResultService {
     @JvmOverloads
     fun list(
         params: InferencePipelineTestResultListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineTestResultListResponse
 }

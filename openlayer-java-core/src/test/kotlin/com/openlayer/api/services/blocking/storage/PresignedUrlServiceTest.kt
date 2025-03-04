@@ -12,18 +12,19 @@ import org.junit.jupiter.api.extension.ExtendWith
 class PresignedUrlServiceTest {
 
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val presignedUrlService = client.storage().presignedUrl()
-        val storagePresignedUrlCreateResponse =
+
+        val presignedUrl =
             presignedUrlService.create(
                 StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
             )
-        println(storagePresignedUrlCreateResponse)
-        storagePresignedUrlCreateResponse.validate()
+
+        presignedUrl.validate()
     }
 }

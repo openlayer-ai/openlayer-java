@@ -11,14 +11,12 @@ import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.json
+import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineRowUpdateParams
 import com.openlayer.api.models.InferencePipelineRowUpdateResponse
 
-class RowServiceImpl
-internal constructor(
-    private val clientOptions: ClientOptions,
-) : RowService {
+class RowServiceImpl internal constructor(private val clientOptions: ClientOptions) : RowService {
 
     private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
@@ -29,26 +27,22 @@ internal constructor(
     /** Update an inference data point in an inference pipeline. */
     override fun update(
         params: InferencePipelineRowUpdateParams,
-        requestOptions: RequestOptions
+        requestOptions: RequestOptions,
     ): InferencePipelineRowUpdateResponse {
         val request =
             HttpRequest.builder()
                 .method(HttpMethod.PUT)
                 .addPathSegments("inference-pipelines", params.getPathParam(0), "rows")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .body(json(clientOptions.jsonMapper, params.getBody()))
+                .body(json(clientOptions.jsonMapper, params._body()))
                 .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { updateHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
-                    }
+                .prepare(clientOptions, params)
+        val response = clientOptions.httpClient.execute(request, requestOptions)
+        return response
+            .use { updateHandler.handle(it) }
+            .also {
+                if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
+                    it.validate()
                 }
-        }
+            }
     }
 }

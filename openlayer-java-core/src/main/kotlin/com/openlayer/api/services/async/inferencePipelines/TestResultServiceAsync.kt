@@ -15,6 +15,6 @@ interface TestResultServiceAsync {
     @JvmOverloads
     fun list(
         params: InferencePipelineTestResultListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineTestResultListResponse>
 }

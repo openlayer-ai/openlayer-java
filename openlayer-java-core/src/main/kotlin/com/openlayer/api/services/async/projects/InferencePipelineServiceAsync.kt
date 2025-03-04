@@ -17,13 +17,13 @@ interface InferencePipelineServiceAsync {
     @JvmOverloads
     fun create(
         params: ProjectInferencePipelineCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectInferencePipelineCreateResponse>
 
     /** List the inference pipelines in a project. */
     @JvmOverloads
     fun list(
         params: ProjectInferencePipelineListParams,
-        requestOptions: RequestOptions = RequestOptions.none()
+        requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectInferencePipelineListResponse>
 }

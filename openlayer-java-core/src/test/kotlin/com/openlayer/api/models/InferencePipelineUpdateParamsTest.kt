@@ -2,13 +2,14 @@
 
 package com.openlayer.api.models
 
+import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
 class InferencePipelineUpdateParamsTest {
 
     @Test
-    fun createInferencePipelineUpdateParams() {
+    fun create() {
         InferencePipelineUpdateParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .description("This pipeline is used for production.")
@@ -18,7 +19,7 @@ class InferencePipelineUpdateParamsTest {
     }
 
     @Test
-    fun getBody() {
+    fun body() {
         val params =
             InferencePipelineUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -26,21 +27,25 @@ class InferencePipelineUpdateParamsTest {
                 .name("production")
                 .referenceDatasetUri("referenceDatasetUri")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
         assertThat(body.description()).contains("This pipeline is used for production.")
         assertThat(body.name()).contains("production")
         assertThat(body.referenceDatasetUri()).contains("referenceDatasetUri")
     }
 
     @Test
-    fun getBodyWithoutOptionalFields() {
+    fun bodyWithoutOptionalFields() {
         val params =
             InferencePipelineUpdateParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val body = params.getBody()
-        assertThat(body).isNotNull
+
+        val body = params._body()
+
+        assertNotNull(body)
     }
 
     @Test

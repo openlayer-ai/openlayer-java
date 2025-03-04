@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class CommitTestResultListParamsTest {
 
     @Test
-    fun createCommitTestResultListParams() {
+    fun create() {
         CommitTestResultListParams.builder()
             .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .includeArchived(true)
@@ -21,7 +21,7 @@ class CommitTestResultListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             CommitTestResultListParams.builder()
                 .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -37,17 +37,17 @@ class CommitTestResultListParamsTest {
         expected.put("perPage", "1")
         expected.put("status", CommitTestResultListParams.Status.RUNNING.toString())
         expected.put("type", CommitTestResultListParams.Type.INTEGRITY.toString())
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params =
             CommitTestResultListParams.builder()
                 .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test

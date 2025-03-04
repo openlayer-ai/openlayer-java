@@ -20,6 +20,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
 import com.openlayer.api.core.http.Headers
@@ -34,10 +35,10 @@ import java.util.Optional
 class InferencePipelineDataStreamParams
 private constructor(
     private val inferencePipelineId: String,
-    private val body: InferencePipelineDataStreamBody,
+    private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun inferencePipelineId(): String = inferencePipelineId
 
@@ -59,11 +60,11 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getBody(): InferencePipelineDataStreamBody = body
+    @JvmSynthetic internal fun _body(): Body = body
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic internal fun getQueryParams(): QueryParams = additionalQueryParams
+    override fun _queryParams(): QueryParams = additionalQueryParams
 
     fun getPathParam(index: Int): String {
         return when (index) {
@@ -73,9 +74,9 @@ private constructor(
     }
 
     @NoAutoDetect
-    class InferencePipelineDataStreamBody
+    class Body
     @JsonCreator
-    internal constructor(
+    private constructor(
         @JsonProperty("config")
         @ExcludeMissing
         private val config: JsonField<Config> = JsonMissing.of(),
@@ -104,7 +105,7 @@ private constructor(
 
         private var validated: Boolean = false
 
-        fun validate(): InferencePipelineDataStreamBody = apply {
+        fun validate(): Body = apply {
             if (validated) {
                 return@apply
             }
@@ -121,7 +122,7 @@ private constructor(
             @JvmStatic fun builder() = Builder()
         }
 
-        /** A builder for [InferencePipelineDataStreamBody]. */
+        /** A builder for [Body]. */
         class Builder internal constructor() {
 
             private var config: JsonField<Config>? = null
@@ -129,13 +130,11 @@ private constructor(
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
-            internal fun from(inferencePipelineDataStreamBody: InferencePipelineDataStreamBody) =
-                apply {
-                    config = inferencePipelineDataStreamBody.config
-                    rows = inferencePipelineDataStreamBody.rows.map { it.toMutableList() }
-                    additionalProperties =
-                        inferencePipelineDataStreamBody.additionalProperties.toMutableMap()
-                }
+            internal fun from(body: Body) = apply {
+                config = body.config
+                rows = body.rows.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
 
             /**
              * Configuration for the data stream. Depends on your **Openlayer project task type**.
@@ -211,8 +210,8 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
-            fun build(): InferencePipelineDataStreamBody =
-                InferencePipelineDataStreamBody(
+            fun build(): Body =
+                Body(
                     checkRequired("config", config),
                     checkRequired("rows", rows).map { it.toImmutable() },
                     additionalProperties.toImmutable(),
@@ -224,7 +223,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is InferencePipelineDataStreamBody && config == other.config && rows == other.rows && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && config == other.config && rows == other.rows && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
@@ -234,7 +233,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "InferencePipelineDataStreamBody{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
+            "Body{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -249,8 +248,7 @@ private constructor(
     class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
-        private var body: InferencePipelineDataStreamBody.Builder =
-            InferencePipelineDataStreamBody.builder()
+        private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
@@ -618,7 +616,7 @@ private constructor(
             override fun serialize(
                 value: Config,
                 generator: JsonGenerator,
-                provider: SerializerProvider
+                provider: SerializerProvider,
             ) {
                 when {
                     value.llmData != null -> generator.writeObject(value.llmData)
@@ -1169,12 +1167,7 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
-                    fun build(): Prompt =
-                        Prompt(
-                            content,
-                            role,
-                            additionalProperties.toImmutable(),
-                        )
+                    fun build(): Prompt = Prompt(content, role, additionalProperties.toImmutable())
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -2387,7 +2380,7 @@ private constructor(
     @JsonCreator
     private constructor(
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
     ) {
 
         @JsonAnyGetter

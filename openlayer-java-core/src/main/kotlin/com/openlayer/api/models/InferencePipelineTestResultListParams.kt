@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -23,7 +24,7 @@ private constructor(
     private val type: Type?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-) {
+) : Params {
 
     fun inferencePipelineId(): String = inferencePipelineId
 
@@ -49,10 +50,9 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun getHeaders(): Headers = additionalHeaders
+    override fun _headers(): Headers = additionalHeaders
 
-    @JvmSynthetic
-    internal fun getQueryParams(): QueryParams {
+    override fun _queryParams(): QueryParams {
         val queryParams = QueryParams.builder()
         this.page?.let { queryParams.put("page", listOf(it.toString())) }
         this.perPage?.let { queryParams.put("perPage", listOf(it.toString())) }
@@ -264,11 +264,7 @@ private constructor(
      * Filter list of test results by status. Available statuses are `running`, `passing`,
      * `failing`, `skipped`, and `error`.
      */
-    class Status
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -359,7 +355,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -378,11 +386,7 @@ private constructor(
      * Filter objects by test type. Available types are `integrity`, `consistency`, `performance`,
      * `fairness`, and `robustness`.
      */
-    class Type
-    @JsonCreator
-    private constructor(
-        private val value: JsonField<String>,
-    ) : Enum {
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
         /**
          * Returns this class instance's raw value.
@@ -473,7 +477,19 @@ private constructor(
                 else -> throw OpenlayerInvalidDataException("Unknown Type: $value")
             }
 
-        fun asString(): String = _value().asStringOrThrow()
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

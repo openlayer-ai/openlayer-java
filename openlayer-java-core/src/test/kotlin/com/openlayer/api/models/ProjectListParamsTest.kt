@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 class ProjectListParamsTest {
 
     @Test
-    fun createProjectListParams() {
+    fun create() {
         ProjectListParams.builder()
             .name("name")
             .page(1L)
@@ -19,7 +19,7 @@ class ProjectListParamsTest {
     }
 
     @Test
-    fun getQueryParams() {
+    fun queryParams() {
         val params =
             ProjectListParams.builder()
                 .name("name")
@@ -32,13 +32,13 @@ class ProjectListParamsTest {
         expected.put("page", "1")
         expected.put("perPage", "1")
         expected.put("taskType", ProjectListParams.TaskType.LLM_BASE.toString())
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 
     @Test
-    fun getQueryParamsWithoutOptionalFields() {
+    fun queryParamsWithoutOptionalFields() {
         val params = ProjectListParams.builder().build()
         val expected = QueryParams.builder()
-        assertThat(params.getQueryParams()).isEqualTo(expected.build())
+        assertThat(params._queryParams()).isEqualTo(expected.build())
     }
 }
