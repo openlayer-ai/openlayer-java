@@ -9,7 +9,23 @@ import com.openlayer.api.services.blocking.storage.PresignedUrlServiceImpl
 class StorageServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     StorageService {
 
+    private val withRawResponse: StorageService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val presignedUrl: PresignedUrlService by lazy { PresignedUrlServiceImpl(clientOptions) }
 
+    override fun withRawResponse(): StorageService.WithRawResponse = withRawResponse
+
     override fun presignedUrl(): PresignedUrlService = presignedUrl
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        StorageService.WithRawResponse {
+
+        private val presignedUrl: PresignedUrlService.WithRawResponse by lazy {
+            PresignedUrlServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun presignedUrl(): PresignedUrlService.WithRawResponse = presignedUrl
+    }
 }

@@ -31,6 +31,11 @@ interface OpenlayerClientAsync {
      */
     fun sync(): OpenlayerClient
 
+    /**
+     * Returns a view of this service that provides access to raw HTTP responses for each method.
+     */
+    fun withRawResponse(): WithRawResponse
+
     fun projects(): ProjectServiceAsync
 
     fun commits(): CommitServiceAsync
@@ -51,4 +56,18 @@ interface OpenlayerClientAsync {
      * method.
      */
     fun close()
+
+    /**
+     * A view of [OpenlayerClientAsync] that provides access to raw HTTP responses for each method.
+     */
+    interface WithRawResponse {
+
+        fun projects(): ProjectServiceAsync.WithRawResponse
+
+        fun commits(): CommitServiceAsync.WithRawResponse
+
+        fun inferencePipelines(): InferencePipelineServiceAsync.WithRawResponse
+
+        fun storage(): StorageServiceAsync.WithRawResponse
+    }
 }

@@ -10,8 +10,11 @@ import com.openlayer.api.core.handlers.jsonHandler
 import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponse.Handler
-import com.openlayer.api.core.json
+import com.openlayer.api.core.http.HttpResponseFor
+import com.openlayer.api.core.http.json
+import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineDeleteParams
@@ -30,7 +33,9 @@ import java.util.concurrent.CompletableFuture
 class InferencePipelineServiceAsyncImpl
 internal constructor(private val clientOptions: ClientOptions) : InferencePipelineServiceAsync {
 
-    private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: InferencePipelineServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     private val data: DataServiceAsync by lazy { DataServiceAsyncImpl(clientOptions) }
 
@@ -40,85 +45,138 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
         TestResultServiceAsyncImpl(clientOptions)
     }
 
+    override fun withRawResponse(): InferencePipelineServiceAsync.WithRawResponse = withRawResponse
+
     override fun data(): DataServiceAsync = data
 
     override fun rows(): RowServiceAsync = rows
 
     override fun testResults(): TestResultServiceAsync = testResults
 
-    private val retrieveHandler: Handler<InferencePipelineRetrieveResponse> =
-        jsonHandler<InferencePipelineRetrieveResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Retrieve inference pipeline. */
     override fun retrieve(
         params: InferencePipelineRetrieveParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<InferencePipelineRetrieveResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("inference-pipelines", params.getPathParam(0))
-                .build()
-                .prepareAsync(clientOptions, params)
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { retrieveHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            it.validate()
-                        }
-                    }
-            }
-    }
+    ): CompletableFuture<InferencePipelineRetrieveResponse> =
+        // get /inference-pipelines/{inferencePipelineId}
+        withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
-    private val updateHandler: Handler<InferencePipelineUpdateResponse> =
-        jsonHandler<InferencePipelineUpdateResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
-
-    /** Update inference pipeline. */
     override fun update(
         params: InferencePipelineUpdateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<InferencePipelineUpdateResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.PUT)
-                .addPathSegments("inference-pipelines", params.getPathParam(0))
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepareAsync(clientOptions, params)
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { updateHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            it.validate()
-                        }
-                    }
-            }
-    }
+    ): CompletableFuture<InferencePipelineUpdateResponse> =
+        // put /inference-pipelines/{inferencePipelineId}
+        withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
-    private val deleteHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
-
-    /** Delete inference pipeline. */
     override fun delete(
         params: InferencePipelineDeleteParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<Void?> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.DELETE)
-                .addPathSegments("inference-pipelines", params.getPathParam(0))
-                .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
-                .build()
-                .prepareAsync(clientOptions, params)
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response -> response.use { deleteHandler.handle(it) } }
+    ): CompletableFuture<Void?> =
+        // delete /inference-pipelines/{inferencePipelineId}
+        withRawResponse().delete(params, requestOptions).thenAccept {}
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        InferencePipelineServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+
+        private val data: DataServiceAsync.WithRawResponse by lazy {
+            DataServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val rows: RowServiceAsync.WithRawResponse by lazy {
+            RowServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val testResults: TestResultServiceAsync.WithRawResponse by lazy {
+            TestResultServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun data(): DataServiceAsync.WithRawResponse = data
+
+        override fun rows(): RowServiceAsync.WithRawResponse = rows
+
+        override fun testResults(): TestResultServiceAsync.WithRawResponse = testResults
+
+        private val retrieveHandler: Handler<InferencePipelineRetrieveResponse> =
+            jsonHandler<InferencePipelineRetrieveResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun retrieve(
+            params: InferencePipelineRetrieveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("inference-pipelines", params.getPathParam(0))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { retrieveHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val updateHandler: Handler<InferencePipelineUpdateResponse> =
+            jsonHandler<InferencePipelineUpdateResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun update(
+            params: InferencePipelineUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("inference-pipelines", params.getPathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { updateHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val deleteHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
+
+        override fun delete(
+            params: InferencePipelineDeleteParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.DELETE)
+                    .addPathSegments("inference-pipelines", params.getPathParam(0))
+                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable { response.use { deleteHandler.handle(it) } }
+                }
+        }
     }
 }

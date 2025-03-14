@@ -12,6 +12,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
@@ -20,6 +21,7 @@ import java.time.LocalDate
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class InferencePipelineRetrieveResponse
@@ -238,6 +240,29 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [InferencePipelineRetrieveResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .dateCreated()
+         * .dateLastEvaluated()
+         * .dateLastSampleReceived()
+         * .dateOfNextEvaluation()
+         * .dateUpdated()
+         * .description()
+         * .failingGoalCount()
+         * .links()
+         * .name()
+         * .passingGoalCount()
+         * .projectId()
+         * .status()
+         * .statusMessage()
+         * .totalGoalCount()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -309,7 +334,7 @@ private constructor(
 
         /** The last test evaluation date. */
         fun dateLastEvaluated(dateLastEvaluated: Optional<OffsetDateTime>) =
-            dateLastEvaluated(dateLastEvaluated.orElse(null))
+            dateLastEvaluated(dateLastEvaluated.getOrNull())
 
         /** The last test evaluation date. */
         fun dateLastEvaluated(dateLastEvaluated: JsonField<OffsetDateTime>) = apply {
@@ -322,7 +347,7 @@ private constructor(
 
         /** The last data sample received date. */
         fun dateLastSampleReceived(dateLastSampleReceived: Optional<OffsetDateTime>) =
-            dateLastSampleReceived(dateLastSampleReceived.orElse(null))
+            dateLastSampleReceived(dateLastSampleReceived.getOrNull())
 
         /** The last data sample received date. */
         fun dateLastSampleReceived(dateLastSampleReceived: JsonField<OffsetDateTime>) = apply {
@@ -335,7 +360,7 @@ private constructor(
 
         /** The next test evaluation date. */
         fun dateOfNextEvaluation(dateOfNextEvaluation: Optional<OffsetDateTime>) =
-            dateOfNextEvaluation(dateOfNextEvaluation.orElse(null))
+            dateOfNextEvaluation(dateOfNextEvaluation.getOrNull())
 
         /** The next test evaluation date. */
         fun dateOfNextEvaluation(dateOfNextEvaluation: JsonField<OffsetDateTime>) = apply {
@@ -354,7 +379,7 @@ private constructor(
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
         /** The inference pipeline description. */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** The inference pipeline description. */
         fun description(description: JsonField<String>) = apply { this.description = description }
@@ -405,7 +430,7 @@ private constructor(
 
         /** The status message of test evaluation for the inference pipeline. */
         fun statusMessage(statusMessage: Optional<String>) =
-            statusMessage(statusMessage.orElse(null))
+            statusMessage(statusMessage.getOrNull())
 
         /** The status message of test evaluation for the inference pipeline. */
         fun statusMessage(statusMessage: JsonField<String>) = apply {
@@ -422,13 +447,13 @@ private constructor(
 
         fun project(project: Project?) = project(JsonField.ofNullable(project))
 
-        fun project(project: Optional<Project>) = project(project.orElse(null))
+        fun project(project: Optional<Project>) = project(project.getOrNull())
 
         fun project(project: JsonField<Project>) = apply { this.project = project }
 
         fun workspace(workspace: Workspace?) = workspace(JsonField.ofNullable(workspace))
 
-        fun workspace(workspace: Optional<Workspace>) = workspace(workspace.orElse(null))
+        fun workspace(workspace: Optional<Workspace>) = workspace(workspace.getOrNull())
 
         fun workspace(workspace: JsonField<Workspace>) = apply { this.workspace = workspace }
 
@@ -513,6 +538,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Links].
+             *
+             * The following fields are required:
+             * ```java
+             * .app()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -898,6 +931,27 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Project].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .creatorId()
+             * .dateCreated()
+             * .dateUpdated()
+             * .developmentGoalCount()
+             * .goalCount()
+             * .inferencePipelineCount()
+             * .links()
+             * .monitoringGoalCount()
+             * .name()
+             * .source()
+             * .taskType()
+             * .versionCount()
+             * .workspaceId()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -953,7 +1007,7 @@ private constructor(
             fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
             /** The project creator id. */
-            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
             /** The project creator id. */
             fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
@@ -1023,7 +1077,7 @@ private constructor(
             fun source(source: Source?) = source(JsonField.ofNullable(source))
 
             /** The source of the project. */
-            fun source(source: Optional<Source>) = source(source.orElse(null))
+            fun source(source: Optional<Source>) = source(source.getOrNull())
 
             /** The source of the project. */
             fun source(source: JsonField<Source>) = apply { this.source = source }
@@ -1046,7 +1100,7 @@ private constructor(
             fun workspaceId(workspaceId: String?) = workspaceId(JsonField.ofNullable(workspaceId))
 
             /** The workspace id. */
-            fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.orElse(null))
+            fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.getOrNull())
 
             /** The workspace id. */
             fun workspaceId(workspaceId: JsonField<String>) = apply {
@@ -1057,7 +1111,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** The project description. */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** The project description. */
             fun description(description: JsonField<String>) = apply {
@@ -1066,7 +1120,7 @@ private constructor(
 
             fun gitRepo(gitRepo: GitRepo?) = gitRepo(JsonField.ofNullable(gitRepo))
 
-            fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.orElse(null))
+            fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.getOrNull())
 
             fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
 
@@ -1146,6 +1200,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Links].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .app()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1563,6 +1625,23 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [GitRepo].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .dateConnected()
+                 * .dateUpdated()
+                 * .gitAccountId()
+                 * .gitId()
+                 * .name()
+                 * .private_()
+                 * .projectId()
+                 * .slug()
+                 * .url()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1938,6 +2017,25 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Workspace].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .creatorId()
+             * .dateCreated()
+             * .dateUpdated()
+             * .inviteCount()
+             * .memberCount()
+             * .name()
+             * .periodEndDate()
+             * .periodStartDate()
+             * .projectCount()
+             * .slug()
+             * .status()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -1993,7 +2091,7 @@ private constructor(
             fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
             /** The workspace creator id. */
-            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
             /** The workspace creator id. */
             fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
@@ -2038,7 +2136,7 @@ private constructor(
 
             /** The end date of the current billing period. */
             fun periodEndDate(periodEndDate: Optional<OffsetDateTime>) =
-                periodEndDate(periodEndDate.orElse(null))
+                periodEndDate(periodEndDate.getOrNull())
 
             /** The end date of the current billing period. */
             fun periodEndDate(periodEndDate: JsonField<OffsetDateTime>) = apply {
@@ -2051,7 +2149,7 @@ private constructor(
 
             /** The start date of the current billing period. */
             fun periodStartDate(periodStartDate: Optional<OffsetDateTime>) =
-                periodStartDate(periodStartDate.orElse(null))
+                periodStartDate(periodStartDate.getOrNull())
 
             /** The start date of the current billing period. */
             fun periodStartDate(periodStartDate: JsonField<OffsetDateTime>) = apply {
@@ -2091,14 +2189,8 @@ private constructor(
 
             fun addMonthlyUsage(monthlyUsage: MonthlyUsage) = apply {
                 this.monthlyUsage =
-                    (this.monthlyUsage ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(monthlyUsage)
+                    (this.monthlyUsage ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("monthlyUsage", it).add(monthlyUsage)
                     }
             }
 
@@ -2120,14 +2212,8 @@ private constructor(
 
             fun addWildcardDomain(wildcardDomain: String) = apply {
                 wildcardDomains =
-                    (wildcardDomains ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(wildcardDomain)
+                    (wildcardDomains ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("wildcardDomains", it).add(wildcardDomain)
                     }
             }
 
@@ -2369,6 +2455,7 @@ private constructor(
 
             companion object {
 
+                /** Returns a mutable builder for constructing an instance of [MonthlyUsage]. */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2394,9 +2481,8 @@ private constructor(
                 fun executionTimeMs(executionTimeMs: Long) =
                     executionTimeMs(executionTimeMs as Long?)
 
-                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun executionTimeMs(executionTimeMs: Optional<Long>) =
-                    executionTimeMs(executionTimeMs.orElse(null) as Long?)
+                    executionTimeMs(executionTimeMs.getOrNull())
 
                 fun executionTimeMs(executionTimeMs: JsonField<Long>) = apply {
                     this.executionTimeMs = executionTimeMs

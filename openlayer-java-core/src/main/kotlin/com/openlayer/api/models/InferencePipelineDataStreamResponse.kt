@@ -51,6 +51,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [InferencePipelineDataStreamResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .success()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 

@@ -10,6 +10,8 @@ import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
+import com.openlayer.api.core.http.HttpResponseFor
+import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.CommitTestResultListParams
@@ -19,33 +21,52 @@ import java.util.concurrent.CompletableFuture
 class TestResultServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     TestResultServiceAsync {
 
-    private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: TestResultServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val listHandler: Handler<CommitTestResultListResponse> =
-        jsonHandler<CommitTestResultListResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): TestResultServiceAsync.WithRawResponse = withRawResponse
 
-    /** List the test results for a project commit (project version). */
     override fun list(
         params: CommitTestResultListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<CommitTestResultListResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("versions", params.getPathParam(0), "results")
-                .build()
-                .prepareAsync(clientOptions, params)
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { listHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            it.validate()
-                        }
+    ): CompletableFuture<CommitTestResultListResponse> =
+        // get /versions/{projectVersionId}/results
+        withRawResponse().list(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        TestResultServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+
+        private val listHandler: Handler<CommitTestResultListResponse> =
+            jsonHandler<CommitTestResultListResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun list(
+            params: CommitTestResultListParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<CommitTestResultListResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("versions", params.getPathParam(0), "results")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { listHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
-            }
+                }
+        }
     }
 }

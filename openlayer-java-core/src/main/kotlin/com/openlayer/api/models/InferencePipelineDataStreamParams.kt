@@ -21,6 +21,7 @@ import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
+import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
 import com.openlayer.api.core.http.Headers
@@ -30,6 +31,7 @@ import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Publish an inference data point to an inference pipeline. */
 class InferencePipelineDataStreamParams
@@ -119,6 +121,15 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .config()
+             * .rows()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -180,15 +191,7 @@ private constructor(
             /** A list of inference data points with inputs and outputs */
             fun addRow(row: Row) = apply {
                 rows =
-                    (rows ?: JsonField.of(mutableListOf())).apply {
-                        asKnown()
-                            .orElseThrow {
-                                IllegalStateException(
-                                    "Field was set to non-list type: ${javaClass.simpleName}"
-                                )
-                            }
-                            .add(row)
-                    }
+                    (rows ?: JsonField.of(mutableListOf())).also { checkKnown("rows", it).add(row) }
             }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -240,6 +243,17 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [InferencePipelineDataStreamParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .inferencePipelineId()
+         * .config()
+         * .rows()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -827,6 +841,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [LlmData].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .outputColumnName()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -941,14 +963,8 @@ private constructor(
                  */
                 fun addInputVariableName(inputVariableName: String) = apply {
                     inputVariableNames =
-                        (inputVariableNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(inputVariableName)
+                        (inputVariableNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("inputVariableNames", it).add(inputVariableName)
                         }
                 }
 
@@ -970,7 +986,7 @@ private constructor(
 
                 /** Name of the column with the total number of tokens. */
                 fun numOfTokenColumnName(numOfTokenColumnName: Optional<String>) =
-                    numOfTokenColumnName(numOfTokenColumnName.orElse(null))
+                    numOfTokenColumnName(numOfTokenColumnName.getOrNull())
 
                 /** Name of the column with the total number of tokens. */
                 fun numOfTokenColumnName(numOfTokenColumnName: JsonField<String>) = apply {
@@ -988,14 +1004,8 @@ private constructor(
                 /** Prompt for the LLM. */
                 fun addPrompt(prompt: Prompt) = apply {
                     this.prompt =
-                        (this.prompt ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(prompt)
+                        (this.prompt ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("prompt", it).add(prompt)
                         }
                 }
 
@@ -1116,6 +1126,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Prompt]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -1390,6 +1401,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of
+                 * [TabularClassificationData].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .classNames()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1446,14 +1466,8 @@ private constructor(
                  */
                 fun addClassName(className: String) = apply {
                     classNames =
-                        (classNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(className)
+                        (classNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("classNames", it).add(className)
                         }
                 }
 
@@ -1480,14 +1494,8 @@ private constructor(
                  */
                 fun addCategoricalFeatureName(categoricalFeatureName: String) = apply {
                     categoricalFeatureNames =
-                        (categoricalFeatureNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(categoricalFeatureName)
+                        (categoricalFeatureNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("categoricalFeatureNames", it).add(categoricalFeatureName)
                         }
                 }
 
@@ -1503,14 +1511,8 @@ private constructor(
                 /** Array with all input feature names. */
                 fun addFeatureName(featureName: String) = apply {
                     featureNames =
-                        (featureNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(featureName)
+                        (featureNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("featureNames", it).add(featureName)
                         }
                 }
 
@@ -1795,6 +1797,10 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of
+                 * [TabularRegressionData].
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -1848,14 +1854,8 @@ private constructor(
                  */
                 fun addCategoricalFeatureName(categoricalFeatureName: String) = apply {
                     categoricalFeatureNames =
-                        (categoricalFeatureNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(categoricalFeatureName)
+                        (categoricalFeatureNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("categoricalFeatureNames", it).add(categoricalFeatureName)
                         }
                 }
 
@@ -1871,14 +1871,8 @@ private constructor(
                 /** Array with all input feature names. */
                 fun addFeatureName(featureName: String) = apply {
                     featureNames =
-                        (featureNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(featureName)
+                        (featureNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("featureNames", it).add(featureName)
                         }
                 }
 
@@ -2163,6 +2157,15 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of
+                 * [TextClassificationData].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .classNames()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -2215,14 +2218,8 @@ private constructor(
                  */
                 fun addClassName(className: String) = apply {
                     classNames =
-                        (classNames ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(className)
+                        (classNames ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("classNames", it).add(className)
                         }
                 }
 
@@ -2401,6 +2398,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Row]. */
             @JvmStatic fun builder() = Builder()
         }
 

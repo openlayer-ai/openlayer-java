@@ -19,6 +19,7 @@ import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CommitRetrieveResponse
@@ -238,6 +239,27 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CommitRetrieveResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .commit()
+         * .dateArchived()
+         * .dateCreated()
+         * .failingGoalCount()
+         * .mlModelId()
+         * .passingGoalCount()
+         * .projectId()
+         * .status()
+         * .statusMessage()
+         * .storageUri()
+         * .totalGoalCount()
+         * .trainingDatasetId()
+         * .validationDatasetId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -303,7 +325,7 @@ private constructor(
 
         /** The commit archive date. */
         fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
-            dateArchived(dateArchived.orElse(null))
+            dateArchived(dateArchived.getOrNull())
 
         /** The commit archive date. */
         fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
@@ -331,7 +353,7 @@ private constructor(
         fun mlModelId(mlModelId: String?) = mlModelId(JsonField.ofNullable(mlModelId))
 
         /** The model id. */
-        fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.orElse(null))
+        fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.getOrNull())
 
         /** The model id. */
         fun mlModelId(mlModelId: JsonField<String>) = apply { this.mlModelId = mlModelId }
@@ -369,7 +391,7 @@ private constructor(
 
         /** The commit status message. */
         fun statusMessage(statusMessage: Optional<String>) =
-            statusMessage(statusMessage.orElse(null))
+            statusMessage(statusMessage.getOrNull())
 
         /** The commit status message. */
         fun statusMessage(statusMessage: JsonField<String>) = apply {
@@ -396,7 +418,7 @@ private constructor(
 
         /** The training dataset id. */
         fun trainingDatasetId(trainingDatasetId: Optional<String>) =
-            trainingDatasetId(trainingDatasetId.orElse(null))
+            trainingDatasetId(trainingDatasetId.getOrNull())
 
         /** The training dataset id. */
         fun trainingDatasetId(trainingDatasetId: JsonField<String>) = apply {
@@ -409,7 +431,7 @@ private constructor(
 
         /** The validation dataset id. */
         fun validationDatasetId(validationDatasetId: Optional<String>) =
-            validationDatasetId(validationDatasetId.orElse(null))
+            validationDatasetId(validationDatasetId.getOrNull())
 
         /** The validation dataset id. */
         fun validationDatasetId(validationDatasetId: JsonField<String>) = apply {
@@ -423,8 +445,7 @@ private constructor(
         fun archived(archived: Boolean) = archived(archived as Boolean?)
 
         /** Whether the commit is archived. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun archived(archived: Optional<Boolean>) = archived(archived.orElse(null) as Boolean?)
+        fun archived(archived: Optional<Boolean>) = archived(archived.getOrNull())
 
         /** Whether the commit is archived. */
         fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
@@ -649,6 +670,21 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Commit].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .authorId()
+             * .fileSize()
+             * .message()
+             * .mlModelId()
+             * .storageUri()
+             * .trainingDatasetId()
+             * .validationDatasetId()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -705,8 +741,7 @@ private constructor(
             fun fileSize(fileSize: Long) = fileSize(fileSize as Long?)
 
             /** The size of the commit bundle in bytes. */
-            @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-            fun fileSize(fileSize: Optional<Long>) = fileSize(fileSize.orElse(null) as Long?)
+            fun fileSize(fileSize: Optional<Long>) = fileSize(fileSize.getOrNull())
 
             /** The size of the commit bundle in bytes. */
             fun fileSize(fileSize: JsonField<Long>) = apply { this.fileSize = fileSize }
@@ -721,7 +756,7 @@ private constructor(
             fun mlModelId(mlModelId: String?) = mlModelId(JsonField.ofNullable(mlModelId))
 
             /** The model id. */
-            fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.orElse(null))
+            fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.getOrNull())
 
             /** The model id. */
             fun mlModelId(mlModelId: JsonField<String>) = apply { this.mlModelId = mlModelId }
@@ -738,7 +773,7 @@ private constructor(
 
             /** The training dataset id. */
             fun trainingDatasetId(trainingDatasetId: Optional<String>) =
-                trainingDatasetId(trainingDatasetId.orElse(null))
+                trainingDatasetId(trainingDatasetId.getOrNull())
 
             /** The training dataset id. */
             fun trainingDatasetId(trainingDatasetId: JsonField<String>) = apply {
@@ -751,7 +786,7 @@ private constructor(
 
             /** The validation dataset id. */
             fun validationDatasetId(validationDatasetId: Optional<String>) =
-                validationDatasetId(validationDatasetId.orElse(null))
+                validationDatasetId(validationDatasetId.getOrNull())
 
             /** The validation dataset id. */
             fun validationDatasetId(validationDatasetId: JsonField<String>) = apply {
@@ -1005,6 +1040,14 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Links].
+             *
+             * The following fields are required:
+             * ```java
+             * .app()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 

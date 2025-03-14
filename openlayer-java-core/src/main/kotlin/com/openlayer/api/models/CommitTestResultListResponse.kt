@@ -21,6 +21,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
 import com.openlayer.api.core.immutableEmptyMap
@@ -29,6 +30,7 @@ import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class CommitTestResultListResponse
@@ -63,6 +65,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [CommitTestResultListResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .items()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -86,15 +96,7 @@ private constructor(
 
         fun addItem(item: Item) = apply {
             items =
-                (items ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(item)
-                }
+                (items ?: JsonField.of(mutableListOf())).also { checkKnown("items", it).add(item) }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -272,6 +274,22 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Item].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .dateCreated()
+             * .dateDataEnds()
+             * .dateDataStarts()
+             * .dateUpdated()
+             * .inferencePipelineId()
+             * .projectVersionId()
+             * .status()
+             * .statusMessage()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -327,7 +345,7 @@ private constructor(
 
             /** The data end date. */
             fun dateDataEnds(dateDataEnds: Optional<OffsetDateTime>) =
-                dateDataEnds(dateDataEnds.orElse(null))
+                dateDataEnds(dateDataEnds.getOrNull())
 
             /** The data end date. */
             fun dateDataEnds(dateDataEnds: JsonField<OffsetDateTime>) = apply {
@@ -340,7 +358,7 @@ private constructor(
 
             /** The data start date. */
             fun dateDataStarts(dateDataStarts: Optional<OffsetDateTime>) =
-                dateDataStarts(dateDataStarts.orElse(null))
+                dateDataStarts(dateDataStarts.getOrNull())
 
             /** The data start date. */
             fun dateDataStarts(dateDataStarts: JsonField<OffsetDateTime>) = apply {
@@ -361,7 +379,7 @@ private constructor(
 
             /** The inference pipeline id. */
             fun inferencePipelineId(inferencePipelineId: Optional<String>) =
-                inferencePipelineId(inferencePipelineId.orElse(null))
+                inferencePipelineId(inferencePipelineId.getOrNull())
 
             /** The inference pipeline id. */
             fun inferencePipelineId(inferencePipelineId: JsonField<String>) = apply {
@@ -374,7 +392,7 @@ private constructor(
 
             /** The project version (commit) id. */
             fun projectVersionId(projectVersionId: Optional<String>) =
-                projectVersionId(projectVersionId.orElse(null))
+                projectVersionId(projectVersionId.getOrNull())
 
             /** The project version (commit) id. */
             fun projectVersionId(projectVersionId: JsonField<String>) = apply {
@@ -393,7 +411,7 @@ private constructor(
 
             /** The status message. */
             fun statusMessage(statusMessage: Optional<String>) =
-                statusMessage(statusMessage.orElse(null))
+                statusMessage(statusMessage.getOrNull())
 
             /** The status message. */
             fun statusMessage(statusMessage: JsonField<String>) = apply {
@@ -408,7 +426,7 @@ private constructor(
             fun goalId(goalId: String?) = goalId(JsonField.ofNullable(goalId))
 
             /** The test id. */
-            fun goalId(goalId: Optional<String>) = goalId(goalId.orElse(null))
+            fun goalId(goalId: Optional<String>) = goalId(goalId.getOrNull())
 
             /** The test id. */
             fun goalId(goalId: JsonField<String>) = apply { this.goalId = goalId }
@@ -851,6 +869,27 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Goal].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .commentCount()
+                 * .creatorId()
+                 * .dateArchived()
+                 * .dateCreated()
+                 * .dateUpdated()
+                 * .description()
+                 * .name()
+                 * .number()
+                 * .originProjectVersionId()
+                 * .subtype()
+                 * .suggested()
+                 * .thresholds()
+                 * .type()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -926,7 +965,7 @@ private constructor(
                 fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
                 /** The test creator id. */
-                fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+                fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
                 /** The test creator id. */
                 fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
@@ -937,7 +976,7 @@ private constructor(
 
                 /** The date the test was archived. */
                 fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
-                    dateArchived(dateArchived.orElse(null))
+                    dateArchived(dateArchived.getOrNull())
 
                 /** The date the test was archived. */
                 fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
@@ -983,7 +1022,7 @@ private constructor(
 
                 /** The project version (commit) id where the test was created. */
                 fun originProjectVersionId(originProjectVersionId: Optional<String>) =
-                    originProjectVersionId(originProjectVersionId.orElse(null))
+                    originProjectVersionId(originProjectVersionId.getOrNull())
 
                 /** The project version (commit) id where the test was created. */
                 fun originProjectVersionId(originProjectVersionId: JsonField<String>) = apply {
@@ -1010,14 +1049,8 @@ private constructor(
 
                 fun addThreshold(threshold: Threshold) = apply {
                     thresholds =
-                        (thresholds ?: JsonField.of(mutableListOf())).apply {
-                            asKnown()
-                                .orElseThrow {
-                                    IllegalStateException(
-                                        "Field was set to non-list type: ${javaClass.simpleName}"
-                                    )
-                                }
-                                .add(threshold)
+                        (thresholds ?: JsonField.of(mutableListOf())).also {
+                            checkKnown("thresholds", it).add(threshold)
                         }
                 }
 
@@ -1041,9 +1074,8 @@ private constructor(
                 fun delayWindow(delayWindow: Double) = delayWindow(delayWindow as Double?)
 
                 /** The delay window in seconds. Only applies to tests that use production data. */
-                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun delayWindow(delayWindow: Optional<Double>) =
-                    delayWindow(delayWindow.orElse(null) as Double?)
+                    delayWindow(delayWindow.getOrNull())
 
                 /** The delay window in seconds. Only applies to tests that use production data. */
                 fun delayWindow(delayWindow: JsonField<Double>) = apply {
@@ -1065,9 +1097,8 @@ private constructor(
                 /**
                  * The evaluation window in seconds. Only applies to tests that use production data.
                  */
-                @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
                 fun evaluationWindow(evaluationWindow: Optional<Double>) =
-                    evaluationWindow(evaluationWindow.orElse(null) as Double?)
+                    evaluationWindow(evaluationWindow.getOrNull())
 
                 /**
                  * The evaluation window in seconds. Only applies to tests that use production data.
@@ -1256,6 +1287,7 @@ private constructor(
 
                 companion object {
 
+                    /** Returns a mutable builder for constructing an instance of [Threshold]. */
                     @JvmStatic fun builder() = Builder()
                 }
 
@@ -1296,14 +1328,8 @@ private constructor(
 
                     fun addInsightParameter(insightParameter: JsonValue) = apply {
                         insightParameters =
-                            (insightParameters ?: JsonField.of(mutableListOf())).apply {
-                                asKnown()
-                                    .orElseThrow {
-                                        IllegalStateException(
-                                            "Field was set to non-list type: ${javaClass.simpleName}"
-                                        )
-                                    }
-                                    .add(insightParameter)
+                            (insightParameters ?: JsonField.of(mutableListOf())).also {
+                                checkKnown("insightParameters", it).add(insightParameter)
                             }
                     }
 
