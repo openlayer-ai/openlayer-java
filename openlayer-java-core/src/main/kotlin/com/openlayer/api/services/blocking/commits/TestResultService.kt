@@ -5,8 +5,8 @@ package com.openlayer.api.services.blocking.commits
 import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.CommitTestResultListParams
-import com.openlayer.api.models.CommitTestResultListResponse
+import com.openlayer.api.models.commits.testresults.TestResultListParams
+import com.openlayer.api.models.commits.testresults.TestResultListResponse
 
 interface TestResultService {
 
@@ -16,14 +16,14 @@ interface TestResultService {
     fun withRawResponse(): WithRawResponse
 
     /** List the test results for a project commit (project version). */
-    fun list(params: CommitTestResultListParams): CommitTestResultListResponse =
+    fun list(params: TestResultListParams): TestResultListResponse =
         list(params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
-        params: CommitTestResultListParams,
+        params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CommitTestResultListResponse
+    ): TestResultListResponse
 
     /** A view of [TestResultService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -33,15 +33,14 @@ interface TestResultService {
          * otherwise the same as [TestResultService.list].
          */
         @MustBeClosed
-        fun list(
-            params: CommitTestResultListParams
-        ): HttpResponseFor<CommitTestResultListResponse> = list(params, RequestOptions.none())
+        fun list(params: TestResultListParams): HttpResponseFor<TestResultListResponse> =
+            list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
-            params: CommitTestResultListParams,
+            params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<CommitTestResultListResponse>
+        ): HttpResponseFor<TestResultListResponse>
     }
 }

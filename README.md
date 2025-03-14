@@ -45,22 +45,22 @@ This library requires Java 8 or later.
 import com.openlayer.api.client.OpenlayerClient;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
 // Configures using the `OPENLAYER_API_KEY` environment variable
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
-InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+DataStreamParams params = DataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+    .config(DataStreamParams.Config.LlmData.builder()
         .addInputVariableName("user_query")
         .outputColumnName("output")
         .numOfTokenColumnName("tokens")
         .costColumnName("cost")
         .timestampColumnName("timestamp")
         .build())
-    .addRow(InferencePipelineDataStreamParams.Row.builder()
+    .addRow(DataStreamParams.Row.builder()
         .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
         .putAdditionalProperty("output", JsonValue.from("42"))
         .putAdditionalProperty("tokens", JsonValue.from(7))
@@ -68,7 +68,7 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
         .build())
     .build();
-InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(params);
+DataStreamResponse response = client.inferencePipelines().data().stream(params);
 ```
 
 ## Client configuration
@@ -121,7 +121,7 @@ See this table for the available options:
 
 To send a request to the Openlayer API, build an instance of some `Params` class and pass it to the corresponding client method. When the response is received, it will be deserialized into an instance of a Java class.
 
-For example, `client.inferencePipelines().data().stream(...)` should be called with an instance of `InferencePipelineDataStreamParams`, and it will return an instance of `InferencePipelineDataStreamResponse`.
+For example, `client.inferencePipelines().data().stream(...)` should be called with an instance of `DataStreamParams`, and it will return an instance of `DataStreamResponse`.
 
 ## Immutability
 
@@ -139,23 +139,23 @@ The default client is synchronous. To switch to asynchronous execution, call the
 import com.openlayer.api.client.OpenlayerClient;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `OPENLAYER_API_KEY` environment variable
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
-InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+DataStreamParams params = DataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+    .config(DataStreamParams.Config.LlmData.builder()
         .addInputVariableName("user_query")
         .outputColumnName("output")
         .numOfTokenColumnName("tokens")
         .costColumnName("cost")
         .timestampColumnName("timestamp")
         .build())
-    .addRow(InferencePipelineDataStreamParams.Row.builder()
+    .addRow(DataStreamParams.Row.builder()
         .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
         .putAdditionalProperty("output", JsonValue.from("42"))
         .putAdditionalProperty("tokens", JsonValue.from(7))
@@ -163,7 +163,7 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
         .build())
     .build();
-CompletableFuture<InferencePipelineDataStreamResponse> response = client.async().inferencePipelines().data().stream(params);
+CompletableFuture<DataStreamResponse> response = client.async().inferencePipelines().data().stream(params);
 ```
 
 Or create an asynchronous client from the beginning:
@@ -172,23 +172,23 @@ Or create an asynchronous client from the beginning:
 import com.openlayer.api.client.OpenlayerClientAsync;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync;
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 import java.util.concurrent.CompletableFuture;
 
 // Configures using the `OPENLAYER_API_KEY` environment variable
 OpenlayerClientAsync client = OpenlayerOkHttpClientAsync.fromEnv();
 
-InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+DataStreamParams params = DataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+    .config(DataStreamParams.Config.LlmData.builder()
         .addInputVariableName("user_query")
         .outputColumnName("output")
         .numOfTokenColumnName("tokens")
         .costColumnName("cost")
         .timestampColumnName("timestamp")
         .build())
-    .addRow(InferencePipelineDataStreamParams.Row.builder()
+    .addRow(DataStreamParams.Row.builder()
         .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
         .putAdditionalProperty("output", JsonValue.from("42"))
         .putAdditionalProperty("tokens", JsonValue.from(7))
@@ -196,7 +196,7 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
         .build())
     .build();
-CompletableFuture<InferencePipelineDataStreamResponse> response = client.inferencePipelines().data().stream(params);
+CompletableFuture<DataStreamResponse> response = client.inferencePipelines().data().stream(params);
 ```
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
@@ -211,19 +211,19 @@ To access this data, prefix any HTTP method call on a client or service with `wi
 import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.core.http.Headers;
 import com.openlayer.api.core.http.HttpResponseFor;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+DataStreamParams params = DataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+    .config(DataStreamParams.Config.LlmData.builder()
         .addInputVariableName("user_query")
         .outputColumnName("output")
         .numOfTokenColumnName("tokens")
         .costColumnName("cost")
         .timestampColumnName("timestamp")
         .build())
-    .addRow(InferencePipelineDataStreamParams.Row.builder()
+    .addRow(DataStreamParams.Row.builder()
         .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
         .putAdditionalProperty("output", JsonValue.from("42"))
         .putAdditionalProperty("tokens", JsonValue.from(7))
@@ -231,7 +231,7 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
         .build())
     .build();
-HttpResponseFor<InferencePipelineDataStreamResponse> response = client.inferencePipelines().data().withRawResponse().stream(params);
+HttpResponseFor<DataStreamResponse> response = client.inferencePipelines().data().withRawResponse().stream(params);
 
 int statusCode = response.statusCode();
 Headers headers = response.headers();
@@ -240,9 +240,9 @@ Headers headers = response.headers();
 You can still deserialize the response into an instance of a Java class if needed:
 
 ```java
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-InferencePipelineDataStreamResponse parsedResponse = response.parse();
+DataStreamResponse parsedResponse = response.parse();
 ```
 
 ## Error handling
@@ -320,10 +320,10 @@ To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(
+DataStreamResponse response = client.inferencePipelines().data().stream(
   params, RequestOptions.builder().timeout(Duration.ofSeconds(30)).build()
 );
 ```
@@ -371,9 +371,9 @@ To set undocumented parameters, call the `putAdditionalHeader`, `putAdditionalQu
 
 ```java
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 
-InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+DataStreamParams params = DataStreamParams.builder()
     .putAdditionalHeader("Secret-Header", "42")
     .putAdditionalQueryParam("secret_query_param", "42")
     .putAdditionalBodyProperty("secretProperty", JsonValue.from("42"))
@@ -386,7 +386,7 @@ To set undocumented parameters on _nested_ headers, query params, or body classe
 
 ```java
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.ProjectCreateParams;
+import com.openlayer.api.models.projects.ProjectCreateParams;
 
 ProjectCreateParams params = ProjectCreateParams.builder()
     .links(ProjectCreateParams.Links.builder()
@@ -401,11 +401,11 @@ To set a documented parameter or property to an undocumented or not yet supporte
 
 ```java
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 
-InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+DataStreamParams params = DataStreamParams.builder()
     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+    .config(DataStreamParams.Config.LlmData.builder()
         .addInputVariableName("user_query")
         .outputColumnName("output")
         .numOfTokenColumnName("tokens")
@@ -491,10 +491,10 @@ To access a property's raw JSON value, which may be undocumented, call its `_` p
 
 ```java
 import com.openlayer.api.core.JsonField;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import java.util.Optional;
 
-JsonField<InferencePipelineDataStreamParams.Config> config = client.inferencePipelines().data().stream(params)._config();
+JsonField<DataStreamParams.Config> config = client.inferencePipelines().data().stream(params)._config();
 
 if (config.isMissing()) {
   // The property is absent from the JSON response
@@ -519,19 +519,19 @@ By default, the SDK will not throw an exception in this case. It will throw [`Op
 If you would prefer to check that the response is completely well-typed upfront, then either call `validate()`:
 
 ```java
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(params).validate();
+DataStreamResponse response = client.inferencePipelines().data().stream(params).validate();
 ```
 
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
 import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.InferencePipelineDataStreamParams;
-import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-InferencePipelineDataStreamResponse response = client.inferencePipelines().data().stream(
+DataStreamResponse response = client.inferencePipelines().data().stream(
   params, RequestOptions.builder().responseValidation(true).build()
 );
 ```

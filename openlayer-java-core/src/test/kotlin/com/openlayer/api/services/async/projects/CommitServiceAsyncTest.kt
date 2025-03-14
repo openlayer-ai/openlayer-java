@@ -4,8 +4,8 @@ package com.openlayer.api.services.async.projects
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
-import com.openlayer.api.models.ProjectCommitCreateParams
-import com.openlayer.api.models.ProjectCommitListParams
+import com.openlayer.api.models.projects.commits.CommitCreateParams
+import com.openlayer.api.models.projects.commits.CommitListParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -24,11 +24,11 @@ class CommitServiceAsyncTest {
 
         val commitFuture =
             commitServiceAsync.create(
-                ProjectCommitCreateParams.builder()
+                CommitCreateParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .commit(
-                        ProjectCommitCreateParams.Commit.builder()
+                        CommitCreateParams.Commit.builder()
                             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                             .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
                             .fileSize(1024L)
@@ -49,7 +49,7 @@ class CommitServiceAsyncTest {
                     .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .passingGoalCount(5L)
                     .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .status(ProjectCommitCreateParams.Status.QUEUED)
+                    .status(CommitCreateParams.Status.QUEUED)
                     .statusMessage("Commit successfully processed.")
                     .storageUri("s3://...")
                     .totalGoalCount(6L)
@@ -58,7 +58,7 @@ class CommitServiceAsyncTest {
                     .archived(false)
                     .deploymentStatus("Deployed")
                     .links(
-                        ProjectCommitCreateParams.Links.builder()
+                        CommitCreateParams.Links.builder()
                             .app(
                                 "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                             )
@@ -82,7 +82,7 @@ class CommitServiceAsyncTest {
 
         val commitFuture =
             commitServiceAsync.list(
-                ProjectCommitListParams.builder()
+                CommitListParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .page(1L)
                     .perPage(1L)

@@ -15,7 +15,7 @@ import com.github.tomakehurst.wiremock.junit5.WireMockTest
 import com.openlayer.api.client.OpenlayerClient
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.models.InferencePipelineDataStreamParams
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -39,10 +39,10 @@ internal class ServiceParamsTest {
         stubFor(post(anyUrl()).willReturn(ok("{}")))
 
         dataService.stream(
-            InferencePipelineDataStreamParams.builder()
+            DataStreamParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .config(
-                    InferencePipelineDataStreamParams.Config.LlmData.builder()
+                    DataStreamParams.Config.LlmData.builder()
                         .outputColumnName("output")
                         .contextColumnName("context")
                         .costColumnName("cost")
@@ -53,7 +53,7 @@ internal class ServiceParamsTest {
                         .metadata(JsonValue.from(mapOf<String, Any>()))
                         .numOfTokenColumnName("tokens")
                         .addPrompt(
-                            InferencePipelineDataStreamParams.Config.LlmData.Prompt.builder()
+                            DataStreamParams.Config.LlmData.Prompt.builder()
                                 .content("{{ user_query }}")
                                 .role("user")
                                 .build()
@@ -63,7 +63,7 @@ internal class ServiceParamsTest {
                         .build()
                 )
                 .addRow(
-                    InferencePipelineDataStreamParams.Row.builder()
+                    DataStreamParams.Row.builder()
                         .putAdditionalProperty("user_query", JsonValue.from("bar"))
                         .putAdditionalProperty("output", JsonValue.from("bar"))
                         .putAdditionalProperty("tokens", JsonValue.from("bar"))

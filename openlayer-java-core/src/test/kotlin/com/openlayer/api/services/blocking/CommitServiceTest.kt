@@ -4,7 +4,7 @@ package com.openlayer.api.services.blocking
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.CommitRetrieveParams
+import com.openlayer.api.models.commits.CommitRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

@@ -15,8 +15,8 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.StoragePresignedUrlCreateParams
-import com.openlayer.api.models.StoragePresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 import java.util.concurrent.CompletableFuture
 
 class PresignedUrlServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,9 +29,9 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
     override fun withRawResponse(): PresignedUrlServiceAsync.WithRawResponse = withRawResponse
 
     override fun create(
-        params: StoragePresignedUrlCreateParams,
+        params: PresignedUrlCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<StoragePresignedUrlCreateResponse> =
+    ): CompletableFuture<PresignedUrlCreateResponse> =
         // post /storage/presigned-url
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
@@ -40,14 +40,14 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<StoragePresignedUrlCreateResponse> =
-            jsonHandler<StoragePresignedUrlCreateResponse>(clientOptions.jsonMapper)
+        private val createHandler: Handler<PresignedUrlCreateResponse> =
+            jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun create(
-            params: StoragePresignedUrlCreateParams,
+            params: PresignedUrlCreateParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<StoragePresignedUrlCreateResponse>> {
+        ): CompletableFuture<HttpResponseFor<PresignedUrlCreateResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

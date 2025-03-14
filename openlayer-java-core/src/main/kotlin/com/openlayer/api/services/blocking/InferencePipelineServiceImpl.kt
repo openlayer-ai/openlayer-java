@@ -17,17 +17,17 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.InferencePipelineDeleteParams
-import com.openlayer.api.models.InferencePipelineRetrieveParams
-import com.openlayer.api.models.InferencePipelineRetrieveResponse
-import com.openlayer.api.models.InferencePipelineUpdateParams
-import com.openlayer.api.models.InferencePipelineUpdateResponse
-import com.openlayer.api.services.blocking.inferencePipelines.DataService
-import com.openlayer.api.services.blocking.inferencePipelines.DataServiceImpl
-import com.openlayer.api.services.blocking.inferencePipelines.RowService
-import com.openlayer.api.services.blocking.inferencePipelines.RowServiceImpl
-import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
-import com.openlayer.api.services.blocking.inferencePipelines.TestResultServiceImpl
+import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateResponse
+import com.openlayer.api.services.blocking.inferencepipelines.DataService
+import com.openlayer.api.services.blocking.inferencepipelines.DataServiceImpl
+import com.openlayer.api.services.blocking.inferencepipelines.RowService
+import com.openlayer.api.services.blocking.inferencepipelines.RowServiceImpl
+import com.openlayer.api.services.blocking.inferencepipelines.TestResultService
+import com.openlayer.api.services.blocking.inferencepipelines.TestResultServiceImpl
 
 class InferencePipelineServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     InferencePipelineService {

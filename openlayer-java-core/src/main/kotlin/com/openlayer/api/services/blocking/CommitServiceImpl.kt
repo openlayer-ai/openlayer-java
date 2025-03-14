@@ -14,8 +14,8 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.CommitRetrieveParams
-import com.openlayer.api.models.CommitRetrieveResponse
+import com.openlayer.api.models.commits.CommitRetrieveParams
+import com.openlayer.api.models.commits.CommitRetrieveResponse
 import com.openlayer.api.services.blocking.commits.TestResultService
 import com.openlayer.api.services.blocking.commits.TestResultServiceImpl
 

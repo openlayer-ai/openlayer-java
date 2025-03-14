@@ -4,7 +4,7 @@ package com.openlayer.api.services.async.commits
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
-import com.openlayer.api.models.CommitTestResultListParams
+import com.openlayer.api.models.commits.testresults.TestResultListParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -22,13 +22,13 @@ class TestResultServiceAsyncTest {
 
         val testResultFuture =
             testResultServiceAsync.list(
-                CommitTestResultListParams.builder()
+                TestResultListParams.builder()
                     .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .includeArchived(true)
                     .page(1L)
                     .perPage(1L)
-                    .status(CommitTestResultListParams.Status.RUNNING)
-                    .type(CommitTestResultListParams.Type.INTEGRITY)
+                    .status(TestResultListParams.Status.RUNNING)
+                    .type(TestResultListParams.Type.INTEGRITY)
                     .build()
             )
 

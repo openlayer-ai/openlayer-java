@@ -5,10 +5,10 @@ package com.openlayer.api.services.blocking.projects
 import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.ProjectInferencePipelineCreateParams
-import com.openlayer.api.models.ProjectInferencePipelineCreateResponse
-import com.openlayer.api.models.ProjectInferencePipelineListParams
-import com.openlayer.api.models.ProjectInferencePipelineListResponse
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateResponse
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
 
 interface InferencePipelineService {
 
@@ -18,25 +18,24 @@ interface InferencePipelineService {
     fun withRawResponse(): WithRawResponse
 
     /** Create an inference pipeline in a project. */
-    fun create(
-        params: ProjectInferencePipelineCreateParams
-    ): ProjectInferencePipelineCreateResponse = create(params, RequestOptions.none())
+    fun create(params: InferencePipelineCreateParams): InferencePipelineCreateResponse =
+        create(params, RequestOptions.none())
 
     /** @see [create] */
     fun create(
-        params: ProjectInferencePipelineCreateParams,
+        params: InferencePipelineCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ProjectInferencePipelineCreateResponse
+    ): InferencePipelineCreateResponse
 
     /** List the inference pipelines in a project. */
-    fun list(params: ProjectInferencePipelineListParams): ProjectInferencePipelineListResponse =
+    fun list(params: InferencePipelineListParams): InferencePipelineListResponse =
         list(params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
-        params: ProjectInferencePipelineListParams,
+        params: InferencePipelineListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): ProjectInferencePipelineListResponse
+    ): InferencePipelineListResponse
 
     /**
      * A view of [InferencePipelineService] that provides access to raw HTTP responses for each
@@ -50,16 +49,15 @@ interface InferencePipelineService {
          */
         @MustBeClosed
         fun create(
-            params: ProjectInferencePipelineCreateParams
-        ): HttpResponseFor<ProjectInferencePipelineCreateResponse> =
-            create(params, RequestOptions.none())
+            params: InferencePipelineCreateParams
+        ): HttpResponseFor<InferencePipelineCreateResponse> = create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
         fun create(
-            params: ProjectInferencePipelineCreateParams,
+            params: InferencePipelineCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ProjectInferencePipelineCreateResponse>
+        ): HttpResponseFor<InferencePipelineCreateResponse>
 
         /**
          * Returns a raw HTTP response for `get /projects/{projectId}/inference-pipelines`, but is
@@ -67,15 +65,14 @@ interface InferencePipelineService {
          */
         @MustBeClosed
         fun list(
-            params: ProjectInferencePipelineListParams
-        ): HttpResponseFor<ProjectInferencePipelineListResponse> =
-            list(params, RequestOptions.none())
+            params: InferencePipelineListParams
+        ): HttpResponseFor<InferencePipelineListResponse> = list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
-            params: ProjectInferencePipelineListParams,
+            params: InferencePipelineListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<ProjectInferencePipelineListResponse>
+        ): HttpResponseFor<InferencePipelineListResponse>
     }
 }
