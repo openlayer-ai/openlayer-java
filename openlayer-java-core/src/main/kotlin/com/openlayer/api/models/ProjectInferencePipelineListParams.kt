@@ -9,6 +9,7 @@ import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** List the inference pipelines in a project. */
 class ProjectInferencePipelineListParams
@@ -58,6 +59,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [ProjectInferencePipelineListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .projectId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -90,7 +100,7 @@ private constructor(
         fun name(name: String?) = apply { this.name = name }
 
         /** Filter list of items by name. */
-        fun name(name: Optional<String>) = name(name.orElse(null))
+        fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** The page to return in a paginated query. */
         fun page(page: Long?) = apply { this.page = page }
@@ -99,8 +109,7 @@ private constructor(
         fun page(page: Long) = page(page as Long?)
 
         /** The page to return in a paginated query. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun page(page: Optional<Long>) = page(page.orElse(null) as Long?)
+        fun page(page: Optional<Long>) = page(page.getOrNull())
 
         /** Maximum number of items to return per page. */
         fun perPage(perPage: Long?) = apply { this.perPage = perPage }
@@ -109,8 +118,7 @@ private constructor(
         fun perPage(perPage: Long) = perPage(perPage as Long?)
 
         /** Maximum number of items to return per page. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun perPage(perPage: Optional<Long>) = perPage(perPage.orElse(null) as Long?)
+        fun perPage(perPage: Optional<Long>) = perPage(perPage.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

@@ -12,6 +12,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.NoAutoDetect
+import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
@@ -19,6 +20,7 @@ import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 @NoAutoDetect
 class ProjectListResponse
@@ -53,6 +55,14 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ProjectListResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .items()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -76,15 +86,7 @@ private constructor(
 
         fun addItem(item: Item) = apply {
             items =
-                (items ?: JsonField.of(mutableListOf())).apply {
-                    asKnown()
-                        .orElseThrow {
-                            IllegalStateException(
-                                "Field was set to non-list type: ${javaClass.simpleName}"
-                            )
-                        }
-                        .add(item)
-                }
+                (items ?: JsonField.of(mutableListOf())).also { checkKnown("items", it).add(item) }
         }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -314,6 +316,27 @@ private constructor(
 
         companion object {
 
+            /**
+             * Returns a mutable builder for constructing an instance of [Item].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .creatorId()
+             * .dateCreated()
+             * .dateUpdated()
+             * .developmentGoalCount()
+             * .goalCount()
+             * .inferencePipelineCount()
+             * .links()
+             * .monitoringGoalCount()
+             * .name()
+             * .source()
+             * .taskType()
+             * .versionCount()
+             * .workspaceId()
+             * ```
+             */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -369,7 +392,7 @@ private constructor(
             fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
             /** The project creator id. */
-            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.orElse(null))
+            fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
             /** The project creator id. */
             fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
@@ -439,7 +462,7 @@ private constructor(
             fun source(source: Source?) = source(JsonField.ofNullable(source))
 
             /** The source of the project. */
-            fun source(source: Optional<Source>) = source(source.orElse(null))
+            fun source(source: Optional<Source>) = source(source.getOrNull())
 
             /** The source of the project. */
             fun source(source: JsonField<Source>) = apply { this.source = source }
@@ -462,7 +485,7 @@ private constructor(
             fun workspaceId(workspaceId: String?) = workspaceId(JsonField.ofNullable(workspaceId))
 
             /** The workspace id. */
-            fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.orElse(null))
+            fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.getOrNull())
 
             /** The workspace id. */
             fun workspaceId(workspaceId: JsonField<String>) = apply {
@@ -473,7 +496,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** The project description. */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** The project description. */
             fun description(description: JsonField<String>) = apply {
@@ -482,7 +505,7 @@ private constructor(
 
             fun gitRepo(gitRepo: GitRepo?) = gitRepo(JsonField.ofNullable(gitRepo))
 
-            fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.orElse(null))
+            fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.getOrNull())
 
             fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
 
@@ -562,6 +585,14 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [Links].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .app()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 
@@ -979,6 +1010,23 @@ private constructor(
 
             companion object {
 
+                /**
+                 * Returns a mutable builder for constructing an instance of [GitRepo].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .dateConnected()
+                 * .dateUpdated()
+                 * .gitAccountId()
+                 * .gitId()
+                 * .name()
+                 * .private_()
+                 * .projectId()
+                 * .slug()
+                 * .url()
+                 * ```
+                 */
                 @JvmStatic fun builder() = Builder()
             }
 

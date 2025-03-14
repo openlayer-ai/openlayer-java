@@ -19,6 +19,7 @@ import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Update inference pipeline. */
 class InferencePipelineUpdateParams
@@ -142,6 +143,7 @@ private constructor(
 
         companion object {
 
+            /** Returns a mutable builder for constructing an instance of [Body]. */
             @JvmStatic fun builder() = Builder()
         }
 
@@ -165,7 +167,7 @@ private constructor(
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
             /** The inference pipeline description. */
-            fun description(description: Optional<String>) = description(description.orElse(null))
+            fun description(description: Optional<String>) = description(description.getOrNull())
 
             /** The inference pipeline description. */
             fun description(description: JsonField<String>) = apply {
@@ -190,7 +192,7 @@ private constructor(
              * UI to handle your reference dataset updates.
              */
             fun referenceDatasetUri(referenceDatasetUri: Optional<String>) =
-                referenceDatasetUri(referenceDatasetUri.orElse(null))
+                referenceDatasetUri(referenceDatasetUri.getOrNull())
 
             /**
              * The storage uri of your reference dataset. We recommend using the Python SDK or the
@@ -245,6 +247,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [InferencePipelineUpdateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .inferencePipelineId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -273,7 +284,7 @@ private constructor(
         fun description(description: String?) = apply { body.description(description) }
 
         /** The inference pipeline description. */
-        fun description(description: Optional<String>) = description(description.orElse(null))
+        fun description(description: Optional<String>) = description(description.getOrNull())
 
         /** The inference pipeline description. */
         fun description(description: JsonField<String>) = apply { body.description(description) }
@@ -297,7 +308,7 @@ private constructor(
          * handle your reference dataset updates.
          */
         fun referenceDatasetUri(referenceDatasetUri: Optional<String>) =
-            referenceDatasetUri(referenceDatasetUri.orElse(null))
+            referenceDatasetUri(referenceDatasetUri.getOrNull())
 
         /**
          * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to

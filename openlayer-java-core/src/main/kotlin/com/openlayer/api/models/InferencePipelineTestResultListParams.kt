@@ -13,6 +13,7 @@ import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** List the latest test results for an inference pipeline. */
 class InferencePipelineTestResultListParams
@@ -73,6 +74,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [InferencePipelineTestResultListParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .inferencePipelineId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -113,8 +123,7 @@ private constructor(
         fun page(page: Long) = page(page as Long?)
 
         /** The page to return in a paginated query. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun page(page: Optional<Long>) = page(page.orElse(null) as Long?)
+        fun page(page: Optional<Long>) = page(page.getOrNull())
 
         /** Maximum number of items to return per page. */
         fun perPage(perPage: Long?) = apply { this.perPage = perPage }
@@ -123,8 +132,7 @@ private constructor(
         fun perPage(perPage: Long) = perPage(perPage as Long?)
 
         /** Maximum number of items to return per page. */
-        @Suppress("USELESS_CAST") // See https://youtrack.jetbrains.com/issue/KT-74228
-        fun perPage(perPage: Optional<Long>) = perPage(perPage.orElse(null) as Long?)
+        fun perPage(perPage: Optional<Long>) = perPage(perPage.getOrNull())
 
         /**
          * Filter list of test results by status. Available statuses are `running`, `passing`,
@@ -136,7 +144,7 @@ private constructor(
          * Filter list of test results by status. Available statuses are `running`, `passing`,
          * `failing`, `skipped`, and `error`.
          */
-        fun status(status: Optional<Status>) = status(status.orElse(null))
+        fun status(status: Optional<Status>) = status(status.getOrNull())
 
         /**
          * Filter objects by test type. Available types are `integrity`, `consistency`,
@@ -148,7 +156,7 @@ private constructor(
          * Filter objects by test type. Available types are `integrity`, `consistency`,
          * `performance`, `fairness`, and `robustness`.
          */
-        fun type(type: Optional<Type>) = type(type.orElse(null))
+        fun type(type: Optional<Type>) = type(type.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()

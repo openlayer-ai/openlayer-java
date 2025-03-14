@@ -26,6 +26,10 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val sync: OpenlayerClient by lazy { OpenlayerClientImpl(clientOptions) }
 
+    private val withRawResponse: OpenlayerClientAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
+
     private val projects: ProjectServiceAsync by lazy {
         ProjectServiceAsyncImpl(clientOptionsWithUserAgent)
     }
@@ -44,6 +48,8 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
 
     override fun sync(): OpenlayerClient = sync
 
+    override fun withRawResponse(): OpenlayerClientAsync.WithRawResponse = withRawResponse
+
     override fun projects(): ProjectServiceAsync = projects
 
     override fun commits(): CommitServiceAsync = commits
@@ -53,4 +59,33 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
     override fun storage(): StorageServiceAsync = storage
 
     override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        OpenlayerClientAsync.WithRawResponse {
+
+        private val projects: ProjectServiceAsync.WithRawResponse by lazy {
+            ProjectServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val commits: CommitServiceAsync.WithRawResponse by lazy {
+            CommitServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val inferencePipelines: InferencePipelineServiceAsync.WithRawResponse by lazy {
+            InferencePipelineServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val storage: StorageServiceAsync.WithRawResponse by lazy {
+            StorageServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun projects(): ProjectServiceAsync.WithRawResponse = projects
+
+        override fun commits(): CommitServiceAsync.WithRawResponse = commits
+
+        override fun inferencePipelines(): InferencePipelineServiceAsync.WithRawResponse =
+            inferencePipelines
+
+        override fun storage(): StorageServiceAsync.WithRawResponse = storage
+    }
 }

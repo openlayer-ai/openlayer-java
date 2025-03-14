@@ -14,6 +14,7 @@ import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Retrieve inference pipeline. */
 class InferencePipelineRetrieveParams
@@ -53,6 +54,15 @@ private constructor(
 
     companion object {
 
+        /**
+         * Returns a mutable builder for constructing an instance of
+         * [InferencePipelineRetrieveParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .inferencePipelineId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -83,7 +93,7 @@ private constructor(
         fun expand(expand: List<Expand>?) = apply { this.expand = expand?.toMutableList() }
 
         /** Expand specific nested objects. */
-        fun expand(expand: Optional<List<Expand>>) = expand(expand.orElse(null))
+        fun expand(expand: Optional<List<Expand>>) = expand(expand.getOrNull())
 
         /** Expand specific nested objects. */
         fun addExpand(expand: Expand) = apply {
