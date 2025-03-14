@@ -10,7 +10,9 @@ import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
-import com.openlayer.api.core.json
+import com.openlayer.api.core.http.HttpResponseFor
+import com.openlayer.api.core.http.json
+import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.InferencePipelineDataStreamParams
@@ -20,34 +22,53 @@ import java.util.concurrent.CompletableFuture
 class DataServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     DataServiceAsync {
 
-    private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: DataServiceAsync.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val streamHandler: Handler<InferencePipelineDataStreamResponse> =
-        jsonHandler<InferencePipelineDataStreamResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): DataServiceAsync.WithRawResponse = withRawResponse
 
-    /** Publish an inference data point to an inference pipeline. */
     override fun stream(
         params: InferencePipelineDataStreamParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<InferencePipelineDataStreamResponse> {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.POST)
-                .addPathSegments("inference-pipelines", params.getPathParam(0), "data-stream")
-                .body(json(clientOptions.jsonMapper, params._body()))
-                .build()
-                .prepareAsync(clientOptions, params)
-        return request
-            .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
-            .thenApply { response ->
-                response
-                    .use { streamHandler.handle(it) }
-                    .also {
-                        if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                            it.validate()
-                        }
+    ): CompletableFuture<InferencePipelineDataStreamResponse> =
+        // post /inference-pipelines/{inferencePipelineId}/data-stream
+        withRawResponse().stream(params, requestOptions).thenApply { it.parse() }
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        DataServiceAsync.WithRawResponse {
+
+        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+
+        private val streamHandler: Handler<InferencePipelineDataStreamResponse> =
+            jsonHandler<InferencePipelineDataStreamResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun stream(
+            params: InferencePipelineDataStreamParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineDataStreamResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .addPathSegments("inference-pipelines", params.getPathParam(0), "data-stream")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { streamHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
-            }
+                }
+        }
     }
 }

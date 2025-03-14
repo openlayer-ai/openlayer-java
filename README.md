@@ -3,6 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.1.0-alpha.11)
+[![javadoc](https://javadoc.io/badge2/com.openlayer.api/openlayer-java/0.1.0-alpha.11/javadoc.svg)](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.1.0-alpha.11)
 
 <!-- x-release-please-end -->
 
@@ -10,7 +11,7 @@ The Openlayer Java SDK provides convenient access to the Openlayer REST API from
 
 It is generated with [Stainless](https://www.stainless.com/).
 
-The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview).
+The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview). Javadocs are also available on [javadoc.io](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.1.0-alpha.11).
 
 ## Installation
 
@@ -200,6 +201,50 @@ CompletableFuture<InferencePipelineDataStreamResponse> response = client.inferen
 
 The asynchronous client supports the same options as the synchronous one, except most methods return `CompletableFuture`s.
 
+## Raw responses
+
+The SDK defines methods that deserialize responses into instances of Java classes. However, these methods don't provide access to the response headers, status code, or the raw response body.
+
+To access this data, prefix any HTTP method call on a client or service with `withRawResponse()`:
+
+```java
+import com.openlayer.api.core.JsonValue;
+import com.openlayer.api.core.http.Headers;
+import com.openlayer.api.core.http.HttpResponseFor;
+import com.openlayer.api.models.InferencePipelineDataStreamParams;
+import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+
+InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.builder()
+    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+    .config(InferencePipelineDataStreamParams.Config.LlmData.builder()
+        .addInputVariableName("user_query")
+        .outputColumnName("output")
+        .numOfTokenColumnName("tokens")
+        .costColumnName("cost")
+        .timestampColumnName("timestamp")
+        .build())
+    .addRow(InferencePipelineDataStreamParams.Row.builder()
+        .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
+        .putAdditionalProperty("output", JsonValue.from("42"))
+        .putAdditionalProperty("tokens", JsonValue.from(7))
+        .putAdditionalProperty("cost", JsonValue.from(0.02))
+        .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
+        .build())
+    .build();
+HttpResponseFor<InferencePipelineDataStreamResponse> response = client.inferencePipelines().data().withRawResponse().stream(params);
+
+int statusCode = response.statusCode();
+Headers headers = response.headers();
+```
+
+You can still deserialize the response into an instance of a Java class if needed:
+
+```java
+import com.openlayer.api.models.InferencePipelineDataStreamResponse;
+
+InferencePipelineDataStreamResponse parsedResponse = response.parse();
+```
+
 ## Error handling
 
 The SDK throws custom unchecked exception types:
@@ -335,9 +380,24 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
     .build();
 ```
 
-These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods. You can also set undocumented parameters on nested headers, query params, or body classes using the `putAdditionalProperty` method. These properties can be accessed on the built object later using the `_additionalProperties()` method.
+These can be accessed on the built object later using the `_additionalHeaders()`, `_additionalQueryParams()`, and `_additionalBodyProperties()` methods.
 
-To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](openlayer-java-core/src/main/kotlin/com/openlayer/api/core/JsonValue.kt) object to its setter:
+To set undocumented parameters on _nested_ headers, query params, or body classes, call the `putAdditionalProperty` method on the nested class:
+
+```java
+import com.openlayer.api.core.JsonValue;
+import com.openlayer.api.models.ProjectCreateParams;
+
+ProjectCreateParams params = ProjectCreateParams.builder()
+    .links(ProjectCreateParams.Links.builder()
+        .putAdditionalProperty("secretProperty", JsonValue.from("42"))
+        .build())
+    .build();
+```
+
+These properties can be accessed on the nested built object later using the `_additionalProperties()` method.
+
+To set a documented parameter or property to an undocumented or not yet supported _value_, pass a [`JsonValue`](openlayer-java-core/src/main/kotlin/com/openlayer/api/core/Values.kt) object to its setter:
 
 ```java
 import com.openlayer.api.core.JsonValue;
@@ -354,6 +414,45 @@ InferencePipelineDataStreamParams params = InferencePipelineDataStreamParams.bui
         .build())
     .rows(JsonValue.from(42))
     .build();
+```
+
+The most straightforward way to create a [`JsonValue`](openlayer-java-core/src/main/kotlin/com/openlayer/api/core/Values.kt) is using its `from(...)` method:
+
+```java
+import com.openlayer.api.core.JsonValue;
+import java.util.List;
+import java.util.Map;
+
+// Create primitive JSON values
+JsonValue nullValue = JsonValue.from(null);
+JsonValue booleanValue = JsonValue.from(true);
+JsonValue numberValue = JsonValue.from(42);
+JsonValue stringValue = JsonValue.from("Hello World!");
+
+// Create a JSON array value equivalent to `["Hello", "World"]`
+JsonValue arrayValue = JsonValue.from(List.of(
+  "Hello", "World"
+));
+
+// Create a JSON object value equivalent to `{ "a": 1, "b": 2 }`
+JsonValue objectValue = JsonValue.from(Map.of(
+  "a", 1,
+  "b", 2
+));
+
+// Create an arbitrarily nested JSON equivalent to:
+// {
+//   "a": [1, 2],
+//   "b": [3, 4]
+// }
+JsonValue complexValue = JsonValue.from(Map.of(
+  "a", List.of(
+    1, 2
+  ),
+  "b", List.of(
+    3, 4
+  )
+));
 ```
 
 ### Response properties

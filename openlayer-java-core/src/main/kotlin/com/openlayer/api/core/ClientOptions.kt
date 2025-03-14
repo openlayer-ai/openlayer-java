@@ -10,6 +10,7 @@ import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.http.RetryingHttpClient
 import java.time.Clock
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 class ClientOptions
 private constructor(
@@ -21,9 +22,12 @@ private constructor(
     @get:JvmName("headers") val headers: Headers,
     @get:JvmName("queryParams") val queryParams: QueryParams,
     @get:JvmName("responseValidation") val responseValidation: Boolean,
+    @get:JvmName("timeout") val timeout: Timeout,
     @get:JvmName("maxRetries") val maxRetries: Int,
-    @get:JvmName("apiKey") val apiKey: String?,
+    private val apiKey: String?,
 ) {
+
+    fun apiKey(): Optional<String> = Optional.ofNullable(apiKey)
 
     fun toBuilder() = Builder().from(this)
 
@@ -31,6 +35,14 @@ private constructor(
 
         const val PRODUCTION_URL = "https://api.openlayer.com/v1"
 
+        /**
+         * Returns a mutable builder for constructing an instance of [ClientOptions].
+         *
+         * The following fields are required:
+         * ```java
+         * .httpClient()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
 
         @JvmStatic fun fromEnv(): ClientOptions = builder().fromEnv().build()
@@ -46,6 +58,7 @@ private constructor(
         private var headers: Headers.Builder = Headers.builder()
         private var queryParams: QueryParams.Builder = QueryParams.builder()
         private var responseValidation: Boolean = false
+        private var timeout: Timeout = Timeout.default()
         private var maxRetries: Int = 2
         private var apiKey: String? = null
 
@@ -58,6 +71,7 @@ private constructor(
             headers = clientOptions.headers.toBuilder()
             queryParams = clientOptions.queryParams.toBuilder()
             responseValidation = clientOptions.responseValidation
+            timeout = clientOptions.timeout
             maxRetries = clientOptions.maxRetries
             apiKey = clientOptions.apiKey
         }
@@ -74,11 +88,13 @@ private constructor(
             this.responseValidation = responseValidation
         }
 
+        fun timeout(timeout: Timeout) = apply { this.timeout = timeout }
+
         fun maxRetries(maxRetries: Int) = apply { this.maxRetries = maxRetries }
 
         fun apiKey(apiKey: String?) = apply { this.apiKey = apiKey }
 
-        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.orElse(null))
+        fun apiKey(apiKey: Optional<String>) = apiKey(apiKey.getOrNull())
 
         fun headers(headers: Headers) = apply {
             this.headers.clear()
@@ -197,6 +213,7 @@ private constructor(
                 headers.build(),
                 queryParams.build(),
                 responseValidation,
+                timeout,
                 maxRetries,
                 apiKey,
             )
