@@ -4,9 +4,9 @@ package com.openlayer.api.services.async
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
-import com.openlayer.api.models.InferencePipelineDeleteParams
-import com.openlayer.api.models.InferencePipelineRetrieveParams
-import com.openlayer.api.models.InferencePipelineUpdateParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 

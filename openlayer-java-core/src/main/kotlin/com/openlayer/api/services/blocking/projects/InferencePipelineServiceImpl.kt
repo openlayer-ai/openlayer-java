@@ -15,10 +15,10 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.ProjectInferencePipelineCreateParams
-import com.openlayer.api.models.ProjectInferencePipelineCreateResponse
-import com.openlayer.api.models.ProjectInferencePipelineListParams
-import com.openlayer.api.models.ProjectInferencePipelineListResponse
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateResponse
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
 
 class InferencePipelineServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     InferencePipelineService {
@@ -30,16 +30,16 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
     override fun withRawResponse(): InferencePipelineService.WithRawResponse = withRawResponse
 
     override fun create(
-        params: ProjectInferencePipelineCreateParams,
+        params: InferencePipelineCreateParams,
         requestOptions: RequestOptions,
-    ): ProjectInferencePipelineCreateResponse =
+    ): InferencePipelineCreateResponse =
         // post /projects/{projectId}/inference-pipelines
         withRawResponse().create(params, requestOptions).parse()
 
     override fun list(
-        params: ProjectInferencePipelineListParams,
+        params: InferencePipelineListParams,
         requestOptions: RequestOptions,
-    ): ProjectInferencePipelineListResponse =
+    ): InferencePipelineListResponse =
         // get /projects/{projectId}/inference-pipelines
         withRawResponse().list(params, requestOptions).parse()
 
@@ -48,14 +48,14 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<ProjectInferencePipelineCreateResponse> =
-            jsonHandler<ProjectInferencePipelineCreateResponse>(clientOptions.jsonMapper)
+        private val createHandler: Handler<InferencePipelineCreateResponse> =
+            jsonHandler<InferencePipelineCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun create(
-            params: ProjectInferencePipelineCreateParams,
+            params: InferencePipelineCreateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ProjectInferencePipelineCreateResponse> {
+        ): HttpResponseFor<InferencePipelineCreateResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -76,14 +76,14 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             }
         }
 
-        private val listHandler: Handler<ProjectInferencePipelineListResponse> =
-            jsonHandler<ProjectInferencePipelineListResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<InferencePipelineListResponse> =
+            jsonHandler<InferencePipelineListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
-            params: ProjectInferencePipelineListParams,
+            params: InferencePipelineListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ProjectInferencePipelineListResponse> {
+        ): HttpResponseFor<InferencePipelineListResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

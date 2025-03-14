@@ -15,10 +15,10 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.ProjectCommitCreateParams
-import com.openlayer.api.models.ProjectCommitCreateResponse
-import com.openlayer.api.models.ProjectCommitListParams
-import com.openlayer.api.models.ProjectCommitListResponse
+import com.openlayer.api.models.projects.commits.CommitCreateParams
+import com.openlayer.api.models.projects.commits.CommitCreateResponse
+import com.openlayer.api.models.projects.commits.CommitListParams
+import com.openlayer.api.models.projects.commits.CommitListResponse
 import java.util.concurrent.CompletableFuture
 
 class CommitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -31,16 +31,16 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
     override fun withRawResponse(): CommitServiceAsync.WithRawResponse = withRawResponse
 
     override fun create(
-        params: ProjectCommitCreateParams,
+        params: CommitCreateParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ProjectCommitCreateResponse> =
+    ): CompletableFuture<CommitCreateResponse> =
         // post /projects/{projectId}/versions
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
     override fun list(
-        params: ProjectCommitListParams,
+        params: CommitListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<ProjectCommitListResponse> =
+    ): CompletableFuture<CommitListResponse> =
         // get /projects/{projectId}/versions
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -49,14 +49,14 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<ProjectCommitCreateResponse> =
-            jsonHandler<ProjectCommitCreateResponse>(clientOptions.jsonMapper)
+        private val createHandler: Handler<CommitCreateResponse> =
+            jsonHandler<CommitCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun create(
-            params: ProjectCommitCreateParams,
+            params: CommitCreateParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ProjectCommitCreateResponse>> {
+        ): CompletableFuture<HttpResponseFor<CommitCreateResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -80,14 +80,13 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
                 }
         }
 
-        private val listHandler: Handler<ProjectCommitListResponse> =
-            jsonHandler<ProjectCommitListResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<CommitListResponse> =
+            jsonHandler<CommitListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         override fun list(
-            params: ProjectCommitListParams,
+            params: CommitListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<ProjectCommitListResponse>> {
+        ): CompletableFuture<HttpResponseFor<CommitListResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

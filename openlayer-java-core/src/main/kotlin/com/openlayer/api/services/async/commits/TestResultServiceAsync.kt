@@ -5,8 +5,8 @@ package com.openlayer.api.services.async.commits
 import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.CommitTestResultListParams
-import com.openlayer.api.models.CommitTestResultListResponse
+import com.openlayer.api.models.commits.testresults.TestResultListParams
+import com.openlayer.api.models.commits.testresults.TestResultListResponse
 import java.util.concurrent.CompletableFuture
 
 interface TestResultServiceAsync {
@@ -17,14 +17,14 @@ interface TestResultServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** List the test results for a project commit (project version). */
-    fun list(params: CommitTestResultListParams): CompletableFuture<CommitTestResultListResponse> =
+    fun list(params: TestResultListParams): CompletableFuture<TestResultListResponse> =
         list(params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
-        params: CommitTestResultListParams,
+        params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<CommitTestResultListResponse>
+    ): CompletableFuture<TestResultListResponse>
 
     /**
      * A view of [TestResultServiceAsync] that provides access to raw HTTP responses for each
@@ -38,15 +38,15 @@ interface TestResultServiceAsync {
          */
         @MustBeClosed
         fun list(
-            params: CommitTestResultListParams
-        ): CompletableFuture<HttpResponseFor<CommitTestResultListResponse>> =
+            params: TestResultListParams
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
-            params: CommitTestResultListParams,
+            params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<CommitTestResultListResponse>>
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>>
     }
 }

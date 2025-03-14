@@ -5,8 +5,8 @@ package com.openlayer.api.services.async.storage
 import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.StoragePresignedUrlCreateParams
-import com.openlayer.api.models.StoragePresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 import java.util.concurrent.CompletableFuture
 
 interface PresignedUrlServiceAsync {
@@ -17,15 +17,14 @@ interface PresignedUrlServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Retrieve a presigned url to post storage artifacts. */
-    fun create(
-        params: StoragePresignedUrlCreateParams
-    ): CompletableFuture<StoragePresignedUrlCreateResponse> = create(params, RequestOptions.none())
+    fun create(params: PresignedUrlCreateParams): CompletableFuture<PresignedUrlCreateResponse> =
+        create(params, RequestOptions.none())
 
     /** @see [create] */
     fun create(
-        params: StoragePresignedUrlCreateParams,
+        params: PresignedUrlCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<StoragePresignedUrlCreateResponse>
+    ): CompletableFuture<PresignedUrlCreateResponse>
 
     /**
      * A view of [PresignedUrlServiceAsync] that provides access to raw HTTP responses for each
@@ -39,15 +38,15 @@ interface PresignedUrlServiceAsync {
          */
         @MustBeClosed
         fun create(
-            params: StoragePresignedUrlCreateParams
-        ): CompletableFuture<HttpResponseFor<StoragePresignedUrlCreateResponse>> =
+            params: PresignedUrlCreateParams
+        ): CompletableFuture<HttpResponseFor<PresignedUrlCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
         fun create(
-            params: StoragePresignedUrlCreateParams,
+            params: PresignedUrlCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<StoragePresignedUrlCreateResponse>>
+        ): CompletableFuture<HttpResponseFor<PresignedUrlCreateResponse>>
     }
 }

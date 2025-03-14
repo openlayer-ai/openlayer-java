@@ -14,8 +14,8 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.CommitTestResultListParams
-import com.openlayer.api.models.CommitTestResultListResponse
+import com.openlayer.api.models.commits.testresults.TestResultListParams
+import com.openlayer.api.models.commits.testresults.TestResultListResponse
 import java.util.concurrent.CompletableFuture
 
 class TestResultServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -28,9 +28,9 @@ class TestResultServiceAsyncImpl internal constructor(private val clientOptions:
     override fun withRawResponse(): TestResultServiceAsync.WithRawResponse = withRawResponse
 
     override fun list(
-        params: CommitTestResultListParams,
+        params: TestResultListParams,
         requestOptions: RequestOptions,
-    ): CompletableFuture<CommitTestResultListResponse> =
+    ): CompletableFuture<TestResultListResponse> =
         // get /versions/{projectVersionId}/results
         withRawResponse().list(params, requestOptions).thenApply { it.parse() }
 
@@ -39,14 +39,14 @@ class TestResultServiceAsyncImpl internal constructor(private val clientOptions:
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<CommitTestResultListResponse> =
-            jsonHandler<CommitTestResultListResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<TestResultListResponse> =
+            jsonHandler<TestResultListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
-            params: CommitTestResultListParams,
+            params: TestResultListParams,
             requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<CommitTestResultListResponse>> {
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

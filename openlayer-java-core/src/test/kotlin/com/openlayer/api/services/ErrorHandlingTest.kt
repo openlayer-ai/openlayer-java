@@ -23,7 +23,7 @@ import com.openlayer.api.errors.RateLimitException
 import com.openlayer.api.errors.UnauthorizedException
 import com.openlayer.api.errors.UnexpectedStatusCodeException
 import com.openlayer.api.errors.UnprocessableEntityException
-import com.openlayer.api.models.InferencePipelineDataStreamParams
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.entry
 import org.junit.jupiter.api.BeforeEach
@@ -71,10 +71,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<BadRequestException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -85,8 +85,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -96,7 +95,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -124,10 +123,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<UnauthorizedException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -138,8 +137,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -149,7 +147,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -177,10 +175,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<PermissionDeniedException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -191,8 +189,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -202,7 +199,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -230,10 +227,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<NotFoundException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -244,8 +241,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -255,7 +251,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -283,10 +279,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<UnprocessableEntityException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -297,8 +293,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -308,7 +303,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -336,10 +331,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<RateLimitException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -350,8 +345,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -361,7 +355,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -389,10 +383,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<InternalServerException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -403,8 +397,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -414,7 +407,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -442,10 +435,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<UnexpectedStatusCodeException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -456,8 +449,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -467,7 +459,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))
@@ -495,10 +487,10 @@ class ErrorHandlingTest {
         val e =
             assertThrows<OpenlayerException> {
                 dataService.stream(
-                    InferencePipelineDataStreamParams.builder()
+                    DataStreamParams.builder()
                         .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .config(
-                            InferencePipelineDataStreamParams.Config.LlmData.builder()
+                            DataStreamParams.Config.LlmData.builder()
                                 .outputColumnName("output")
                                 .contextColumnName("context")
                                 .costColumnName("cost")
@@ -509,8 +501,7 @@ class ErrorHandlingTest {
                                 .metadata(JsonValue.from(mapOf<String, Any>()))
                                 .numOfTokenColumnName("tokens")
                                 .addPrompt(
-                                    InferencePipelineDataStreamParams.Config.LlmData.Prompt
-                                        .builder()
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
                                         .content("{{ user_query }}")
                                         .role("user")
                                         .build()
@@ -520,7 +511,7 @@ class ErrorHandlingTest {
                                 .build()
                         )
                         .addRow(
-                            InferencePipelineDataStreamParams.Row.builder()
+                            DataStreamParams.Row.builder()
                                 .putAdditionalProperty("user_query", JsonValue.from("bar"))
                                 .putAdditionalProperty("output", JsonValue.from("bar"))
                                 .putAdditionalProperty("tokens", JsonValue.from("bar"))

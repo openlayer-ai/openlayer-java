@@ -15,8 +15,8 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.StoragePresignedUrlCreateParams
-import com.openlayer.api.models.StoragePresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 
 class PresignedUrlServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     PresignedUrlService {
@@ -28,9 +28,9 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
     override fun withRawResponse(): PresignedUrlService.WithRawResponse = withRawResponse
 
     override fun create(
-        params: StoragePresignedUrlCreateParams,
+        params: PresignedUrlCreateParams,
         requestOptions: RequestOptions,
-    ): StoragePresignedUrlCreateResponse =
+    ): PresignedUrlCreateResponse =
         // post /storage/presigned-url
         withRawResponse().create(params, requestOptions).parse()
 
@@ -39,14 +39,14 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<StoragePresignedUrlCreateResponse> =
-            jsonHandler<StoragePresignedUrlCreateResponse>(clientOptions.jsonMapper)
+        private val createHandler: Handler<PresignedUrlCreateResponse> =
+            jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun create(
-            params: StoragePresignedUrlCreateParams,
+            params: PresignedUrlCreateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<StoragePresignedUrlCreateResponse> {
+        ): HttpResponseFor<PresignedUrlCreateResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

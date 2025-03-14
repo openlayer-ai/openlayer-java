@@ -14,8 +14,8 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.CommitTestResultListParams
-import com.openlayer.api.models.CommitTestResultListResponse
+import com.openlayer.api.models.commits.testresults.TestResultListParams
+import com.openlayer.api.models.commits.testresults.TestResultListResponse
 
 class TestResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     TestResultService {
@@ -27,9 +27,9 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
     override fun withRawResponse(): TestResultService.WithRawResponse = withRawResponse
 
     override fun list(
-        params: CommitTestResultListParams,
+        params: TestResultListParams,
         requestOptions: RequestOptions,
-    ): CommitTestResultListResponse =
+    ): TestResultListResponse =
         // get /versions/{projectVersionId}/results
         withRawResponse().list(params, requestOptions).parse()
 
@@ -38,14 +38,14 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val listHandler: Handler<CommitTestResultListResponse> =
-            jsonHandler<CommitTestResultListResponse>(clientOptions.jsonMapper)
+        private val listHandler: Handler<TestResultListResponse> =
+            jsonHandler<TestResultListResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun list(
-            params: CommitTestResultListParams,
+            params: TestResultListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<CommitTestResultListResponse> {
+        ): HttpResponseFor<TestResultListResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
