@@ -15,10 +15,10 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.ProjectCreateParams
-import com.openlayer.api.models.ProjectCreateResponse
-import com.openlayer.api.models.ProjectListParams
-import com.openlayer.api.models.ProjectListResponse
+import com.openlayer.api.models.projects.ProjectCreateParams
+import com.openlayer.api.models.projects.ProjectCreateResponse
+import com.openlayer.api.models.projects.ProjectListParams
+import com.openlayer.api.models.projects.ProjectListResponse
 import com.openlayer.api.services.async.projects.CommitServiceAsync
 import com.openlayer.api.services.async.projects.CommitServiceAsyncImpl
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync

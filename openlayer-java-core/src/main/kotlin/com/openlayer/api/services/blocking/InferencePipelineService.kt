@@ -6,14 +6,14 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.InferencePipelineDeleteParams
-import com.openlayer.api.models.InferencePipelineRetrieveParams
-import com.openlayer.api.models.InferencePipelineRetrieveResponse
-import com.openlayer.api.models.InferencePipelineUpdateParams
-import com.openlayer.api.models.InferencePipelineUpdateResponse
-import com.openlayer.api.services.blocking.inferencePipelines.DataService
-import com.openlayer.api.services.blocking.inferencePipelines.RowService
-import com.openlayer.api.services.blocking.inferencePipelines.TestResultService
+import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateResponse
+import com.openlayer.api.services.blocking.inferencepipelines.DataService
+import com.openlayer.api.services.blocking.inferencepipelines.RowService
+import com.openlayer.api.services.blocking.inferencepipelines.TestResultService
 
 interface InferencePipelineService {
 

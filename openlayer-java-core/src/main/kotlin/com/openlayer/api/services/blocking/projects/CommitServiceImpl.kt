@@ -15,10 +15,10 @@ import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.ProjectCommitCreateParams
-import com.openlayer.api.models.ProjectCommitCreateResponse
-import com.openlayer.api.models.ProjectCommitListParams
-import com.openlayer.api.models.ProjectCommitListResponse
+import com.openlayer.api.models.projects.commits.CommitCreateParams
+import com.openlayer.api.models.projects.commits.CommitCreateResponse
+import com.openlayer.api.models.projects.commits.CommitListParams
+import com.openlayer.api.models.projects.commits.CommitListResponse
 
 class CommitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     CommitService {
@@ -30,16 +30,16 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
     override fun withRawResponse(): CommitService.WithRawResponse = withRawResponse
 
     override fun create(
-        params: ProjectCommitCreateParams,
+        params: CommitCreateParams,
         requestOptions: RequestOptions,
-    ): ProjectCommitCreateResponse =
+    ): CommitCreateResponse =
         // post /projects/{projectId}/versions
         withRawResponse().create(params, requestOptions).parse()
 
     override fun list(
-        params: ProjectCommitListParams,
+        params: CommitListParams,
         requestOptions: RequestOptions,
-    ): ProjectCommitListResponse =
+    ): CommitListResponse =
         // get /projects/{projectId}/versions
         withRawResponse().list(params, requestOptions).parse()
 
@@ -48,14 +48,14 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
 
         private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
 
-        private val createHandler: Handler<ProjectCommitCreateResponse> =
-            jsonHandler<ProjectCommitCreateResponse>(clientOptions.jsonMapper)
+        private val createHandler: Handler<CommitCreateResponse> =
+            jsonHandler<CommitCreateResponse>(clientOptions.jsonMapper)
                 .withErrorHandler(errorHandler)
 
         override fun create(
-            params: ProjectCommitCreateParams,
+            params: CommitCreateParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ProjectCommitCreateResponse> {
+        ): HttpResponseFor<CommitCreateResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -76,14 +76,13 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
             }
         }
 
-        private val listHandler: Handler<ProjectCommitListResponse> =
-            jsonHandler<ProjectCommitListResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
+        private val listHandler: Handler<CommitListResponse> =
+            jsonHandler<CommitListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
 
         override fun list(
-            params: ProjectCommitListParams,
+            params: CommitListParams,
             requestOptions: RequestOptions,
-        ): HttpResponseFor<ProjectCommitListResponse> {
+        ): HttpResponseFor<CommitListResponse> {
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

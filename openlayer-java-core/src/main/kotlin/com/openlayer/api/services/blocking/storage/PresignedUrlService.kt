@@ -5,8 +5,8 @@ package com.openlayer.api.services.blocking.storage
 import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.StoragePresignedUrlCreateParams
-import com.openlayer.api.models.StoragePresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 
 interface PresignedUrlService {
 
@@ -16,14 +16,14 @@ interface PresignedUrlService {
     fun withRawResponse(): WithRawResponse
 
     /** Retrieve a presigned url to post storage artifacts. */
-    fun create(params: StoragePresignedUrlCreateParams): StoragePresignedUrlCreateResponse =
+    fun create(params: PresignedUrlCreateParams): PresignedUrlCreateResponse =
         create(params, RequestOptions.none())
 
     /** @see [create] */
     fun create(
-        params: StoragePresignedUrlCreateParams,
+        params: PresignedUrlCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): StoragePresignedUrlCreateResponse
+    ): PresignedUrlCreateResponse
 
     /**
      * A view of [PresignedUrlService] that provides access to raw HTTP responses for each method.
@@ -35,16 +35,14 @@ interface PresignedUrlService {
          * as [PresignedUrlService.create].
          */
         @MustBeClosed
-        fun create(
-            params: StoragePresignedUrlCreateParams
-        ): HttpResponseFor<StoragePresignedUrlCreateResponse> =
+        fun create(params: PresignedUrlCreateParams): HttpResponseFor<PresignedUrlCreateResponse> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
         fun create(
-            params: StoragePresignedUrlCreateParams,
+            params: PresignedUrlCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<StoragePresignedUrlCreateResponse>
+        ): HttpResponseFor<PresignedUrlCreateResponse>
     }
 }

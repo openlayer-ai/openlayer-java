@@ -4,8 +4,8 @@ package com.openlayer.api.services.async
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
-import com.openlayer.api.models.ProjectCreateParams
-import com.openlayer.api.models.ProjectListParams
+import com.openlayer.api.models.projects.ProjectCreateParams
+import com.openlayer.api.models.projects.ProjectListParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith

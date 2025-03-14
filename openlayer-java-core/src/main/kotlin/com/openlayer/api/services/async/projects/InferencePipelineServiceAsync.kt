@@ -5,10 +5,10 @@ package com.openlayer.api.services.async.projects
 import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.ProjectInferencePipelineCreateParams
-import com.openlayer.api.models.ProjectInferencePipelineCreateResponse
-import com.openlayer.api.models.ProjectInferencePipelineListParams
-import com.openlayer.api.models.ProjectInferencePipelineListResponse
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateResponse
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
 import java.util.concurrent.CompletableFuture
 
 interface InferencePipelineServiceAsync {
@@ -20,26 +20,25 @@ interface InferencePipelineServiceAsync {
 
     /** Create an inference pipeline in a project. */
     fun create(
-        params: ProjectInferencePipelineCreateParams
-    ): CompletableFuture<ProjectInferencePipelineCreateResponse> =
-        create(params, RequestOptions.none())
+        params: InferencePipelineCreateParams
+    ): CompletableFuture<InferencePipelineCreateResponse> = create(params, RequestOptions.none())
 
     /** @see [create] */
     fun create(
-        params: ProjectInferencePipelineCreateParams,
+        params: InferencePipelineCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ProjectInferencePipelineCreateResponse>
+    ): CompletableFuture<InferencePipelineCreateResponse>
 
     /** List the inference pipelines in a project. */
     fun list(
-        params: ProjectInferencePipelineListParams
-    ): CompletableFuture<ProjectInferencePipelineListResponse> = list(params, RequestOptions.none())
+        params: InferencePipelineListParams
+    ): CompletableFuture<InferencePipelineListResponse> = list(params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
-        params: ProjectInferencePipelineListParams,
+        params: InferencePipelineListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<ProjectInferencePipelineListResponse>
+    ): CompletableFuture<InferencePipelineListResponse>
 
     /**
      * A view of [InferencePipelineServiceAsync] that provides access to raw HTTP responses for each
@@ -53,16 +52,16 @@ interface InferencePipelineServiceAsync {
          */
         @MustBeClosed
         fun create(
-            params: ProjectInferencePipelineCreateParams
-        ): CompletableFuture<HttpResponseFor<ProjectInferencePipelineCreateResponse>> =
+            params: InferencePipelineCreateParams
+        ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
         @MustBeClosed
         fun create(
-            params: ProjectInferencePipelineCreateParams,
+            params: InferencePipelineCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ProjectInferencePipelineCreateResponse>>
+        ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>>
 
         /**
          * Returns a raw HTTP response for `get /projects/{projectId}/inference-pipelines`, but is
@@ -70,15 +69,15 @@ interface InferencePipelineServiceAsync {
          */
         @MustBeClosed
         fun list(
-            params: ProjectInferencePipelineListParams
-        ): CompletableFuture<HttpResponseFor<ProjectInferencePipelineListResponse>> =
+            params: InferencePipelineListParams
+        ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
         fun list(
-            params: ProjectInferencePipelineListParams,
+            params: InferencePipelineListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<ProjectInferencePipelineListResponse>>
+        ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>>
     }
 }
