@@ -28,8 +28,17 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun success(): Success = success.getRequired("success")
 
+    /**
+     * Returns the raw JSON value of [success].
+     *
+     * Unlike [success], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("success") @ExcludeMissing fun _success(): JsonField<Success> = success
 
     @JsonAnyGetter
@@ -76,6 +85,12 @@ private constructor(
 
         fun success(success: Success) = success(JsonField.of(success))
 
+        /**
+         * Sets [Builder.success] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.success] with a well-typed [Success] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun success(success: JsonField<Success>) = apply { this.success = success }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

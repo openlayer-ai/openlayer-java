@@ -17,6 +17,7 @@ import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
+import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -32,27 +33,50 @@ private constructor(
 
     fun inferencePipelineId(): String = inferencePipelineId
 
-    /** The inference pipeline description. */
+    /**
+     * The inference pipeline description.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> = body.description()
 
-    /** The inference pipeline name. */
+    /**
+     * The inference pipeline name.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun name(): Optional<String> = body.name()
 
     /**
      * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
      * handle your reference dataset updates.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
      */
     fun referenceDatasetUri(): Optional<String> = body.referenceDatasetUri()
 
-    /** The inference pipeline description. */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _description(): JsonField<String> = body._description()
 
-    /** The inference pipeline name. */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _name(): JsonField<String> = body._name()
 
     /**
-     * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
-     * handle your reference dataset updates.
+     * Returns the raw JSON value of [referenceDatasetUri].
+     *
+     * Unlike [referenceDatasetUri], this method doesn't throw if the JSON field has an unexpected
+     * type.
      */
     fun _referenceDatasetUri(): JsonField<String> = body._referenceDatasetUri()
 
@@ -92,31 +116,54 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The inference pipeline description. */
+        /**
+         * The inference pipeline description.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
-        /** The inference pipeline name. */
+        /**
+         * The inference pipeline name.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
 
         /**
          * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
          * handle your reference dataset updates.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
          */
         fun referenceDatasetUri(): Optional<String> =
             Optional.ofNullable(referenceDatasetUri.getNullable("referenceDatasetUri"))
 
-        /** The inference pipeline description. */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
-        /** The inference pipeline name. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
         /**
-         * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
-         * handle your reference dataset updates.
+         * Returns the raw JSON value of [referenceDatasetUri].
+         *
+         * Unlike [referenceDatasetUri], this method doesn't throw if the JSON field has an
+         * unexpected type.
          */
         @JsonProperty("referenceDatasetUri")
         @ExcludeMissing
@@ -166,10 +213,16 @@ private constructor(
             /** The inference pipeline description. */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** The inference pipeline description. */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** The inference pipeline description. */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
@@ -177,7 +230,13 @@ private constructor(
             /** The inference pipeline name. */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** The inference pipeline name. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /**
@@ -188,15 +247,18 @@ private constructor(
                 referenceDatasetUri(JsonField.ofNullable(referenceDatasetUri))
 
             /**
-             * The storage uri of your reference dataset. We recommend using the Python SDK or the
-             * UI to handle your reference dataset updates.
+             * Alias for calling [Builder.referenceDatasetUri] with
+             * `referenceDatasetUri.orElse(null)`.
              */
             fun referenceDatasetUri(referenceDatasetUri: Optional<String>) =
                 referenceDatasetUri(referenceDatasetUri.getOrNull())
 
             /**
-             * The storage uri of your reference dataset. We recommend using the Python SDK or the
-             * UI to handle your reference dataset updates.
+             * Sets [Builder.referenceDatasetUri] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.referenceDatasetUri] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
              */
             fun referenceDatasetUri(referenceDatasetUri: JsonField<String>) = apply {
                 this.referenceDatasetUri = referenceDatasetUri
@@ -283,16 +345,27 @@ private constructor(
         /** The inference pipeline description. */
         fun description(description: String?) = apply { body.description(description) }
 
-        /** The inference pipeline description. */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** The inference pipeline description. */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
         /** The inference pipeline name. */
         fun name(name: String) = apply { body.name(name) }
 
-        /** The inference pipeline name. */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
         /**
@@ -304,15 +377,17 @@ private constructor(
         }
 
         /**
-         * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
-         * handle your reference dataset updates.
+         * Alias for calling [Builder.referenceDatasetUri] with `referenceDatasetUri.orElse(null)`.
          */
         fun referenceDatasetUri(referenceDatasetUri: Optional<String>) =
             referenceDatasetUri(referenceDatasetUri.getOrNull())
 
         /**
-         * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
-         * handle your reference dataset updates.
+         * Sets [Builder.referenceDatasetUri] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.referenceDatasetUri] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
         fun referenceDatasetUri(referenceDatasetUri: JsonField<String>) = apply {
             body.referenceDatasetUri(referenceDatasetUri)

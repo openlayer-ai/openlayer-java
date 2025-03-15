@@ -42,8 +42,17 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun items(): List<Item> = items.getRequired("items")
 
+    /**
+     * Returns the raw JSON value of [items].
+     *
+     * Unlike [items], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
 
     @JsonAnyGetter
@@ -90,10 +99,22 @@ private constructor(
 
         fun items(items: List<Item>) = items(JsonField.of(items))
 
+        /**
+         * Sets [Builder.items] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.items] with a well-typed `List<Item>` value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun items(items: JsonField<List<Item>>) = apply {
             this.items = items.map { it.toMutableList() }
         }
 
+        /**
+         * Adds a single [Item] to [items].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addItem(item: Item) = apply {
             items =
                 (items ?: JsonField.of(mutableListOf())).also { checkKnown("items", it).add(item) }
@@ -162,87 +183,191 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Project version (commit) id. */
+        /**
+         * Project version (commit) id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun id(): String = id.getRequired("id")
 
-        /** The creation date. */
+        /**
+         * The creation date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
-        /** The data end date. */
+        /**
+         * The data end date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun dateDataEnds(): Optional<OffsetDateTime> =
             Optional.ofNullable(dateDataEnds.getNullable("dateDataEnds"))
 
-        /** The data start date. */
+        /**
+         * The data start date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun dateDataStarts(): Optional<OffsetDateTime> =
             Optional.ofNullable(dateDataStarts.getNullable("dateDataStarts"))
 
-        /** The last updated date. */
+        /**
+         * The last updated date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-        /** The inference pipeline id. */
+        /**
+         * The inference pipeline id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun inferencePipelineId(): Optional<String> =
             Optional.ofNullable(inferencePipelineId.getNullable("inferencePipelineId"))
 
-        /** The project version (commit) id. */
+        /**
+         * The project version (commit) id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun projectVersionId(): Optional<String> =
             Optional.ofNullable(projectVersionId.getNullable("projectVersionId"))
 
-        /** The status of the test. */
+        /**
+         * The status of the test.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun status(): Status = status.getRequired("status")
 
-        /** The status message. */
+        /**
+         * The status message.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun statusMessage(): Optional<String> =
             Optional.ofNullable(statusMessage.getNullable("statusMessage"))
 
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun goal(): Optional<Goal> = Optional.ofNullable(goal.getNullable("goal"))
 
-        /** The test id. */
+        /**
+         * The test id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun goalId(): Optional<String> = Optional.ofNullable(goalId.getNullable("goalId"))
 
-        /** Project version (commit) id. */
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-        /** The creation date. */
+        /**
+         * Returns the raw JSON value of [dateCreated].
+         *
+         * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateCreated")
         @ExcludeMissing
         fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
-        /** The data end date. */
+        /**
+         * Returns the raw JSON value of [dateDataEnds].
+         *
+         * Unlike [dateDataEnds], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("dateDataEnds")
         @ExcludeMissing
         fun _dateDataEnds(): JsonField<OffsetDateTime> = dateDataEnds
 
-        /** The data start date. */
+        /**
+         * Returns the raw JSON value of [dateDataStarts].
+         *
+         * Unlike [dateDataStarts], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("dateDataStarts")
         @ExcludeMissing
         fun _dateDataStarts(): JsonField<OffsetDateTime> = dateDataStarts
 
-        /** The last updated date. */
+        /**
+         * Returns the raw JSON value of [dateUpdated].
+         *
+         * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateUpdated")
         @ExcludeMissing
         fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
-        /** The inference pipeline id. */
+        /**
+         * Returns the raw JSON value of [inferencePipelineId].
+         *
+         * Unlike [inferencePipelineId], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("inferencePipelineId")
         @ExcludeMissing
         fun _inferencePipelineId(): JsonField<String> = inferencePipelineId
 
-        /** The project version (commit) id. */
+        /**
+         * Returns the raw JSON value of [projectVersionId].
+         *
+         * Unlike [projectVersionId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("projectVersionId")
         @ExcludeMissing
         fun _projectVersionId(): JsonField<String> = projectVersionId
 
-        /** The status of the test. */
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
-        /** The status message. */
+        /**
+         * Returns the raw JSON value of [statusMessage].
+         *
+         * Unlike [statusMessage], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("statusMessage")
         @ExcludeMissing
         fun _statusMessage(): JsonField<String> = statusMessage
 
+        /**
+         * Returns the raw JSON value of [goal].
+         *
+         * Unlike [goal], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("goal") @ExcludeMissing fun _goal(): JsonField<Goal> = goal
 
-        /** The test id. */
+        /**
+         * Returns the raw JSON value of [goalId].
+         *
+         * Unlike [goalId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("goalId") @ExcludeMissing fun _goalId(): JsonField<String> = goalId
 
         @JsonAnyGetter
@@ -328,13 +453,25 @@ private constructor(
             /** Project version (commit) id. */
             fun id(id: String) = id(JsonField.of(id))
 
-            /** Project version (commit) id. */
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             /** The creation date. */
             fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
 
-            /** The creation date. */
+            /**
+             * Sets [Builder.dateCreated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                 this.dateCreated = dateCreated
             }
@@ -343,11 +480,17 @@ private constructor(
             fun dateDataEnds(dateDataEnds: OffsetDateTime?) =
                 dateDataEnds(JsonField.ofNullable(dateDataEnds))
 
-            /** The data end date. */
+            /** Alias for calling [Builder.dateDataEnds] with `dateDataEnds.orElse(null)`. */
             fun dateDataEnds(dateDataEnds: Optional<OffsetDateTime>) =
                 dateDataEnds(dateDataEnds.getOrNull())
 
-            /** The data end date. */
+            /**
+             * Sets [Builder.dateDataEnds] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateDataEnds] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateDataEnds(dateDataEnds: JsonField<OffsetDateTime>) = apply {
                 this.dateDataEnds = dateDataEnds
             }
@@ -356,11 +499,17 @@ private constructor(
             fun dateDataStarts(dateDataStarts: OffsetDateTime?) =
                 dateDataStarts(JsonField.ofNullable(dateDataStarts))
 
-            /** The data start date. */
+            /** Alias for calling [Builder.dateDataStarts] with `dateDataStarts.orElse(null)`. */
             fun dateDataStarts(dateDataStarts: Optional<OffsetDateTime>) =
                 dateDataStarts(dateDataStarts.getOrNull())
 
-            /** The data start date. */
+            /**
+             * Sets [Builder.dateDataStarts] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateDataStarts] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateDataStarts(dateDataStarts: JsonField<OffsetDateTime>) = apply {
                 this.dateDataStarts = dateDataStarts
             }
@@ -368,7 +517,13 @@ private constructor(
             /** The last updated date. */
             fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
-            /** The last updated date. */
+            /**
+             * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                 this.dateUpdated = dateUpdated
             }
@@ -377,11 +532,20 @@ private constructor(
             fun inferencePipelineId(inferencePipelineId: String?) =
                 inferencePipelineId(JsonField.ofNullable(inferencePipelineId))
 
-            /** The inference pipeline id. */
+            /**
+             * Alias for calling [Builder.inferencePipelineId] with
+             * `inferencePipelineId.orElse(null)`.
+             */
             fun inferencePipelineId(inferencePipelineId: Optional<String>) =
                 inferencePipelineId(inferencePipelineId.getOrNull())
 
-            /** The inference pipeline id. */
+            /**
+             * Sets [Builder.inferencePipelineId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.inferencePipelineId] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun inferencePipelineId(inferencePipelineId: JsonField<String>) = apply {
                 this.inferencePipelineId = inferencePipelineId
             }
@@ -390,11 +554,19 @@ private constructor(
             fun projectVersionId(projectVersionId: String?) =
                 projectVersionId(JsonField.ofNullable(projectVersionId))
 
-            /** The project version (commit) id. */
+            /**
+             * Alias for calling [Builder.projectVersionId] with `projectVersionId.orElse(null)`.
+             */
             fun projectVersionId(projectVersionId: Optional<String>) =
                 projectVersionId(projectVersionId.getOrNull())
 
-            /** The project version (commit) id. */
+            /**
+             * Sets [Builder.projectVersionId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.projectVersionId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun projectVersionId(projectVersionId: JsonField<String>) = apply {
                 this.projectVersionId = projectVersionId
             }
@@ -402,33 +574,58 @@ private constructor(
             /** The status of the test. */
             fun status(status: Status) = status(JsonField.of(status))
 
-            /** The status of the test. */
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [Status] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun status(status: JsonField<Status>) = apply { this.status = status }
 
             /** The status message. */
             fun statusMessage(statusMessage: String?) =
                 statusMessage(JsonField.ofNullable(statusMessage))
 
-            /** The status message. */
+            /** Alias for calling [Builder.statusMessage] with `statusMessage.orElse(null)`. */
             fun statusMessage(statusMessage: Optional<String>) =
                 statusMessage(statusMessage.getOrNull())
 
-            /** The status message. */
+            /**
+             * Sets [Builder.statusMessage] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.statusMessage] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun statusMessage(statusMessage: JsonField<String>) = apply {
                 this.statusMessage = statusMessage
             }
 
             fun goal(goal: Goal) = goal(JsonField.of(goal))
 
+            /**
+             * Sets [Builder.goal] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.goal] with a well-typed [Goal] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun goal(goal: JsonField<Goal>) = apply { this.goal = goal }
 
             /** The test id. */
             fun goalId(goalId: String?) = goalId(JsonField.ofNullable(goalId))
 
-            /** The test id. */
+            /** Alias for calling [Builder.goalId] with `goalId.orElse(null)`. */
             fun goalId(goalId: Optional<String>) = goalId(goalId.getOrNull())
 
-            /** The test id. */
+            /**
+             * Sets [Builder.goalId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.goalId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun goalId(goalId: JsonField<String>) = apply { this.goalId = goalId }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -662,170 +859,385 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
-            /** The test id. */
+            /**
+             * The test id.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun id(): String = id.getRequired("id")
 
-            /** The number of comments on the test. */
+            /**
+             * The number of comments on the test.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun commentCount(): Long = commentCount.getRequired("commentCount")
 
-            /** The test creator id. */
+            /**
+             * The test creator id.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun creatorId(): Optional<String> =
                 Optional.ofNullable(creatorId.getNullable("creatorId"))
 
-            /** The date the test was archived. */
+            /**
+             * The date the test was archived.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun dateArchived(): Optional<OffsetDateTime> =
                 Optional.ofNullable(dateArchived.getNullable("dateArchived"))
 
-            /** The creation date. */
+            /**
+             * The creation date.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
-            /** The last updated date. */
+            /**
+             * The last updated date.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
             /** The test description. */
             @JsonProperty("description") @ExcludeMissing fun _description(): JsonValue = description
 
-            /** The test name. */
+            /**
+             * The test name.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun name(): String = name.getRequired("name")
 
-            /** The test number. */
+            /**
+             * The test number.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun number(): Long = number.getRequired("number")
 
-            /** The project version (commit) id where the test was created. */
+            /**
+             * The project version (commit) id where the test was created.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun originProjectVersionId(): Optional<String> =
                 Optional.ofNullable(originProjectVersionId.getNullable("originProjectVersionId"))
 
-            /** The test subtype. */
+            /**
+             * The test subtype.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun subtype(): String = subtype.getRequired("subtype")
 
-            /** Whether the test is suggested or user-created. */
+            /**
+             * Whether the test is suggested or user-created.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun suggested(): Boolean = suggested.getRequired("suggested")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun thresholds(): List<Threshold> = thresholds.getRequired("thresholds")
 
-            /** The test type. */
+            /**
+             * The test type.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun type(): String = type.getRequired("type")
 
-            /** Whether the test is archived. */
+            /**
+             * Whether the test is archived.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun archived(): Optional<Boolean> =
                 Optional.ofNullable(archived.getNullable("archived"))
 
-            /** The delay window in seconds. Only applies to tests that use production data. */
+            /**
+             * The delay window in seconds. Only applies to tests that use production data.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun delayWindow(): Optional<Double> =
                 Optional.ofNullable(delayWindow.getNullable("delayWindow"))
 
-            /** The evaluation window in seconds. Only applies to tests that use production data. */
+            /**
+             * The evaluation window in seconds. Only applies to tests that use production data.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun evaluationWindow(): Optional<Double> =
                 Optional.ofNullable(evaluationWindow.getNullable("evaluationWindow"))
 
-            /** Whether the test uses an ML model. */
+            /**
+             * Whether the test uses an ML model.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun usesMlModel(): Optional<Boolean> =
                 Optional.ofNullable(usesMlModel.getNullable("usesMlModel"))
 
-            /** Whether the test uses production data (monitoring mode only). */
+            /**
+             * Whether the test uses production data (monitoring mode only).
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun usesProductionData(): Optional<Boolean> =
                 Optional.ofNullable(usesProductionData.getNullable("usesProductionData"))
 
-            /** Whether the test uses a reference dataset (monitoring mode only). */
+            /**
+             * Whether the test uses a reference dataset (monitoring mode only).
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun usesReferenceDataset(): Optional<Boolean> =
                 Optional.ofNullable(usesReferenceDataset.getNullable("usesReferenceDataset"))
 
-            /** Whether the test uses a training dataset. */
+            /**
+             * Whether the test uses a training dataset.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun usesTrainingDataset(): Optional<Boolean> =
                 Optional.ofNullable(usesTrainingDataset.getNullable("usesTrainingDataset"))
 
-            /** Whether the test uses a validation dataset. */
+            /**
+             * Whether the test uses a validation dataset.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun usesValidationDataset(): Optional<Boolean> =
                 Optional.ofNullable(usesValidationDataset.getNullable("usesValidationDataset"))
 
-            /** The test id. */
+            /**
+             * Returns the raw JSON value of [id].
+             *
+             * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-            /** The number of comments on the test. */
+            /**
+             * Returns the raw JSON value of [commentCount].
+             *
+             * Unlike [commentCount], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("commentCount")
             @ExcludeMissing
             fun _commentCount(): JsonField<Long> = commentCount
 
-            /** The test creator id. */
+            /**
+             * Returns the raw JSON value of [creatorId].
+             *
+             * Unlike [creatorId], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("creatorId")
             @ExcludeMissing
             fun _creatorId(): JsonField<String> = creatorId
 
-            /** The date the test was archived. */
+            /**
+             * Returns the raw JSON value of [dateArchived].
+             *
+             * Unlike [dateArchived], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("dateArchived")
             @ExcludeMissing
             fun _dateArchived(): JsonField<OffsetDateTime> = dateArchived
 
-            /** The creation date. */
+            /**
+             * Returns the raw JSON value of [dateCreated].
+             *
+             * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("dateCreated")
             @ExcludeMissing
             fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
-            /** The last updated date. */
+            /**
+             * Returns the raw JSON value of [dateUpdated].
+             *
+             * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("dateUpdated")
             @ExcludeMissing
             fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
-            /** The test name. */
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-            /** The test number. */
+            /**
+             * Returns the raw JSON value of [number].
+             *
+             * Unlike [number], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("number") @ExcludeMissing fun _number(): JsonField<Long> = number
 
-            /** The project version (commit) id where the test was created. */
+            /**
+             * Returns the raw JSON value of [originProjectVersionId].
+             *
+             * Unlike [originProjectVersionId], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("originProjectVersionId")
             @ExcludeMissing
             fun _originProjectVersionId(): JsonField<String> = originProjectVersionId
 
-            /** The test subtype. */
+            /**
+             * Returns the raw JSON value of [subtype].
+             *
+             * Unlike [subtype], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<String> = subtype
 
-            /** Whether the test is suggested or user-created. */
+            /**
+             * Returns the raw JSON value of [suggested].
+             *
+             * Unlike [suggested], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("suggested")
             @ExcludeMissing
             fun _suggested(): JsonField<Boolean> = suggested
 
+            /**
+             * Returns the raw JSON value of [thresholds].
+             *
+             * Unlike [thresholds], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("thresholds")
             @ExcludeMissing
             fun _thresholds(): JsonField<List<Threshold>> = thresholds
 
-            /** The test type. */
+            /**
+             * Returns the raw JSON value of [type].
+             *
+             * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
 
-            /** Whether the test is archived. */
+            /**
+             * Returns the raw JSON value of [archived].
+             *
+             * Unlike [archived], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("archived") @ExcludeMissing fun _archived(): JsonField<Boolean> = archived
 
-            /** The delay window in seconds. Only applies to tests that use production data. */
+            /**
+             * Returns the raw JSON value of [delayWindow].
+             *
+             * Unlike [delayWindow], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("delayWindow")
             @ExcludeMissing
             fun _delayWindow(): JsonField<Double> = delayWindow
 
-            /** The evaluation window in seconds. Only applies to tests that use production data. */
+            /**
+             * Returns the raw JSON value of [evaluationWindow].
+             *
+             * Unlike [evaluationWindow], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("evaluationWindow")
             @ExcludeMissing
             fun _evaluationWindow(): JsonField<Double> = evaluationWindow
 
-            /** Whether the test uses an ML model. */
+            /**
+             * Returns the raw JSON value of [usesMlModel].
+             *
+             * Unlike [usesMlModel], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("usesMlModel")
             @ExcludeMissing
             fun _usesMlModel(): JsonField<Boolean> = usesMlModel
 
-            /** Whether the test uses production data (monitoring mode only). */
+            /**
+             * Returns the raw JSON value of [usesProductionData].
+             *
+             * Unlike [usesProductionData], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("usesProductionData")
             @ExcludeMissing
             fun _usesProductionData(): JsonField<Boolean> = usesProductionData
 
-            /** Whether the test uses a reference dataset (monitoring mode only). */
+            /**
+             * Returns the raw JSON value of [usesReferenceDataset].
+             *
+             * Unlike [usesReferenceDataset], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("usesReferenceDataset")
             @ExcludeMissing
             fun _usesReferenceDataset(): JsonField<Boolean> = usesReferenceDataset
 
-            /** Whether the test uses a training dataset. */
+            /**
+             * Returns the raw JSON value of [usesTrainingDataset].
+             *
+             * Unlike [usesTrainingDataset], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("usesTrainingDataset")
             @ExcludeMissing
             fun _usesTrainingDataset(): JsonField<Boolean> = usesTrainingDataset
 
-            /** Whether the test uses a validation dataset. */
+            /**
+             * Returns the raw JSON value of [usesValidationDataset].
+             *
+             * Unlike [usesValidationDataset], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("usesValidationDataset")
             @ExcludeMissing
             fun _usesValidationDataset(): JsonField<Boolean> = usesValidationDataset
@@ -950,13 +1362,25 @@ private constructor(
                 /** The test id. */
                 fun id(id: String) = id(JsonField.of(id))
 
-                /** The test id. */
+                /**
+                 * Sets [Builder.id] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.id] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
                 /** The number of comments on the test. */
                 fun commentCount(commentCount: Long) = commentCount(JsonField.of(commentCount))
 
-                /** The number of comments on the test. */
+                /**
+                 * Sets [Builder.commentCount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.commentCount] with a well-typed [Long] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun commentCount(commentCount: JsonField<Long>) = apply {
                     this.commentCount = commentCount
                 }
@@ -964,21 +1388,33 @@ private constructor(
                 /** The test creator id. */
                 fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
-                /** The test creator id. */
+                /** Alias for calling [Builder.creatorId] with `creatorId.orElse(null)`. */
                 fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
-                /** The test creator id. */
+                /**
+                 * Sets [Builder.creatorId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.creatorId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
                 /** The date the test was archived. */
                 fun dateArchived(dateArchived: OffsetDateTime?) =
                     dateArchived(JsonField.ofNullable(dateArchived))
 
-                /** The date the test was archived. */
+                /** Alias for calling [Builder.dateArchived] with `dateArchived.orElse(null)`. */
                 fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
                     dateArchived(dateArchived.getOrNull())
 
-                /** The date the test was archived. */
+                /**
+                 * Sets [Builder.dateArchived] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.dateArchived] with a well-typed [OffsetDateTime]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
                     this.dateArchived = dateArchived
                 }
@@ -987,7 +1423,13 @@ private constructor(
                 fun dateCreated(dateCreated: OffsetDateTime) =
                     dateCreated(JsonField.of(dateCreated))
 
-                /** The creation date. */
+                /**
+                 * Sets [Builder.dateCreated] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                     this.dateCreated = dateCreated
                 }
@@ -996,7 +1438,13 @@ private constructor(
                 fun dateUpdated(dateUpdated: OffsetDateTime) =
                     dateUpdated(JsonField.of(dateUpdated))
 
-                /** The last updated date. */
+                /**
+                 * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                     this.dateUpdated = dateUpdated
                 }
@@ -1007,24 +1455,45 @@ private constructor(
                 /** The test name. */
                 fun name(name: String) = name(JsonField.of(name))
 
-                /** The test name. */
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 /** The test number. */
                 fun number(number: Long) = number(JsonField.of(number))
 
-                /** The test number. */
+                /**
+                 * Sets [Builder.number] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.number] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun number(number: JsonField<Long>) = apply { this.number = number }
 
                 /** The project version (commit) id where the test was created. */
                 fun originProjectVersionId(originProjectVersionId: String?) =
                     originProjectVersionId(JsonField.ofNullable(originProjectVersionId))
 
-                /** The project version (commit) id where the test was created. */
+                /**
+                 * Alias for calling [Builder.originProjectVersionId] with
+                 * `originProjectVersionId.orElse(null)`.
+                 */
                 fun originProjectVersionId(originProjectVersionId: Optional<String>) =
                     originProjectVersionId(originProjectVersionId.getOrNull())
 
-                /** The project version (commit) id where the test was created. */
+                /**
+                 * Sets [Builder.originProjectVersionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.originProjectVersionId] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun originProjectVersionId(originProjectVersionId: JsonField<String>) = apply {
                     this.originProjectVersionId = originProjectVersionId
                 }
@@ -1032,21 +1501,45 @@ private constructor(
                 /** The test subtype. */
                 fun subtype(subtype: String) = subtype(JsonField.of(subtype))
 
-                /** The test subtype. */
+                /**
+                 * Sets [Builder.subtype] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.subtype] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun subtype(subtype: JsonField<String>) = apply { this.subtype = subtype }
 
                 /** Whether the test is suggested or user-created. */
                 fun suggested(suggested: Boolean) = suggested(JsonField.of(suggested))
 
-                /** Whether the test is suggested or user-created. */
+                /**
+                 * Sets [Builder.suggested] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.suggested] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun suggested(suggested: JsonField<Boolean>) = apply { this.suggested = suggested }
 
                 fun thresholds(thresholds: List<Threshold>) = thresholds(JsonField.of(thresholds))
 
+                /**
+                 * Sets [Builder.thresholds] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.thresholds] with a well-typed `List<Threshold>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun thresholds(thresholds: JsonField<List<Threshold>>) = apply {
                     this.thresholds = thresholds.map { it.toMutableList() }
                 }
 
+                /**
+                 * Adds a single [Threshold] to [thresholds].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
                 fun addThreshold(threshold: Threshold) = apply {
                     thresholds =
                         (thresholds ?: JsonField.of(mutableListOf())).also {
@@ -1057,27 +1550,49 @@ private constructor(
                 /** The test type. */
                 fun type(type: String) = type(JsonField.of(type))
 
-                /** The test type. */
+                /**
+                 * Sets [Builder.type] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.type] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun type(type: JsonField<String>) = apply { this.type = type }
 
                 /** Whether the test is archived. */
                 fun archived(archived: Boolean) = archived(JsonField.of(archived))
 
-                /** Whether the test is archived. */
+                /**
+                 * Sets [Builder.archived] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.archived] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
 
                 /** The delay window in seconds. Only applies to tests that use production data. */
                 fun delayWindow(delayWindow: Double?) =
                     delayWindow(JsonField.ofNullable(delayWindow))
 
-                /** The delay window in seconds. Only applies to tests that use production data. */
+                /**
+                 * Alias for [Builder.delayWindow].
+                 *
+                 * This unboxed primitive overload exists for backwards compatibility.
+                 */
                 fun delayWindow(delayWindow: Double) = delayWindow(delayWindow as Double?)
 
-                /** The delay window in seconds. Only applies to tests that use production data. */
+                /** Alias for calling [Builder.delayWindow] with `delayWindow.orElse(null)`. */
                 fun delayWindow(delayWindow: Optional<Double>) =
                     delayWindow(delayWindow.getOrNull())
 
-                /** The delay window in seconds. Only applies to tests that use production data. */
+                /**
+                 * Sets [Builder.delayWindow] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.delayWindow] with a well-typed [Double] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun delayWindow(delayWindow: JsonField<Double>) = apply {
                     this.delayWindow = delayWindow
                 }
@@ -1089,19 +1604,26 @@ private constructor(
                     evaluationWindow(JsonField.ofNullable(evaluationWindow))
 
                 /**
-                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 * Alias for [Builder.evaluationWindow].
+                 *
+                 * This unboxed primitive overload exists for backwards compatibility.
                  */
                 fun evaluationWindow(evaluationWindow: Double) =
                     evaluationWindow(evaluationWindow as Double?)
 
                 /**
-                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 * Alias for calling [Builder.evaluationWindow] with
+                 * `evaluationWindow.orElse(null)`.
                  */
                 fun evaluationWindow(evaluationWindow: Optional<Double>) =
                     evaluationWindow(evaluationWindow.getOrNull())
 
                 /**
-                 * The evaluation window in seconds. Only applies to tests that use production data.
+                 * Sets [Builder.evaluationWindow] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.evaluationWindow] with a well-typed [Double]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun evaluationWindow(evaluationWindow: JsonField<Double>) = apply {
                     this.evaluationWindow = evaluationWindow
@@ -1110,7 +1632,13 @@ private constructor(
                 /** Whether the test uses an ML model. */
                 fun usesMlModel(usesMlModel: Boolean) = usesMlModel(JsonField.of(usesMlModel))
 
-                /** Whether the test uses an ML model. */
+                /**
+                 * Sets [Builder.usesMlModel] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.usesMlModel] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun usesMlModel(usesMlModel: JsonField<Boolean>) = apply {
                     this.usesMlModel = usesMlModel
                 }
@@ -1119,7 +1647,13 @@ private constructor(
                 fun usesProductionData(usesProductionData: Boolean) =
                     usesProductionData(JsonField.of(usesProductionData))
 
-                /** Whether the test uses production data (monitoring mode only). */
+                /**
+                 * Sets [Builder.usesProductionData] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.usesProductionData] with a well-typed [Boolean]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun usesProductionData(usesProductionData: JsonField<Boolean>) = apply {
                     this.usesProductionData = usesProductionData
                 }
@@ -1128,7 +1662,13 @@ private constructor(
                 fun usesReferenceDataset(usesReferenceDataset: Boolean) =
                     usesReferenceDataset(JsonField.of(usesReferenceDataset))
 
-                /** Whether the test uses a reference dataset (monitoring mode only). */
+                /**
+                 * Sets [Builder.usesReferenceDataset] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.usesReferenceDataset] with a well-typed
+                 * [Boolean] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun usesReferenceDataset(usesReferenceDataset: JsonField<Boolean>) = apply {
                     this.usesReferenceDataset = usesReferenceDataset
                 }
@@ -1137,7 +1677,13 @@ private constructor(
                 fun usesTrainingDataset(usesTrainingDataset: Boolean) =
                     usesTrainingDataset(JsonField.of(usesTrainingDataset))
 
-                /** Whether the test uses a training dataset. */
+                /**
+                 * Sets [Builder.usesTrainingDataset] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.usesTrainingDataset] with a well-typed [Boolean]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun usesTrainingDataset(usesTrainingDataset: JsonField<Boolean>) = apply {
                     this.usesTrainingDataset = usesTrainingDataset
                 }
@@ -1146,7 +1692,13 @@ private constructor(
                 fun usesValidationDataset(usesValidationDataset: Boolean) =
                     usesValidationDataset(JsonField.of(usesValidationDataset))
 
-                /** Whether the test uses a validation dataset. */
+                /**
+                 * Sets [Builder.usesValidationDataset] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.usesValidationDataset] with a well-typed
+                 * [Boolean] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun usesValidationDataset(usesValidationDataset: JsonField<Boolean>) = apply {
                     this.usesValidationDataset = usesValidationDataset
                 }
@@ -1224,44 +1776,94 @@ private constructor(
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /** The insight name to be evaluated. */
+                /**
+                 * The insight name to be evaluated.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun insightName(): Optional<String> =
                     Optional.ofNullable(insightName.getNullable("insightName"))
 
+                /**
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun insightParameters(): Optional<List<JsonValue>> =
                     Optional.ofNullable(insightParameters.getNullable("insightParameters"))
 
-                /** The measurement to be evaluated. */
+                /**
+                 * The measurement to be evaluated.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun measurement(): Optional<String> =
                     Optional.ofNullable(measurement.getNullable("measurement"))
 
-                /** The operator to be used for the evaluation. */
+                /**
+                 * The operator to be used for the evaluation.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun operator(): Optional<String> =
                     Optional.ofNullable(operator.getNullable("operator"))
 
-                /** The value to be compared. */
+                /**
+                 * The value to be compared.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun value(): Optional<Value> = Optional.ofNullable(value.getNullable("value"))
 
-                /** The insight name to be evaluated. */
+                /**
+                 * Returns the raw JSON value of [insightName].
+                 *
+                 * Unlike [insightName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("insightName")
                 @ExcludeMissing
                 fun _insightName(): JsonField<String> = insightName
 
+                /**
+                 * Returns the raw JSON value of [insightParameters].
+                 *
+                 * Unlike [insightParameters], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("insightParameters")
                 @ExcludeMissing
                 fun _insightParameters(): JsonField<List<JsonValue>> = insightParameters
 
-                /** The measurement to be evaluated. */
+                /**
+                 * Returns the raw JSON value of [measurement].
+                 *
+                 * Unlike [measurement], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
                 @JsonProperty("measurement")
                 @ExcludeMissing
                 fun _measurement(): JsonField<String> = measurement
 
-                /** The operator to be used for the evaluation. */
+                /**
+                 * Returns the raw JSON value of [operator].
+                 *
+                 * Unlike [operator], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("operator")
                 @ExcludeMissing
                 fun _operator(): JsonField<String> = operator
 
-                /** The value to be compared. */
+                /**
+                 * Returns the raw JSON value of [value].
+                 *
+                 * Unlike [value], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
 
                 @JsonAnyGetter
@@ -1314,7 +1916,13 @@ private constructor(
                     /** The insight name to be evaluated. */
                     fun insightName(insightName: String) = insightName(JsonField.of(insightName))
 
-                    /** The insight name to be evaluated. */
+                    /**
+                     * Sets [Builder.insightName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.insightName] with a well-typed [String]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
                     fun insightName(insightName: JsonField<String>) = apply {
                         this.insightName = insightName
                     }
@@ -1322,10 +1930,22 @@ private constructor(
                     fun insightParameters(insightParameters: List<JsonValue>) =
                         insightParameters(JsonField.of(insightParameters))
 
+                    /**
+                     * Sets [Builder.insightParameters] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.insightParameters] with a well-typed
+                     * `List<JsonValue>` value instead. This method is primarily for setting the
+                     * field to an undocumented or not yet supported value.
+                     */
                     fun insightParameters(insightParameters: JsonField<List<JsonValue>>) = apply {
                         this.insightParameters = insightParameters.map { it.toMutableList() }
                     }
 
+                    /**
+                     * Adds a single [JsonValue] to [insightParameters].
+                     *
+                     * @throws IllegalStateException if the field was previously set to a non-list.
+                     */
                     fun addInsightParameter(insightParameter: JsonValue) = apply {
                         insightParameters =
                             (insightParameters ?: JsonField.of(mutableListOf())).also {
@@ -1336,7 +1956,13 @@ private constructor(
                     /** The measurement to be evaluated. */
                     fun measurement(measurement: String) = measurement(JsonField.of(measurement))
 
-                    /** The measurement to be evaluated. */
+                    /**
+                     * Sets [Builder.measurement] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.measurement] with a well-typed [String]
+                     * value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
                     fun measurement(measurement: JsonField<String>) = apply {
                         this.measurement = measurement
                     }
@@ -1344,25 +1970,37 @@ private constructor(
                     /** The operator to be used for the evaluation. */
                     fun operator(operator: String) = operator(JsonField.of(operator))
 
-                    /** The operator to be used for the evaluation. */
+                    /**
+                     * Sets [Builder.operator] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.operator] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
                     fun operator(operator: JsonField<String>) = apply { this.operator = operator }
 
                     /** The value to be compared. */
                     fun value(value: Value) = value(JsonField.of(value))
 
-                    /** The value to be compared. */
+                    /**
+                     * Sets [Builder.value] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.value] with a well-typed [Value] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
                     fun value(value: JsonField<Value>) = apply { this.value = value }
 
-                    /** The value to be compared. */
+                    /** Alias for calling [value] with `Value.ofNumber(number)`. */
                     fun value(number: Double) = value(Value.ofNumber(number))
 
-                    /** The value to be compared. */
+                    /** Alias for calling [value] with `Value.ofBool(bool)`. */
                     fun value(bool: Boolean) = value(Value.ofBool(bool))
 
-                    /** The value to be compared. */
+                    /** Alias for calling [value] with `Value.ofString(string)`. */
                     fun value(string: String) = value(Value.ofString(string))
 
-                    /** The value to be compared. */
+                    /** Alias for calling [value] with `Value.ofStrings(strings)`. */
                     fun valueOfStrings(strings: List<String>) = value(Value.ofStrings(strings))
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {

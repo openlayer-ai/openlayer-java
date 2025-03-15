@@ -44,16 +44,34 @@ private constructor(
 
     fun inferencePipelineId(): String = inferencePipelineId
 
-    /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+    /**
+     * Configuration for the data stream. Depends on your **Openlayer project task type**.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun config(): Config = body.config()
 
-    /** A list of inference data points with inputs and outputs */
+    /**
+     * A list of inference data points with inputs and outputs
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun rows(): List<Row> = body.rows()
 
-    /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+    /**
+     * Returns the raw JSON value of [config].
+     *
+     * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _config(): JsonField<Config> = body._config()
 
-    /** A list of inference data points with inputs and outputs */
+    /**
+     * Returns the raw JSON value of [rows].
+     *
+     * Unlike [rows], this method doesn't throw if the JSON field has an unexpected type.
+     */
     fun _rows(): JsonField<List<Row>> = body._rows()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
@@ -89,16 +107,34 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /**
+         * Configuration for the data stream. Depends on your **Openlayer project task type**.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun config(): Config = config.getRequired("config")
 
-        /** A list of inference data points with inputs and outputs */
+        /**
+         * A list of inference data points with inputs and outputs
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun rows(): List<Row> = rows.getRequired("rows")
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /**
+         * Returns the raw JSON value of [config].
+         *
+         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
 
-        /** A list of inference data points with inputs and outputs */
+        /**
+         * Returns the raw JSON value of [rows].
+         *
+         * Unlike [rows], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("rows") @ExcludeMissing fun _rows(): JsonField<List<Row>> = rows
 
         @JsonAnyGetter
@@ -153,29 +189,34 @@ private constructor(
             fun config(config: Config) = config(JsonField.of(config))
 
             /**
-             * Configuration for the data stream. Depends on your **Openlayer project task type**.
+             * Sets [Builder.config] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.config] with a well-typed [Config] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
             fun config(config: JsonField<Config>) = apply { this.config = config }
 
-            /**
-             * Configuration for the data stream. Depends on your **Openlayer project task type**.
-             */
+            /** Alias for calling [config] with `Config.ofLlmData(llmData)`. */
             fun config(llmData: Config.LlmData) = config(Config.ofLlmData(llmData))
 
             /**
-             * Configuration for the data stream. Depends on your **Openlayer project task type**.
+             * Alias for calling [config] with
+             * `Config.ofTabularClassificationData(tabularClassificationData)`.
              */
             fun config(tabularClassificationData: Config.TabularClassificationData) =
                 config(Config.ofTabularClassificationData(tabularClassificationData))
 
             /**
-             * Configuration for the data stream. Depends on your **Openlayer project task type**.
+             * Alias for calling [config] with
+             * `Config.ofTabularRegressionData(tabularRegressionData)`.
              */
             fun config(tabularRegressionData: Config.TabularRegressionData) =
                 config(Config.ofTabularRegressionData(tabularRegressionData))
 
             /**
-             * Configuration for the data stream. Depends on your **Openlayer project task type**.
+             * Alias for calling [config] with
+             * `Config.ofTextClassificationData(textClassificationData)`.
              */
             fun config(textClassificationData: Config.TextClassificationData) =
                 config(Config.ofTextClassificationData(textClassificationData))
@@ -183,12 +224,22 @@ private constructor(
             /** A list of inference data points with inputs and outputs */
             fun rows(rows: List<Row>) = rows(JsonField.of(rows))
 
-            /** A list of inference data points with inputs and outputs */
+            /**
+             * Sets [Builder.rows] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.rows] with a well-typed `List<Row>` value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun rows(rows: JsonField<List<Row>>) = apply {
                 this.rows = rows.map { it.toMutableList() }
             }
 
-            /** A list of inference data points with inputs and outputs */
+            /**
+             * Adds a single [Row] to [rows].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addRow(row: Row) = apply {
                 rows =
                     (rows ?: JsonField.of(mutableListOf())).also { checkKnown("rows", it).add(row) }
@@ -280,23 +331,36 @@ private constructor(
         /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
         fun config(config: Config) = apply { body.config(config) }
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /**
+         * Sets [Builder.config] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.config] with a well-typed [Config] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun config(config: JsonField<Config>) = apply { body.config(config) }
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /** Alias for calling [config] with `Config.ofLlmData(llmData)`. */
         fun config(llmData: Config.LlmData) = apply { body.config(llmData) }
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /**
+         * Alias for calling [config] with
+         * `Config.ofTabularClassificationData(tabularClassificationData)`.
+         */
         fun config(tabularClassificationData: Config.TabularClassificationData) = apply {
             body.config(tabularClassificationData)
         }
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /**
+         * Alias for calling [config] with `Config.ofTabularRegressionData(tabularRegressionData)`.
+         */
         fun config(tabularRegressionData: Config.TabularRegressionData) = apply {
             body.config(tabularRegressionData)
         }
 
-        /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
+        /**
+         * Alias for calling [config] with
+         * `Config.ofTextClassificationData(textClassificationData)`.
+         */
         fun config(textClassificationData: Config.TextClassificationData) = apply {
             body.config(textClassificationData)
         }
@@ -304,10 +368,19 @@ private constructor(
         /** A list of inference data points with inputs and outputs */
         fun rows(rows: List<Row>) = apply { body.rows(rows) }
 
-        /** A list of inference data points with inputs and outputs */
+        /**
+         * Sets [Builder.rows] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.rows] with a well-typed `List<Row>` value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun rows(rows: JsonField<List<Row>>) = apply { body.rows(rows) }
 
-        /** A list of inference data points with inputs and outputs */
+        /**
+         * Adds a single [Row] to [rows].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addRow(row: Row) = apply { body.addRow(row) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
@@ -687,52 +760,97 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
-            /** Name of the column with the model outputs. */
+            /**
+             * Name of the column with the model outputs.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun outputColumnName(): String = outputColumnName.getRequired("outputColumnName")
 
             /**
              * Name of the column with the context retrieved. Applies to RAG use cases. Providing
              * the context enables RAG-specific metrics.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun contextColumnName(): Optional<String> =
                 Optional.ofNullable(contextColumnName.getNullable("contextColumnName"))
 
-            /** Name of the column with the cost associated with each row. */
+            /**
+             * Name of the column with the cost associated with each row.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun costColumnName(): Optional<String> =
                 Optional.ofNullable(costColumnName.getNullable("costColumnName"))
 
-            /** Name of the column with the ground truths. */
+            /**
+             * Name of the column with the ground truths.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun groundTruthColumnName(): Optional<String> =
                 Optional.ofNullable(groundTruthColumnName.getNullable("groundTruthColumnName"))
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
              * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
                 Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
 
-            /** Array of input variable names. Each input variable should be a dataset column. */
+            /**
+             * Array of input variable names. Each input variable should be a dataset column.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun inputVariableNames(): Optional<List<String>> =
                 Optional.ofNullable(inputVariableNames.getNullable("inputVariableNames"))
 
-            /** Name of the column with the latencies. */
+            /**
+             * Name of the column with the latencies.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun latencyColumnName(): Optional<String> =
                 Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
-            /** Name of the column with the total number of tokens. */
+            /**
+             * Name of the column with the total number of tokens.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun numOfTokenColumnName(): Optional<String> =
                 Optional.ofNullable(numOfTokenColumnName.getNullable("numOfTokenColumnName"))
 
-            /** Prompt for the LLM. */
+            /**
+             * Prompt for the LLM.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun prompt(): Optional<List<Prompt>> = Optional.ofNullable(prompt.getNullable("prompt"))
 
             /**
              * Name of the column with the questions. Applies to RAG use cases. Providing the
              * question enables RAG-specific metrics.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun questionColumnName(): Optional<String> =
                 Optional.ofNullable(questionColumnName.getNullable("questionColumnName"))
@@ -740,70 +858,115 @@ private constructor(
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
              * provided, the upload timestamp is used.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
                 Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
 
-            /** Name of the column with the model outputs. */
+            /**
+             * Returns the raw JSON value of [outputColumnName].
+             *
+             * Unlike [outputColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("outputColumnName")
             @ExcludeMissing
             fun _outputColumnName(): JsonField<String> = outputColumnName
 
             /**
-             * Name of the column with the context retrieved. Applies to RAG use cases. Providing
-             * the context enables RAG-specific metrics.
+             * Returns the raw JSON value of [contextColumnName].
+             *
+             * Unlike [contextColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("contextColumnName")
             @ExcludeMissing
             fun _contextColumnName(): JsonField<String> = contextColumnName
 
-            /** Name of the column with the cost associated with each row. */
+            /**
+             * Returns the raw JSON value of [costColumnName].
+             *
+             * Unlike [costColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("costColumnName")
             @ExcludeMissing
             fun _costColumnName(): JsonField<String> = costColumnName
 
-            /** Name of the column with the ground truths. */
+            /**
+             * Returns the raw JSON value of [groundTruthColumnName].
+             *
+             * Unlike [groundTruthColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("groundTruthColumnName")
             @ExcludeMissing
             fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
 
             /**
-             * Name of the column with the inference ids. This is useful if you want to update rows
-             * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             * Returns the raw JSON value of [inferenceIdColumnName].
+             *
+             * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("inferenceIdColumnName")
             @ExcludeMissing
             fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
 
-            /** Array of input variable names. Each input variable should be a dataset column. */
+            /**
+             * Returns the raw JSON value of [inputVariableNames].
+             *
+             * Unlike [inputVariableNames], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("inputVariableNames")
             @ExcludeMissing
             fun _inputVariableNames(): JsonField<List<String>> = inputVariableNames
 
-            /** Name of the column with the latencies. */
+            /**
+             * Returns the raw JSON value of [latencyColumnName].
+             *
+             * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("latencyColumnName")
             @ExcludeMissing
             fun _latencyColumnName(): JsonField<String> = latencyColumnName
 
-            /** Name of the column with the total number of tokens. */
+            /**
+             * Returns the raw JSON value of [numOfTokenColumnName].
+             *
+             * Unlike [numOfTokenColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("numOfTokenColumnName")
             @ExcludeMissing
             fun _numOfTokenColumnName(): JsonField<String> = numOfTokenColumnName
 
-            /** Prompt for the LLM. */
+            /**
+             * Returns the raw JSON value of [prompt].
+             *
+             * Unlike [prompt], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("prompt") @ExcludeMissing fun _prompt(): JsonField<List<Prompt>> = prompt
 
             /**
-             * Name of the column with the questions. Applies to RAG use cases. Providing the
-             * question enables RAG-specific metrics.
+             * Returns the raw JSON value of [questionColumnName].
+             *
+             * Unlike [questionColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("questionColumnName")
             @ExcludeMissing
             fun _questionColumnName(): JsonField<String> = questionColumnName
 
             /**
-             * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
-             * provided, the upload timestamp is used.
+             * Returns the raw JSON value of [timestampColumnName].
+             *
+             * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("timestampColumnName")
             @ExcludeMissing
@@ -887,7 +1050,13 @@ private constructor(
                 fun outputColumnName(outputColumnName: String) =
                     outputColumnName(JsonField.of(outputColumnName))
 
-                /** Name of the column with the model outputs. */
+                /**
+                 * Sets [Builder.outputColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.outputColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun outputColumnName(outputColumnName: JsonField<String>) = apply {
                     this.outputColumnName = outputColumnName
                 }
@@ -900,8 +1069,11 @@ private constructor(
                     contextColumnName(JsonField.of(contextColumnName))
 
                 /**
-                 * Name of the column with the context retrieved. Applies to RAG use cases.
-                 * Providing the context enables RAG-specific metrics.
+                 * Sets [Builder.contextColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.contextColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun contextColumnName(contextColumnName: JsonField<String>) = apply {
                     this.contextColumnName = contextColumnName
@@ -911,7 +1083,13 @@ private constructor(
                 fun costColumnName(costColumnName: String) =
                     costColumnName(JsonField.of(costColumnName))
 
-                /** Name of the column with the cost associated with each row. */
+                /**
+                 * Sets [Builder.costColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.costColumnName] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun costColumnName(costColumnName: JsonField<String>) = apply {
                     this.costColumnName = costColumnName
                 }
@@ -920,7 +1098,13 @@ private constructor(
                 fun groundTruthColumnName(groundTruthColumnName: String) =
                     groundTruthColumnName(JsonField.of(groundTruthColumnName))
 
-                /** Name of the column with the ground truths. */
+                /**
+                 * Sets [Builder.groundTruthColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.groundTruthColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
                     this.groundTruthColumnName = groundTruthColumnName
                 }
@@ -934,9 +1118,11 @@ private constructor(
                     inferenceIdColumnName(JsonField.of(inferenceIdColumnName))
 
                 /**
-                 * Name of the column with the inference ids. This is useful if you want to update
-                 * rows at a later point in time. If not provided, a unique id is generated by
-                 * Openlayer.
+                 * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
                  */
                 fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
                     this.inferenceIdColumnName = inferenceIdColumnName
@@ -949,14 +1135,20 @@ private constructor(
                     inputVariableNames(JsonField.of(inputVariableNames))
 
                 /**
-                 * Array of input variable names. Each input variable should be a dataset column.
+                 * Sets [Builder.inputVariableNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.inputVariableNames] with a well-typed
+                 * `List<String>` value instead. This method is primarily for setting the field to
+                 * an undocumented or not yet supported value.
                  */
                 fun inputVariableNames(inputVariableNames: JsonField<List<String>>) = apply {
                     this.inputVariableNames = inputVariableNames.map { it.toMutableList() }
                 }
 
                 /**
-                 * Array of input variable names. Each input variable should be a dataset column.
+                 * Adds a single [String] to [inputVariableNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
                  */
                 fun addInputVariableName(inputVariableName: String) = apply {
                     inputVariableNames =
@@ -969,7 +1161,13 @@ private constructor(
                 fun latencyColumnName(latencyColumnName: String) =
                     latencyColumnName(JsonField.of(latencyColumnName))
 
-                /** Name of the column with the latencies. */
+                /**
+                 * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.latencyColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
                     this.latencyColumnName = latencyColumnName
                 }
@@ -981,11 +1179,20 @@ private constructor(
                 fun numOfTokenColumnName(numOfTokenColumnName: String?) =
                     numOfTokenColumnName(JsonField.ofNullable(numOfTokenColumnName))
 
-                /** Name of the column with the total number of tokens. */
+                /**
+                 * Alias for calling [Builder.numOfTokenColumnName] with
+                 * `numOfTokenColumnName.orElse(null)`.
+                 */
                 fun numOfTokenColumnName(numOfTokenColumnName: Optional<String>) =
                     numOfTokenColumnName(numOfTokenColumnName.getOrNull())
 
-                /** Name of the column with the total number of tokens. */
+                /**
+                 * Sets [Builder.numOfTokenColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.numOfTokenColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun numOfTokenColumnName(numOfTokenColumnName: JsonField<String>) = apply {
                     this.numOfTokenColumnName = numOfTokenColumnName
                 }
@@ -993,12 +1200,22 @@ private constructor(
                 /** Prompt for the LLM. */
                 fun prompt(prompt: List<Prompt>) = prompt(JsonField.of(prompt))
 
-                /** Prompt for the LLM. */
+                /**
+                 * Sets [Builder.prompt] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.prompt] with a well-typed `List<Prompt>` value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun prompt(prompt: JsonField<List<Prompt>>) = apply {
                     this.prompt = prompt.map { it.toMutableList() }
                 }
 
-                /** Prompt for the LLM. */
+                /**
+                 * Adds a single [Prompt] to [Builder.prompt].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
                 fun addPrompt(prompt: Prompt) = apply {
                     this.prompt =
                         (this.prompt ?: JsonField.of(mutableListOf())).also {
@@ -1014,8 +1231,11 @@ private constructor(
                     questionColumnName(JsonField.of(questionColumnName))
 
                 /**
-                 * Name of the column with the questions. Applies to RAG use cases. Providing the
-                 * question enables RAG-specific metrics.
+                 * Sets [Builder.questionColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.questionColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun questionColumnName(questionColumnName: JsonField<String>) = apply {
                     this.questionColumnName = questionColumnName
@@ -1029,8 +1249,11 @@ private constructor(
                     timestampColumnName(JsonField.of(timestampColumnName))
 
                 /**
-                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
-                 * not provided, the upload timestamp is used.
+                 * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.timestampColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
                     this.timestampColumnName = timestampColumnName
@@ -1090,17 +1313,37 @@ private constructor(
                 private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
             ) {
 
-                /** Content of the prompt. */
+                /**
+                 * Content of the prompt.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun content(): Optional<String> =
                     Optional.ofNullable(content.getNullable("content"))
 
-                /** Role of the prompt. */
+                /**
+                 * Role of the prompt.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
                 fun role(): Optional<String> = Optional.ofNullable(role.getNullable("role"))
 
-                /** Content of the prompt. */
+                /**
+                 * Returns the raw JSON value of [content].
+                 *
+                 * Unlike [content], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("content") @ExcludeMissing fun _content(): JsonField<String> = content
 
-                /** Role of the prompt. */
+                /**
+                 * Returns the raw JSON value of [role].
+                 *
+                 * Unlike [role], this method doesn't throw if the JSON field has an unexpected
+                 * type.
+                 */
                 @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<String> = role
 
                 @JsonAnyGetter
@@ -1144,13 +1387,25 @@ private constructor(
                     /** Content of the prompt. */
                     fun content(content: String) = content(JsonField.of(content))
 
-                    /** Content of the prompt. */
+                    /**
+                     * Sets [Builder.content] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.content] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
                     fun content(content: JsonField<String>) = apply { this.content = content }
 
                     /** Role of the prompt. */
                     fun role(role: String) = role(JsonField.of(role))
 
-                    /** Role of the prompt. */
+                    /**
+                     * Sets [Builder.role] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.role] with a well-typed [String] value
+                     * instead. This method is primarily for setting the field to an undocumented or
+                     * not yet supported value.
+                     */
                     fun role(role: JsonField<String>) = apply { this.role = role }
 
                     fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1255,23 +1510,38 @@ private constructor(
             /**
              * List of class names indexed by label integer in the dataset. E.g.
              * ["Retained", "Exited"] when 0, 1 are in your label column.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
              */
             fun classNames(): List<String> = classNames.getRequired("classNames")
 
             /**
              * Array with the names of all categorical features in the dataset. E.g.
              * ["Age", "Geography"].
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun categoricalFeatureNames(): Optional<List<String>> =
                 Optional.ofNullable(categoricalFeatureNames.getNullable("categoricalFeatureNames"))
 
-            /** Array with all input feature names. */
+            /**
+             * Array with all input feature names.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun featureNames(): Optional<List<String>> =
                 Optional.ofNullable(featureNames.getNullable("featureNames"))
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
              * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
                 Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
@@ -1279,23 +1549,39 @@ private constructor(
             /**
              * Name of the column with the labels. The data in this column must be **zero-indexed
              * integers**, matching the list provided in `classNames`.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun labelColumnName(): Optional<String> =
                 Optional.ofNullable(labelColumnName.getNullable("labelColumnName"))
 
-            /** Name of the column with the latencies. */
+            /**
+             * Name of the column with the latencies.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun latencyColumnName(): Optional<String> =
                 Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
-            /** Name of the column with the model's predictions as **zero-indexed integers**. */
+            /**
+             * Name of the column with the model's predictions as **zero-indexed integers**.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun predictionsColumnName(): Optional<String> =
                 Optional.ofNullable(predictionsColumnName.getNullable("predictionsColumnName"))
 
             /**
              * Name of the column with the model's predictions as **lists of class probabilities**.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun predictionScoresColumnName(): Optional<String> =
                 Optional.ofNullable(
@@ -1305,67 +1591,98 @@ private constructor(
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
              * provided, the upload timestamp is used.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
                 Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
 
             /**
-             * List of class names indexed by label integer in the dataset. E.g.
-             * ["Retained", "Exited"] when 0, 1 are in your label column.
+             * Returns the raw JSON value of [classNames].
+             *
+             * Unlike [classNames], this method doesn't throw if the JSON field has an unexpected
+             * type.
              */
             @JsonProperty("classNames")
             @ExcludeMissing
             fun _classNames(): JsonField<List<String>> = classNames
 
             /**
-             * Array with the names of all categorical features in the dataset. E.g.
-             * ["Age", "Geography"].
+             * Returns the raw JSON value of [categoricalFeatureNames].
+             *
+             * Unlike [categoricalFeatureNames], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("categoricalFeatureNames")
             @ExcludeMissing
             fun _categoricalFeatureNames(): JsonField<List<String>> = categoricalFeatureNames
 
-            /** Array with all input feature names. */
+            /**
+             * Returns the raw JSON value of [featureNames].
+             *
+             * Unlike [featureNames], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("featureNames")
             @ExcludeMissing
             fun _featureNames(): JsonField<List<String>> = featureNames
 
             /**
-             * Name of the column with the inference ids. This is useful if you want to update rows
-             * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             * Returns the raw JSON value of [inferenceIdColumnName].
+             *
+             * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("inferenceIdColumnName")
             @ExcludeMissing
             fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
 
             /**
-             * Name of the column with the labels. The data in this column must be **zero-indexed
-             * integers**, matching the list provided in `classNames`.
+             * Returns the raw JSON value of [labelColumnName].
+             *
+             * Unlike [labelColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("labelColumnName")
             @ExcludeMissing
             fun _labelColumnName(): JsonField<String> = labelColumnName
 
-            /** Name of the column with the latencies. */
+            /**
+             * Returns the raw JSON value of [latencyColumnName].
+             *
+             * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("latencyColumnName")
             @ExcludeMissing
             fun _latencyColumnName(): JsonField<String> = latencyColumnName
 
-            /** Name of the column with the model's predictions as **zero-indexed integers**. */
+            /**
+             * Returns the raw JSON value of [predictionsColumnName].
+             *
+             * Unlike [predictionsColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("predictionsColumnName")
             @ExcludeMissing
             fun _predictionsColumnName(): JsonField<String> = predictionsColumnName
 
             /**
-             * Name of the column with the model's predictions as **lists of class probabilities**.
+             * Returns the raw JSON value of [predictionScoresColumnName].
+             *
+             * Unlike [predictionScoresColumnName], this method doesn't throw if the JSON field has
+             * an unexpected type.
              */
             @JsonProperty("predictionScoresColumnName")
             @ExcludeMissing
             fun _predictionScoresColumnName(): JsonField<String> = predictionScoresColumnName
 
             /**
-             * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
-             * provided, the upload timestamp is used.
+             * Returns the raw JSON value of [timestampColumnName].
+             *
+             * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("timestampColumnName")
             @ExcludeMissing
@@ -1450,16 +1767,20 @@ private constructor(
                 fun classNames(classNames: List<String>) = classNames(JsonField.of(classNames))
 
                 /**
-                 * List of class names indexed by label integer in the dataset. E.g.
-                 * ["Retained", "Exited"] when 0, 1 are in your label column.
+                 * Sets [Builder.classNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.classNames] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun classNames(classNames: JsonField<List<String>>) = apply {
                     this.classNames = classNames.map { it.toMutableList() }
                 }
 
                 /**
-                 * List of class names indexed by label integer in the dataset. E.g.
-                 * ["Retained", "Exited"] when 0, 1 are in your label column.
+                 * Adds a single [String] to [classNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
                  */
                 fun addClassName(className: String) = apply {
                     classNames =
@@ -1476,8 +1797,11 @@ private constructor(
                     categoricalFeatureNames(JsonField.of(categoricalFeatureNames))
 
                 /**
-                 * Array with the names of all categorical features in the dataset. E.g.
-                 * ["Age", "Geography"].
+                 * Sets [Builder.categoricalFeatureNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.categoricalFeatureNames] with a well-typed
+                 * `List<String>` value instead. This method is primarily for setting the field to
+                 * an undocumented or not yet supported value.
                  */
                 fun categoricalFeatureNames(categoricalFeatureNames: JsonField<List<String>>) =
                     apply {
@@ -1486,8 +1810,9 @@ private constructor(
                     }
 
                 /**
-                 * Array with the names of all categorical features in the dataset. E.g.
-                 * ["Age", "Geography"].
+                 * Adds a single [String] to [categoricalFeatureNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
                  */
                 fun addCategoricalFeatureName(categoricalFeatureName: String) = apply {
                     categoricalFeatureNames =
@@ -1500,12 +1825,22 @@ private constructor(
                 fun featureNames(featureNames: List<String>) =
                     featureNames(JsonField.of(featureNames))
 
-                /** Array with all input feature names. */
+                /**
+                 * Sets [Builder.featureNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.featureNames] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun featureNames(featureNames: JsonField<List<String>>) = apply {
                     this.featureNames = featureNames.map { it.toMutableList() }
                 }
 
-                /** Array with all input feature names. */
+                /**
+                 * Adds a single [String] to [featureNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
                 fun addFeatureName(featureName: String) = apply {
                     featureNames =
                         (featureNames ?: JsonField.of(mutableListOf())).also {
@@ -1522,9 +1857,11 @@ private constructor(
                     inferenceIdColumnName(JsonField.of(inferenceIdColumnName))
 
                 /**
-                 * Name of the column with the inference ids. This is useful if you want to update
-                 * rows at a later point in time. If not provided, a unique id is generated by
-                 * Openlayer.
+                 * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
                  */
                 fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
                     this.inferenceIdColumnName = inferenceIdColumnName
@@ -1538,8 +1875,11 @@ private constructor(
                     labelColumnName(JsonField.of(labelColumnName))
 
                 /**
-                 * Name of the column with the labels. The data in this column must be
-                 * **zero-indexed integers**, matching the list provided in `classNames`.
+                 * Sets [Builder.labelColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.labelColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun labelColumnName(labelColumnName: JsonField<String>) = apply {
                     this.labelColumnName = labelColumnName
@@ -1549,7 +1889,13 @@ private constructor(
                 fun latencyColumnName(latencyColumnName: String) =
                     latencyColumnName(JsonField.of(latencyColumnName))
 
-                /** Name of the column with the latencies. */
+                /**
+                 * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.latencyColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
                     this.latencyColumnName = latencyColumnName
                 }
@@ -1561,7 +1907,13 @@ private constructor(
                 fun predictionsColumnName(predictionsColumnName: String) =
                     predictionsColumnName(JsonField.of(predictionsColumnName))
 
-                /** Name of the column with the model's predictions as **zero-indexed integers**. */
+                /**
+                 * Sets [Builder.predictionsColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.predictionsColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun predictionsColumnName(predictionsColumnName: JsonField<String>) = apply {
                     this.predictionsColumnName = predictionsColumnName
                 }
@@ -1574,8 +1926,11 @@ private constructor(
                     predictionScoresColumnName(JsonField.of(predictionScoresColumnName))
 
                 /**
-                 * Name of the column with the model's predictions as **lists of class
-                 * probabilities**.
+                 * Sets [Builder.predictionScoresColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.predictionScoresColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
                  */
                 fun predictionScoresColumnName(predictionScoresColumnName: JsonField<String>) =
                     apply {
@@ -1590,8 +1945,11 @@ private constructor(
                     timestampColumnName(JsonField.of(timestampColumnName))
 
                 /**
-                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
-                 * not provided, the upload timestamp is used.
+                 * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.timestampColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
                     this.timestampColumnName = timestampColumnName
@@ -1688,82 +2046,137 @@ private constructor(
             /**
              * Array with the names of all categorical features in the dataset. E.g.
              * ["Gender", "Geography"].
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun categoricalFeatureNames(): Optional<List<String>> =
                 Optional.ofNullable(categoricalFeatureNames.getNullable("categoricalFeatureNames"))
 
-            /** Array with all input feature names. */
+            /**
+             * Array with all input feature names.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun featureNames(): Optional<List<String>> =
                 Optional.ofNullable(featureNames.getNullable("featureNames"))
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
              * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
                 Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
 
-            /** Name of the column with the latencies. */
+            /**
+             * Name of the column with the latencies.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun latencyColumnName(): Optional<String> =
                 Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
-            /** Name of the column with the model's predictions. */
+            /**
+             * Name of the column with the model's predictions.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun predictionsColumnName(): Optional<String> =
                 Optional.ofNullable(predictionsColumnName.getNullable("predictionsColumnName"))
 
-            /** Name of the column with the targets (ground truth values). */
+            /**
+             * Name of the column with the targets (ground truth values).
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun targetColumnName(): Optional<String> =
                 Optional.ofNullable(targetColumnName.getNullable("targetColumnName"))
 
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
              * provided, the upload timestamp is used.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
                 Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
 
             /**
-             * Array with the names of all categorical features in the dataset. E.g.
-             * ["Gender", "Geography"].
+             * Returns the raw JSON value of [categoricalFeatureNames].
+             *
+             * Unlike [categoricalFeatureNames], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("categoricalFeatureNames")
             @ExcludeMissing
             fun _categoricalFeatureNames(): JsonField<List<String>> = categoricalFeatureNames
 
-            /** Array with all input feature names. */
+            /**
+             * Returns the raw JSON value of [featureNames].
+             *
+             * Unlike [featureNames], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("featureNames")
             @ExcludeMissing
             fun _featureNames(): JsonField<List<String>> = featureNames
 
             /**
-             * Name of the column with the inference ids. This is useful if you want to update rows
-             * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             * Returns the raw JSON value of [inferenceIdColumnName].
+             *
+             * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("inferenceIdColumnName")
             @ExcludeMissing
             fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
 
-            /** Name of the column with the latencies. */
+            /**
+             * Returns the raw JSON value of [latencyColumnName].
+             *
+             * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("latencyColumnName")
             @ExcludeMissing
             fun _latencyColumnName(): JsonField<String> = latencyColumnName
 
-            /** Name of the column with the model's predictions. */
+            /**
+             * Returns the raw JSON value of [predictionsColumnName].
+             *
+             * Unlike [predictionsColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("predictionsColumnName")
             @ExcludeMissing
             fun _predictionsColumnName(): JsonField<String> = predictionsColumnName
 
-            /** Name of the column with the targets (ground truth values). */
+            /**
+             * Returns the raw JSON value of [targetColumnName].
+             *
+             * Unlike [targetColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("targetColumnName")
             @ExcludeMissing
             fun _targetColumnName(): JsonField<String> = targetColumnName
 
             /**
-             * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
-             * provided, the upload timestamp is used.
+             * Returns the raw JSON value of [timestampColumnName].
+             *
+             * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("timestampColumnName")
             @ExcludeMissing
@@ -1836,8 +2249,11 @@ private constructor(
                     categoricalFeatureNames(JsonField.of(categoricalFeatureNames))
 
                 /**
-                 * Array with the names of all categorical features in the dataset. E.g.
-                 * ["Gender", "Geography"].
+                 * Sets [Builder.categoricalFeatureNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.categoricalFeatureNames] with a well-typed
+                 * `List<String>` value instead. This method is primarily for setting the field to
+                 * an undocumented or not yet supported value.
                  */
                 fun categoricalFeatureNames(categoricalFeatureNames: JsonField<List<String>>) =
                     apply {
@@ -1846,8 +2262,9 @@ private constructor(
                     }
 
                 /**
-                 * Array with the names of all categorical features in the dataset. E.g.
-                 * ["Gender", "Geography"].
+                 * Adds a single [String] to [categoricalFeatureNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
                  */
                 fun addCategoricalFeatureName(categoricalFeatureName: String) = apply {
                     categoricalFeatureNames =
@@ -1860,12 +2277,22 @@ private constructor(
                 fun featureNames(featureNames: List<String>) =
                     featureNames(JsonField.of(featureNames))
 
-                /** Array with all input feature names. */
+                /**
+                 * Sets [Builder.featureNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.featureNames] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun featureNames(featureNames: JsonField<List<String>>) = apply {
                     this.featureNames = featureNames.map { it.toMutableList() }
                 }
 
-                /** Array with all input feature names. */
+                /**
+                 * Adds a single [String] to [featureNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
+                 */
                 fun addFeatureName(featureName: String) = apply {
                     featureNames =
                         (featureNames ?: JsonField.of(mutableListOf())).also {
@@ -1882,9 +2309,11 @@ private constructor(
                     inferenceIdColumnName(JsonField.of(inferenceIdColumnName))
 
                 /**
-                 * Name of the column with the inference ids. This is useful if you want to update
-                 * rows at a later point in time. If not provided, a unique id is generated by
-                 * Openlayer.
+                 * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
                  */
                 fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
                     this.inferenceIdColumnName = inferenceIdColumnName
@@ -1894,7 +2323,13 @@ private constructor(
                 fun latencyColumnName(latencyColumnName: String) =
                     latencyColumnName(JsonField.of(latencyColumnName))
 
-                /** Name of the column with the latencies. */
+                /**
+                 * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.latencyColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
                     this.latencyColumnName = latencyColumnName
                 }
@@ -1906,7 +2341,13 @@ private constructor(
                 fun predictionsColumnName(predictionsColumnName: String) =
                     predictionsColumnName(JsonField.of(predictionsColumnName))
 
-                /** Name of the column with the model's predictions. */
+                /**
+                 * Sets [Builder.predictionsColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.predictionsColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun predictionsColumnName(predictionsColumnName: JsonField<String>) = apply {
                     this.predictionsColumnName = predictionsColumnName
                 }
@@ -1915,7 +2356,13 @@ private constructor(
                 fun targetColumnName(targetColumnName: String) =
                     targetColumnName(JsonField.of(targetColumnName))
 
-                /** Name of the column with the targets (ground truth values). */
+                /**
+                 * Sets [Builder.targetColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.targetColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun targetColumnName(targetColumnName: JsonField<String>) = apply {
                     this.targetColumnName = targetColumnName
                 }
@@ -1928,8 +2375,11 @@ private constructor(
                     timestampColumnName(JsonField.of(timestampColumnName))
 
                 /**
-                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
-                 * not provided, the upload timestamp is used.
+                 * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.timestampColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
                     this.timestampColumnName = timestampColumnName
@@ -2027,12 +2477,19 @@ private constructor(
             /**
              * List of class names indexed by label integer in the dataset. E.g.
              * ["Retained", "Exited"] when 0, 1 are in your label column.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
              */
             fun classNames(): List<String> = classNames.getRequired("classNames")
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
              * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
                 Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
@@ -2040,89 +2497,139 @@ private constructor(
             /**
              * Name of the column with the labels. The data in this column must be **zero-indexed
              * integers**, matching the list provided in `classNames`.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun labelColumnName(): Optional<String> =
                 Optional.ofNullable(labelColumnName.getNullable("labelColumnName"))
 
-            /** Name of the column with the latencies. */
+            /**
+             * Name of the column with the latencies.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun latencyColumnName(): Optional<String> =
                 Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
-            /** Name of the column with the model's predictions as **zero-indexed integers**. */
+            /**
+             * Name of the column with the model's predictions as **zero-indexed integers**.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun predictionsColumnName(): Optional<String> =
                 Optional.ofNullable(predictionsColumnName.getNullable("predictionsColumnName"))
 
             /**
              * Name of the column with the model's predictions as **lists of class probabilities**.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun predictionScoresColumnName(): Optional<String> =
                 Optional.ofNullable(
                     predictionScoresColumnName.getNullable("predictionScoresColumnName")
                 )
 
-            /** Name of the column with the text data. */
+            /**
+             * Name of the column with the text data.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun textColumnName(): Optional<String> =
                 Optional.ofNullable(textColumnName.getNullable("textColumnName"))
 
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
              * provided, the upload timestamp is used.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
                 Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
 
             /**
-             * List of class names indexed by label integer in the dataset. E.g.
-             * ["Retained", "Exited"] when 0, 1 are in your label column.
+             * Returns the raw JSON value of [classNames].
+             *
+             * Unlike [classNames], this method doesn't throw if the JSON field has an unexpected
+             * type.
              */
             @JsonProperty("classNames")
             @ExcludeMissing
             fun _classNames(): JsonField<List<String>> = classNames
 
             /**
-             * Name of the column with the inference ids. This is useful if you want to update rows
-             * at a later point in time. If not provided, a unique id is generated by Openlayer.
+             * Returns the raw JSON value of [inferenceIdColumnName].
+             *
+             * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("inferenceIdColumnName")
             @ExcludeMissing
             fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
 
             /**
-             * Name of the column with the labels. The data in this column must be **zero-indexed
-             * integers**, matching the list provided in `classNames`.
+             * Returns the raw JSON value of [labelColumnName].
+             *
+             * Unlike [labelColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("labelColumnName")
             @ExcludeMissing
             fun _labelColumnName(): JsonField<String> = labelColumnName
 
-            /** Name of the column with the latencies. */
+            /**
+             * Returns the raw JSON value of [latencyColumnName].
+             *
+             * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("latencyColumnName")
             @ExcludeMissing
             fun _latencyColumnName(): JsonField<String> = latencyColumnName
 
-            /** Name of the column with the model's predictions as **zero-indexed integers**. */
+            /**
+             * Returns the raw JSON value of [predictionsColumnName].
+             *
+             * Unlike [predictionsColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("predictionsColumnName")
             @ExcludeMissing
             fun _predictionsColumnName(): JsonField<String> = predictionsColumnName
 
             /**
-             * Name of the column with the model's predictions as **lists of class probabilities**.
+             * Returns the raw JSON value of [predictionScoresColumnName].
+             *
+             * Unlike [predictionScoresColumnName], this method doesn't throw if the JSON field has
+             * an unexpected type.
              */
             @JsonProperty("predictionScoresColumnName")
             @ExcludeMissing
             fun _predictionScoresColumnName(): JsonField<String> = predictionScoresColumnName
 
-            /** Name of the column with the text data. */
+            /**
+             * Returns the raw JSON value of [textColumnName].
+             *
+             * Unlike [textColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("textColumnName")
             @ExcludeMissing
             fun _textColumnName(): JsonField<String> = textColumnName
 
             /**
-             * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
-             * provided, the upload timestamp is used.
+             * Returns the raw JSON value of [timestampColumnName].
+             *
+             * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
              */
             @JsonProperty("timestampColumnName")
             @ExcludeMissing
@@ -2202,16 +2709,20 @@ private constructor(
                 fun classNames(classNames: List<String>) = classNames(JsonField.of(classNames))
 
                 /**
-                 * List of class names indexed by label integer in the dataset. E.g.
-                 * ["Retained", "Exited"] when 0, 1 are in your label column.
+                 * Sets [Builder.classNames] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.classNames] with a well-typed `List<String>`
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun classNames(classNames: JsonField<List<String>>) = apply {
                     this.classNames = classNames.map { it.toMutableList() }
                 }
 
                 /**
-                 * List of class names indexed by label integer in the dataset. E.g.
-                 * ["Retained", "Exited"] when 0, 1 are in your label column.
+                 * Adds a single [String] to [classNames].
+                 *
+                 * @throws IllegalStateException if the field was previously set to a non-list.
                  */
                 fun addClassName(className: String) = apply {
                     classNames =
@@ -2229,9 +2740,11 @@ private constructor(
                     inferenceIdColumnName(JsonField.of(inferenceIdColumnName))
 
                 /**
-                 * Name of the column with the inference ids. This is useful if you want to update
-                 * rows at a later point in time. If not provided, a unique id is generated by
-                 * Openlayer.
+                 * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
                  */
                 fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
                     this.inferenceIdColumnName = inferenceIdColumnName
@@ -2245,8 +2758,11 @@ private constructor(
                     labelColumnName(JsonField.of(labelColumnName))
 
                 /**
-                 * Name of the column with the labels. The data in this column must be
-                 * **zero-indexed integers**, matching the list provided in `classNames`.
+                 * Sets [Builder.labelColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.labelColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun labelColumnName(labelColumnName: JsonField<String>) = apply {
                     this.labelColumnName = labelColumnName
@@ -2256,7 +2772,13 @@ private constructor(
                 fun latencyColumnName(latencyColumnName: String) =
                     latencyColumnName(JsonField.of(latencyColumnName))
 
-                /** Name of the column with the latencies. */
+                /**
+                 * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.latencyColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
                     this.latencyColumnName = latencyColumnName
                 }
@@ -2268,7 +2790,13 @@ private constructor(
                 fun predictionsColumnName(predictionsColumnName: String) =
                     predictionsColumnName(JsonField.of(predictionsColumnName))
 
-                /** Name of the column with the model's predictions as **zero-indexed integers**. */
+                /**
+                 * Sets [Builder.predictionsColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.predictionsColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
                 fun predictionsColumnName(predictionsColumnName: JsonField<String>) = apply {
                     this.predictionsColumnName = predictionsColumnName
                 }
@@ -2281,8 +2809,11 @@ private constructor(
                     predictionScoresColumnName(JsonField.of(predictionScoresColumnName))
 
                 /**
-                 * Name of the column with the model's predictions as **lists of class
-                 * probabilities**.
+                 * Sets [Builder.predictionScoresColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.predictionScoresColumnName] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
                  */
                 fun predictionScoresColumnName(predictionScoresColumnName: JsonField<String>) =
                     apply {
@@ -2293,7 +2824,13 @@ private constructor(
                 fun textColumnName(textColumnName: String) =
                     textColumnName(JsonField.of(textColumnName))
 
-                /** Name of the column with the text data. */
+                /**
+                 * Sets [Builder.textColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.textColumnName] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun textColumnName(textColumnName: JsonField<String>) = apply {
                     this.textColumnName = textColumnName
                 }
@@ -2306,8 +2843,11 @@ private constructor(
                     timestampColumnName(JsonField.of(timestampColumnName))
 
                 /**
-                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
-                 * not provided, the upload timestamp is used.
+                 * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.timestampColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
                 fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
                     this.timestampColumnName = timestampColumnName
