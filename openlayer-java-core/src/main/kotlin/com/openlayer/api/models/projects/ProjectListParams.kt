@@ -87,31 +87,39 @@ private constructor(
         /** Filter list of items by project name. */
         fun name(name: String?) = apply { this.name = name }
 
-        /** Filter list of items by project name. */
+        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
         fun name(name: Optional<String>) = name(name.getOrNull())
 
         /** The page to return in a paginated query. */
         fun page(page: Long?) = apply { this.page = page }
 
-        /** The page to return in a paginated query. */
+        /**
+         * Alias for [Builder.page].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun page(page: Long) = page(page as Long?)
 
-        /** The page to return in a paginated query. */
+        /** Alias for calling [Builder.page] with `page.orElse(null)`. */
         fun page(page: Optional<Long>) = page(page.getOrNull())
 
         /** Maximum number of items to return per page. */
         fun perPage(perPage: Long?) = apply { this.perPage = perPage }
 
-        /** Maximum number of items to return per page. */
+        /**
+         * Alias for [Builder.perPage].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun perPage(perPage: Long) = perPage(perPage as Long?)
 
-        /** Maximum number of items to return per page. */
+        /** Alias for calling [Builder.perPage] with `perPage.orElse(null)`. */
         fun perPage(perPage: Optional<Long>) = perPage(perPage.getOrNull())
 
         /** Filter list of items by task type. */
         fun taskType(taskType: TaskType?) = apply { this.taskType = taskType }
 
-        /** Filter list of items by task type. */
+        /** Alias for calling [Builder.taskType] with `taskType.orElse(null)`. */
         fun taskType(taskType: Optional<TaskType>) = taskType(taskType.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

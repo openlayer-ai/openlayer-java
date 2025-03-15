@@ -92,10 +92,14 @@ private constructor(
         /** Expand specific nested objects. */
         fun expand(expand: List<Expand>?) = apply { this.expand = expand?.toMutableList() }
 
-        /** Expand specific nested objects. */
+        /** Alias for calling [Builder.expand] with `expand.orElse(null)`. */
         fun expand(expand: Optional<List<Expand>>) = expand(expand.getOrNull())
 
-        /** Expand specific nested objects. */
+        /**
+         * Adds a single [Expand] to [Builder.expand].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
         fun addExpand(expand: Expand) = apply {
             this.expand = (this.expand ?: mutableListOf()).apply { add(expand) }
         }
