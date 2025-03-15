@@ -78,130 +78,297 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The inference pipeline id. */
+    /**
+     * The inference pipeline id.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun id(): String = id.getRequired("id")
 
-    /** The creation date. */
+    /**
+     * The creation date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
-    /** The last test evaluation date. */
+    /**
+     * The last test evaluation date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dateLastEvaluated(): Optional<OffsetDateTime> =
         Optional.ofNullable(dateLastEvaluated.getNullable("dateLastEvaluated"))
 
-    /** The last data sample received date. */
+    /**
+     * The last data sample received date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dateLastSampleReceived(): Optional<OffsetDateTime> =
         Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
 
-    /** The next test evaluation date. */
+    /**
+     * The next test evaluation date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun dateOfNextEvaluation(): Optional<OffsetDateTime> =
         Optional.ofNullable(dateOfNextEvaluation.getNullable("dateOfNextEvaluation"))
 
-    /** The last updated date. */
+    /**
+     * The last updated date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-    /** The inference pipeline description. */
+    /**
+     * The inference pipeline description.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun description(): Optional<String> =
         Optional.ofNullable(description.getNullable("description"))
 
-    /** The number of tests failing. */
+    /**
+     * The number of tests failing.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun failingGoalCount(): Long = failingGoalCount.getRequired("failingGoalCount")
 
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun links(): Links = links.getRequired("links")
 
-    /** The inference pipeline name. */
+    /**
+     * The inference pipeline name.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun name(): String = name.getRequired("name")
 
-    /** The number of tests passing. */
+    /**
+     * The number of tests passing.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
 
-    /** The project id. */
+    /**
+     * The project id.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun projectId(): String = projectId.getRequired("projectId")
 
-    /** The status of test evaluation for the inference pipeline. */
+    /**
+     * The status of test evaluation for the inference pipeline.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun status(): Status = status.getRequired("status")
 
-    /** The status message of test evaluation for the inference pipeline. */
+    /**
+     * The status message of test evaluation for the inference pipeline.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun statusMessage(): Optional<String> =
         Optional.ofNullable(statusMessage.getNullable("statusMessage"))
 
-    /** The total number of tests. */
+    /**
+     * The total number of tests.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
 
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun project(): Optional<Project> = Optional.ofNullable(project.getNullable("project"))
 
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun workspace(): Optional<Workspace> = Optional.ofNullable(workspace.getNullable("workspace"))
 
-    /** The workspace id. */
+    /**
+     * The workspace id.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun workspaceId(): Optional<String> =
         Optional.ofNullable(workspaceId.getNullable("workspaceId"))
 
-    /** The inference pipeline id. */
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-    /** The creation date. */
+    /**
+     * Returns the raw JSON value of [dateCreated].
+     *
+     * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("dateCreated")
     @ExcludeMissing
     fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
-    /** The last test evaluation date. */
+    /**
+     * Returns the raw JSON value of [dateLastEvaluated].
+     *
+     * Unlike [dateLastEvaluated], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("dateLastEvaluated")
     @ExcludeMissing
     fun _dateLastEvaluated(): JsonField<OffsetDateTime> = dateLastEvaluated
 
-    /** The last data sample received date. */
+    /**
+     * Returns the raw JSON value of [dateLastSampleReceived].
+     *
+     * Unlike [dateLastSampleReceived], this method doesn't throw if the JSON field has an
+     * unexpected type.
+     */
     @JsonProperty("dateLastSampleReceived")
     @ExcludeMissing
     fun _dateLastSampleReceived(): JsonField<OffsetDateTime> = dateLastSampleReceived
 
-    /** The next test evaluation date. */
+    /**
+     * Returns the raw JSON value of [dateOfNextEvaluation].
+     *
+     * Unlike [dateOfNextEvaluation], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("dateOfNextEvaluation")
     @ExcludeMissing
     fun _dateOfNextEvaluation(): JsonField<OffsetDateTime> = dateOfNextEvaluation
 
-    /** The last updated date. */
+    /**
+     * Returns the raw JSON value of [dateUpdated].
+     *
+     * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("dateUpdated")
     @ExcludeMissing
     fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
-    /** The inference pipeline description. */
+    /**
+     * Returns the raw JSON value of [description].
+     *
+     * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("description") @ExcludeMissing fun _description(): JsonField<String> = description
 
-    /** The number of tests failing. */
+    /**
+     * Returns the raw JSON value of [failingGoalCount].
+     *
+     * Unlike [failingGoalCount], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("failingGoalCount")
     @ExcludeMissing
     fun _failingGoalCount(): JsonField<Long> = failingGoalCount
 
+    /**
+     * Returns the raw JSON value of [links].
+     *
+     * Unlike [links], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
 
-    /** The inference pipeline name. */
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-    /** The number of tests passing. */
+    /**
+     * Returns the raw JSON value of [passingGoalCount].
+     *
+     * Unlike [passingGoalCount], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
     @JsonProperty("passingGoalCount")
     @ExcludeMissing
     fun _passingGoalCount(): JsonField<Long> = passingGoalCount
 
-    /** The project id. */
+    /**
+     * Returns the raw JSON value of [projectId].
+     *
+     * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
 
-    /** The status of test evaluation for the inference pipeline. */
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
-    /** The status message of test evaluation for the inference pipeline. */
+    /**
+     * Returns the raw JSON value of [statusMessage].
+     *
+     * Unlike [statusMessage], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("statusMessage")
     @ExcludeMissing
     fun _statusMessage(): JsonField<String> = statusMessage
 
-    /** The total number of tests. */
+    /**
+     * Returns the raw JSON value of [totalGoalCount].
+     *
+     * Unlike [totalGoalCount], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("totalGoalCount")
     @ExcludeMissing
     fun _totalGoalCount(): JsonField<Long> = totalGoalCount
 
+    /**
+     * Returns the raw JSON value of [project].
+     *
+     * Unlike [project], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("project") @ExcludeMissing fun _project(): JsonField<Project> = project
 
+    /**
+     * Returns the raw JSON value of [workspace].
+     *
+     * Unlike [workspace], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("workspace") @ExcludeMissing fun _workspace(): JsonField<Workspace> = workspace
 
-    /** The workspace id. */
+    /**
+     * Returns the raw JSON value of [workspaceId].
+     *
+     * Unlike [workspaceId], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("workspaceId") @ExcludeMissing fun _workspaceId(): JsonField<String> = workspaceId
 
     @JsonAnyGetter
@@ -317,13 +484,24 @@ private constructor(
         /** The inference pipeline id. */
         fun id(id: String) = id(JsonField.of(id))
 
-        /** The inference pipeline id. */
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun id(id: JsonField<String>) = apply { this.id = id }
 
         /** The creation date. */
         fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
 
-        /** The creation date. */
+        /**
+         * Sets [Builder.dateCreated] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
             this.dateCreated = dateCreated
         }
@@ -332,11 +510,17 @@ private constructor(
         fun dateLastEvaluated(dateLastEvaluated: OffsetDateTime?) =
             dateLastEvaluated(JsonField.ofNullable(dateLastEvaluated))
 
-        /** The last test evaluation date. */
+        /** Alias for calling [Builder.dateLastEvaluated] with `dateLastEvaluated.orElse(null)`. */
         fun dateLastEvaluated(dateLastEvaluated: Optional<OffsetDateTime>) =
             dateLastEvaluated(dateLastEvaluated.getOrNull())
 
-        /** The last test evaluation date. */
+        /**
+         * Sets [Builder.dateLastEvaluated] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateLastEvaluated] with a well-typed [OffsetDateTime]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun dateLastEvaluated(dateLastEvaluated: JsonField<OffsetDateTime>) = apply {
             this.dateLastEvaluated = dateLastEvaluated
         }
@@ -345,11 +529,20 @@ private constructor(
         fun dateLastSampleReceived(dateLastSampleReceived: OffsetDateTime?) =
             dateLastSampleReceived(JsonField.ofNullable(dateLastSampleReceived))
 
-        /** The last data sample received date. */
+        /**
+         * Alias for calling [Builder.dateLastSampleReceived] with
+         * `dateLastSampleReceived.orElse(null)`.
+         */
         fun dateLastSampleReceived(dateLastSampleReceived: Optional<OffsetDateTime>) =
             dateLastSampleReceived(dateLastSampleReceived.getOrNull())
 
-        /** The last data sample received date. */
+        /**
+         * Sets [Builder.dateLastSampleReceived] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateLastSampleReceived] with a well-typed
+         * [OffsetDateTime] value instead. This method is primarily for setting the field to an
+         * undocumented or not yet supported value.
+         */
         fun dateLastSampleReceived(dateLastSampleReceived: JsonField<OffsetDateTime>) = apply {
             this.dateLastSampleReceived = dateLastSampleReceived
         }
@@ -358,11 +551,20 @@ private constructor(
         fun dateOfNextEvaluation(dateOfNextEvaluation: OffsetDateTime?) =
             dateOfNextEvaluation(JsonField.ofNullable(dateOfNextEvaluation))
 
-        /** The next test evaluation date. */
+        /**
+         * Alias for calling [Builder.dateOfNextEvaluation] with
+         * `dateOfNextEvaluation.orElse(null)`.
+         */
         fun dateOfNextEvaluation(dateOfNextEvaluation: Optional<OffsetDateTime>) =
             dateOfNextEvaluation(dateOfNextEvaluation.getOrNull())
 
-        /** The next test evaluation date. */
+        /**
+         * Sets [Builder.dateOfNextEvaluation] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateOfNextEvaluation] with a well-typed [OffsetDateTime]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
         fun dateOfNextEvaluation(dateOfNextEvaluation: JsonField<OffsetDateTime>) = apply {
             this.dateOfNextEvaluation = dateOfNextEvaluation
         }
@@ -370,7 +572,13 @@ private constructor(
         /** The last updated date. */
         fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
-        /** The last updated date. */
+        /**
+         * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
             this.dateUpdated = dateUpdated
         }
@@ -378,36 +586,65 @@ private constructor(
         /** The inference pipeline description. */
         fun description(description: String?) = description(JsonField.ofNullable(description))
 
-        /** The inference pipeline description. */
+        /** Alias for calling [Builder.description] with `description.orElse(null)`. */
         fun description(description: Optional<String>) = description(description.getOrNull())
 
-        /** The inference pipeline description. */
+        /**
+         * Sets [Builder.description] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.description] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun description(description: JsonField<String>) = apply { this.description = description }
 
         /** The number of tests failing. */
         fun failingGoalCount(failingGoalCount: Long) =
             failingGoalCount(JsonField.of(failingGoalCount))
 
-        /** The number of tests failing. */
+        /**
+         * Sets [Builder.failingGoalCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.failingGoalCount] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
             this.failingGoalCount = failingGoalCount
         }
 
         fun links(links: Links) = links(JsonField.of(links))
 
+        /**
+         * Sets [Builder.links] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.links] with a well-typed [Links] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun links(links: JsonField<Links>) = apply { this.links = links }
 
         /** The inference pipeline name. */
         fun name(name: String) = name(JsonField.of(name))
 
-        /** The inference pipeline name. */
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
         /** The number of tests passing. */
         fun passingGoalCount(passingGoalCount: Long) =
             passingGoalCount(JsonField.of(passingGoalCount))
 
-        /** The number of tests passing. */
+        /**
+         * Sets [Builder.passingGoalCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.passingGoalCount] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
         fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
             this.passingGoalCount = passingGoalCount
         }
@@ -415,24 +652,41 @@ private constructor(
         /** The project id. */
         fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
-        /** The project id. */
+        /**
+         * Sets [Builder.projectId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
         /** The status of test evaluation for the inference pipeline. */
         fun status(status: Status) = status(JsonField.of(status))
 
-        /** The status of test evaluation for the inference pipeline. */
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun status(status: JsonField<Status>) = apply { this.status = status }
 
         /** The status message of test evaluation for the inference pipeline. */
         fun statusMessage(statusMessage: String?) =
             statusMessage(JsonField.ofNullable(statusMessage))
 
-        /** The status message of test evaluation for the inference pipeline. */
+        /** Alias for calling [Builder.statusMessage] with `statusMessage.orElse(null)`. */
         fun statusMessage(statusMessage: Optional<String>) =
             statusMessage(statusMessage.getOrNull())
 
-        /** The status message of test evaluation for the inference pipeline. */
+        /**
+         * Sets [Builder.statusMessage] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.statusMessage] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun statusMessage(statusMessage: JsonField<String>) = apply {
             this.statusMessage = statusMessage
         }
@@ -440,27 +694,54 @@ private constructor(
         /** The total number of tests. */
         fun totalGoalCount(totalGoalCount: Long) = totalGoalCount(JsonField.of(totalGoalCount))
 
-        /** The total number of tests. */
+        /**
+         * Sets [Builder.totalGoalCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.totalGoalCount] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
             this.totalGoalCount = totalGoalCount
         }
 
         fun project(project: Project?) = project(JsonField.ofNullable(project))
 
+        /** Alias for calling [Builder.project] with `project.orElse(null)`. */
         fun project(project: Optional<Project>) = project(project.getOrNull())
 
+        /**
+         * Sets [Builder.project] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.project] with a well-typed [Project] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun project(project: JsonField<Project>) = apply { this.project = project }
 
         fun workspace(workspace: Workspace?) = workspace(JsonField.ofNullable(workspace))
 
+        /** Alias for calling [Builder.workspace] with `workspace.orElse(null)`. */
         fun workspace(workspace: Optional<Workspace>) = workspace(workspace.getOrNull())
 
+        /**
+         * Sets [Builder.workspace] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.workspace] with a well-typed [Workspace] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun workspace(workspace: JsonField<Workspace>) = apply { this.workspace = workspace }
 
         /** The workspace id. */
         fun workspaceId(workspaceId: String) = workspaceId(JsonField.of(workspaceId))
 
-        /** The workspace id. */
+        /**
+         * Sets [Builder.workspaceId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.workspaceId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun workspaceId(workspaceId: JsonField<String>) = apply { this.workspaceId = workspaceId }
 
         fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -515,8 +796,17 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun app(): String = app.getRequired("app")
 
+        /**
+         * Returns the raw JSON value of [app].
+         *
+         * Unlike [app], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
         @JsonAnyGetter
@@ -563,6 +853,13 @@ private constructor(
 
             fun app(app: String) = app(JsonField.of(app))
 
+            /**
+             * Sets [Builder.app] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.app] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun app(app: JsonField<String>) = apply { this.app = app }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -784,117 +1081,265 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The project id. */
+        /**
+         * The project id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun id(): String = id.getRequired("id")
 
-        /** The project creator id. */
+        /**
+         * The project creator id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun creatorId(): Optional<String> = Optional.ofNullable(creatorId.getNullable("creatorId"))
 
-        /** The project creation date. */
+        /**
+         * The project creation date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
-        /** The project last updated date. */
+        /**
+         * The project last updated date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-        /** The number of tests in the development mode of the project. */
+        /**
+         * The number of tests in the development mode of the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun developmentGoalCount(): Long = developmentGoalCount.getRequired("developmentGoalCount")
 
-        /** The total number of tests in the project. */
+        /**
+         * The total number of tests in the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun goalCount(): Long = goalCount.getRequired("goalCount")
 
-        /** The number of inference pipelines in the project. */
+        /**
+         * The number of inference pipelines in the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun inferencePipelineCount(): Long =
             inferencePipelineCount.getRequired("inferencePipelineCount")
 
-        /** Links to the project. */
+        /**
+         * Links to the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun links(): Links = links.getRequired("links")
 
-        /** The number of tests in the monitoring mode of the project. */
+        /**
+         * The number of tests in the monitoring mode of the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun monitoringGoalCount(): Long = monitoringGoalCount.getRequired("monitoringGoalCount")
 
-        /** The project name. */
+        /**
+         * The project name.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun name(): String = name.getRequired("name")
 
-        /** The source of the project. */
+        /**
+         * The source of the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
 
-        /** The task type of the project. */
+        /**
+         * The task type of the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun taskType(): TaskType = taskType.getRequired("taskType")
 
-        /** The number of versions (commits) in the project. */
+        /**
+         * The number of versions (commits) in the project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun versionCount(): Long = versionCount.getRequired("versionCount")
 
-        /** The workspace id. */
+        /**
+         * The workspace id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun workspaceId(): Optional<String> =
             Optional.ofNullable(workspaceId.getNullable("workspaceId"))
 
-        /** The project description. */
+        /**
+         * The project description.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun description(): Optional<String> =
             Optional.ofNullable(description.getNullable("description"))
 
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
 
-        /** The project id. */
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-        /** The project creator id. */
+        /**
+         * Returns the raw JSON value of [creatorId].
+         *
+         * Unlike [creatorId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("creatorId") @ExcludeMissing fun _creatorId(): JsonField<String> = creatorId
 
-        /** The project creation date. */
+        /**
+         * Returns the raw JSON value of [dateCreated].
+         *
+         * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateCreated")
         @ExcludeMissing
         fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
-        /** The project last updated date. */
+        /**
+         * Returns the raw JSON value of [dateUpdated].
+         *
+         * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateUpdated")
         @ExcludeMissing
         fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
-        /** The number of tests in the development mode of the project. */
+        /**
+         * Returns the raw JSON value of [developmentGoalCount].
+         *
+         * Unlike [developmentGoalCount], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("developmentGoalCount")
         @ExcludeMissing
         fun _developmentGoalCount(): JsonField<Long> = developmentGoalCount
 
-        /** The total number of tests in the project. */
+        /**
+         * Returns the raw JSON value of [goalCount].
+         *
+         * Unlike [goalCount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("goalCount") @ExcludeMissing fun _goalCount(): JsonField<Long> = goalCount
 
-        /** The number of inference pipelines in the project. */
+        /**
+         * Returns the raw JSON value of [inferencePipelineCount].
+         *
+         * Unlike [inferencePipelineCount], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("inferencePipelineCount")
         @ExcludeMissing
         fun _inferencePipelineCount(): JsonField<Long> = inferencePipelineCount
 
-        /** Links to the project. */
+        /**
+         * Returns the raw JSON value of [links].
+         *
+         * Unlike [links], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
 
-        /** The number of tests in the monitoring mode of the project. */
+        /**
+         * Returns the raw JSON value of [monitoringGoalCount].
+         *
+         * Unlike [monitoringGoalCount], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
         @JsonProperty("monitoringGoalCount")
         @ExcludeMissing
         fun _monitoringGoalCount(): JsonField<Long> = monitoringGoalCount
 
-        /** The project name. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The source of the project. */
+        /**
+         * Returns the raw JSON value of [source].
+         *
+         * Unlike [source], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("source") @ExcludeMissing fun _source(): JsonField<Source> = source
 
-        /** The task type of the project. */
+        /**
+         * Returns the raw JSON value of [taskType].
+         *
+         * Unlike [taskType], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("taskType") @ExcludeMissing fun _taskType(): JsonField<TaskType> = taskType
 
-        /** The number of versions (commits) in the project. */
+        /**
+         * Returns the raw JSON value of [versionCount].
+         *
+         * Unlike [versionCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("versionCount")
         @ExcludeMissing
         fun _versionCount(): JsonField<Long> = versionCount
 
-        /** The workspace id. */
+        /**
+         * Returns the raw JSON value of [workspaceId].
+         *
+         * Unlike [workspaceId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("workspaceId")
         @ExcludeMissing
         fun _workspaceId(): JsonField<String> = workspaceId
 
-        /** The project description. */
+        /**
+         * Returns the raw JSON value of [description].
+         *
+         * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("description")
         @ExcludeMissing
         fun _description(): JsonField<String> = description
 
+        /**
+         * Returns the raw JSON value of [gitRepo].
+         *
+         * Unlike [gitRepo], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo(): JsonField<GitRepo> = gitRepo
 
         @JsonAnyGetter
@@ -1000,22 +1445,40 @@ private constructor(
             /** The project id. */
             fun id(id: String) = id(JsonField.of(id))
 
-            /** The project id. */
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             /** The project creator id. */
             fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
-            /** The project creator id. */
+            /** Alias for calling [Builder.creatorId] with `creatorId.orElse(null)`. */
             fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
-            /** The project creator id. */
+            /**
+             * Sets [Builder.creatorId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.creatorId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
             /** The project creation date. */
             fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
 
-            /** The project creation date. */
+            /**
+             * Sets [Builder.dateCreated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                 this.dateCreated = dateCreated
             }
@@ -1023,7 +1486,13 @@ private constructor(
             /** The project last updated date. */
             fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
-            /** The project last updated date. */
+            /**
+             * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                 this.dateUpdated = dateUpdated
             }
@@ -1032,7 +1501,13 @@ private constructor(
             fun developmentGoalCount(developmentGoalCount: Long) =
                 developmentGoalCount(JsonField.of(developmentGoalCount))
 
-            /** The number of tests in the development mode of the project. */
+            /**
+             * Sets [Builder.developmentGoalCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.developmentGoalCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun developmentGoalCount(developmentGoalCount: JsonField<Long>) = apply {
                 this.developmentGoalCount = developmentGoalCount
             }
@@ -1040,14 +1515,26 @@ private constructor(
             /** The total number of tests in the project. */
             fun goalCount(goalCount: Long) = goalCount(JsonField.of(goalCount))
 
-            /** The total number of tests in the project. */
+            /**
+             * Sets [Builder.goalCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.goalCount] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun goalCount(goalCount: JsonField<Long>) = apply { this.goalCount = goalCount }
 
             /** The number of inference pipelines in the project. */
             fun inferencePipelineCount(inferencePipelineCount: Long) =
                 inferencePipelineCount(JsonField.of(inferencePipelineCount))
 
-            /** The number of inference pipelines in the project. */
+            /**
+             * Sets [Builder.inferencePipelineCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.inferencePipelineCount] with a well-typed [Long]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun inferencePipelineCount(inferencePipelineCount: JsonField<Long>) = apply {
                 this.inferencePipelineCount = inferencePipelineCount
             }
@@ -1055,14 +1542,26 @@ private constructor(
             /** Links to the project. */
             fun links(links: Links) = links(JsonField.of(links))
 
-            /** Links to the project. */
+            /**
+             * Sets [Builder.links] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.links] with a well-typed [Links] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun links(links: JsonField<Links>) = apply { this.links = links }
 
             /** The number of tests in the monitoring mode of the project. */
             fun monitoringGoalCount(monitoringGoalCount: Long) =
                 monitoringGoalCount(JsonField.of(monitoringGoalCount))
 
-            /** The number of tests in the monitoring mode of the project. */
+            /**
+             * Sets [Builder.monitoringGoalCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.monitoringGoalCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun monitoringGoalCount(monitoringGoalCount: JsonField<Long>) = apply {
                 this.monitoringGoalCount = monitoringGoalCount
             }
@@ -1070,28 +1569,52 @@ private constructor(
             /** The project name. */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** The project name. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The source of the project. */
             fun source(source: Source?) = source(JsonField.ofNullable(source))
 
-            /** The source of the project. */
+            /** Alias for calling [Builder.source] with `source.orElse(null)`. */
             fun source(source: Optional<Source>) = source(source.getOrNull())
 
-            /** The source of the project. */
+            /**
+             * Sets [Builder.source] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.source] with a well-typed [Source] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun source(source: JsonField<Source>) = apply { this.source = source }
 
             /** The task type of the project. */
             fun taskType(taskType: TaskType) = taskType(JsonField.of(taskType))
 
-            /** The task type of the project. */
+            /**
+             * Sets [Builder.taskType] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.taskType] with a well-typed [TaskType] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun taskType(taskType: JsonField<TaskType>) = apply { this.taskType = taskType }
 
             /** The number of versions (commits) in the project. */
             fun versionCount(versionCount: Long) = versionCount(JsonField.of(versionCount))
 
-            /** The number of versions (commits) in the project. */
+            /**
+             * Sets [Builder.versionCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.versionCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun versionCount(versionCount: JsonField<Long>) = apply {
                 this.versionCount = versionCount
             }
@@ -1099,10 +1622,16 @@ private constructor(
             /** The workspace id. */
             fun workspaceId(workspaceId: String?) = workspaceId(JsonField.ofNullable(workspaceId))
 
-            /** The workspace id. */
+            /** Alias for calling [Builder.workspaceId] with `workspaceId.orElse(null)`. */
             fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.getOrNull())
 
-            /** The workspace id. */
+            /**
+             * Sets [Builder.workspaceId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.workspaceId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun workspaceId(workspaceId: JsonField<String>) = apply {
                 this.workspaceId = workspaceId
             }
@@ -1110,18 +1639,32 @@ private constructor(
             /** The project description. */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
-            /** The project description. */
+            /** Alias for calling [Builder.description] with `description.orElse(null)`. */
             fun description(description: Optional<String>) = description(description.getOrNull())
 
-            /** The project description. */
+            /**
+             * Sets [Builder.description] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.description] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun description(description: JsonField<String>) = apply {
                 this.description = description
             }
 
             fun gitRepo(gitRepo: GitRepo?) = gitRepo(JsonField.ofNullable(gitRepo))
 
+            /** Alias for calling [Builder.gitRepo] with `gitRepo.orElse(null)`. */
             fun gitRepo(gitRepo: Optional<GitRepo>) = gitRepo(gitRepo.getOrNull())
 
+            /**
+             * Sets [Builder.gitRepo] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.gitRepo] with a well-typed [GitRepo] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1177,8 +1720,18 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun app(): String = app.getRequired("app")
 
+            /**
+             * Returns the raw JSON value of [app].
+             *
+             * Unlike [app], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
             @JsonAnyGetter
@@ -1225,6 +1778,13 @@ private constructor(
 
                 fun app(app: String) = app(JsonField.of(app))
 
+                /**
+                 * Sets [Builder.app] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.app] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun app(app: JsonField<String>) = apply { this.app = app }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1539,60 +2099,183 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun id(): String = id.getRequired("id")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun dateConnected(): OffsetDateTime = dateConnected.getRequired("dateConnected")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun gitAccountId(): String = gitAccountId.getRequired("gitAccountId")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun gitId(): Long = gitId.getRequired("gitId")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun name(): String = name.getRequired("name")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun private_(): Boolean = private_.getRequired("private")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun projectId(): String = projectId.getRequired("projectId")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun slug(): String = slug.getRequired("slug")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
             fun url(): String = url.getRequired("url")
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun rootDir(): Optional<String> = Optional.ofNullable(rootDir.getNullable("rootDir"))
 
+            /**
+             * Returns the raw JSON value of [id].
+             *
+             * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
+            /**
+             * Returns the raw JSON value of [dateConnected].
+             *
+             * Unlike [dateConnected], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("dateConnected")
             @ExcludeMissing
             fun _dateConnected(): JsonField<OffsetDateTime> = dateConnected
 
+            /**
+             * Returns the raw JSON value of [dateUpdated].
+             *
+             * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("dateUpdated")
             @ExcludeMissing
             fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
+            /**
+             * Returns the raw JSON value of [gitAccountId].
+             *
+             * Unlike [gitAccountId], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("gitAccountId")
             @ExcludeMissing
             fun _gitAccountId(): JsonField<String> = gitAccountId
 
+            /**
+             * Returns the raw JSON value of [gitId].
+             *
+             * Unlike [gitId], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("gitId") @ExcludeMissing fun _gitId(): JsonField<Long> = gitId
 
+            /**
+             * Returns the raw JSON value of [name].
+             *
+             * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
+            /**
+             * Returns the raw JSON value of [private_].
+             *
+             * Unlike [private_], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("private") @ExcludeMissing fun _private_(): JsonField<Boolean> = private_
 
+            /**
+             * Returns the raw JSON value of [projectId].
+             *
+             * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("projectId")
             @ExcludeMissing
             fun _projectId(): JsonField<String> = projectId
 
+            /**
+             * Returns the raw JSON value of [slug].
+             *
+             * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
+            /**
+             * Returns the raw JSON value of [url].
+             *
+             * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
+            /**
+             * Returns the raw JSON value of [branch].
+             *
+             * Unlike [branch], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("branch") @ExcludeMissing fun _branch(): JsonField<String> = branch
 
+            /**
+             * Returns the raw JSON value of [rootDir].
+             *
+             * Unlike [rootDir], this method doesn't throw if the JSON field has an unexpected type.
+             */
             @JsonProperty("rootDir") @ExcludeMissing fun _rootDir(): JsonField<String> = rootDir
 
             @JsonAnyGetter
@@ -1681,11 +2364,25 @@ private constructor(
 
                 fun id(id: String) = id(JsonField.of(id))
 
+                /**
+                 * Sets [Builder.id] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.id] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
                 fun dateConnected(dateConnected: OffsetDateTime) =
                     dateConnected(JsonField.of(dateConnected))
 
+                /**
+                 * Sets [Builder.dateConnected] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.dateConnected] with a well-typed
+                 * [OffsetDateTime] value instead. This method is primarily for setting the field to
+                 * an undocumented or not yet supported value.
+                 */
                 fun dateConnected(dateConnected: JsonField<OffsetDateTime>) = apply {
                     this.dateConnected = dateConnected
                 }
@@ -1693,46 +2390,116 @@ private constructor(
                 fun dateUpdated(dateUpdated: OffsetDateTime) =
                     dateUpdated(JsonField.of(dateUpdated))
 
+                /**
+                 * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
                 fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                     this.dateUpdated = dateUpdated
                 }
 
                 fun gitAccountId(gitAccountId: String) = gitAccountId(JsonField.of(gitAccountId))
 
+                /**
+                 * Sets [Builder.gitAccountId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.gitAccountId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun gitAccountId(gitAccountId: JsonField<String>) = apply {
                     this.gitAccountId = gitAccountId
                 }
 
                 fun gitId(gitId: Long) = gitId(JsonField.of(gitId))
 
+                /**
+                 * Sets [Builder.gitId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.gitId] with a well-typed [Long] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun gitId(gitId: JsonField<Long>) = apply { this.gitId = gitId }
 
                 fun name(name: String) = name(JsonField.of(name))
 
+                /**
+                 * Sets [Builder.name] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.name] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun name(name: JsonField<String>) = apply { this.name = name }
 
                 fun private_(private_: Boolean) = private_(JsonField.of(private_))
 
+                /**
+                 * Sets [Builder.private_] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.private_] with a well-typed [Boolean] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun private_(private_: JsonField<Boolean>) = apply { this.private_ = private_ }
 
                 fun projectId(projectId: String) = projectId(JsonField.of(projectId))
 
+                /**
+                 * Sets [Builder.projectId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.projectId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
 
                 fun slug(slug: String) = slug(JsonField.of(slug))
 
+                /**
+                 * Sets [Builder.slug] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.slug] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
                 fun url(url: String) = url(JsonField.of(url))
 
+                /**
+                 * Sets [Builder.url] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.url] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
                 fun url(url: JsonField<String>) = apply { this.url = url }
 
                 fun branch(branch: String) = branch(JsonField.of(branch))
 
+                /**
+                 * Sets [Builder.branch] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.branch] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun branch(branch: JsonField<String>) = apply { this.branch = branch }
 
                 fun rootDir(rootDir: String) = rootDir(JsonField.of(rootDir))
 
+                /**
+                 * Sets [Builder.rootDir] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.rootDir] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun rootDir(rootDir: JsonField<String>) = apply { this.rootDir = rootDir }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1865,120 +2632,270 @@ private constructor(
         private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
     ) {
 
-        /** The workspace id. */
+        /**
+         * The workspace id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun id(): String = id.getRequired("id")
 
-        /** The workspace creator id. */
+        /**
+         * The workspace creator id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun creatorId(): Optional<String> = Optional.ofNullable(creatorId.getNullable("creatorId"))
 
-        /** The workspace creation date. */
+        /**
+         * The workspace creation date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
 
-        /** The workspace last updated date. */
+        /**
+         * The workspace last updated date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-        /** The number of invites in the workspace. */
+        /**
+         * The number of invites in the workspace.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun inviteCount(): Long = inviteCount.getRequired("inviteCount")
 
-        /** The number of members in the workspace. */
+        /**
+         * The number of members in the workspace.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun memberCount(): Long = memberCount.getRequired("memberCount")
 
-        /** The workspace name. */
+        /**
+         * The workspace name.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun name(): String = name.getRequired("name")
 
-        /** The end date of the current billing period. */
+        /**
+         * The end date of the current billing period.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun periodEndDate(): Optional<OffsetDateTime> =
             Optional.ofNullable(periodEndDate.getNullable("periodEndDate"))
 
-        /** The start date of the current billing period. */
+        /**
+         * The start date of the current billing period.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun periodStartDate(): Optional<OffsetDateTime> =
             Optional.ofNullable(periodStartDate.getNullable("periodStartDate"))
 
-        /** The number of projects in the workspace. */
+        /**
+         * The number of projects in the workspace.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun projectCount(): Long = projectCount.getRequired("projectCount")
 
-        /** The workspace slug. */
+        /**
+         * The workspace slug.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun slug(): String = slug.getRequired("slug")
 
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
         fun status(): Status = status.getRequired("status")
 
-        /** The workspace invite code. */
+        /**
+         * The workspace invite code.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun inviteCode(): Optional<String> =
             Optional.ofNullable(inviteCode.getNullable("inviteCode"))
 
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun monthlyUsage(): Optional<List<MonthlyUsage>> =
             Optional.ofNullable(monthlyUsage.getNullable("monthlyUsage"))
 
-        /** Whether the workspace only allows SAML authentication. */
+        /**
+         * Whether the workspace only allows SAML authentication.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun samlOnlyAccess(): Optional<Boolean> =
             Optional.ofNullable(samlOnlyAccess.getNullable("samlOnlyAccess"))
 
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
         fun wildcardDomains(): Optional<List<String>> =
             Optional.ofNullable(wildcardDomains.getNullable("wildcardDomains"))
 
-        /** The workspace id. */
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
 
-        /** The workspace creator id. */
+        /**
+         * Returns the raw JSON value of [creatorId].
+         *
+         * Unlike [creatorId], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("creatorId") @ExcludeMissing fun _creatorId(): JsonField<String> = creatorId
 
-        /** The workspace creation date. */
+        /**
+         * Returns the raw JSON value of [dateCreated].
+         *
+         * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateCreated")
         @ExcludeMissing
         fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
 
-        /** The workspace last updated date. */
+        /**
+         * Returns the raw JSON value of [dateUpdated].
+         *
+         * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateUpdated")
         @ExcludeMissing
         fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
 
-        /** The number of invites in the workspace. */
+        /**
+         * Returns the raw JSON value of [inviteCount].
+         *
+         * Unlike [inviteCount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("inviteCount")
         @ExcludeMissing
         fun _inviteCount(): JsonField<Long> = inviteCount
 
-        /** The number of members in the workspace. */
+        /**
+         * Returns the raw JSON value of [memberCount].
+         *
+         * Unlike [memberCount], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("memberCount")
         @ExcludeMissing
         fun _memberCount(): JsonField<Long> = memberCount
 
-        /** The workspace name. */
+        /**
+         * Returns the raw JSON value of [name].
+         *
+         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
 
-        /** The end date of the current billing period. */
+        /**
+         * Returns the raw JSON value of [periodEndDate].
+         *
+         * Unlike [periodEndDate], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("periodEndDate")
         @ExcludeMissing
         fun _periodEndDate(): JsonField<OffsetDateTime> = periodEndDate
 
-        /** The start date of the current billing period. */
+        /**
+         * Returns the raw JSON value of [periodStartDate].
+         *
+         * Unlike [periodStartDate], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("periodStartDate")
         @ExcludeMissing
         fun _periodStartDate(): JsonField<OffsetDateTime> = periodStartDate
 
-        /** The number of projects in the workspace. */
+        /**
+         * Returns the raw JSON value of [projectCount].
+         *
+         * Unlike [projectCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("projectCount")
         @ExcludeMissing
         fun _projectCount(): JsonField<Long> = projectCount
 
-        /** The workspace slug. */
+        /**
+         * Returns the raw JSON value of [slug].
+         *
+         * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
 
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
 
-        /** The workspace invite code. */
+        /**
+         * Returns the raw JSON value of [inviteCode].
+         *
+         * Unlike [inviteCode], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("inviteCode")
         @ExcludeMissing
         fun _inviteCode(): JsonField<String> = inviteCode
 
+        /**
+         * Returns the raw JSON value of [monthlyUsage].
+         *
+         * Unlike [monthlyUsage], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("monthlyUsage")
         @ExcludeMissing
         fun _monthlyUsage(): JsonField<List<MonthlyUsage>> = monthlyUsage
 
-        /** Whether the workspace only allows SAML authentication. */
+        /**
+         * Returns the raw JSON value of [samlOnlyAccess].
+         *
+         * Unlike [samlOnlyAccess], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("samlOnlyAccess")
         @ExcludeMissing
         fun _samlOnlyAccess(): JsonField<Boolean> = samlOnlyAccess
 
+        /**
+         * Returns the raw JSON value of [wildcardDomains].
+         *
+         * Unlike [wildcardDomains], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
         @JsonProperty("wildcardDomains")
         @ExcludeMissing
         fun _wildcardDomains(): JsonField<List<String>> = wildcardDomains
@@ -2084,22 +3001,40 @@ private constructor(
             /** The workspace id. */
             fun id(id: String) = id(JsonField.of(id))
 
-            /** The workspace id. */
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
             /** The workspace creator id. */
             fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
 
-            /** The workspace creator id. */
+            /** Alias for calling [Builder.creatorId] with `creatorId.orElse(null)`. */
             fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
 
-            /** The workspace creator id. */
+            /**
+             * Sets [Builder.creatorId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.creatorId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
 
             /** The workspace creation date. */
             fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
 
-            /** The workspace creation date. */
+            /**
+             * Sets [Builder.dateCreated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
                 this.dateCreated = dateCreated
             }
@@ -2107,7 +3042,13 @@ private constructor(
             /** The workspace last updated date. */
             fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
 
-            /** The workspace last updated date. */
+            /**
+             * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
                 this.dateUpdated = dateUpdated
             }
@@ -2115,30 +3056,54 @@ private constructor(
             /** The number of invites in the workspace. */
             fun inviteCount(inviteCount: Long) = inviteCount(JsonField.of(inviteCount))
 
-            /** The number of invites in the workspace. */
+            /**
+             * Sets [Builder.inviteCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.inviteCount] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun inviteCount(inviteCount: JsonField<Long>) = apply { this.inviteCount = inviteCount }
 
             /** The number of members in the workspace. */
             fun memberCount(memberCount: Long) = memberCount(JsonField.of(memberCount))
 
-            /** The number of members in the workspace. */
+            /**
+             * Sets [Builder.memberCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.memberCount] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun memberCount(memberCount: JsonField<Long>) = apply { this.memberCount = memberCount }
 
             /** The workspace name. */
             fun name(name: String) = name(JsonField.of(name))
 
-            /** The workspace name. */
+            /**
+             * Sets [Builder.name] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.name] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun name(name: JsonField<String>) = apply { this.name = name }
 
             /** The end date of the current billing period. */
             fun periodEndDate(periodEndDate: OffsetDateTime?) =
                 periodEndDate(JsonField.ofNullable(periodEndDate))
 
-            /** The end date of the current billing period. */
+            /** Alias for calling [Builder.periodEndDate] with `periodEndDate.orElse(null)`. */
             fun periodEndDate(periodEndDate: Optional<OffsetDateTime>) =
                 periodEndDate(periodEndDate.getOrNull())
 
-            /** The end date of the current billing period. */
+            /**
+             * Sets [Builder.periodEndDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.periodEndDate] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun periodEndDate(periodEndDate: JsonField<OffsetDateTime>) = apply {
                 this.periodEndDate = periodEndDate
             }
@@ -2147,11 +3112,17 @@ private constructor(
             fun periodStartDate(periodStartDate: OffsetDateTime?) =
                 periodStartDate(JsonField.ofNullable(periodStartDate))
 
-            /** The start date of the current billing period. */
+            /** Alias for calling [Builder.periodStartDate] with `periodStartDate.orElse(null)`. */
             fun periodStartDate(periodStartDate: Optional<OffsetDateTime>) =
                 periodStartDate(periodStartDate.getOrNull())
 
-            /** The start date of the current billing period. */
+            /**
+             * Sets [Builder.periodStartDate] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.periodStartDate] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun periodStartDate(periodStartDate: JsonField<OffsetDateTime>) = apply {
                 this.periodStartDate = periodStartDate
             }
@@ -2159,7 +3130,13 @@ private constructor(
             /** The number of projects in the workspace. */
             fun projectCount(projectCount: Long) = projectCount(JsonField.of(projectCount))
 
-            /** The number of projects in the workspace. */
+            /**
+             * Sets [Builder.projectCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.projectCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun projectCount(projectCount: JsonField<Long>) = apply {
                 this.projectCount = projectCount
             }
@@ -2167,26 +3144,57 @@ private constructor(
             /** The workspace slug. */
             fun slug(slug: String) = slug(JsonField.of(slug))
 
-            /** The workspace slug. */
+            /**
+             * Sets [Builder.slug] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
             fun slug(slug: JsonField<String>) = apply { this.slug = slug }
 
             fun status(status: Status) = status(JsonField.of(status))
 
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [Status] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun status(status: JsonField<Status>) = apply { this.status = status }
 
             /** The workspace invite code. */
             fun inviteCode(inviteCode: String) = inviteCode(JsonField.of(inviteCode))
 
-            /** The workspace invite code. */
+            /**
+             * Sets [Builder.inviteCode] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.inviteCode] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun inviteCode(inviteCode: JsonField<String>) = apply { this.inviteCode = inviteCode }
 
             fun monthlyUsage(monthlyUsage: List<MonthlyUsage>) =
                 monthlyUsage(JsonField.of(monthlyUsage))
 
+            /**
+             * Sets [Builder.monthlyUsage] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.monthlyUsage] with a well-typed `List<MonthlyUsage>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun monthlyUsage(monthlyUsage: JsonField<List<MonthlyUsage>>) = apply {
                 this.monthlyUsage = monthlyUsage.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [MonthlyUsage] to [Builder.monthlyUsage].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addMonthlyUsage(monthlyUsage: MonthlyUsage) = apply {
                 this.monthlyUsage =
                     (this.monthlyUsage ?: JsonField.of(mutableListOf())).also {
@@ -2198,7 +3206,13 @@ private constructor(
             fun samlOnlyAccess(samlOnlyAccess: Boolean) =
                 samlOnlyAccess(JsonField.of(samlOnlyAccess))
 
-            /** Whether the workspace only allows SAML authentication. */
+            /**
+             * Sets [Builder.samlOnlyAccess] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.samlOnlyAccess] with a well-typed [Boolean] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
             fun samlOnlyAccess(samlOnlyAccess: JsonField<Boolean>) = apply {
                 this.samlOnlyAccess = samlOnlyAccess
             }
@@ -2206,10 +3220,22 @@ private constructor(
             fun wildcardDomains(wildcardDomains: List<String>) =
                 wildcardDomains(JsonField.of(wildcardDomains))
 
+            /**
+             * Sets [Builder.wildcardDomains] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.wildcardDomains] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
             fun wildcardDomains(wildcardDomains: JsonField<List<String>>) = apply {
                 this.wildcardDomains = wildcardDomains.map { it.toMutableList() }
             }
 
+            /**
+             * Adds a single [String] to [wildcardDomains].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
             fun addWildcardDomain(wildcardDomain: String) = apply {
                 wildcardDomains =
                     (wildcardDomains ?: JsonField.of(mutableListOf())).also {
@@ -2413,23 +3439,53 @@ private constructor(
             private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
         ) {
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun executionTimeMs(): Optional<Long> =
                 Optional.ofNullable(executionTimeMs.getNullable("executionTimeMs"))
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun monthYear(): Optional<LocalDate> =
                 Optional.ofNullable(monthYear.getNullable("monthYear"))
 
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
             fun predictionCount(): Optional<Long> =
                 Optional.ofNullable(predictionCount.getNullable("predictionCount"))
 
+            /**
+             * Returns the raw JSON value of [executionTimeMs].
+             *
+             * Unlike [executionTimeMs], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("executionTimeMs")
             @ExcludeMissing
             fun _executionTimeMs(): JsonField<Long> = executionTimeMs
 
+            /**
+             * Returns the raw JSON value of [monthYear].
+             *
+             * Unlike [monthYear], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
             @JsonProperty("monthYear")
             @ExcludeMissing
             fun _monthYear(): JsonField<LocalDate> = monthYear
 
+            /**
+             * Returns the raw JSON value of [predictionCount].
+             *
+             * Unlike [predictionCount], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
             @JsonProperty("predictionCount")
             @ExcludeMissing
             fun _predictionCount(): JsonField<Long> = predictionCount
@@ -2478,18 +3534,40 @@ private constructor(
                 fun executionTimeMs(executionTimeMs: Long?) =
                     executionTimeMs(JsonField.ofNullable(executionTimeMs))
 
+                /**
+                 * Alias for [Builder.executionTimeMs].
+                 *
+                 * This unboxed primitive overload exists for backwards compatibility.
+                 */
                 fun executionTimeMs(executionTimeMs: Long) =
                     executionTimeMs(executionTimeMs as Long?)
 
+                /**
+                 * Alias for calling [Builder.executionTimeMs] with `executionTimeMs.orElse(null)`.
+                 */
                 fun executionTimeMs(executionTimeMs: Optional<Long>) =
                     executionTimeMs(executionTimeMs.getOrNull())
 
+                /**
+                 * Sets [Builder.executionTimeMs] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.executionTimeMs] with a well-typed [Long] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun executionTimeMs(executionTimeMs: JsonField<Long>) = apply {
                     this.executionTimeMs = executionTimeMs
                 }
 
                 fun monthYear(monthYear: LocalDate) = monthYear(JsonField.of(monthYear))
 
+                /**
+                 * Sets [Builder.monthYear] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.monthYear] with a well-typed [LocalDate] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun monthYear(monthYear: JsonField<LocalDate>) = apply {
                     this.monthYear = monthYear
                 }
@@ -2497,6 +3575,13 @@ private constructor(
                 fun predictionCount(predictionCount: Long) =
                     predictionCount(JsonField.of(predictionCount))
 
+                /**
+                 * Sets [Builder.predictionCount] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.predictionCount] with a well-typed [Long] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
                 fun predictionCount(predictionCount: JsonField<Long>) = apply {
                     this.predictionCount = predictionCount
                 }

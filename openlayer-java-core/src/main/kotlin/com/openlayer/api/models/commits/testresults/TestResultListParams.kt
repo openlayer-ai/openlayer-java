@@ -124,29 +124,41 @@ private constructor(
             this.includeArchived = includeArchived
         }
 
-        /** Include archived goals. */
+        /**
+         * Alias for [Builder.includeArchived].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun includeArchived(includeArchived: Boolean) = includeArchived(includeArchived as Boolean?)
 
-        /** Include archived goals. */
+        /** Alias for calling [Builder.includeArchived] with `includeArchived.orElse(null)`. */
         fun includeArchived(includeArchived: Optional<Boolean>) =
             includeArchived(includeArchived.getOrNull())
 
         /** The page to return in a paginated query. */
         fun page(page: Long?) = apply { this.page = page }
 
-        /** The page to return in a paginated query. */
+        /**
+         * Alias for [Builder.page].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun page(page: Long) = page(page as Long?)
 
-        /** The page to return in a paginated query. */
+        /** Alias for calling [Builder.page] with `page.orElse(null)`. */
         fun page(page: Optional<Long>) = page(page.getOrNull())
 
         /** Maximum number of items to return per page. */
         fun perPage(perPage: Long?) = apply { this.perPage = perPage }
 
-        /** Maximum number of items to return per page. */
+        /**
+         * Alias for [Builder.perPage].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
         fun perPage(perPage: Long) = perPage(perPage as Long?)
 
-        /** Maximum number of items to return per page. */
+        /** Alias for calling [Builder.perPage] with `perPage.orElse(null)`. */
         fun perPage(perPage: Optional<Long>) = perPage(perPage.getOrNull())
 
         /**
@@ -155,10 +167,7 @@ private constructor(
          */
         fun status(status: Status?) = apply { this.status = status }
 
-        /**
-         * Filter list of test results by status. Available statuses are `running`, `passing`,
-         * `failing`, `skipped`, and `error`.
-         */
+        /** Alias for calling [Builder.status] with `status.orElse(null)`. */
         fun status(status: Optional<Status>) = status(status.getOrNull())
 
         /**
@@ -167,10 +176,7 @@ private constructor(
          */
         fun type(type: Type?) = apply { this.type = type }
 
-        /**
-         * Filter objects by test type. Available types are `integrity`, `consistency`,
-         * `performance`, `fairness`, and `robustness`.
-         */
+        /** Alias for calling [Builder.type] with `type.orElse(null)`. */
         fun type(type: Optional<Type>) = type(type.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

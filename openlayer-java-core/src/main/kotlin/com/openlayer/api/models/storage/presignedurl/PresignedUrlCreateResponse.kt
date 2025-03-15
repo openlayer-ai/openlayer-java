@@ -14,6 +14,7 @@ import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
+import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.util.Objects
 
 @NoAutoDetect
@@ -28,19 +29,37 @@ private constructor(
     @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
 ) {
 
-    /** The storage URI to send back to the backend after the upload was completed. */
+    /**
+     * The storage URI to send back to the backend after the upload was completed.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun storageUri(): String = storageUri.getRequired("storageUri")
 
-    /** The presigned url. */
+    /**
+     * The presigned url.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
     fun url(): String = url.getRequired("url")
 
     /** Fields to include in the body of the upload. Only needed by s3 */
     @JsonProperty("fields") @ExcludeMissing fun _fields(): JsonValue = fields
 
-    /** The storage URI to send back to the backend after the upload was completed. */
+    /**
+     * Returns the raw JSON value of [storageUri].
+     *
+     * Unlike [storageUri], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("storageUri") @ExcludeMissing fun _storageUri(): JsonField<String> = storageUri
 
-    /** The presigned url. */
+    /**
+     * Returns the raw JSON value of [url].
+     *
+     * Unlike [url], this method doesn't throw if the JSON field has an unexpected type.
+     */
     @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
     @JsonAnyGetter
@@ -94,13 +113,24 @@ private constructor(
         /** The storage URI to send back to the backend after the upload was completed. */
         fun storageUri(storageUri: String) = storageUri(JsonField.of(storageUri))
 
-        /** The storage URI to send back to the backend after the upload was completed. */
+        /**
+         * Sets [Builder.storageUri] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.storageUri] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
         fun storageUri(storageUri: JsonField<String>) = apply { this.storageUri = storageUri }
 
         /** The presigned url. */
         fun url(url: String) = url(JsonField.of(url))
 
-        /** The presigned url. */
+        /**
+         * Sets [Builder.url] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.url] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
         fun url(url: JsonField<String>) = apply { this.url = url }
 
         /** Fields to include in the body of the upload. Only needed by s3 */
