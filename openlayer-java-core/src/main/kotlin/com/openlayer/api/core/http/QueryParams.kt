@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package com.openlayer.api.core.http
 
 import com.openlayer.api.core.toImmutable

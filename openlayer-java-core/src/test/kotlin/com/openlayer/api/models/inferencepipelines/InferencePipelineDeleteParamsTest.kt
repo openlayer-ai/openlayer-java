@@ -5,7 +5,7 @@ package com.openlayer.api.models.inferencepipelines
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class InferencePipelineDeleteParamsTest {
+internal class InferencePipelineDeleteParamsTest {
 
     @Test
     fun create() {

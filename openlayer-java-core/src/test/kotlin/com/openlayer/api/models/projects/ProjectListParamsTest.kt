@@ -6,7 +6,7 @@ import com.openlayer.api.core.http.QueryParams
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class ProjectListParamsTest {
+internal class ProjectListParamsTest {
 
     @Test
     fun create() {

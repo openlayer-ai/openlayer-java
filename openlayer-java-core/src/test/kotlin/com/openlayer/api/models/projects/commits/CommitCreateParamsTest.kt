@@ -7,12 +7,12 @@ import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class CommitCreateParamsTest {
+internal class CommitCreateParamsTest {
 
     @Test
     fun create() {
         CommitCreateParams.builder()
-            .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
             .commit(
                 CommitCreateParams.Commit.builder()
@@ -35,7 +35,7 @@ class CommitCreateParamsTest {
             .failingGoalCount(1L)
             .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
             .passingGoalCount(5L)
-            .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+            .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
             .status(CommitCreateParams.Status.QUEUED)
             .statusMessage("Commit successfully processed.")
             .storageUri("s3://...")
@@ -58,7 +58,7 @@ class CommitCreateParamsTest {
     fun body() {
         val params =
             CommitCreateParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .commit(
                     CommitCreateParams.Commit.builder()
@@ -81,7 +81,7 @@ class CommitCreateParamsTest {
                 .failingGoalCount(1L)
                 .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .passingGoalCount(5L)
-                .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(CommitCreateParams.Status.QUEUED)
                 .statusMessage("Commit successfully processed.")
                 .storageUri("s3://...")
@@ -125,7 +125,7 @@ class CommitCreateParamsTest {
         assertThat(body.failingGoalCount()).isEqualTo(1L)
         assertThat(body.mlModelId()).contains("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.passingGoalCount()).isEqualTo(5L)
-        assertThat(body.projectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.bodyProjectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.status()).isEqualTo(CommitCreateParams.Status.QUEUED)
         assertThat(body.statusMessage()).contains("Commit successfully processed.")
         assertThat(body.storageUri()).isEqualTo("s3://...")
@@ -148,7 +148,7 @@ class CommitCreateParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             CommitCreateParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .commit(
                     CommitCreateParams.Commit.builder()
@@ -167,7 +167,7 @@ class CommitCreateParamsTest {
                 .failingGoalCount(1L)
                 .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .passingGoalCount(5L)
-                .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(CommitCreateParams.Status.QUEUED)
                 .statusMessage("Commit successfully processed.")
                 .storageUri("s3://...")
@@ -198,7 +198,7 @@ class CommitCreateParamsTest {
         assertThat(body.failingGoalCount()).isEqualTo(1L)
         assertThat(body.mlModelId()).contains("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.passingGoalCount()).isEqualTo(5L)
-        assertThat(body.projectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.bodyProjectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.status()).isEqualTo(CommitCreateParams.Status.QUEUED)
         assertThat(body.statusMessage()).contains("Commit successfully processed.")
         assertThat(body.storageUri()).isEqualTo("s3://...")
@@ -211,7 +211,7 @@ class CommitCreateParamsTest {
     fun getPathParam() {
         val params =
             CommitCreateParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .commit(
                     CommitCreateParams.Commit.builder()
@@ -230,7 +230,7 @@ class CommitCreateParamsTest {
                 .failingGoalCount(1L)
                 .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .passingGoalCount(5L)
-                .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(CommitCreateParams.Status.QUEUED)
                 .statusMessage("Commit successfully processed.")
                 .storageUri("s3://...")
@@ -239,7 +239,7 @@ class CommitCreateParamsTest {
                 .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .build()
         assertThat(params).isNotNull
-        // path param "projectId"
+        // path param "pathProjectId"
         assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")
