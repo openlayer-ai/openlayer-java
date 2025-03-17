@@ -5,7 +5,7 @@ package com.openlayer.api.models.inferencepipelines.rows
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class RowUpdateResponseTest {
+internal class RowUpdateResponseTest {
 
     @Test
     fun createRowUpdateResponse() {

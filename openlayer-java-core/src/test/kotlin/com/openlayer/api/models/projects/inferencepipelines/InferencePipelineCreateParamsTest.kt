@@ -8,12 +8,12 @@ import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class InferencePipelineCreateParamsTest {
+internal class InferencePipelineCreateParamsTest {
 
     @Test
     fun create() {
         InferencePipelineCreateParams.builder()
-            .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
             .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
             .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -31,7 +31,7 @@ class InferencePipelineCreateParamsTest {
             )
             .name("production")
             .passingGoalCount(5L)
-            .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+            .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
             .status(InferencePipelineCreateParams.Status.QUEUED)
             .statusMessage("Tests successfully evaluated")
             .totalGoalCount(6L)
@@ -109,7 +109,7 @@ class InferencePipelineCreateParamsTest {
     fun body() {
         val params =
             InferencePipelineCreateParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                 .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -127,7 +127,7 @@ class InferencePipelineCreateParamsTest {
                 )
                 .name("production")
                 .passingGoalCount(5L)
-                .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(InferencePipelineCreateParams.Status.QUEUED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
@@ -224,7 +224,7 @@ class InferencePipelineCreateParamsTest {
             )
         assertThat(body.name()).isEqualTo("production")
         assertThat(body.passingGoalCount()).isEqualTo(5L)
-        assertThat(body.projectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.bodyProjectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.status()).isEqualTo(InferencePipelineCreateParams.Status.QUEUED)
         assertThat(body.statusMessage()).contains("Tests successfully evaluated")
         assertThat(body.totalGoalCount()).isEqualTo(6L)
@@ -303,7 +303,7 @@ class InferencePipelineCreateParamsTest {
     fun bodyWithoutOptionalFields() {
         val params =
             InferencePipelineCreateParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                 .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -321,7 +321,7 @@ class InferencePipelineCreateParamsTest {
                 )
                 .name("production")
                 .passingGoalCount(5L)
-                .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(InferencePipelineCreateParams.Status.QUEUED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
@@ -351,7 +351,7 @@ class InferencePipelineCreateParamsTest {
             )
         assertThat(body.name()).isEqualTo("production")
         assertThat(body.passingGoalCount()).isEqualTo(5L)
-        assertThat(body.projectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.bodyProjectId()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.status()).isEqualTo(InferencePipelineCreateParams.Status.QUEUED)
         assertThat(body.statusMessage()).contains("Tests successfully evaluated")
         assertThat(body.totalGoalCount()).isEqualTo(6L)
@@ -361,7 +361,7 @@ class InferencePipelineCreateParamsTest {
     fun getPathParam() {
         val params =
             InferencePipelineCreateParams.builder()
-                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                 .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -379,13 +379,13 @@ class InferencePipelineCreateParamsTest {
                 )
                 .name("production")
                 .passingGoalCount(5L)
-                .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .status(InferencePipelineCreateParams.Status.QUEUED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
                 .build()
         assertThat(params).isNotNull
-        // path param "projectId"
+        // path param "pathProjectId"
         assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         // out-of-bound path param
         assertThat(params.getPathParam(1)).isEqualTo("")

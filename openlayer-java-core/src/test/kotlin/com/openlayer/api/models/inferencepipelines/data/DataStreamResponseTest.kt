@@ -5,7 +5,7 @@ package com.openlayer.api.models.inferencepipelines.data
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class DataStreamResponseTest {
+internal class DataStreamResponseTest {
 
     @Test
     fun createDataStreamResponse() {

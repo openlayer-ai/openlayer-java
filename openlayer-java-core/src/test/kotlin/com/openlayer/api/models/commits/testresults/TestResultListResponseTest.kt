@@ -7,7 +7,7 @@ import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-class TestResultListResponseTest {
+internal class TestResultListResponseTest {
 
     @Test
     fun createTestResultListResponse() {
@@ -32,7 +32,11 @@ class TestResultListResponseTest {
                                 .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                                 .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                                 .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                                .description("This test checks for duplicate rows in the dataset.")
+                                .description(
+                                    JsonValue.from(
+                                        "This test checks for duplicate rows in the dataset."
+                                    )
+                                )
                                 .name("No duplicate rows")
                                 .number(1L)
                                 .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -83,7 +87,11 @@ class TestResultListResponseTest {
                             .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                             .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                             .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                            .description("This test checks for duplicate rows in the dataset.")
+                            .description(
+                                JsonValue.from(
+                                    "This test checks for duplicate rows in the dataset."
+                                )
+                            )
                             .name("No duplicate rows")
                             .number(1L)
                             .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
