@@ -139,6 +139,18 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [TestResultListResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): TestResultListResponse =
             TestResultListResponse(
                 checkRequired("items", items).map { it.toImmutable() },
@@ -647,6 +659,26 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Item].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .dateCreated()
+             * .dateDataEnds()
+             * .dateDataStarts()
+             * .dateUpdated()
+             * .inferencePipelineId()
+             * .projectVersionId()
+             * .status()
+             * .statusMessage()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Item =
                 Item(
                     checkRequired("id", id),
@@ -1725,6 +1757,31 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Goal].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .commentCount()
+                 * .creatorId()
+                 * .dateArchived()
+                 * .dateCreated()
+                 * .dateUpdated()
+                 * .description()
+                 * .name()
+                 * .number()
+                 * .originProjectVersionId()
+                 * .subtype()
+                 * .suggested()
+                 * .thresholds()
+                 * .type()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): Goal =
                     Goal(
                         checkRequired("id", id),
@@ -2025,6 +2082,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [Threshold].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): Threshold =
                         Threshold(
                             insightName,

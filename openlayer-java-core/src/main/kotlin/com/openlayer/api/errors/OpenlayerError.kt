@@ -60,6 +60,11 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [OpenlayerError].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): OpenlayerError = OpenlayerError(additionalProperties.toImmutable())
     }
 

@@ -129,6 +129,18 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [CommitListResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .items()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): CommitListResponse =
             CommitListResponse(
                 checkRequired("items", items).map { it.toImmutable() },
@@ -867,6 +879,31 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Item].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .commit()
+             * .dateArchived()
+             * .dateCreated()
+             * .failingGoalCount()
+             * .mlModelId()
+             * .passingGoalCount()
+             * .projectId()
+             * .status()
+             * .statusMessage()
+             * .storageUri()
+             * .totalGoalCount()
+             * .trainingDatasetId()
+             * .validationDatasetId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Item =
                 Item(
                     checkRequired("id", id),
@@ -1444,6 +1481,25 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Commit].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .authorId()
+                 * .fileSize()
+                 * .message()
+                 * .mlModelId()
+                 * .storageUri()
+                 * .trainingDatasetId()
+                 * .validationDatasetId()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): Commit =
                     Commit(
                         checkRequired("id", id),
@@ -1710,6 +1766,18 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Links].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .app()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): Links =
                     Links(checkRequired("app", app), additionalProperties.toImmutable())
             }

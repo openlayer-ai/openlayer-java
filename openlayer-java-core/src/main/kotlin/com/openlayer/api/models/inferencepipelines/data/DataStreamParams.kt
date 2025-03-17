@@ -264,6 +264,19 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .config()
+             * .rows()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Body =
                 Body(
                     checkRequired("config", config),
@@ -500,6 +513,20 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [DataStreamParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .inferencePipelineId()
+         * .config()
+         * .rows()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): DataStreamParams =
             DataStreamParams(
                 checkRequired("inferencePipelineId", inferencePipelineId),
@@ -1281,6 +1308,18 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [LlmData].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .outputColumnName()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): LlmData =
                     LlmData(
                         checkRequired("outputColumnName", outputColumnName),
@@ -1430,6 +1469,11 @@ private constructor(
                         keys.forEach(::removeAdditionalProperty)
                     }
 
+                    /**
+                     * Returns an immutable instance of [Prompt].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
                     fun build(): Prompt = Prompt(content, role, additionalProperties.toImmutable())
                 }
 
@@ -1977,6 +2021,18 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [TabularClassificationData].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .classNames()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): TabularClassificationData =
                     TabularClassificationData(
                         checkRequired("classNames", classNames).map { it.toImmutable() },
@@ -2407,6 +2463,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [TabularRegressionData].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): TabularRegressionData =
                     TabularRegressionData(
                         (categoricalFeatureNames ?: JsonMissing.of()).map { it.toImmutable() },
@@ -2875,6 +2936,18 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [TextClassificationData].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .classNames()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): TextClassificationData =
                     TextClassificationData(
                         checkRequired("classNames", classNames).map { it.toImmutable() },
@@ -2968,6 +3041,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Row].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Row = Row(additionalProperties.toImmutable())
         }
 
