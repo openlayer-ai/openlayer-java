@@ -1092,6 +1092,32 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .dateCreated()
+             * .dateLastEvaluated()
+             * .dateLastSampleReceived()
+             * .dateOfNextEvaluation()
+             * .dateUpdated()
+             * .description()
+             * .failingGoalCount()
+             * .links()
+             * .name()
+             * .passingGoalCount()
+             * .bodyProjectId()
+             * .status()
+             * .statusMessage()
+             * .totalGoalCount()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Body =
                 Body(
                     checkRequired("id", id),
@@ -1570,6 +1596,33 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [InferencePipelineCreateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .pathProjectId()
+         * .id()
+         * .dateCreated()
+         * .dateLastEvaluated()
+         * .dateLastSampleReceived()
+         * .dateOfNextEvaluation()
+         * .dateUpdated()
+         * .description()
+         * .failingGoalCount()
+         * .links()
+         * .name()
+         * .passingGoalCount()
+         * .bodyProjectId()
+         * .status()
+         * .statusMessage()
+         * .totalGoalCount()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): InferencePipelineCreateParams =
             InferencePipelineCreateParams(
                 checkRequired("pathProjectId", pathProjectId),
@@ -1673,6 +1726,18 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Links].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .app()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Links =
                 Links(checkRequired("app", app), additionalProperties.toImmutable())
         }
@@ -2478,6 +2543,31 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Project].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .creatorId()
+             * .dateCreated()
+             * .dateUpdated()
+             * .developmentGoalCount()
+             * .goalCount()
+             * .inferencePipelineCount()
+             * .links()
+             * .monitoringGoalCount()
+             * .name()
+             * .source()
+             * .taskType()
+             * .versionCount()
+             * .workspaceId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Project =
                 Project(
                     checkRequired("id", id),
@@ -2601,6 +2691,18 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [Links].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .app()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): Links =
                     Links(checkRequired("app", app), additionalProperties.toImmutable())
             }
@@ -3316,6 +3418,27 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [GitRepo].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .id()
+                 * .dateConnected()
+                 * .dateUpdated()
+                 * .gitAccountId()
+                 * .gitId()
+                 * .name()
+                 * .private_()
+                 * .projectId()
+                 * .slug()
+                 * .url()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
                 fun build(): GitRepo =
                     GitRepo(
                         checkRequired("id", id),
@@ -4054,6 +4177,29 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Workspace].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .creatorId()
+             * .dateCreated()
+             * .dateUpdated()
+             * .inviteCount()
+             * .memberCount()
+             * .name()
+             * .periodEndDate()
+             * .periodStartDate()
+             * .projectCount()
+             * .slug()
+             * .status()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Workspace =
                 Workspace(
                     checkRequired("id", id),
@@ -4400,6 +4546,11 @@ private constructor(
                     keys.forEach(::removeAdditionalProperty)
                 }
 
+                /**
+                 * Returns an immutable instance of [MonthlyUsage].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 */
                 fun build(): MonthlyUsage =
                     MonthlyUsage(
                         executionTimeMs,

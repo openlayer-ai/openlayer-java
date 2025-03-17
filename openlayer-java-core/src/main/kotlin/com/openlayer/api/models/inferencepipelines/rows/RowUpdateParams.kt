@@ -182,6 +182,18 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .row()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Body =
                 Body(checkRequired("row", row), config, additionalProperties.toImmutable())
         }
@@ -379,6 +391,20 @@ private constructor(
             additionalQueryParams.removeAll(keys)
         }
 
+        /**
+         * Returns an immutable instance of [RowUpdateParams].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .inferencePipelineId()
+         * .inferenceId()
+         * .row()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): RowUpdateParams =
             RowUpdateParams(
                 checkRequired("inferencePipelineId", inferencePipelineId),
@@ -690,6 +716,11 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Config].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
             fun build(): Config =
                 Config(
                     groundTruthColumnName,
