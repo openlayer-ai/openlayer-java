@@ -27,13 +27,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Create a new commit (project version) in a project. */
 class CommitCreateParams
 private constructor(
-    private val projectId: String,
+    private val pathProjectId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectId(): String = projectId
+    fun pathProjectId(): String = pathProjectId
 
     /**
      * The project version (commit) id.
@@ -97,7 +97,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun projectId(): String = body.projectId()
+    fun bodyProjectId(): String = body.bodyProjectId()
 
     /**
      * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
@@ -222,11 +222,11 @@ private constructor(
     fun _passingGoalCount(): JsonField<Long> = body._passingGoalCount()
 
     /**
-     * Returns the raw JSON value of [projectId].
+     * Returns the raw JSON value of [bodyProjectId].
      *
-     * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _projectId(): JsonField<String> = body._projectId()
+    fun _bodyProjectId(): JsonField<String> = body._bodyProjectId()
 
     /**
      * Returns the raw JSON value of [status].
@@ -308,7 +308,7 @@ private constructor(
 
     fun getPathParam(index: Int): String {
         return when (index) {
-            0 -> projectId
+            0 -> pathProjectId
             else -> ""
         }
     }
@@ -338,7 +338,7 @@ private constructor(
         private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("projectId")
         @ExcludeMissing
-        private val projectId: JsonField<String> = JsonMissing.of(),
+        private val bodyProjectId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("status")
         @ExcludeMissing
         private val status: JsonField<Status> = JsonMissing.of(),
@@ -433,7 +433,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun projectId(): String = projectId.getRequired("projectId")
+        fun bodyProjectId(): String = bodyProjectId.getRequired("projectId")
 
         /**
          * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
@@ -571,11 +571,14 @@ private constructor(
         fun _passingGoalCount(): JsonField<Long> = passingGoalCount
 
         /**
-         * Returns the raw JSON value of [projectId].
+         * Returns the raw JSON value of [bodyProjectId].
          *
-         * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
-        @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+        @JsonProperty("projectId")
+        @ExcludeMissing
+        fun _bodyProjectId(): JsonField<String> = bodyProjectId
 
         /**
          * Returns the raw JSON value of [status].
@@ -675,7 +678,7 @@ private constructor(
             failingGoalCount()
             mlModelId()
             passingGoalCount()
-            projectId()
+            bodyProjectId()
             status()
             statusMessage()
             storageUri()
@@ -704,7 +707,7 @@ private constructor(
              * .failingGoalCount()
              * .mlModelId()
              * .passingGoalCount()
-             * .projectId()
+             * .bodyProjectId()
              * .status()
              * .statusMessage()
              * .storageUri()
@@ -726,7 +729,7 @@ private constructor(
             private var failingGoalCount: JsonField<Long>? = null
             private var mlModelId: JsonField<String>? = null
             private var passingGoalCount: JsonField<Long>? = null
-            private var projectId: JsonField<String>? = null
+            private var bodyProjectId: JsonField<String>? = null
             private var status: JsonField<Status>? = null
             private var statusMessage: JsonField<String>? = null
             private var storageUri: JsonField<String>? = null
@@ -747,7 +750,7 @@ private constructor(
                 failingGoalCount = body.failingGoalCount
                 mlModelId = body.mlModelId
                 passingGoalCount = body.passingGoalCount
-                projectId = body.projectId
+                bodyProjectId = body.bodyProjectId
                 status = body.status
                 statusMessage = body.statusMessage
                 storageUri = body.storageUri
@@ -863,16 +866,18 @@ private constructor(
             }
 
             /** The project id. */
-            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+            fun bodyProjectId(bodyProjectId: String) = bodyProjectId(JsonField.of(bodyProjectId))
 
             /**
-             * Sets [Builder.projectId] to an arbitrary JSON value.
+             * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.projectId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.bodyProjectId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+            fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
+                this.bodyProjectId = bodyProjectId
+            }
 
             /**
              * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
@@ -1053,7 +1058,7 @@ private constructor(
                     checkRequired("failingGoalCount", failingGoalCount),
                     checkRequired("mlModelId", mlModelId),
                     checkRequired("passingGoalCount", passingGoalCount),
-                    checkRequired("projectId", projectId),
+                    checkRequired("bodyProjectId", bodyProjectId),
                     checkRequired("status", status),
                     checkRequired("statusMessage", statusMessage),
                     checkRequired("storageUri", storageUri),
@@ -1072,17 +1077,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && id == other.id && commit == other.commit && dateArchived == other.dateArchived && dateCreated == other.dateCreated && failingGoalCount == other.failingGoalCount && mlModelId == other.mlModelId && passingGoalCount == other.passingGoalCount && projectId == other.projectId && status == other.status && statusMessage == other.statusMessage && storageUri == other.storageUri && totalGoalCount == other.totalGoalCount && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && archived == other.archived && deploymentStatus == other.deploymentStatus && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && id == other.id && commit == other.commit && dateArchived == other.dateArchived && dateCreated == other.dateCreated && failingGoalCount == other.failingGoalCount && mlModelId == other.mlModelId && passingGoalCount == other.passingGoalCount && bodyProjectId == other.bodyProjectId && status == other.status && statusMessage == other.statusMessage && storageUri == other.storageUri && totalGoalCount == other.totalGoalCount && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && archived == other.archived && deploymentStatus == other.deploymentStatus && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, commit, dateArchived, dateCreated, failingGoalCount, mlModelId, passingGoalCount, projectId, status, statusMessage, storageUri, totalGoalCount, trainingDatasetId, validationDatasetId, archived, deploymentStatus, links, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, commit, dateArchived, dateCreated, failingGoalCount, mlModelId, passingGoalCount, bodyProjectId, status, statusMessage, storageUri, totalGoalCount, trainingDatasetId, validationDatasetId, archived, deploymentStatus, links, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{id=$id, commit=$commit, dateArchived=$dateArchived, dateCreated=$dateCreated, failingGoalCount=$failingGoalCount, mlModelId=$mlModelId, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, storageUri=$storageUri, totalGoalCount=$totalGoalCount, trainingDatasetId=$trainingDatasetId, validationDatasetId=$validationDatasetId, archived=$archived, deploymentStatus=$deploymentStatus, links=$links, additionalProperties=$additionalProperties}"
+            "Body{id=$id, commit=$commit, dateArchived=$dateArchived, dateCreated=$dateCreated, failingGoalCount=$failingGoalCount, mlModelId=$mlModelId, passingGoalCount=$passingGoalCount, bodyProjectId=$bodyProjectId, status=$status, statusMessage=$statusMessage, storageUri=$storageUri, totalGoalCount=$totalGoalCount, trainingDatasetId=$trainingDatasetId, validationDatasetId=$validationDatasetId, archived=$archived, deploymentStatus=$deploymentStatus, links=$links, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -1094,7 +1099,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .projectId()
+         * .pathProjectId()
          * .id()
          * .commit()
          * .dateArchived()
@@ -1102,7 +1107,7 @@ private constructor(
          * .failingGoalCount()
          * .mlModelId()
          * .passingGoalCount()
-         * .projectId()
+         * .bodyProjectId()
          * .status()
          * .statusMessage()
          * .storageUri()
@@ -1118,20 +1123,20 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var projectId: String? = null
+        private var pathProjectId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(commitCreateParams: CommitCreateParams) = apply {
-            projectId = commitCreateParams.projectId
+            pathProjectId = commitCreateParams.pathProjectId
             body = commitCreateParams.body.toBuilder()
             additionalHeaders = commitCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = commitCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun pathProjectId(pathProjectId: String) = apply { this.pathProjectId = pathProjectId }
 
         /** The project version (commit) id. */
         fun id(id: String) = apply { body.id(id) }
@@ -1235,16 +1240,18 @@ private constructor(
         }
 
         /** The project id. */
-        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+        fun bodyProjectId(bodyProjectId: String) = apply { body.bodyProjectId(bodyProjectId) }
 
         /**
-         * Sets [Builder.projectId] to an arbitrary JSON value.
+         * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.projectId] with a well-typed [String] value instead.
+         * You should usually call [Builder.bodyProjectId] with a well-typed [String] value instead.
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
+        fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
+            body.bodyProjectId(bodyProjectId)
+        }
 
         /**
          * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
@@ -1513,7 +1520,7 @@ private constructor(
 
         fun build(): CommitCreateParams =
             CommitCreateParams(
-                checkRequired("projectId", projectId),
+                checkRequired("pathProjectId", pathProjectId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -2337,11 +2344,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CommitCreateParams && projectId == other.projectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is CommitCreateParams && pathProjectId == other.pathProjectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(pathProjectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "CommitCreateParams{projectId=$projectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "CommitCreateParams{pathProjectId=$pathProjectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

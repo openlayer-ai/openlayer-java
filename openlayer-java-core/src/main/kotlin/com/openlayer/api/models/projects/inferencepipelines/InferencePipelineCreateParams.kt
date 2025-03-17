@@ -29,13 +29,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Create an inference pipeline in a project. */
 class InferencePipelineCreateParams
 private constructor(
-    private val projectId: String,
+    private val pathProjectId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectId(): String = projectId
+    fun pathProjectId(): String = pathProjectId
 
     /**
      * The inference pipeline id.
@@ -129,7 +129,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun projectId(): String = body.projectId()
+    fun bodyProjectId(): String = body.bodyProjectId()
 
     /**
      * The status of test evaluation for the inference pipeline.
@@ -258,11 +258,11 @@ private constructor(
     fun _passingGoalCount(): JsonField<Long> = body._passingGoalCount()
 
     /**
-     * Returns the raw JSON value of [projectId].
+     * Returns the raw JSON value of [bodyProjectId].
      *
-     * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _projectId(): JsonField<String> = body._projectId()
+    fun _bodyProjectId(): JsonField<String> = body._bodyProjectId()
 
     /**
      * Returns the raw JSON value of [status].
@@ -320,7 +320,7 @@ private constructor(
 
     fun getPathParam(index: Int): String {
         return when (index) {
-            0 -> projectId
+            0 -> pathProjectId
             else -> ""
         }
     }
@@ -362,7 +362,7 @@ private constructor(
         private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("projectId")
         @ExcludeMissing
-        private val projectId: JsonField<String> = JsonMissing.of(),
+        private val bodyProjectId: JsonField<String> = JsonMissing.of(),
         @JsonProperty("status")
         @ExcludeMissing
         private val status: JsonField<Status> = JsonMissing.of(),
@@ -481,7 +481,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun projectId(): String = projectId.getRequired("projectId")
+        fun bodyProjectId(): String = bodyProjectId.getRequired("projectId")
 
         /**
          * The status of test evaluation for the inference pipeline.
@@ -629,11 +629,14 @@ private constructor(
         fun _passingGoalCount(): JsonField<Long> = passingGoalCount
 
         /**
-         * Returns the raw JSON value of [projectId].
+         * Returns the raw JSON value of [bodyProjectId].
          *
-         * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
-        @JsonProperty("projectId") @ExcludeMissing fun _projectId(): JsonField<String> = projectId
+        @JsonProperty("projectId")
+        @ExcludeMissing
+        fun _bodyProjectId(): JsonField<String> = bodyProjectId
 
         /**
          * Returns the raw JSON value of [status].
@@ -709,7 +712,7 @@ private constructor(
             links().validate()
             name()
             passingGoalCount()
-            projectId()
+            bodyProjectId()
             status()
             statusMessage()
             totalGoalCount()
@@ -739,7 +742,7 @@ private constructor(
              * .links()
              * .name()
              * .passingGoalCount()
-             * .projectId()
+             * .bodyProjectId()
              * .status()
              * .statusMessage()
              * .totalGoalCount()
@@ -762,7 +765,7 @@ private constructor(
             private var links: JsonField<Links>? = null
             private var name: JsonField<String>? = null
             private var passingGoalCount: JsonField<Long>? = null
-            private var projectId: JsonField<String>? = null
+            private var bodyProjectId: JsonField<String>? = null
             private var status: JsonField<Status>? = null
             private var statusMessage: JsonField<String>? = null
             private var totalGoalCount: JsonField<Long>? = null
@@ -784,7 +787,7 @@ private constructor(
                 links = body.links
                 name = body.name
                 passingGoalCount = body.passingGoalCount
-                projectId = body.projectId
+                bodyProjectId = body.bodyProjectId
                 status = body.status
                 statusMessage = body.statusMessage
                 totalGoalCount = body.totalGoalCount
@@ -970,16 +973,18 @@ private constructor(
             }
 
             /** The project id. */
-            fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+            fun bodyProjectId(bodyProjectId: String) = bodyProjectId(JsonField.of(bodyProjectId))
 
             /**
-             * Sets [Builder.projectId] to an arbitrary JSON value.
+             * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.projectId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
+             * You should usually call [Builder.bodyProjectId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+            fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
+                this.bodyProjectId = bodyProjectId
+            }
 
             /** The status of test evaluation for the inference pipeline. */
             fun status(status: Status) = status(JsonField.of(status))
@@ -1100,7 +1105,7 @@ private constructor(
                     checkRequired("links", links),
                     checkRequired("name", name),
                     checkRequired("passingGoalCount", passingGoalCount),
-                    checkRequired("projectId", projectId),
+                    checkRequired("bodyProjectId", bodyProjectId),
                     checkRequired("status", status),
                     checkRequired("statusMessage", statusMessage),
                     checkRequired("totalGoalCount", totalGoalCount),
@@ -1116,17 +1121,17 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && id == other.id && dateCreated == other.dateCreated && dateLastEvaluated == other.dateLastEvaluated && dateLastSampleReceived == other.dateLastSampleReceived && dateOfNextEvaluation == other.dateOfNextEvaluation && dateUpdated == other.dateUpdated && description == other.description && failingGoalCount == other.failingGoalCount && links == other.links && name == other.name && passingGoalCount == other.passingGoalCount && projectId == other.projectId && status == other.status && statusMessage == other.statusMessage && totalGoalCount == other.totalGoalCount && project == other.project && workspace == other.workspace && workspaceId == other.workspaceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return /* spotless:off */ other is Body && id == other.id && dateCreated == other.dateCreated && dateLastEvaluated == other.dateLastEvaluated && dateLastSampleReceived == other.dateLastSampleReceived && dateOfNextEvaluation == other.dateOfNextEvaluation && dateUpdated == other.dateUpdated && description == other.description && failingGoalCount == other.failingGoalCount && links == other.links && name == other.name && passingGoalCount == other.passingGoalCount && bodyProjectId == other.bodyProjectId && status == other.status && statusMessage == other.statusMessage && totalGoalCount == other.totalGoalCount && project == other.project && workspace == other.workspace && workspaceId == other.workspaceId && additionalProperties == other.additionalProperties /* spotless:on */
         }
 
         /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateLastEvaluated, dateLastSampleReceived, dateOfNextEvaluation, dateUpdated, description, failingGoalCount, links, name, passingGoalCount, projectId, status, statusMessage, totalGoalCount, project, workspace, workspaceId, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateLastEvaluated, dateLastSampleReceived, dateOfNextEvaluation, dateUpdated, description, failingGoalCount, links, name, passingGoalCount, bodyProjectId, status, statusMessage, totalGoalCount, project, workspace, workspaceId, additionalProperties) }
         /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{id=$id, dateCreated=$dateCreated, dateLastEvaluated=$dateLastEvaluated, dateLastSampleReceived=$dateLastSampleReceived, dateOfNextEvaluation=$dateOfNextEvaluation, dateUpdated=$dateUpdated, description=$description, failingGoalCount=$failingGoalCount, links=$links, name=$name, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, totalGoalCount=$totalGoalCount, project=$project, workspace=$workspace, workspaceId=$workspaceId, additionalProperties=$additionalProperties}"
+            "Body{id=$id, dateCreated=$dateCreated, dateLastEvaluated=$dateLastEvaluated, dateLastSampleReceived=$dateLastSampleReceived, dateOfNextEvaluation=$dateOfNextEvaluation, dateUpdated=$dateUpdated, description=$description, failingGoalCount=$failingGoalCount, links=$links, name=$name, passingGoalCount=$passingGoalCount, bodyProjectId=$bodyProjectId, status=$status, statusMessage=$statusMessage, totalGoalCount=$totalGoalCount, project=$project, workspace=$workspace, workspaceId=$workspaceId, additionalProperties=$additionalProperties}"
     }
 
     fun toBuilder() = Builder().from(this)
@@ -1139,7 +1144,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .projectId()
+         * .pathProjectId()
          * .id()
          * .dateCreated()
          * .dateLastEvaluated()
@@ -1151,7 +1156,7 @@ private constructor(
          * .links()
          * .name()
          * .passingGoalCount()
-         * .projectId()
+         * .bodyProjectId()
          * .status()
          * .statusMessage()
          * .totalGoalCount()
@@ -1164,20 +1169,20 @@ private constructor(
     @NoAutoDetect
     class Builder internal constructor() {
 
-        private var projectId: String? = null
+        private var pathProjectId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
         internal fun from(inferencePipelineCreateParams: InferencePipelineCreateParams) = apply {
-            projectId = inferencePipelineCreateParams.projectId
+            pathProjectId = inferencePipelineCreateParams.pathProjectId
             body = inferencePipelineCreateParams.body.toBuilder()
             additionalHeaders = inferencePipelineCreateParams.additionalHeaders.toBuilder()
             additionalQueryParams = inferencePipelineCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun pathProjectId(pathProjectId: String) = apply { this.pathProjectId = pathProjectId }
 
         /** The inference pipeline id. */
         fun id(id: String) = apply { body.id(id) }
@@ -1353,16 +1358,18 @@ private constructor(
         }
 
         /** The project id. */
-        fun projectId(projectId: String) = apply { body.projectId(projectId) }
+        fun bodyProjectId(bodyProjectId: String) = apply { body.bodyProjectId(bodyProjectId) }
 
         /**
-         * Sets [Builder.projectId] to an arbitrary JSON value.
+         * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.projectId] with a well-typed [String] value instead.
+         * You should usually call [Builder.bodyProjectId] with a well-typed [String] value instead.
          * This method is primarily for setting the field to an undocumented or not yet supported
          * value.
          */
-        fun projectId(projectId: JsonField<String>) = apply { body.projectId(projectId) }
+        fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
+            body.bodyProjectId(bodyProjectId)
+        }
 
         /** The status of test evaluation for the inference pipeline. */
         fun status(status: Status) = apply { body.status(status) }
@@ -1565,7 +1572,7 @@ private constructor(
 
         fun build(): InferencePipelineCreateParams =
             InferencePipelineCreateParams(
-                checkRequired("projectId", projectId),
+                checkRequired("pathProjectId", pathProjectId),
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -4443,11 +4450,11 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineCreateParams && projectId == other.projectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return /* spotless:off */ other is InferencePipelineCreateParams && pathProjectId == other.pathProjectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int = /* spotless:off */ Objects.hash(pathProjectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
 
     override fun toString() =
-        "InferencePipelineCreateParams{projectId=$projectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "InferencePipelineCreateParams{pathProjectId=$pathProjectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

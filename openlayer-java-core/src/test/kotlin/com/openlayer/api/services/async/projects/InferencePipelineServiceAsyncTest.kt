@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class InferencePipelineServiceAsyncTest {
+internal class InferencePipelineServiceAsyncTest {
 
     @Test
     fun create() {
@@ -26,7 +26,7 @@ class InferencePipelineServiceAsyncTest {
         val inferencePipelineFuture =
             inferencePipelineServiceAsync.create(
                 InferencePipelineCreateParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                     .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -44,7 +44,7 @@ class InferencePipelineServiceAsyncTest {
                     )
                     .name("production")
                     .passingGoalCount(5L)
-                    .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .status(InferencePipelineCreateParams.Status.QUEUED)
                     .statusMessage("Tests successfully evaluated")
                     .totalGoalCount(6L)

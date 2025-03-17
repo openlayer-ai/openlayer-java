@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class CommitServiceAsyncTest {
+internal class CommitServiceAsyncTest {
 
     @Test
     fun create() {
@@ -25,7 +25,7 @@ class CommitServiceAsyncTest {
         val commitFuture =
             commitServiceAsync.create(
                 CommitCreateParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .commit(
                         CommitCreateParams.Commit.builder()
@@ -48,7 +48,7 @@ class CommitServiceAsyncTest {
                     .failingGoalCount(1L)
                     .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .passingGoalCount(5L)
-                    .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .status(CommitCreateParams.Status.QUEUED)
                     .statusMessage("Commit successfully processed.")
                     .storageUri("s3://...")

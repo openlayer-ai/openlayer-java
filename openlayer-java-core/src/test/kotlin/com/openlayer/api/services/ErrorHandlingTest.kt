@@ -31,7 +31,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
 
 @WireMockTest
-class ErrorHandlingTest {
+internal class ErrorHandlingTest {
 
     companion object {
 
