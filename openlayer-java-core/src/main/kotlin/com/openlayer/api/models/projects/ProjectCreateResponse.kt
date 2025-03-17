@@ -658,6 +658,31 @@ private constructor(
             keys.forEach(::removeAdditionalProperty)
         }
 
+        /**
+         * Returns an immutable instance of [ProjectCreateResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .creatorId()
+         * .dateCreated()
+         * .dateUpdated()
+         * .developmentGoalCount()
+         * .goalCount()
+         * .inferencePipelineCount()
+         * .links()
+         * .monitoringGoalCount()
+         * .name()
+         * .source()
+         * .taskType()
+         * .versionCount()
+         * .workspaceId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
         fun build(): ProjectCreateResponse =
             ProjectCreateResponse(
                 checkRequired("id", id),
@@ -775,6 +800,18 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [Links].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .app()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): Links =
                 Links(checkRequired("app", app), additionalProperties.toImmutable())
         }
@@ -1462,6 +1499,27 @@ private constructor(
                 keys.forEach(::removeAdditionalProperty)
             }
 
+            /**
+             * Returns an immutable instance of [GitRepo].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .dateConnected()
+             * .dateUpdated()
+             * .gitAccountId()
+             * .gitId()
+             * .name()
+             * .private_()
+             * .projectId()
+             * .slug()
+             * .url()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
             fun build(): GitRepo =
                 GitRepo(
                     checkRequired("id", id),

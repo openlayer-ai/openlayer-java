@@ -151,6 +151,11 @@ class OpenlayerOkHttpClient private constructor() {
 
         fun fromEnv() = apply { clientOptions.fromEnv() }
 
+        /**
+         * Returns an immutable instance of [OpenlayerClient].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         */
         fun build(): OpenlayerClient =
             OpenlayerClientImpl(
                 clientOptions
