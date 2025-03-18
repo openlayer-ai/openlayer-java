@@ -25,18 +25,21 @@ internal class CommitListParamsTest {
                 .page(1L)
                 .perPage(1L)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("page", "1")
-        expected.put("perPage", "1")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(QueryParams.builder().put("page", "1").put("perPage", "1").build())
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params =
             CommitListParams.builder().projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e").build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test

@@ -23,9 +23,13 @@ internal class InferencePipelineRetrieveParamsTest {
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .addExpand(InferencePipelineRetrieveParams.Expand.PROJECT)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("expand", InferencePipelineRetrieveParams.Expand.PROJECT.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder().put("expand", listOf("project").joinToString(",")).build()
+            )
     }
 
     @Test
@@ -34,8 +38,10 @@ internal class InferencePipelineRetrieveParamsTest {
             InferencePipelineRetrieveParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test
