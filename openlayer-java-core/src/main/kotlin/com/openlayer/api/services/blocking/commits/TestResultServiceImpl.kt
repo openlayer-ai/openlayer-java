@@ -49,7 +49,7 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("versions", params.getPathParam(0), "results")
+                    .addPathSegments("versions", params._pathParam(0), "results")
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))

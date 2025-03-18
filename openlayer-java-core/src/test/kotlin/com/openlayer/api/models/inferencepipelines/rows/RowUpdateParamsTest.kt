@@ -28,6 +28,20 @@ internal class RowUpdateParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params =
+            RowUpdateParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .inferenceId("inferenceId")
+                .row(JsonValue.from(mapOf<String, Any>()))
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun queryParams() {
         val params =
             RowUpdateParams.builder()
@@ -110,20 +124,5 @@ internal class RowUpdateParamsTest {
 
         assertNotNull(body)
         assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
-    }
-
-    @Test
-    fun getPathParam() {
-        val params =
-            RowUpdateParams.builder()
-                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .inferenceId("inferenceId")
-                .row(JsonValue.from(mapOf<String, Any>()))
-                .build()
-        assertThat(params).isNotNull
-        // path param "inferencePipelineId"
-        assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }
