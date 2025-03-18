@@ -60,7 +60,7 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
-                    .addPathSegments("projects", params.getPathParam(0), "inference-pipelines")
+                    .addPathSegments("projects", params._pathParam(0), "inference-pipelines")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepareAsync(clientOptions, params)
@@ -91,7 +91,7 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("projects", params.getPathParam(0), "inference-pipelines")
+                    .addPathSegments("projects", params._pathParam(0), "inference-pipelines")
                     .build()
                     .prepareAsync(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))

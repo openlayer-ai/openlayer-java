@@ -55,6 +55,43 @@ internal class CommitCreateParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params =
+            CommitCreateParams.builder()
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .commit(
+                    CommitCreateParams.Commit.builder()
+                        .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+                        .fileSize(1024L)
+                        .message("Updated the prompt.")
+                        .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .storageUri("s3://...")
+                        .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .build()
+                )
+                .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .failingGoalCount(1L)
+                .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .passingGoalCount(5L)
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .status(CommitCreateParams.Status.QUEUED)
+                .statusMessage("Commit successfully processed.")
+                .storageUri("s3://...")
+                .totalGoalCount(6L)
+                .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun body() {
         val params =
             CommitCreateParams.builder()
@@ -205,43 +242,5 @@ internal class CommitCreateParamsTest {
         assertThat(body.totalGoalCount()).isEqualTo(6L)
         assertThat(body.trainingDatasetId()).contains("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.validationDatasetId()).contains("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-    }
-
-    @Test
-    fun getPathParam() {
-        val params =
-            CommitCreateParams.builder()
-                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .commit(
-                    CommitCreateParams.Commit.builder()
-                        .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .authorId("589ece63-49a2-41b4-98e1-10547761d4b0")
-                        .fileSize(1024L)
-                        .message("Updated the prompt.")
-                        .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .storageUri("s3://...")
-                        .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .build()
-                )
-                .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .failingGoalCount(1L)
-                .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .passingGoalCount(5L)
-                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .status(CommitCreateParams.Status.QUEUED)
-                .statusMessage("Commit successfully processed.")
-                .storageUri("s3://...")
-                .totalGoalCount(6L)
-                .trainingDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .validationDatasetId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .build()
-        assertThat(params).isNotNull
-        // path param "pathProjectId"
-        assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

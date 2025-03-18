@@ -103,7 +103,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
-                    .addPathSegments("inference-pipelines", params.getPathParam(0))
+                    .addPathSegments("inference-pipelines", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
@@ -130,7 +130,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
-                    .addPathSegments("inference-pipelines", params.getPathParam(0))
+                    .addPathSegments("inference-pipelines", params._pathParam(0))
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
@@ -156,7 +156,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)
-                    .addPathSegments("inference-pipelines", params.getPathParam(0))
+                    .addPathSegments("inference-pipelines", params._pathParam(0))
                     .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
                     .build()
                     .prepare(clientOptions, params)
