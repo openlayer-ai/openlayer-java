@@ -31,13 +31,19 @@ internal class TestResultListParamsTest {
                 .status(TestResultListParams.Status.RUNNING)
                 .type(TestResultListParams.Type.INTEGRITY)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("includeArchived", "true")
-        expected.put("page", "1")
-        expected.put("perPage", "1")
-        expected.put("status", TestResultListParams.Status.RUNNING.toString())
-        expected.put("type", TestResultListParams.Type.INTEGRITY.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("includeArchived", "true")
+                    .put("page", "1")
+                    .put("perPage", "1")
+                    .put("status", "running")
+                    .put("type", "integrity")
+                    .build()
+            )
     }
 
     @Test
@@ -46,8 +52,10 @@ internal class TestResultListParamsTest {
             TestResultListParams.builder()
                 .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 
     @Test

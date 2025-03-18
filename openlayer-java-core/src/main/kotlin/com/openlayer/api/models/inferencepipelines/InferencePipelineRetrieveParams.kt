@@ -36,12 +36,13 @@ private constructor(
 
     override fun _headers(): Headers = additionalHeaders
 
-    override fun _queryParams(): QueryParams {
-        val queryParams = QueryParams.builder()
-        this.expand?.let { queryParams.put("expand", listOf(it.joinToString(separator = ","))) }
-        queryParams.putAll(additionalQueryParams)
-        return queryParams.build()
-    }
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                expand?.let { put("expand", it.joinToString(",") { it.asString() }) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     fun getPathParam(index: Int): String {
         return when (index) {

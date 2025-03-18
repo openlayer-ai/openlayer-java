@@ -27,18 +27,26 @@ internal class ProjectListParamsTest {
                 .perPage(1L)
                 .taskType(ProjectListParams.TaskType.LLM_BASE)
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("name", "name")
-        expected.put("page", "1")
-        expected.put("perPage", "1")
-        expected.put("taskType", ProjectListParams.TaskType.LLM_BASE.toString())
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(
+                QueryParams.builder()
+                    .put("name", "name")
+                    .put("page", "1")
+                    .put("perPage", "1")
+                    .put("taskType", "llm-base")
+                    .build()
+            )
     }
 
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params = ProjectListParams.builder().build()
-        val expected = QueryParams.builder()
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams).isEqualTo(QueryParams.builder().build())
     }
 }
