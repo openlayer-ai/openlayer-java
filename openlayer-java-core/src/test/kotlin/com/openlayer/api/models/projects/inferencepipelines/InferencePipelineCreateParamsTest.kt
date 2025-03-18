@@ -106,6 +106,39 @@ internal class InferencePipelineCreateParamsTest {
     }
 
     @Test
+    fun pathParams() {
+        val params =
+            InferencePipelineCreateParams.builder()
+                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateLastSampleReceived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateOfNextEvaluation(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .description("This pipeline is used for production.")
+                .failingGoalCount(1L)
+                .links(
+                    InferencePipelineCreateParams.Links.builder()
+                        .app(
+                            "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6/inference-pipeline/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                        )
+                        .build()
+                )
+                .name("production")
+                .passingGoalCount(5L)
+                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .status(InferencePipelineCreateParams.Status.QUEUED)
+                .statusMessage("Tests successfully evaluated")
+                .totalGoalCount(6L)
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
     fun body() {
         val params =
             InferencePipelineCreateParams.builder()
@@ -355,39 +388,5 @@ internal class InferencePipelineCreateParamsTest {
         assertThat(body.status()).isEqualTo(InferencePipelineCreateParams.Status.QUEUED)
         assertThat(body.statusMessage()).contains("Tests successfully evaluated")
         assertThat(body.totalGoalCount()).isEqualTo(6L)
-    }
-
-    @Test
-    fun getPathParam() {
-        val params =
-            InferencePipelineCreateParams.builder()
-                .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .dateLastSampleReceived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .dateOfNextEvaluation(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-                .description("This pipeline is used for production.")
-                .failingGoalCount(1L)
-                .links(
-                    InferencePipelineCreateParams.Links.builder()
-                        .app(
-                            "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6/inference-pipeline/3fa85f64-5717-4562-b3fc-2c963f66afa6"
-                        )
-                        .build()
-                )
-                .name("production")
-                .passingGoalCount(5L)
-                .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .status(InferencePipelineCreateParams.Status.QUEUED)
-                .statusMessage("Tests successfully evaluated")
-                .totalGoalCount(6L)
-                .build()
-        assertThat(params).isNotNull
-        // path param "pathProjectId"
-        assertThat(params.getPathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        // out-of-bound path param
-        assertThat(params.getPathParam(1)).isEqualTo("")
     }
 }

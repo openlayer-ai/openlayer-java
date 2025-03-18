@@ -22,14 +22,4 @@ internal class PresignedUrlCreateParamsTest {
         assertThat(queryParams)
             .isEqualTo(QueryParams.builder().put("objectName", "objectName").build())
     }
-
-    @Test
-    fun queryParamsWithoutOptionalFields() {
-        val params = PresignedUrlCreateParams.builder().objectName("objectName").build()
-
-        val queryParams = params._queryParams()
-
-        assertThat(queryParams)
-            .isEqualTo(QueryParams.builder().put("objectName", "objectName").build())
-    }
 }

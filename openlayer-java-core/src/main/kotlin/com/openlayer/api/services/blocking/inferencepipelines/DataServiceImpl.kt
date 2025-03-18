@@ -48,7 +48,7 @@ class DataServiceImpl internal constructor(private val clientOptions: ClientOpti
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
-                    .addPathSegments("inference-pipelines", params.getPathParam(0), "data-stream")
+                    .addPathSegments("inference-pipelines", params._pathParam(0), "data-stream")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
