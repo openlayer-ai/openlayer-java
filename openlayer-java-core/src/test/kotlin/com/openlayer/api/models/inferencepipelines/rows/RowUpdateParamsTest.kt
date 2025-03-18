@@ -43,9 +43,11 @@ internal class RowUpdateParamsTest {
                         .build()
                 )
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("inferenceId", "inferenceId")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(QueryParams.builder().put("inferenceId", "inferenceId").build())
     }
 
     @Test
@@ -56,9 +58,11 @@ internal class RowUpdateParamsTest {
                 .inferenceId("inferenceId")
                 .row(JsonValue.from(mapOf<String, Any>()))
                 .build()
-        val expected = QueryParams.builder()
-        expected.put("inferenceId", "inferenceId")
-        assertThat(params._queryParams()).isEqualTo(expected.build())
+
+        val queryParams = params._queryParams()
+
+        assertThat(queryParams)
+            .isEqualTo(QueryParams.builder().put("inferenceId", "inferenceId").build())
     }
 
     @Test
