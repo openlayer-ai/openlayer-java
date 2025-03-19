@@ -49,7 +49,7 @@ private constructor(
                 name?.let { put("name", it) }
                 page?.let { put("page", it.toString()) }
                 perPage?.let { put("perPage", it.toString()) }
-                taskType?.let { put("taskType", it.asString()) }
+                taskType?.let { put("taskType", it.toString()) }
                 putAll(additionalQueryParams)
             }
             .build()

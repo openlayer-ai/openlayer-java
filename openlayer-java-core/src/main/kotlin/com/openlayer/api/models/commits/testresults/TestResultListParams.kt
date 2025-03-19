@@ -69,8 +69,8 @@ private constructor(
                 includeArchived?.let { put("includeArchived", it.toString()) }
                 page?.let { put("page", it.toString()) }
                 perPage?.let { put("perPage", it.toString()) }
-                status?.let { put("status", it.asString()) }
-                type?.let { put("type", it.asString()) }
+                status?.let { put("status", it.toString()) }
+                type?.let { put("type", it.toString()) }
                 putAll(additionalQueryParams)
             }
             .build()
