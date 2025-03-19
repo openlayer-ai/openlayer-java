@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class InferencePipelineUpdateResponseTest {
 
     @Test
-    fun createInferencePipelineUpdateResponse() {
+    fun create() {
         val inferencePipelineUpdateResponse =
             InferencePipelineUpdateResponse.builder()
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -102,7 +102,7 @@ internal class InferencePipelineUpdateResponseTest {
                 )
                 .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
                 .build()
-        assertThat(inferencePipelineUpdateResponse).isNotNull
+
         assertThat(inferencePipelineUpdateResponse.id())
             .isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(inferencePipelineUpdateResponse.dateCreated())

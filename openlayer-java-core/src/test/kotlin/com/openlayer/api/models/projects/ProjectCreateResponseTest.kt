@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class ProjectCreateResponseTest {
 
     @Test
-    fun createProjectCreateResponse() {
+    fun create() {
         val projectCreateResponse =
             ProjectCreateResponse.builder()
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -50,7 +50,7 @@ internal class ProjectCreateResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(projectCreateResponse).isNotNull
+
         assertThat(projectCreateResponse.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(projectCreateResponse.creatorId())
             .contains("589ece63-49a2-41b4-98e1-10547761d4b0")

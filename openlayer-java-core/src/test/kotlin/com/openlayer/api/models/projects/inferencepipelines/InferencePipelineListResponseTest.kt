@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test
 internal class InferencePipelineListResponseTest {
 
     @Test
-    fun createInferencePipelineListResponse() {
+    fun create() {
         val inferencePipelineListResponse =
             InferencePipelineListResponse.builder()
                 .addItem(
@@ -113,7 +113,7 @@ internal class InferencePipelineListResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(inferencePipelineListResponse).isNotNull
+
         assertThat(inferencePipelineListResponse.items())
             .containsExactly(
                 InferencePipelineListResponse.Item.builder()

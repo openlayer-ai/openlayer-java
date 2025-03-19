@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test
 internal class DataStreamResponseTest {
 
     @Test
-    fun createDataStreamResponse() {
+    fun create() {
         val dataStreamResponse =
             DataStreamResponse.builder().success(DataStreamResponse.Success.TRUE).build()
-        assertThat(dataStreamResponse).isNotNull
+
         assertThat(dataStreamResponse.success()).isEqualTo(DataStreamResponse.Success.TRUE)
     }
 }

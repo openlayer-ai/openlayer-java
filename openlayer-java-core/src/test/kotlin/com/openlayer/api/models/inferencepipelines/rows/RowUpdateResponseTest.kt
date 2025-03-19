@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test
 internal class RowUpdateResponseTest {
 
     @Test
-    fun createRowUpdateResponse() {
+    fun create() {
         val rowUpdateResponse =
             RowUpdateResponse.builder().success(RowUpdateResponse.Success.TRUE).build()
-        assertThat(rowUpdateResponse).isNotNull
+
         assertThat(rowUpdateResponse.success()).isEqualTo(RowUpdateResponse.Success.TRUE)
     }
 }
