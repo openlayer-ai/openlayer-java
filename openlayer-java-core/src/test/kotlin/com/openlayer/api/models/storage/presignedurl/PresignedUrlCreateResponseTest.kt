@@ -9,14 +9,14 @@ import org.junit.jupiter.api.Test
 internal class PresignedUrlCreateResponseTest {
 
     @Test
-    fun createPresignedUrlCreateResponse() {
+    fun create() {
         val presignedUrlCreateResponse =
             PresignedUrlCreateResponse.builder()
                 .storageUri("storageUri")
                 .url("url")
                 .fields(JsonValue.from(mapOf<String, Any>()))
                 .build()
-        assertThat(presignedUrlCreateResponse).isNotNull
+
         assertThat(presignedUrlCreateResponse.storageUri()).isEqualTo("storageUri")
         assertThat(presignedUrlCreateResponse.url()).isEqualTo("url")
         assertThat(presignedUrlCreateResponse._fields())

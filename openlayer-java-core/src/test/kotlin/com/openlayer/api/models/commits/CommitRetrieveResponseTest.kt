@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class CommitRetrieveResponseTest {
 
     @Test
-    fun createCommitRetrieveResponse() {
+    fun create() {
         val commitRetrieveResponse =
             CommitRetrieveResponse.builder()
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -50,7 +50,7 @@ internal class CommitRetrieveResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(commitRetrieveResponse).isNotNull
+
         assertThat(commitRetrieveResponse.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(commitRetrieveResponse.commit())
             .isEqualTo(
