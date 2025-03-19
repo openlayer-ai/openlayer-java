@@ -45,7 +45,7 @@ private constructor(
     override fun _queryParams(): QueryParams =
         QueryParams.builder()
             .apply {
-                expand?.let { put("expand", it.joinToString(",") { it.asString() }) }
+                expand?.let { put("expand", it.joinToString(",") { it.toString() }) }
                 putAll(additionalQueryParams)
             }
             .build()
