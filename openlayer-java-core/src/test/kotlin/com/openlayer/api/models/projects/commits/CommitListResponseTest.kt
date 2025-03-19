@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class CommitListResponseTest {
 
     @Test
-    fun createCommitListResponse() {
+    fun create() {
         val commitListResponse =
             CommitListResponse.builder()
                 .addItem(
@@ -54,7 +54,7 @@ internal class CommitListResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(commitListResponse).isNotNull
+
         assertThat(commitListResponse.items())
             .containsExactly(
                 CommitListResponse.Item.builder()

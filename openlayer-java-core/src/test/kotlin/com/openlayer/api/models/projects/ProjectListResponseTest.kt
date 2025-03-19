@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test
 internal class ProjectListResponseTest {
 
     @Test
-    fun createProjectListResponse() {
+    fun create() {
         val projectListResponse =
             ProjectListResponse.builder()
                 .addItem(
@@ -54,7 +54,7 @@ internal class ProjectListResponseTest {
                         .build()
                 )
                 .build()
-        assertThat(projectListResponse).isNotNull
+
         assertThat(projectListResponse.items())
             .containsExactly(
                 ProjectListResponse.Item.builder()
