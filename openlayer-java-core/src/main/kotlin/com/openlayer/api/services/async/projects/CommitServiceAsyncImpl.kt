@@ -3,6 +3,7 @@
 package com.openlayer.api.services.async.projects
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
-import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.projects.commits.CommitCreateParams
 import com.openlayer.api.models.projects.commits.CommitCreateResponse
 import com.openlayer.api.models.projects.commits.CommitListParams
@@ -47,7 +47,7 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         CommitServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val createHandler: Handler<CommitCreateResponse> =
             jsonHandler<CommitCreateResponse>(clientOptions.jsonMapper)

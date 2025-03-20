@@ -3,6 +3,7 @@
 package com.openlayer.api.services.blocking
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.handlers.emptyHandler
 import com.openlayer.api.core.handlers.errorHandler
@@ -16,7 +17,6 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
-import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveResponse
@@ -72,7 +72,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         InferencePipelineService.WithRawResponse {
 
-        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val data: DataService.WithRawResponse by lazy {
             DataServiceImpl.WithRawResponseImpl(clientOptions)
