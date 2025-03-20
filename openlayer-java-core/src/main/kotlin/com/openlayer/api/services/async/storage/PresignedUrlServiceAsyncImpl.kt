@@ -3,6 +3,7 @@
 package com.openlayer.api.services.async.storage
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
@@ -14,7 +15,6 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
-import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 import java.util.concurrent.CompletableFuture
@@ -38,7 +38,7 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PresignedUrlServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val createHandler: Handler<PresignedUrlCreateResponse> =
             jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)

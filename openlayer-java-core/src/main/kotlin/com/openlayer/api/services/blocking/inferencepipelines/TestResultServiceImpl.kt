@@ -3,6 +3,7 @@
 package com.openlayer.api.services.blocking.inferencepipelines
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
@@ -13,7 +14,6 @@ import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
-import com.openlayer.api.errors.OpenlayerError
 import com.openlayer.api.models.inferencepipelines.testresults.TestResultListParams
 import com.openlayer.api.models.inferencepipelines.testresults.TestResultListResponse
 
@@ -36,7 +36,7 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TestResultService.WithRawResponse {
 
-        private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
 
         private val listHandler: Handler<TestResultListResponse> =
             jsonHandler<TestResultListResponse>(clientOptions.jsonMapper)
