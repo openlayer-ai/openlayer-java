@@ -3,7 +3,6 @@
 package com.openlayer.api.models.projects.commits
 
 import java.time.OffsetDateTime
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -138,7 +137,6 @@ internal class CommitCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.commit())
             .isEqualTo(
@@ -215,7 +213,6 @@ internal class CommitCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.commit())
             .isEqualTo(

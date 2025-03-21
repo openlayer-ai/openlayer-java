@@ -3,7 +3,6 @@
 package com.openlayer.api.models.projects
 
 import java.time.OffsetDateTime
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -97,7 +96,6 @@ internal class ProjectCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.creatorId()).contains("589ece63-49a2-41b4-98e1-10547761d4b0")
         assertThat(body.dateCreated()).isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -167,7 +165,6 @@ internal class ProjectCreateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(body.creatorId()).contains("589ece63-49a2-41b4-98e1-10547761d4b0")
         assertThat(body.dateCreated()).isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
