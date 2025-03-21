@@ -4,7 +4,6 @@ package com.openlayer.api.models.inferencepipelines.rows
 
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.http.QueryParams
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -98,7 +97,6 @@ internal class RowUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
         assertThat(body.config())
             .contains(
@@ -122,7 +120,6 @@ internal class RowUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body._row()).isEqualTo(JsonValue.from(mapOf<String, Any>()))
     }
 }

@@ -2,7 +2,6 @@
 
 package com.openlayer.api.models.inferencepipelines
 
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -42,7 +41,6 @@ internal class InferencePipelineUpdateParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.description()).contains("This pipeline is used for production.")
         assertThat(body.name()).contains("production")
         assertThat(body.referenceDatasetUri()).contains("referenceDatasetUri")
@@ -56,7 +54,5 @@ internal class InferencePipelineUpdateParamsTest {
                 .build()
 
         val body = params._body()
-
-        assertNotNull(body)
     }
 }

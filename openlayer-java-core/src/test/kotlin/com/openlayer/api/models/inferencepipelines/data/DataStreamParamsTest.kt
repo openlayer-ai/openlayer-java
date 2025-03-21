@@ -3,7 +3,6 @@
 package com.openlayer.api.models.inferencepipelines.data
 
 import com.openlayer.api.core.JsonValue
-import kotlin.test.assertNotNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -109,7 +108,6 @@ internal class DataStreamParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.config())
             .isEqualTo(
                 DataStreamParams.Config.ofLlmData(
@@ -167,7 +165,6 @@ internal class DataStreamParamsTest {
 
         val body = params._body()
 
-        assertNotNull(body)
         assertThat(body.config())
             .isEqualTo(
                 DataStreamParams.Config.ofLlmData(
