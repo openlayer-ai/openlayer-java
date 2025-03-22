@@ -7,7 +7,7 @@
 
 <!-- x-release-please-end -->
 
-The Openlayer Java SDK provides convenient access to the Openlayer REST API from applications written in Java.
+The Openlayer Java SDK provides convenient access to the [Openlayer REST API](https://openlayer.com/docs/api-reference/rest/overview) from applications written in Java.
 
 It is generated with [Stainless](https://www.stainless.com/).
 
@@ -31,9 +31,9 @@ implementation("com.openlayer.api:openlayer-java:0.1.0-alpha.11")
 
 ```xml
 <dependency>
-    <groupId>com.openlayer.api</groupId>
-    <artifactId>openlayer-java</artifactId>
-    <version>0.1.0-alpha.11</version>
+  <groupId>com.openlayer.api</groupId>
+  <artifactId>openlayer-java</artifactId>
+  <version>0.1.0-alpha.11</version>
 </dependency>
 ```
 
