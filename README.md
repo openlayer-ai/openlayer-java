@@ -255,16 +255,16 @@ The SDK throws custom unchecked exception types:
 
 - [`OpenlayerServiceException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/OpenlayerServiceException.kt): Base class for HTTP errors. See this table for which exception subclass is thrown for each HTTP status code:
 
-  | Status | Exception                       |
-  | ------ | ------------------------------- |
-  | 400    | `BadRequestException`           |
-  | 401    | `AuthenticationException`       |
-  | 403    | `PermissionDeniedException`     |
-  | 404    | `NotFoundException`             |
-  | 422    | `UnprocessableEntityException`  |
-  | 429    | `RateLimitException`            |
-  | 5xx    | `InternalServerException`       |
-  | others | `UnexpectedStatusCodeException` |
+  | Status | Exception                                                                                                                        |
+  | ------ | -------------------------------------------------------------------------------------------------------------------------------- |
+  | 400    | [`BadRequestException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/BadRequestException.kt)                     |
+  | 401    | [`UnauthorizedException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/UnauthorizedException.kt)                 |
+  | 403    | [`PermissionDeniedException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/PermissionDeniedException.kt)         |
+  | 404    | [`NotFoundException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/NotFoundException.kt)                         |
+  | 422    | [`UnprocessableEntityException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/UnprocessableEntityException.kt)   |
+  | 429    | [`RateLimitException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/RateLimitException.kt)                       |
+  | 5xx    | [`InternalServerException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/InternalServerException.kt)             |
+  | others | [`UnexpectedStatusCodeException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/UnexpectedStatusCodeException.kt) |
 
 - [`OpenlayerIoException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/OpenlayerIoException.kt): I/O networking errors.
 
