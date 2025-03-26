@@ -11,15 +11,13 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
-import com.openlayer.api.core.immutableEmptyMap
-import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -300,820 +298,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> pathProjectId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("commit")
-        @ExcludeMissing
-        private val commit: JsonField<Commit> = JsonMissing.of(),
-        @JsonProperty("dateArchived")
-        @ExcludeMissing
-        private val dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("failingGoalCount")
-        @ExcludeMissing
-        private val failingGoalCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("mlModelId")
-        @ExcludeMissing
-        private val mlModelId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("passingGoalCount")
-        @ExcludeMissing
-        private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("projectId")
-        @ExcludeMissing
-        private val bodyProjectId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<Status> = JsonMissing.of(),
-        @JsonProperty("statusMessage")
-        @ExcludeMissing
-        private val statusMessage: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("storageUri")
-        @ExcludeMissing
-        private val storageUri: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("totalGoalCount")
-        @ExcludeMissing
-        private val totalGoalCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("trainingDatasetId")
-        @ExcludeMissing
-        private val trainingDatasetId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("validationDatasetId")
-        @ExcludeMissing
-        private val validationDatasetId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("archived")
-        @ExcludeMissing
-        private val archived: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("deploymentStatus")
-        @ExcludeMissing
-        private val deploymentStatus: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("links")
-        @ExcludeMissing
-        private val links: JsonField<Links> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * The project version (commit) id.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun id(): String = id.getRequired("id")
-
-        /**
-         * The details of a commit (project version).
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun commit(): Commit = commit.getRequired("commit")
-
-        /**
-         * The commit archive date.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun dateArchived(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateArchived.getNullable("dateArchived"))
-
-        /**
-         * The project version (commit) creation date.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
-
-        /**
-         * The number of tests that are failing for the commit.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun failingGoalCount(): Long = failingGoalCount.getRequired("failingGoalCount")
-
-        /**
-         * The model id.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun mlModelId(): Optional<String> = Optional.ofNullable(mlModelId.getNullable("mlModelId"))
-
-        /**
-         * The number of tests that are passing for the commit.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
-
-        /**
-         * The project id.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun bodyProjectId(): String = bodyProjectId.getRequired("projectId")
-
-        /**
-         * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
-         * Finally, it can be `paused`, `failed`, or `completed`.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun status(): Status = status.getRequired("status")
-
-        /**
-         * The commit status message.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun statusMessage(): Optional<String> =
-            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
-
-        /**
-         * The storage URI where the commit bundle is stored.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun storageUri(): String = storageUri.getRequired("storageUri")
-
-        /**
-         * The total number of tests for the commit.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
-
-        /**
-         * The training dataset id.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun trainingDatasetId(): Optional<String> =
-            Optional.ofNullable(trainingDatasetId.getNullable("trainingDatasetId"))
-
-        /**
-         * The validation dataset id.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun validationDatasetId(): Optional<String> =
-            Optional.ofNullable(validationDatasetId.getNullable("validationDatasetId"))
-
-        /**
-         * Whether the commit is archived.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun archived(): Optional<Boolean> = Optional.ofNullable(archived.getNullable("archived"))
-
-        /**
-         * The deployment status associated with the commit's model.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun deploymentStatus(): Optional<String> =
-            Optional.ofNullable(deploymentStatus.getNullable("deploymentStatus"))
-
-        /**
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun links(): Optional<Links> = Optional.ofNullable(links.getNullable("links"))
-
-        /**
-         * Returns the raw JSON value of [id].
-         *
-         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
-
-        /**
-         * Returns the raw JSON value of [commit].
-         *
-         * Unlike [commit], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("commit") @ExcludeMissing fun _commit(): JsonField<Commit> = commit
-
-        /**
-         * Returns the raw JSON value of [dateArchived].
-         *
-         * Unlike [dateArchived], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("dateArchived")
-        @ExcludeMissing
-        fun _dateArchived(): JsonField<OffsetDateTime> = dateArchived
-
-        /**
-         * Returns the raw JSON value of [dateCreated].
-         *
-         * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
-
-        /**
-         * Returns the raw JSON value of [failingGoalCount].
-         *
-         * Unlike [failingGoalCount], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("failingGoalCount")
-        @ExcludeMissing
-        fun _failingGoalCount(): JsonField<Long> = failingGoalCount
-
-        /**
-         * Returns the raw JSON value of [mlModelId].
-         *
-         * Unlike [mlModelId], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("mlModelId") @ExcludeMissing fun _mlModelId(): JsonField<String> = mlModelId
-
-        /**
-         * Returns the raw JSON value of [passingGoalCount].
-         *
-         * Unlike [passingGoalCount], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("passingGoalCount")
-        @ExcludeMissing
-        fun _passingGoalCount(): JsonField<Long> = passingGoalCount
-
-        /**
-         * Returns the raw JSON value of [bodyProjectId].
-         *
-         * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("projectId")
-        @ExcludeMissing
-        fun _bodyProjectId(): JsonField<String> = bodyProjectId
-
-        /**
-         * Returns the raw JSON value of [status].
-         *
-         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
-
-        /**
-         * Returns the raw JSON value of [statusMessage].
-         *
-         * Unlike [statusMessage], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("statusMessage")
-        @ExcludeMissing
-        fun _statusMessage(): JsonField<String> = statusMessage
-
-        /**
-         * Returns the raw JSON value of [storageUri].
-         *
-         * Unlike [storageUri], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("storageUri")
-        @ExcludeMissing
-        fun _storageUri(): JsonField<String> = storageUri
-
-        /**
-         * Returns the raw JSON value of [totalGoalCount].
-         *
-         * Unlike [totalGoalCount], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("totalGoalCount")
-        @ExcludeMissing
-        fun _totalGoalCount(): JsonField<Long> = totalGoalCount
-
-        /**
-         * Returns the raw JSON value of [trainingDatasetId].
-         *
-         * Unlike [trainingDatasetId], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("trainingDatasetId")
-        @ExcludeMissing
-        fun _trainingDatasetId(): JsonField<String> = trainingDatasetId
-
-        /**
-         * Returns the raw JSON value of [validationDatasetId].
-         *
-         * Unlike [validationDatasetId], this method doesn't throw if the JSON field has an
-         * unexpected type.
-         */
-        @JsonProperty("validationDatasetId")
-        @ExcludeMissing
-        fun _validationDatasetId(): JsonField<String> = validationDatasetId
-
-        /**
-         * Returns the raw JSON value of [archived].
-         *
-         * Unlike [archived], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("archived") @ExcludeMissing fun _archived(): JsonField<Boolean> = archived
-
-        /**
-         * Returns the raw JSON value of [deploymentStatus].
-         *
-         * Unlike [deploymentStatus], this method doesn't throw if the JSON field has an unexpected
-         * type.
-         */
-        @JsonProperty("deploymentStatus")
-        @ExcludeMissing
-        fun _deploymentStatus(): JsonField<String> = deploymentStatus
-
-        /**
-         * Returns the raw JSON value of [links].
-         *
-         * Unlike [links], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            commit().validate()
-            dateArchived()
-            dateCreated()
-            failingGoalCount()
-            mlModelId()
-            passingGoalCount()
-            bodyProjectId()
-            status()
-            statusMessage()
-            storageUri()
-            totalGoalCount()
-            trainingDatasetId()
-            validationDatasetId()
-            archived()
-            deploymentStatus()
-            links().ifPresent { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .id()
-             * .commit()
-             * .dateArchived()
-             * .dateCreated()
-             * .failingGoalCount()
-             * .mlModelId()
-             * .passingGoalCount()
-             * .bodyProjectId()
-             * .status()
-             * .statusMessage()
-             * .storageUri()
-             * .totalGoalCount()
-             * .trainingDatasetId()
-             * .validationDatasetId()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var id: JsonField<String>? = null
-            private var commit: JsonField<Commit>? = null
-            private var dateArchived: JsonField<OffsetDateTime>? = null
-            private var dateCreated: JsonField<OffsetDateTime>? = null
-            private var failingGoalCount: JsonField<Long>? = null
-            private var mlModelId: JsonField<String>? = null
-            private var passingGoalCount: JsonField<Long>? = null
-            private var bodyProjectId: JsonField<String>? = null
-            private var status: JsonField<Status>? = null
-            private var statusMessage: JsonField<String>? = null
-            private var storageUri: JsonField<String>? = null
-            private var totalGoalCount: JsonField<Long>? = null
-            private var trainingDatasetId: JsonField<String>? = null
-            private var validationDatasetId: JsonField<String>? = null
-            private var archived: JsonField<Boolean> = JsonMissing.of()
-            private var deploymentStatus: JsonField<String> = JsonMissing.of()
-            private var links: JsonField<Links> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                id = body.id
-                commit = body.commit
-                dateArchived = body.dateArchived
-                dateCreated = body.dateCreated
-                failingGoalCount = body.failingGoalCount
-                mlModelId = body.mlModelId
-                passingGoalCount = body.passingGoalCount
-                bodyProjectId = body.bodyProjectId
-                status = body.status
-                statusMessage = body.statusMessage
-                storageUri = body.storageUri
-                totalGoalCount = body.totalGoalCount
-                trainingDatasetId = body.trainingDatasetId
-                validationDatasetId = body.validationDatasetId
-                archived = body.archived
-                deploymentStatus = body.deploymentStatus
-                links = body.links
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /** The project version (commit) id. */
-            fun id(id: String) = id(JsonField.of(id))
-
-            /**
-             * Sets [Builder.id] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.id] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun id(id: JsonField<String>) = apply { this.id = id }
-
-            /** The details of a commit (project version). */
-            fun commit(commit: Commit) = commit(JsonField.of(commit))
-
-            /**
-             * Sets [Builder.commit] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.commit] with a well-typed [Commit] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun commit(commit: JsonField<Commit>) = apply { this.commit = commit }
-
-            /** The commit archive date. */
-            fun dateArchived(dateArchived: OffsetDateTime?) =
-                dateArchived(JsonField.ofNullable(dateArchived))
-
-            /** Alias for calling [Builder.dateArchived] with `dateArchived.orElse(null)`. */
-            fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
-                dateArchived(dateArchived.getOrNull())
-
-            /**
-             * Sets [Builder.dateArchived] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.dateArchived] with a well-typed [OffsetDateTime]
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
-                this.dateArchived = dateArchived
-            }
-
-            /** The project version (commit) creation date. */
-            fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
-
-            /**
-             * Sets [Builder.dateCreated] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime]
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
-                this.dateCreated = dateCreated
-            }
-
-            /** The number of tests that are failing for the commit. */
-            fun failingGoalCount(failingGoalCount: Long) =
-                failingGoalCount(JsonField.of(failingGoalCount))
-
-            /**
-             * Sets [Builder.failingGoalCount] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.failingGoalCount] with a well-typed [Long] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
-                this.failingGoalCount = failingGoalCount
-            }
-
-            /** The model id. */
-            fun mlModelId(mlModelId: String?) = mlModelId(JsonField.ofNullable(mlModelId))
-
-            /** Alias for calling [Builder.mlModelId] with `mlModelId.orElse(null)`. */
-            fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.getOrNull())
-
-            /**
-             * Sets [Builder.mlModelId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.mlModelId] with a well-typed [String] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun mlModelId(mlModelId: JsonField<String>) = apply { this.mlModelId = mlModelId }
-
-            /** The number of tests that are passing for the commit. */
-            fun passingGoalCount(passingGoalCount: Long) =
-                passingGoalCount(JsonField.of(passingGoalCount))
-
-            /**
-             * Sets [Builder.passingGoalCount] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.passingGoalCount] with a well-typed [Long] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
-                this.passingGoalCount = passingGoalCount
-            }
-
-            /** The project id. */
-            fun bodyProjectId(bodyProjectId: String) = bodyProjectId(JsonField.of(bodyProjectId))
-
-            /**
-             * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.bodyProjectId] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
-                this.bodyProjectId = bodyProjectId
-            }
-
-            /**
-             * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
-             * Finally, it can be `paused`, `failed`, or `completed`.
-             */
-            fun status(status: Status) = status(JsonField.of(status))
-
-            /**
-             * Sets [Builder.status] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.status] with a well-typed [Status] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun status(status: JsonField<Status>) = apply { this.status = status }
-
-            /** The commit status message. */
-            fun statusMessage(statusMessage: String?) =
-                statusMessage(JsonField.ofNullable(statusMessage))
-
-            /** Alias for calling [Builder.statusMessage] with `statusMessage.orElse(null)`. */
-            fun statusMessage(statusMessage: Optional<String>) =
-                statusMessage(statusMessage.getOrNull())
-
-            /**
-             * Sets [Builder.statusMessage] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.statusMessage] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun statusMessage(statusMessage: JsonField<String>) = apply {
-                this.statusMessage = statusMessage
-            }
-
-            /** The storage URI where the commit bundle is stored. */
-            fun storageUri(storageUri: String) = storageUri(JsonField.of(storageUri))
-
-            /**
-             * Sets [Builder.storageUri] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.storageUri] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun storageUri(storageUri: JsonField<String>) = apply { this.storageUri = storageUri }
-
-            /** The total number of tests for the commit. */
-            fun totalGoalCount(totalGoalCount: Long) = totalGoalCount(JsonField.of(totalGoalCount))
-
-            /**
-             * Sets [Builder.totalGoalCount] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.totalGoalCount] with a well-typed [Long] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
-                this.totalGoalCount = totalGoalCount
-            }
-
-            /** The training dataset id. */
-            fun trainingDatasetId(trainingDatasetId: String?) =
-                trainingDatasetId(JsonField.ofNullable(trainingDatasetId))
-
-            /**
-             * Alias for calling [Builder.trainingDatasetId] with `trainingDatasetId.orElse(null)`.
-             */
-            fun trainingDatasetId(trainingDatasetId: Optional<String>) =
-                trainingDatasetId(trainingDatasetId.getOrNull())
-
-            /**
-             * Sets [Builder.trainingDatasetId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.trainingDatasetId] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun trainingDatasetId(trainingDatasetId: JsonField<String>) = apply {
-                this.trainingDatasetId = trainingDatasetId
-            }
-
-            /** The validation dataset id. */
-            fun validationDatasetId(validationDatasetId: String?) =
-                validationDatasetId(JsonField.ofNullable(validationDatasetId))
-
-            /**
-             * Alias for calling [Builder.validationDatasetId] with
-             * `validationDatasetId.orElse(null)`.
-             */
-            fun validationDatasetId(validationDatasetId: Optional<String>) =
-                validationDatasetId(validationDatasetId.getOrNull())
-
-            /**
-             * Sets [Builder.validationDatasetId] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.validationDatasetId] with a well-typed [String]
-             * value instead. This method is primarily for setting the field to an undocumented or
-             * not yet supported value.
-             */
-            fun validationDatasetId(validationDatasetId: JsonField<String>) = apply {
-                this.validationDatasetId = validationDatasetId
-            }
-
-            /** Whether the commit is archived. */
-            fun archived(archived: Boolean?) = archived(JsonField.ofNullable(archived))
-
-            /**
-             * Alias for [Builder.archived].
-             *
-             * This unboxed primitive overload exists for backwards compatibility.
-             */
-            fun archived(archived: Boolean) = archived(archived as Boolean?)
-
-            /** Alias for calling [Builder.archived] with `archived.orElse(null)`. */
-            fun archived(archived: Optional<Boolean>) = archived(archived.getOrNull())
-
-            /**
-             * Sets [Builder.archived] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.archived] with a well-typed [Boolean] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
-
-            /** The deployment status associated with the commit's model. */
-            fun deploymentStatus(deploymentStatus: String) =
-                deploymentStatus(JsonField.of(deploymentStatus))
-
-            /**
-             * Sets [Builder.deploymentStatus] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.deploymentStatus] with a well-typed [String] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun deploymentStatus(deploymentStatus: JsonField<String>) = apply {
-                this.deploymentStatus = deploymentStatus
-            }
-
-            fun links(links: Links) = links(JsonField.of(links))
-
-            /**
-             * Sets [Builder.links] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.links] with a well-typed [Links] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
-             */
-            fun links(links: JsonField<Links>) = apply { this.links = links }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .id()
-             * .commit()
-             * .dateArchived()
-             * .dateCreated()
-             * .failingGoalCount()
-             * .mlModelId()
-             * .passingGoalCount()
-             * .bodyProjectId()
-             * .status()
-             * .statusMessage()
-             * .storageUri()
-             * .totalGoalCount()
-             * .trainingDatasetId()
-             * .validationDatasetId()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(
-                    checkRequired("id", id),
-                    checkRequired("commit", commit),
-                    checkRequired("dateArchived", dateArchived),
-                    checkRequired("dateCreated", dateCreated),
-                    checkRequired("failingGoalCount", failingGoalCount),
-                    checkRequired("mlModelId", mlModelId),
-                    checkRequired("passingGoalCount", passingGoalCount),
-                    checkRequired("bodyProjectId", bodyProjectId),
-                    checkRequired("status", status),
-                    checkRequired("statusMessage", statusMessage),
-                    checkRequired("storageUri", storageUri),
-                    checkRequired("totalGoalCount", totalGoalCount),
-                    checkRequired("trainingDatasetId", trainingDatasetId),
-                    checkRequired("validationDatasetId", validationDatasetId),
-                    archived,
-                    deploymentStatus,
-                    links,
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && id == other.id && commit == other.commit && dateArchived == other.dateArchived && dateCreated == other.dateCreated && failingGoalCount == other.failingGoalCount && mlModelId == other.mlModelId && passingGoalCount == other.passingGoalCount && bodyProjectId == other.bodyProjectId && status == other.status && statusMessage == other.statusMessage && storageUri == other.storageUri && totalGoalCount == other.totalGoalCount && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && archived == other.archived && deploymentStatus == other.deploymentStatus && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, commit, dateArchived, dateCreated, failingGoalCount, mlModelId, passingGoalCount, bodyProjectId, status, statusMessage, storageUri, totalGoalCount, trainingDatasetId, validationDatasetId, archived, deploymentStatus, links, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{id=$id, commit=$commit, dateArchived=$dateArchived, dateCreated=$dateCreated, failingGoalCount=$failingGoalCount, mlModelId=$mlModelId, passingGoalCount=$passingGoalCount, bodyProjectId=$bodyProjectId, status=$status, statusMessage=$statusMessage, storageUri=$storageUri, totalGoalCount=$totalGoalCount, trainingDatasetId=$trainingDatasetId, validationDatasetId=$validationDatasetId, archived=$archived, deploymentStatus=$deploymentStatus, links=$links, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -1144,7 +328,6 @@ private constructor(
     }
 
     /** A builder for [CommitCreateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var pathProjectId: String? = null
@@ -1577,48 +760,922 @@ private constructor(
             )
     }
 
-    /** The details of a commit (project version). */
-    @NoAutoDetect
-    class Commit
-    @JsonCreator
+    @JvmSynthetic internal fun _body(): Body = body
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> pathProjectId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
     private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("authorId")
+        private val id: JsonField<String>,
+        private val commit: JsonField<Commit>,
+        private val dateArchived: JsonField<OffsetDateTime>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val failingGoalCount: JsonField<Long>,
+        private val mlModelId: JsonField<String>,
+        private val passingGoalCount: JsonField<Long>,
+        private val bodyProjectId: JsonField<String>,
+        private val status: JsonField<Status>,
+        private val statusMessage: JsonField<String>,
+        private val storageUri: JsonField<String>,
+        private val totalGoalCount: JsonField<Long>,
+        private val trainingDatasetId: JsonField<String>,
+        private val validationDatasetId: JsonField<String>,
+        private val archived: JsonField<Boolean>,
+        private val deploymentStatus: JsonField<String>,
+        private val links: JsonField<Links>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("commit") @ExcludeMissing commit: JsonField<Commit> = JsonMissing.of(),
+            @JsonProperty("dateArchived")
+            @ExcludeMissing
+            dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("failingGoalCount")
+            @ExcludeMissing
+            failingGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("mlModelId")
+            @ExcludeMissing
+            mlModelId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("passingGoalCount")
+            @ExcludeMissing
+            passingGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("projectId")
+            @ExcludeMissing
+            bodyProjectId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+            @JsonProperty("statusMessage")
+            @ExcludeMissing
+            statusMessage: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("storageUri")
+            @ExcludeMissing
+            storageUri: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("totalGoalCount")
+            @ExcludeMissing
+            totalGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("trainingDatasetId")
+            @ExcludeMissing
+            trainingDatasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("validationDatasetId")
+            @ExcludeMissing
+            validationDatasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("archived")
+            @ExcludeMissing
+            archived: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("deploymentStatus")
+            @ExcludeMissing
+            deploymentStatus: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("links") @ExcludeMissing links: JsonField<Links> = JsonMissing.of(),
+        ) : this(
+            id,
+            commit,
+            dateArchived,
+            dateCreated,
+            failingGoalCount,
+            mlModelId,
+            passingGoalCount,
+            bodyProjectId,
+            status,
+            statusMessage,
+            storageUri,
+            totalGoalCount,
+            trainingDatasetId,
+            validationDatasetId,
+            archived,
+            deploymentStatus,
+            links,
+            mutableMapOf(),
+        )
+
+        /**
+         * The project version (commit) id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun id(): String = id.getRequired("id")
+
+        /**
+         * The details of a commit (project version).
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun commit(): Commit = commit.getRequired("commit")
+
+        /**
+         * The commit archive date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun dateArchived(): Optional<OffsetDateTime> =
+            Optional.ofNullable(dateArchived.getNullable("dateArchived"))
+
+        /**
+         * The project version (commit) creation date.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
+
+        /**
+         * The number of tests that are failing for the commit.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun failingGoalCount(): Long = failingGoalCount.getRequired("failingGoalCount")
+
+        /**
+         * The model id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun mlModelId(): Optional<String> = Optional.ofNullable(mlModelId.getNullable("mlModelId"))
+
+        /**
+         * The number of tests that are passing for the commit.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun passingGoalCount(): Long = passingGoalCount.getRequired("passingGoalCount")
+
+        /**
+         * The project id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun bodyProjectId(): String = bodyProjectId.getRequired("projectId")
+
+        /**
+         * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+         * Finally, it can be `paused`, `failed`, or `completed`.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun status(): Status = status.getRequired("status")
+
+        /**
+         * The commit status message.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun statusMessage(): Optional<String> =
+            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+
+        /**
+         * The storage URI where the commit bundle is stored.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun storageUri(): String = storageUri.getRequired("storageUri")
+
+        /**
+         * The total number of tests for the commit.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun totalGoalCount(): Long = totalGoalCount.getRequired("totalGoalCount")
+
+        /**
+         * The training dataset id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun trainingDatasetId(): Optional<String> =
+            Optional.ofNullable(trainingDatasetId.getNullable("trainingDatasetId"))
+
+        /**
+         * The validation dataset id.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun validationDatasetId(): Optional<String> =
+            Optional.ofNullable(validationDatasetId.getNullable("validationDatasetId"))
+
+        /**
+         * Whether the commit is archived.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun archived(): Optional<Boolean> = Optional.ofNullable(archived.getNullable("archived"))
+
+        /**
+         * The deployment status associated with the commit's model.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun deploymentStatus(): Optional<String> =
+            Optional.ofNullable(deploymentStatus.getNullable("deploymentStatus"))
+
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun links(): Optional<Links> = Optional.ofNullable(links.getNullable("links"))
+
+        /**
+         * Returns the raw JSON value of [id].
+         *
+         * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+        /**
+         * Returns the raw JSON value of [commit].
+         *
+         * Unlike [commit], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("commit") @ExcludeMissing fun _commit(): JsonField<Commit> = commit
+
+        /**
+         * Returns the raw JSON value of [dateArchived].
+         *
+         * Unlike [dateArchived], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("dateArchived")
         @ExcludeMissing
-        private val authorId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("fileSize")
-        @ExcludeMissing
-        private val fileSize: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("message")
-        @ExcludeMissing
-        private val message: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("mlModelId")
-        @ExcludeMissing
-        private val mlModelId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("storageUri")
-        @ExcludeMissing
-        private val storageUri: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("trainingDatasetId")
-        @ExcludeMissing
-        private val trainingDatasetId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("validationDatasetId")
-        @ExcludeMissing
-        private val validationDatasetId: JsonField<String> = JsonMissing.of(),
+        fun _dateArchived(): JsonField<OffsetDateTime> = dateArchived
+
+        /**
+         * Returns the raw JSON value of [dateCreated].
+         *
+         * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
+         */
         @JsonProperty("dateCreated")
         @ExcludeMissing
-        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("gitCommitRef")
+        fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+        /**
+         * Returns the raw JSON value of [failingGoalCount].
+         *
+         * Unlike [failingGoalCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("failingGoalCount")
         @ExcludeMissing
-        private val gitCommitRef: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("gitCommitSha")
+        fun _failingGoalCount(): JsonField<Long> = failingGoalCount
+
+        /**
+         * Returns the raw JSON value of [mlModelId].
+         *
+         * Unlike [mlModelId], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("mlModelId") @ExcludeMissing fun _mlModelId(): JsonField<String> = mlModelId
+
+        /**
+         * Returns the raw JSON value of [passingGoalCount].
+         *
+         * Unlike [passingGoalCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("passingGoalCount")
         @ExcludeMissing
-        private val gitCommitSha: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("gitCommitUrl")
+        fun _passingGoalCount(): JsonField<Long> = passingGoalCount
+
+        /**
+         * Returns the raw JSON value of [bodyProjectId].
+         *
+         * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("projectId")
         @ExcludeMissing
-        private val gitCommitUrl: JsonField<String> = JsonMissing.of(),
+        fun _bodyProjectId(): JsonField<String> = bodyProjectId
+
+        /**
+         * Returns the raw JSON value of [status].
+         *
+         * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+        /**
+         * Returns the raw JSON value of [statusMessage].
+         *
+         * Unlike [statusMessage], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        fun _statusMessage(): JsonField<String> = statusMessage
+
+        /**
+         * Returns the raw JSON value of [storageUri].
+         *
+         * Unlike [storageUri], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("storageUri")
+        @ExcludeMissing
+        fun _storageUri(): JsonField<String> = storageUri
+
+        /**
+         * Returns the raw JSON value of [totalGoalCount].
+         *
+         * Unlike [totalGoalCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        fun _totalGoalCount(): JsonField<Long> = totalGoalCount
+
+        /**
+         * Returns the raw JSON value of [trainingDatasetId].
+         *
+         * Unlike [trainingDatasetId], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("trainingDatasetId")
+        @ExcludeMissing
+        fun _trainingDatasetId(): JsonField<String> = trainingDatasetId
+
+        /**
+         * Returns the raw JSON value of [validationDatasetId].
+         *
+         * Unlike [validationDatasetId], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("validationDatasetId")
+        @ExcludeMissing
+        fun _validationDatasetId(): JsonField<String> = validationDatasetId
+
+        /**
+         * Returns the raw JSON value of [archived].
+         *
+         * Unlike [archived], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("archived") @ExcludeMissing fun _archived(): JsonField<Boolean> = archived
+
+        /**
+         * Returns the raw JSON value of [deploymentStatus].
+         *
+         * Unlike [deploymentStatus], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("deploymentStatus")
+        @ExcludeMissing
+        fun _deploymentStatus(): JsonField<String> = deploymentStatus
+
+        /**
+         * Returns the raw JSON value of [links].
+         *
+         * Unlike [links], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .commit()
+             * .dateArchived()
+             * .dateCreated()
+             * .failingGoalCount()
+             * .mlModelId()
+             * .passingGoalCount()
+             * .bodyProjectId()
+             * .status()
+             * .statusMessage()
+             * .storageUri()
+             * .totalGoalCount()
+             * .trainingDatasetId()
+             * .validationDatasetId()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var id: JsonField<String>? = null
+            private var commit: JsonField<Commit>? = null
+            private var dateArchived: JsonField<OffsetDateTime>? = null
+            private var dateCreated: JsonField<OffsetDateTime>? = null
+            private var failingGoalCount: JsonField<Long>? = null
+            private var mlModelId: JsonField<String>? = null
+            private var passingGoalCount: JsonField<Long>? = null
+            private var bodyProjectId: JsonField<String>? = null
+            private var status: JsonField<Status>? = null
+            private var statusMessage: JsonField<String>? = null
+            private var storageUri: JsonField<String>? = null
+            private var totalGoalCount: JsonField<Long>? = null
+            private var trainingDatasetId: JsonField<String>? = null
+            private var validationDatasetId: JsonField<String>? = null
+            private var archived: JsonField<Boolean> = JsonMissing.of()
+            private var deploymentStatus: JsonField<String> = JsonMissing.of()
+            private var links: JsonField<Links> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                id = body.id
+                commit = body.commit
+                dateArchived = body.dateArchived
+                dateCreated = body.dateCreated
+                failingGoalCount = body.failingGoalCount
+                mlModelId = body.mlModelId
+                passingGoalCount = body.passingGoalCount
+                bodyProjectId = body.bodyProjectId
+                status = body.status
+                statusMessage = body.statusMessage
+                storageUri = body.storageUri
+                totalGoalCount = body.totalGoalCount
+                trainingDatasetId = body.trainingDatasetId
+                validationDatasetId = body.validationDatasetId
+                archived = body.archived
+                deploymentStatus = body.deploymentStatus
+                links = body.links
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /** The project version (commit) id. */
+            fun id(id: String) = id(JsonField.of(id))
+
+            /**
+             * Sets [Builder.id] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.id] with a well-typed [String] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun id(id: JsonField<String>) = apply { this.id = id }
+
+            /** The details of a commit (project version). */
+            fun commit(commit: Commit) = commit(JsonField.of(commit))
+
+            /**
+             * Sets [Builder.commit] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.commit] with a well-typed [Commit] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun commit(commit: JsonField<Commit>) = apply { this.commit = commit }
+
+            /** The commit archive date. */
+            fun dateArchived(dateArchived: OffsetDateTime?) =
+                dateArchived(JsonField.ofNullable(dateArchived))
+
+            /** Alias for calling [Builder.dateArchived] with `dateArchived.orElse(null)`. */
+            fun dateArchived(dateArchived: Optional<OffsetDateTime>) =
+                dateArchived(dateArchived.getOrNull())
+
+            /**
+             * Sets [Builder.dateArchived] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateArchived] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun dateArchived(dateArchived: JsonField<OffsetDateTime>) = apply {
+                this.dateArchived = dateArchived
+            }
+
+            /** The project version (commit) creation date. */
+            fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
+
+            /**
+             * Sets [Builder.dateCreated] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+                this.dateCreated = dateCreated
+            }
+
+            /** The number of tests that are failing for the commit. */
+            fun failingGoalCount(failingGoalCount: Long) =
+                failingGoalCount(JsonField.of(failingGoalCount))
+
+            /**
+             * Sets [Builder.failingGoalCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.failingGoalCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun failingGoalCount(failingGoalCount: JsonField<Long>) = apply {
+                this.failingGoalCount = failingGoalCount
+            }
+
+            /** The model id. */
+            fun mlModelId(mlModelId: String?) = mlModelId(JsonField.ofNullable(mlModelId))
+
+            /** Alias for calling [Builder.mlModelId] with `mlModelId.orElse(null)`. */
+            fun mlModelId(mlModelId: Optional<String>) = mlModelId(mlModelId.getOrNull())
+
+            /**
+             * Sets [Builder.mlModelId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.mlModelId] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun mlModelId(mlModelId: JsonField<String>) = apply { this.mlModelId = mlModelId }
+
+            /** The number of tests that are passing for the commit. */
+            fun passingGoalCount(passingGoalCount: Long) =
+                passingGoalCount(JsonField.of(passingGoalCount))
+
+            /**
+             * Sets [Builder.passingGoalCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.passingGoalCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun passingGoalCount(passingGoalCount: JsonField<Long>) = apply {
+                this.passingGoalCount = passingGoalCount
+            }
+
+            /** The project id. */
+            fun bodyProjectId(bodyProjectId: String) = bodyProjectId(JsonField.of(bodyProjectId))
+
+            /**
+             * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.bodyProjectId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
+                this.bodyProjectId = bodyProjectId
+            }
+
+            /**
+             * The commit status. Initially, the commit is `queued`, then, it switches to `running`.
+             * Finally, it can be `paused`, `failed`, or `completed`.
+             */
+            fun status(status: Status) = status(JsonField.of(status))
+
+            /**
+             * Sets [Builder.status] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.status] with a well-typed [Status] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun status(status: JsonField<Status>) = apply { this.status = status }
+
+            /** The commit status message. */
+            fun statusMessage(statusMessage: String?) =
+                statusMessage(JsonField.ofNullable(statusMessage))
+
+            /** Alias for calling [Builder.statusMessage] with `statusMessage.orElse(null)`. */
+            fun statusMessage(statusMessage: Optional<String>) =
+                statusMessage(statusMessage.getOrNull())
+
+            /**
+             * Sets [Builder.statusMessage] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.statusMessage] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun statusMessage(statusMessage: JsonField<String>) = apply {
+                this.statusMessage = statusMessage
+            }
+
+            /** The storage URI where the commit bundle is stored. */
+            fun storageUri(storageUri: String) = storageUri(JsonField.of(storageUri))
+
+            /**
+             * Sets [Builder.storageUri] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.storageUri] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun storageUri(storageUri: JsonField<String>) = apply { this.storageUri = storageUri }
+
+            /** The total number of tests for the commit. */
+            fun totalGoalCount(totalGoalCount: Long) = totalGoalCount(JsonField.of(totalGoalCount))
+
+            /**
+             * Sets [Builder.totalGoalCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.totalGoalCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun totalGoalCount(totalGoalCount: JsonField<Long>) = apply {
+                this.totalGoalCount = totalGoalCount
+            }
+
+            /** The training dataset id. */
+            fun trainingDatasetId(trainingDatasetId: String?) =
+                trainingDatasetId(JsonField.ofNullable(trainingDatasetId))
+
+            /**
+             * Alias for calling [Builder.trainingDatasetId] with `trainingDatasetId.orElse(null)`.
+             */
+            fun trainingDatasetId(trainingDatasetId: Optional<String>) =
+                trainingDatasetId(trainingDatasetId.getOrNull())
+
+            /**
+             * Sets [Builder.trainingDatasetId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.trainingDatasetId] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun trainingDatasetId(trainingDatasetId: JsonField<String>) = apply {
+                this.trainingDatasetId = trainingDatasetId
+            }
+
+            /** The validation dataset id. */
+            fun validationDatasetId(validationDatasetId: String?) =
+                validationDatasetId(JsonField.ofNullable(validationDatasetId))
+
+            /**
+             * Alias for calling [Builder.validationDatasetId] with
+             * `validationDatasetId.orElse(null)`.
+             */
+            fun validationDatasetId(validationDatasetId: Optional<String>) =
+                validationDatasetId(validationDatasetId.getOrNull())
+
+            /**
+             * Sets [Builder.validationDatasetId] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.validationDatasetId] with a well-typed [String]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun validationDatasetId(validationDatasetId: JsonField<String>) = apply {
+                this.validationDatasetId = validationDatasetId
+            }
+
+            /** Whether the commit is archived. */
+            fun archived(archived: Boolean?) = archived(JsonField.ofNullable(archived))
+
+            /**
+             * Alias for [Builder.archived].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun archived(archived: Boolean) = archived(archived as Boolean?)
+
+            /** Alias for calling [Builder.archived] with `archived.orElse(null)`. */
+            fun archived(archived: Optional<Boolean>) = archived(archived.getOrNull())
+
+            /**
+             * Sets [Builder.archived] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.archived] with a well-typed [Boolean] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
+
+            /** The deployment status associated with the commit's model. */
+            fun deploymentStatus(deploymentStatus: String) =
+                deploymentStatus(JsonField.of(deploymentStatus))
+
+            /**
+             * Sets [Builder.deploymentStatus] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.deploymentStatus] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun deploymentStatus(deploymentStatus: JsonField<String>) = apply {
+                this.deploymentStatus = deploymentStatus
+            }
+
+            fun links(links: Links) = links(JsonField.of(links))
+
+            /**
+             * Sets [Builder.links] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.links] with a well-typed [Links] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun links(links: JsonField<Links>) = apply { this.links = links }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .id()
+             * .commit()
+             * .dateArchived()
+             * .dateCreated()
+             * .failingGoalCount()
+             * .mlModelId()
+             * .passingGoalCount()
+             * .bodyProjectId()
+             * .status()
+             * .statusMessage()
+             * .storageUri()
+             * .totalGoalCount()
+             * .trainingDatasetId()
+             * .validationDatasetId()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("id", id),
+                    checkRequired("commit", commit),
+                    checkRequired("dateArchived", dateArchived),
+                    checkRequired("dateCreated", dateCreated),
+                    checkRequired("failingGoalCount", failingGoalCount),
+                    checkRequired("mlModelId", mlModelId),
+                    checkRequired("passingGoalCount", passingGoalCount),
+                    checkRequired("bodyProjectId", bodyProjectId),
+                    checkRequired("status", status),
+                    checkRequired("statusMessage", statusMessage),
+                    checkRequired("storageUri", storageUri),
+                    checkRequired("totalGoalCount", totalGoalCount),
+                    checkRequired("trainingDatasetId", trainingDatasetId),
+                    checkRequired("validationDatasetId", validationDatasetId),
+                    archived,
+                    deploymentStatus,
+                    links,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            commit().validate()
+            dateArchived()
+            dateCreated()
+            failingGoalCount()
+            mlModelId()
+            passingGoalCount()
+            bodyProjectId()
+            status()
+            statusMessage()
+            storageUri()
+            totalGoalCount()
+            trainingDatasetId()
+            validationDatasetId()
+            archived()
+            deploymentStatus()
+            links().ifPresent { it.validate() }
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && id == other.id && commit == other.commit && dateArchived == other.dateArchived && dateCreated == other.dateCreated && failingGoalCount == other.failingGoalCount && mlModelId == other.mlModelId && passingGoalCount == other.passingGoalCount && bodyProjectId == other.bodyProjectId && status == other.status && statusMessage == other.statusMessage && storageUri == other.storageUri && totalGoalCount == other.totalGoalCount && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && archived == other.archived && deploymentStatus == other.deploymentStatus && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(id, commit, dateArchived, dateCreated, failingGoalCount, mlModelId, passingGoalCount, bodyProjectId, status, statusMessage, storageUri, totalGoalCount, trainingDatasetId, validationDatasetId, archived, deploymentStatus, links, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{id=$id, commit=$commit, dateArchived=$dateArchived, dateCreated=$dateCreated, failingGoalCount=$failingGoalCount, mlModelId=$mlModelId, passingGoalCount=$passingGoalCount, bodyProjectId=$bodyProjectId, status=$status, statusMessage=$statusMessage, storageUri=$storageUri, totalGoalCount=$totalGoalCount, trainingDatasetId=$trainingDatasetId, validationDatasetId=$validationDatasetId, archived=$archived, deploymentStatus=$deploymentStatus, links=$links, additionalProperties=$additionalProperties}"
+    }
+
+    /** The details of a commit (project version). */
+    class Commit
+    private constructor(
+        private val id: JsonField<String>,
+        private val authorId: JsonField<String>,
+        private val fileSize: JsonField<Long>,
+        private val message: JsonField<String>,
+        private val mlModelId: JsonField<String>,
+        private val storageUri: JsonField<String>,
+        private val trainingDatasetId: JsonField<String>,
+        private val validationDatasetId: JsonField<String>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val gitCommitRef: JsonField<String>,
+        private val gitCommitSha: JsonField<Long>,
+        private val gitCommitUrl: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("authorId")
+            @ExcludeMissing
+            authorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("fileSize") @ExcludeMissing fileSize: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("mlModelId")
+            @ExcludeMissing
+            mlModelId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("storageUri")
+            @ExcludeMissing
+            storageUri: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("trainingDatasetId")
+            @ExcludeMissing
+            trainingDatasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("validationDatasetId")
+            @ExcludeMissing
+            validationDatasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("gitCommitRef")
+            @ExcludeMissing
+            gitCommitRef: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("gitCommitSha")
+            @ExcludeMissing
+            gitCommitSha: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("gitCommitUrl")
+            @ExcludeMissing
+            gitCommitUrl: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            id,
+            authorId,
+            fileSize,
+            message,
+            mlModelId,
+            storageUri,
+            trainingDatasetId,
+            validationDatasetId,
+            dateCreated,
+            gitCommitRef,
+            gitCommitSha,
+            gitCommitUrl,
+            mutableMapOf(),
+        )
 
         /**
          * The commit id.
@@ -1825,31 +1882,15 @@ private constructor(
         @ExcludeMissing
         fun _gitCommitUrl(): JsonField<String> = gitCommitUrl
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Commit = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            authorId()
-            fileSize()
-            message()
-            mlModelId()
-            storageUri()
-            trainingDatasetId()
-            validationDatasetId()
-            dateCreated()
-            gitCommitRef()
-            gitCommitSha()
-            gitCommitUrl()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -2143,8 +2184,30 @@ private constructor(
                     gitCommitRef,
                     gitCommitSha,
                     gitCommitUrl,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Commit = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            authorId()
+            fileSize()
+            message()
+            mlModelId()
+            storageUri()
+            trainingDatasetId()
+            validationDatasetId()
+            dateCreated()
+            gitCommitRef()
+            gitCommitSha()
+            gitCommitUrl()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -2293,14 +2356,16 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class Links
-    @JsonCreator
     private constructor(
-        @JsonProperty("app") @ExcludeMissing private val app: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val app: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("app") @ExcludeMissing app: JsonField<String> = JsonMissing.of()
+        ) : this(app, mutableMapOf())
 
         /**
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -2315,20 +2380,15 @@ private constructor(
          */
         @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Links = apply {
-            if (validated) {
-                return@apply
-            }
-
-            app()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -2400,7 +2460,18 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Links =
-                Links(checkRequired("app", app), additionalProperties.toImmutable())
+                Links(checkRequired("app", app), additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Links = apply {
+            if (validated) {
+                return@apply
+            }
+
+            app()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

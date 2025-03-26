@@ -5,7 +5,6 @@ package com.openlayer.api.models.commits.testresults
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
@@ -55,26 +54,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> projectVersionId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                includeArchived?.let { put("includeArchived", it.toString()) }
-                page?.let { put("page", it.toString()) }
-                perPage?.let { put("perPage", it.toString()) }
-                status?.let { put("status", it.toString()) }
-                type?.let { put("type", it.toString()) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -91,7 +70,6 @@ private constructor(
     }
 
     /** A builder for [TestResultListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var projectVersionId: String? = null
@@ -301,6 +279,26 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> projectVersionId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                includeArchived?.let { put("includeArchived", it.toString()) }
+                page?.let { put("page", it.toString()) }
+                perPage?.let { put("perPage", it.toString()) }
+                status?.let { put("status", it.toString()) }
+                type?.let { put("type", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     /**
      * Filter list of test results by status. Available statuses are `running`, `passing`,

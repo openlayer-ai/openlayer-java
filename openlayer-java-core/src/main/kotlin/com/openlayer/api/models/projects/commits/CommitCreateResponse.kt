@@ -11,69 +11,95 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.checkRequired
-import com.openlayer.api.core.immutableEmptyMap
-import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class CommitCreateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("commit")
-    @ExcludeMissing
-    private val commit: JsonField<Commit> = JsonMissing.of(),
-    @JsonProperty("dateArchived")
-    @ExcludeMissing
-    private val dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dateCreated")
-    @ExcludeMissing
-    private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("failingGoalCount")
-    @ExcludeMissing
-    private val failingGoalCount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("mlModelId")
-    @ExcludeMissing
-    private val mlModelId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("passingGoalCount")
-    @ExcludeMissing
-    private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("projectId")
-    @ExcludeMissing
-    private val projectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("statusMessage")
-    @ExcludeMissing
-    private val statusMessage: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("storageUri")
-    @ExcludeMissing
-    private val storageUri: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("totalGoalCount")
-    @ExcludeMissing
-    private val totalGoalCount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("trainingDatasetId")
-    @ExcludeMissing
-    private val trainingDatasetId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("validationDatasetId")
-    @ExcludeMissing
-    private val validationDatasetId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("archived")
-    @ExcludeMissing
-    private val archived: JsonField<Boolean> = JsonMissing.of(),
-    @JsonProperty("deploymentStatus")
-    @ExcludeMissing
-    private val deploymentStatus: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("links") @ExcludeMissing private val links: JsonField<Links> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val commit: JsonField<Commit>,
+    private val dateArchived: JsonField<OffsetDateTime>,
+    private val dateCreated: JsonField<OffsetDateTime>,
+    private val failingGoalCount: JsonField<Long>,
+    private val mlModelId: JsonField<String>,
+    private val passingGoalCount: JsonField<Long>,
+    private val projectId: JsonField<String>,
+    private val status: JsonField<Status>,
+    private val statusMessage: JsonField<String>,
+    private val storageUri: JsonField<String>,
+    private val totalGoalCount: JsonField<Long>,
+    private val trainingDatasetId: JsonField<String>,
+    private val validationDatasetId: JsonField<String>,
+    private val archived: JsonField<Boolean>,
+    private val deploymentStatus: JsonField<String>,
+    private val links: JsonField<Links>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("commit") @ExcludeMissing commit: JsonField<Commit> = JsonMissing.of(),
+        @JsonProperty("dateArchived")
+        @ExcludeMissing
+        dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        failingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("mlModelId") @ExcludeMissing mlModelId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        passingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("projectId") @ExcludeMissing projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        statusMessage: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("storageUri")
+        @ExcludeMissing
+        storageUri: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        totalGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("trainingDatasetId")
+        @ExcludeMissing
+        trainingDatasetId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("validationDatasetId")
+        @ExcludeMissing
+        validationDatasetId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("archived") @ExcludeMissing archived: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("deploymentStatus")
+        @ExcludeMissing
+        deploymentStatus: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("links") @ExcludeMissing links: JsonField<Links> = JsonMissing.of(),
+    ) : this(
+        id,
+        commit,
+        dateArchived,
+        dateCreated,
+        failingGoalCount,
+        mlModelId,
+        passingGoalCount,
+        projectId,
+        status,
+        statusMessage,
+        storageUri,
+        totalGoalCount,
+        trainingDatasetId,
+        validationDatasetId,
+        archived,
+        deploymentStatus,
+        links,
+        mutableMapOf(),
+    )
 
     /**
      * The project version (commit) id.
@@ -357,36 +383,15 @@ private constructor(
      */
     @JsonProperty("links") @ExcludeMissing fun _links(): JsonField<Links> = links
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): CommitCreateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        commit().validate()
-        dateArchived()
-        dateCreated()
-        failingGoalCount()
-        mlModelId()
-        passingGoalCount()
-        projectId()
-        status()
-        statusMessage()
-        storageUri()
-        totalGoalCount()
-        trainingDatasetId()
-        validationDatasetId()
-        archived()
-        deploymentStatus()
-        links().ifPresent { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -781,52 +786,102 @@ private constructor(
                 archived,
                 deploymentStatus,
                 links,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
+    private var validated: Boolean = false
+
+    fun validate(): CommitCreateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        commit().validate()
+        dateArchived()
+        dateCreated()
+        failingGoalCount()
+        mlModelId()
+        passingGoalCount()
+        projectId()
+        status()
+        statusMessage()
+        storageUri()
+        totalGoalCount()
+        trainingDatasetId()
+        validationDatasetId()
+        archived()
+        deploymentStatus()
+        links().ifPresent { it.validate() }
+        validated = true
+    }
+
     /** The details of a commit (project version). */
-    @NoAutoDetect
     class Commit
-    @JsonCreator
     private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("authorId")
-        @ExcludeMissing
-        private val authorId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("fileSize")
-        @ExcludeMissing
-        private val fileSize: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("message")
-        @ExcludeMissing
-        private val message: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("mlModelId")
-        @ExcludeMissing
-        private val mlModelId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("storageUri")
-        @ExcludeMissing
-        private val storageUri: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("trainingDatasetId")
-        @ExcludeMissing
-        private val trainingDatasetId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("validationDatasetId")
-        @ExcludeMissing
-        private val validationDatasetId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("gitCommitRef")
-        @ExcludeMissing
-        private val gitCommitRef: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("gitCommitSha")
-        @ExcludeMissing
-        private val gitCommitSha: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("gitCommitUrl")
-        @ExcludeMissing
-        private val gitCommitUrl: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val id: JsonField<String>,
+        private val authorId: JsonField<String>,
+        private val fileSize: JsonField<Long>,
+        private val message: JsonField<String>,
+        private val mlModelId: JsonField<String>,
+        private val storageUri: JsonField<String>,
+        private val trainingDatasetId: JsonField<String>,
+        private val validationDatasetId: JsonField<String>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val gitCommitRef: JsonField<String>,
+        private val gitCommitSha: JsonField<Long>,
+        private val gitCommitUrl: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("authorId")
+            @ExcludeMissing
+            authorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("fileSize") @ExcludeMissing fileSize: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("message") @ExcludeMissing message: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("mlModelId")
+            @ExcludeMissing
+            mlModelId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("storageUri")
+            @ExcludeMissing
+            storageUri: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("trainingDatasetId")
+            @ExcludeMissing
+            trainingDatasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("validationDatasetId")
+            @ExcludeMissing
+            validationDatasetId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("gitCommitRef")
+            @ExcludeMissing
+            gitCommitRef: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("gitCommitSha")
+            @ExcludeMissing
+            gitCommitSha: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("gitCommitUrl")
+            @ExcludeMissing
+            gitCommitUrl: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            id,
+            authorId,
+            fileSize,
+            message,
+            mlModelId,
+            storageUri,
+            trainingDatasetId,
+            validationDatasetId,
+            dateCreated,
+            gitCommitRef,
+            gitCommitSha,
+            gitCommitUrl,
+            mutableMapOf(),
+        )
 
         /**
          * The commit id.
@@ -1033,31 +1088,15 @@ private constructor(
         @ExcludeMissing
         fun _gitCommitUrl(): JsonField<String> = gitCommitUrl
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Commit = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            authorId()
-            fileSize()
-            message()
-            mlModelId()
-            storageUri()
-            trainingDatasetId()
-            validationDatasetId()
-            dateCreated()
-            gitCommitRef()
-            gitCommitSha()
-            gitCommitUrl()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1351,8 +1390,30 @@ private constructor(
                     gitCommitRef,
                     gitCommitSha,
                     gitCommitUrl,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Commit = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            authorId()
+            fileSize()
+            message()
+            mlModelId()
+            storageUri()
+            trainingDatasetId()
+            validationDatasetId()
+            dateCreated()
+            gitCommitRef()
+            gitCommitSha()
+            gitCommitUrl()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1501,14 +1562,16 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class Links
-    @JsonCreator
     private constructor(
-        @JsonProperty("app") @ExcludeMissing private val app: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val app: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("app") @ExcludeMissing app: JsonField<String> = JsonMissing.of()
+        ) : this(app, mutableMapOf())
 
         /**
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -1523,20 +1586,15 @@ private constructor(
          */
         @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Links = apply {
-            if (validated) {
-                return@apply
-            }
-
-            app()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1608,7 +1666,18 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Links =
-                Links(checkRequired("app", app), additionalProperties.toImmutable())
+                Links(checkRequired("app", app), additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Links = apply {
+            if (validated) {
+                return@apply
+            }
+
+            app()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
