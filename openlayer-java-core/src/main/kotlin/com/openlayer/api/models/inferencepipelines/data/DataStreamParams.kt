@@ -19,16 +19,15 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
-import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -80,228 +79,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> inferencePipelineId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams = additionalQueryParams
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("config")
-        @ExcludeMissing
-        private val config: JsonField<Config> = JsonMissing.of(),
-        @JsonProperty("rows")
-        @ExcludeMissing
-        private val rows: JsonField<List<Row>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        /**
-         * Configuration for the data stream. Depends on your **Openlayer project task type**.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun config(): Config = config.getRequired("config")
-
-        /**
-         * A list of inference data points with inputs and outputs
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
-         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
-         */
-        fun rows(): List<Row> = rows.getRequired("rows")
-
-        /**
-         * Returns the raw JSON value of [config].
-         *
-         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
-
-        /**
-         * Returns the raw JSON value of [rows].
-         *
-         * Unlike [rows], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("rows") @ExcludeMissing fun _rows(): JsonField<List<Row>> = rows
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            config().validate()
-            rows().forEach { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .config()
-             * .rows()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var config: JsonField<Config>? = null
-            private var rows: JsonField<MutableList<Row>>? = null
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                config = body.config
-                rows = body.rows.map { it.toMutableList() }
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * Configuration for the data stream. Depends on your **Openlayer project task type**.
-             */
-            fun config(config: Config) = config(JsonField.of(config))
-
-            /**
-             * Sets [Builder.config] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.config] with a well-typed [Config] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun config(config: JsonField<Config>) = apply { this.config = config }
-
-            /** Alias for calling [config] with `Config.ofLlmData(llmData)`. */
-            fun config(llmData: Config.LlmData) = config(Config.ofLlmData(llmData))
-
-            /**
-             * Alias for calling [config] with
-             * `Config.ofTabularClassificationData(tabularClassificationData)`.
-             */
-            fun config(tabularClassificationData: Config.TabularClassificationData) =
-                config(Config.ofTabularClassificationData(tabularClassificationData))
-
-            /**
-             * Alias for calling [config] with
-             * `Config.ofTabularRegressionData(tabularRegressionData)`.
-             */
-            fun config(tabularRegressionData: Config.TabularRegressionData) =
-                config(Config.ofTabularRegressionData(tabularRegressionData))
-
-            /**
-             * Alias for calling [config] with
-             * `Config.ofTextClassificationData(textClassificationData)`.
-             */
-            fun config(textClassificationData: Config.TextClassificationData) =
-                config(Config.ofTextClassificationData(textClassificationData))
-
-            /** A list of inference data points with inputs and outputs */
-            fun rows(rows: List<Row>) = rows(JsonField.of(rows))
-
-            /**
-             * Sets [Builder.rows] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.rows] with a well-typed `List<Row>` value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun rows(rows: JsonField<List<Row>>) = apply {
-                this.rows = rows.map { it.toMutableList() }
-            }
-
-            /**
-             * Adds a single [Row] to [rows].
-             *
-             * @throws IllegalStateException if the field was previously set to a non-list.
-             */
-            fun addRow(row: Row) = apply {
-                rows =
-                    (rows ?: JsonField.of(mutableListOf())).also { checkKnown("rows", it).add(row) }
-            }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .config()
-             * .rows()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(
-                    checkRequired("config", config),
-                    checkRequired("rows", rows).map { it.toImmutable() },
-                    additionalProperties.toImmutable(),
-                )
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && config == other.config && rows == other.rows && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(config, rows, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -320,7 +97,6 @@ private constructor(
     }
 
     /** A builder for [DataStreamParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
@@ -535,6 +311,233 @@ private constructor(
             )
     }
 
+    @JvmSynthetic internal fun _body(): Body = body
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> inferencePipelineId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams = additionalQueryParams
+
+    class Body
+    private constructor(
+        private val config: JsonField<Config>,
+        private val rows: JsonField<List<Row>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("config") @ExcludeMissing config: JsonField<Config> = JsonMissing.of(),
+            @JsonProperty("rows") @ExcludeMissing rows: JsonField<List<Row>> = JsonMissing.of(),
+        ) : this(config, rows, mutableMapOf())
+
+        /**
+         * Configuration for the data stream. Depends on your **Openlayer project task type**.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun config(): Config = config.getRequired("config")
+
+        /**
+         * A list of inference data points with inputs and outputs
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun rows(): List<Row> = rows.getRequired("rows")
+
+        /**
+         * Returns the raw JSON value of [config].
+         *
+         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+        /**
+         * Returns the raw JSON value of [rows].
+         *
+         * Unlike [rows], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("rows") @ExcludeMissing fun _rows(): JsonField<List<Row>> = rows
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .config()
+             * .rows()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var config: JsonField<Config>? = null
+            private var rows: JsonField<MutableList<Row>>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                config = body.config
+                rows = body.rows.map { it.toMutableList() }
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            /**
+             * Configuration for the data stream. Depends on your **Openlayer project task type**.
+             */
+            fun config(config: Config) = config(JsonField.of(config))
+
+            /**
+             * Sets [Builder.config] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.config] with a well-typed [Config] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun config(config: JsonField<Config>) = apply { this.config = config }
+
+            /** Alias for calling [config] with `Config.ofLlmData(llmData)`. */
+            fun config(llmData: Config.LlmData) = config(Config.ofLlmData(llmData))
+
+            /**
+             * Alias for calling [config] with
+             * `Config.ofTabularClassificationData(tabularClassificationData)`.
+             */
+            fun config(tabularClassificationData: Config.TabularClassificationData) =
+                config(Config.ofTabularClassificationData(tabularClassificationData))
+
+            /**
+             * Alias for calling [config] with
+             * `Config.ofTabularRegressionData(tabularRegressionData)`.
+             */
+            fun config(tabularRegressionData: Config.TabularRegressionData) =
+                config(Config.ofTabularRegressionData(tabularRegressionData))
+
+            /**
+             * Alias for calling [config] with
+             * `Config.ofTextClassificationData(textClassificationData)`.
+             */
+            fun config(textClassificationData: Config.TextClassificationData) =
+                config(Config.ofTextClassificationData(textClassificationData))
+
+            /** A list of inference data points with inputs and outputs */
+            fun rows(rows: List<Row>) = rows(JsonField.of(rows))
+
+            /**
+             * Sets [Builder.rows] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.rows] with a well-typed `List<Row>` value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun rows(rows: JsonField<List<Row>>) = apply {
+                this.rows = rows.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [Row] to [rows].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addRow(row: Row) = apply {
+                rows =
+                    (rows ?: JsonField.of(mutableListOf())).also { checkKnown("rows", it).add(row) }
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .config()
+             * .rows()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(
+                    checkRequired("config", config),
+                    checkRequired("rows", rows).map { it.toImmutable() },
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            config().validate()
+            rows().forEach { it.validate() }
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && config == other.config && rows == other.rows && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(config, rows, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{config=$config, rows=$rows, additionalProperties=$additionalProperties}"
+    }
+
     /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
     @JsonDeserialize(using = Config.Deserializer::class)
     @JsonSerialize(using = Config.Serializer::class)
@@ -742,49 +745,74 @@ private constructor(
             }
         }
 
-        @NoAutoDetect
         class LlmData
-        @JsonCreator
         private constructor(
-            @JsonProperty("outputColumnName")
-            @ExcludeMissing
-            private val outputColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("contextColumnName")
-            @ExcludeMissing
-            private val contextColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("costColumnName")
-            @ExcludeMissing
-            private val costColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("groundTruthColumnName")
-            @ExcludeMissing
-            private val groundTruthColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("inferenceIdColumnName")
-            @ExcludeMissing
-            private val inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("inputVariableNames")
-            @ExcludeMissing
-            private val inputVariableNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("latencyColumnName")
-            @ExcludeMissing
-            private val latencyColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("metadata")
-            @ExcludeMissing
-            private val metadata: JsonValue = JsonMissing.of(),
-            @JsonProperty("numOfTokenColumnName")
-            @ExcludeMissing
-            private val numOfTokenColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("prompt")
-            @ExcludeMissing
-            private val prompt: JsonField<List<Prompt>> = JsonMissing.of(),
-            @JsonProperty("questionColumnName")
-            @ExcludeMissing
-            private val questionColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("timestampColumnName")
-            @ExcludeMissing
-            private val timestampColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val outputColumnName: JsonField<String>,
+            private val contextColumnName: JsonField<String>,
+            private val costColumnName: JsonField<String>,
+            private val groundTruthColumnName: JsonField<String>,
+            private val inferenceIdColumnName: JsonField<String>,
+            private val inputVariableNames: JsonField<List<String>>,
+            private val latencyColumnName: JsonField<String>,
+            private val metadata: JsonValue,
+            private val numOfTokenColumnName: JsonField<String>,
+            private val prompt: JsonField<List<Prompt>>,
+            private val questionColumnName: JsonField<String>,
+            private val timestampColumnName: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("outputColumnName")
+                @ExcludeMissing
+                outputColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("contextColumnName")
+                @ExcludeMissing
+                contextColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("costColumnName")
+                @ExcludeMissing
+                costColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("groundTruthColumnName")
+                @ExcludeMissing
+                groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("inputVariableNames")
+                @ExcludeMissing
+                inputVariableNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                latencyColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("metadata") @ExcludeMissing metadata: JsonValue = JsonMissing.of(),
+                @JsonProperty("numOfTokenColumnName")
+                @ExcludeMissing
+                numOfTokenColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("prompt")
+                @ExcludeMissing
+                prompt: JsonField<List<Prompt>> = JsonMissing.of(),
+                @JsonProperty("questionColumnName")
+                @ExcludeMissing
+                questionColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                timestampColumnName: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                outputColumnName,
+                contextColumnName,
+                costColumnName,
+                groundTruthColumnName,
+                inferenceIdColumnName,
+                inputVariableNames,
+                latencyColumnName,
+                metadata,
+                numOfTokenColumnName,
+                prompt,
+                questionColumnName,
+                timestampColumnName,
+                mutableMapOf(),
+            )
 
             /**
              * Name of the column with the model outputs.
@@ -998,30 +1026,15 @@ private constructor(
             @ExcludeMissing
             fun _timestampColumnName(): JsonField<String> = timestampColumnName
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): LlmData = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                outputColumnName()
-                contextColumnName()
-                costColumnName()
-                groundTruthColumnName()
-                inferenceIdColumnName()
-                inputVariableNames()
-                latencyColumnName()
-                numOfTokenColumnName()
-                prompt().ifPresent { it.forEach { it.validate() } }
-                questionColumnName()
-                timestampColumnName()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1333,23 +1346,45 @@ private constructor(
                         (prompt ?: JsonMissing.of()).map { it.toImmutable() },
                         questionColumnName,
                         timestampColumnName,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
             }
 
-            @NoAutoDetect
+            private var validated: Boolean = false
+
+            fun validate(): LlmData = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                outputColumnName()
+                contextColumnName()
+                costColumnName()
+                groundTruthColumnName()
+                inferenceIdColumnName()
+                inputVariableNames()
+                latencyColumnName()
+                numOfTokenColumnName()
+                prompt().ifPresent { it.forEach { it.validate() } }
+                questionColumnName()
+                timestampColumnName()
+                validated = true
+            }
+
             class Prompt
-            @JsonCreator
             private constructor(
-                @JsonProperty("content")
-                @ExcludeMissing
-                private val content: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("role")
-                @ExcludeMissing
-                private val role: JsonField<String> = JsonMissing.of(),
-                @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val content: JsonField<String>,
+                private val role: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("content")
+                    @ExcludeMissing
+                    content: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("role") @ExcludeMissing role: JsonField<String> = JsonMissing.of(),
+                ) : this(content, role, mutableMapOf())
 
                 /**
                  * Content of the prompt.
@@ -1384,21 +1419,15 @@ private constructor(
                  */
                 @JsonProperty("role") @ExcludeMissing fun _role(): JsonField<String> = role
 
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): Prompt = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    content()
-                    role()
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -1473,7 +1502,19 @@ private constructor(
                      *
                      * Further updates to this [Builder] will not mutate the returned instance.
                      */
-                    fun build(): Prompt = Prompt(content, role, additionalProperties.toImmutable())
+                    fun build(): Prompt = Prompt(content, role, additionalProperties.toMutableMap())
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Prompt = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    content()
+                    role()
+                    validated = true
                 }
 
                 override fun equals(other: Any?): Boolean {
@@ -1512,43 +1553,64 @@ private constructor(
                 "LlmData{outputColumnName=$outputColumnName, contextColumnName=$contextColumnName, costColumnName=$costColumnName, groundTruthColumnName=$groundTruthColumnName, inferenceIdColumnName=$inferenceIdColumnName, inputVariableNames=$inputVariableNames, latencyColumnName=$latencyColumnName, metadata=$metadata, numOfTokenColumnName=$numOfTokenColumnName, prompt=$prompt, questionColumnName=$questionColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class TabularClassificationData
-        @JsonCreator
         private constructor(
-            @JsonProperty("classNames")
-            @ExcludeMissing
-            private val classNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("categoricalFeatureNames")
-            @ExcludeMissing
-            private val categoricalFeatureNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("featureNames")
-            @ExcludeMissing
-            private val featureNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("inferenceIdColumnName")
-            @ExcludeMissing
-            private val inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("labelColumnName")
-            @ExcludeMissing
-            private val labelColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("latencyColumnName")
-            @ExcludeMissing
-            private val latencyColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("metadata")
-            @ExcludeMissing
-            private val metadata: JsonValue = JsonMissing.of(),
-            @JsonProperty("predictionsColumnName")
-            @ExcludeMissing
-            private val predictionsColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("predictionScoresColumnName")
-            @ExcludeMissing
-            private val predictionScoresColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("timestampColumnName")
-            @ExcludeMissing
-            private val timestampColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val classNames: JsonField<List<String>>,
+            private val categoricalFeatureNames: JsonField<List<String>>,
+            private val featureNames: JsonField<List<String>>,
+            private val inferenceIdColumnName: JsonField<String>,
+            private val labelColumnName: JsonField<String>,
+            private val latencyColumnName: JsonField<String>,
+            private val metadata: JsonValue,
+            private val predictionsColumnName: JsonField<String>,
+            private val predictionScoresColumnName: JsonField<String>,
+            private val timestampColumnName: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("classNames")
+                @ExcludeMissing
+                classNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("categoricalFeatureNames")
+                @ExcludeMissing
+                categoricalFeatureNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("featureNames")
+                @ExcludeMissing
+                featureNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("labelColumnName")
+                @ExcludeMissing
+                labelColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                latencyColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("metadata") @ExcludeMissing metadata: JsonValue = JsonMissing.of(),
+                @JsonProperty("predictionsColumnName")
+                @ExcludeMissing
+                predictionsColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("predictionScoresColumnName")
+                @ExcludeMissing
+                predictionScoresColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                timestampColumnName: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                classNames,
+                categoricalFeatureNames,
+                featureNames,
+                inferenceIdColumnName,
+                labelColumnName,
+                latencyColumnName,
+                metadata,
+                predictionsColumnName,
+                predictionScoresColumnName,
+                timestampColumnName,
+                mutableMapOf(),
+            )
 
             /**
              * List of class names indexed by label integer in the dataset. E.g.
@@ -1731,28 +1793,15 @@ private constructor(
             @ExcludeMissing
             fun _timestampColumnName(): JsonField<String> = timestampColumnName
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): TabularClassificationData = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                classNames()
-                categoricalFeatureNames()
-                featureNames()
-                inferenceIdColumnName()
-                labelColumnName()
-                latencyColumnName()
-                predictionsColumnName()
-                predictionScoresColumnName()
-                timestampColumnName()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2044,8 +2093,27 @@ private constructor(
                         predictionsColumnName,
                         predictionScoresColumnName,
                         timestampColumnName,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): TabularClassificationData = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                classNames()
+                categoricalFeatureNames()
+                featureNames()
+                inferenceIdColumnName()
+                labelColumnName()
+                latencyColumnName()
+                predictionsColumnName()
+                predictionScoresColumnName()
+                timestampColumnName()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2066,37 +2134,54 @@ private constructor(
                 "TabularClassificationData{classNames=$classNames, categoricalFeatureNames=$categoricalFeatureNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, labelColumnName=$labelColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, predictionScoresColumnName=$predictionScoresColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class TabularRegressionData
-        @JsonCreator
         private constructor(
-            @JsonProperty("categoricalFeatureNames")
-            @ExcludeMissing
-            private val categoricalFeatureNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("featureNames")
-            @ExcludeMissing
-            private val featureNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("inferenceIdColumnName")
-            @ExcludeMissing
-            private val inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("latencyColumnName")
-            @ExcludeMissing
-            private val latencyColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("metadata")
-            @ExcludeMissing
-            private val metadata: JsonValue = JsonMissing.of(),
-            @JsonProperty("predictionsColumnName")
-            @ExcludeMissing
-            private val predictionsColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("targetColumnName")
-            @ExcludeMissing
-            private val targetColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("timestampColumnName")
-            @ExcludeMissing
-            private val timestampColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val categoricalFeatureNames: JsonField<List<String>>,
+            private val featureNames: JsonField<List<String>>,
+            private val inferenceIdColumnName: JsonField<String>,
+            private val latencyColumnName: JsonField<String>,
+            private val metadata: JsonValue,
+            private val predictionsColumnName: JsonField<String>,
+            private val targetColumnName: JsonField<String>,
+            private val timestampColumnName: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("categoricalFeatureNames")
+                @ExcludeMissing
+                categoricalFeatureNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("featureNames")
+                @ExcludeMissing
+                featureNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                latencyColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("metadata") @ExcludeMissing metadata: JsonValue = JsonMissing.of(),
+                @JsonProperty("predictionsColumnName")
+                @ExcludeMissing
+                predictionsColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("targetColumnName")
+                @ExcludeMissing
+                targetColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                timestampColumnName: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                categoricalFeatureNames,
+                featureNames,
+                inferenceIdColumnName,
+                latencyColumnName,
+                metadata,
+                predictionsColumnName,
+                targetColumnName,
+                timestampColumnName,
+                mutableMapOf(),
+            )
 
             /**
              * Array with the names of all categorical features in the dataset. E.g.
@@ -2237,26 +2322,15 @@ private constructor(
             @ExcludeMissing
             fun _timestampColumnName(): JsonField<String> = timestampColumnName
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): TabularRegressionData = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                categoricalFeatureNames()
-                featureNames()
-                inferenceIdColumnName()
-                latencyColumnName()
-                predictionsColumnName()
-                targetColumnName()
-                timestampColumnName()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2477,8 +2551,25 @@ private constructor(
                         predictionsColumnName,
                         targetColumnName,
                         timestampColumnName,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): TabularRegressionData = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                categoricalFeatureNames()
+                featureNames()
+                inferenceIdColumnName()
+                latencyColumnName()
+                predictionsColumnName()
+                targetColumnName()
+                timestampColumnName()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2499,40 +2590,59 @@ private constructor(
                 "TabularRegressionData{categoricalFeatureNames=$categoricalFeatureNames, featureNames=$featureNames, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, metadata=$metadata, predictionsColumnName=$predictionsColumnName, targetColumnName=$targetColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
         }
 
-        @NoAutoDetect
         class TextClassificationData
-        @JsonCreator
         private constructor(
-            @JsonProperty("classNames")
-            @ExcludeMissing
-            private val classNames: JsonField<List<String>> = JsonMissing.of(),
-            @JsonProperty("inferenceIdColumnName")
-            @ExcludeMissing
-            private val inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("labelColumnName")
-            @ExcludeMissing
-            private val labelColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("latencyColumnName")
-            @ExcludeMissing
-            private val latencyColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("metadata")
-            @ExcludeMissing
-            private val metadata: JsonValue = JsonMissing.of(),
-            @JsonProperty("predictionsColumnName")
-            @ExcludeMissing
-            private val predictionsColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("predictionScoresColumnName")
-            @ExcludeMissing
-            private val predictionScoresColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("textColumnName")
-            @ExcludeMissing
-            private val textColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("timestampColumnName")
-            @ExcludeMissing
-            private val timestampColumnName: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val classNames: JsonField<List<String>>,
+            private val inferenceIdColumnName: JsonField<String>,
+            private val labelColumnName: JsonField<String>,
+            private val latencyColumnName: JsonField<String>,
+            private val metadata: JsonValue,
+            private val predictionsColumnName: JsonField<String>,
+            private val predictionScoresColumnName: JsonField<String>,
+            private val textColumnName: JsonField<String>,
+            private val timestampColumnName: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("classNames")
+                @ExcludeMissing
+                classNames: JsonField<List<String>> = JsonMissing.of(),
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("labelColumnName")
+                @ExcludeMissing
+                labelColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                latencyColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("metadata") @ExcludeMissing metadata: JsonValue = JsonMissing.of(),
+                @JsonProperty("predictionsColumnName")
+                @ExcludeMissing
+                predictionsColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("predictionScoresColumnName")
+                @ExcludeMissing
+                predictionScoresColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("textColumnName")
+                @ExcludeMissing
+                textColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                timestampColumnName: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                classNames,
+                inferenceIdColumnName,
+                labelColumnName,
+                latencyColumnName,
+                metadata,
+                predictionsColumnName,
+                predictionScoresColumnName,
+                textColumnName,
+                timestampColumnName,
+                mutableMapOf(),
+            )
 
             /**
              * List of class names indexed by label integer in the dataset. E.g.
@@ -2695,27 +2805,15 @@ private constructor(
             @ExcludeMissing
             fun _timestampColumnName(): JsonField<String> = timestampColumnName
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): TextClassificationData = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                classNames()
-                inferenceIdColumnName()
-                labelColumnName()
-                latencyColumnName()
-                predictionsColumnName()
-                predictionScoresColumnName()
-                textColumnName()
-                timestampColumnName()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2958,8 +3056,26 @@ private constructor(
                         predictionScoresColumnName,
                         textColumnName,
                         timestampColumnName,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): TextClassificationData = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                classNames()
+                inferenceIdColumnName()
+                labelColumnName()
+                latencyColumnName()
+                predictionsColumnName()
+                predictionScoresColumnName()
+                textColumnName()
+                timestampColumnName()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2981,27 +3097,19 @@ private constructor(
         }
     }
 
-    @NoAutoDetect
-    class Row
-    @JsonCreator
-    private constructor(
+    class Row private constructor(private val additionalProperties: MutableMap<String, JsonValue>) {
+
+        @JsonCreator private constructor() : this(mutableMapOf())
+
         @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap()
-    ) {
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
 
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Row = apply {
-            if (validated) {
-                return@apply
-            }
-
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -3045,7 +3153,17 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Row = Row(additionalProperties.toImmutable())
+            fun build(): Row = Row(additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Row = apply {
+            if (validated) {
+                return@apply
+            }
+
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

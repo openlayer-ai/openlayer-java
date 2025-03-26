@@ -5,7 +5,6 @@ package com.openlayer.api.models.projects
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
@@ -41,19 +40,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                name?.let { put("name", it) }
-                page?.let { put("page", it.toString()) }
-                perPage?.let { put("perPage", it.toString()) }
-                taskType?.let { put("taskType", it.toString()) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -65,7 +51,6 @@ private constructor(
     }
 
     /** A builder for [ProjectListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var name: String? = null
@@ -236,6 +221,19 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                name?.let { put("name", it) }
+                page?.let { put("page", it.toString()) }
+                perPage?.let { put("perPage", it.toString()) }
+                taskType?.let { put("taskType", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     /** Filter list of items by task type. */
     class TaskType @JsonCreator private constructor(private val value: JsonField<String>) : Enum {

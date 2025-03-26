@@ -2,13 +2,15 @@
 
 package com.openlayer.api.models.storage.presignedurl
 
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
-import com.openlayer.api.core.toImmutable
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 
@@ -18,7 +20,7 @@ private constructor(
     private val objectName: String,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
-    private val additionalBodyProperties: Map<String, JsonValue>,
+    private val additionalBodyProperties: MutableMap<String, JsonValue>,
 ) : Params {
 
     /** The name of the object. */
@@ -28,21 +30,15 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
+    @JsonAnySetter
+    private fun putAdditionalBodyProperty(key: String, value: JsonValue) {
+        additionalBodyProperties.put(key, value)
+    }
 
-    @JvmSynthetic
-    internal fun _body(): Optional<Map<String, JsonValue>> =
-        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                put("objectName", objectName)
-                putAll(additionalQueryParams)
-            }
-            .build()
+    @JsonAnyGetter
+    @ExcludeMissing
+    fun _additionalBodyProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalBodyProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -60,7 +56,6 @@ private constructor(
     }
 
     /** A builder for [PresignedUrlCreateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var objectName: String? = null
@@ -217,9 +212,23 @@ private constructor(
                 checkRequired("objectName", objectName),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
-                additionalBodyProperties.toImmutable(),
+                additionalBodyProperties.toMutableMap(),
             )
     }
+
+    @JvmSynthetic
+    internal fun _body(): Optional<Map<String, JsonValue>> =
+        Optional.ofNullable(additionalBodyProperties.ifEmpty { null })
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("objectName", objectName)
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

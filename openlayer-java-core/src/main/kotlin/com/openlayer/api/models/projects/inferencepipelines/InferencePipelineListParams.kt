@@ -2,7 +2,6 @@
 
 package com.openlayer.api.models.projects.inferencepipelines
 
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
@@ -37,24 +36,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> projectId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                name?.let { put("name", it) }
-                page?.let { put("page", it.toString()) }
-                perPage?.let { put("perPage", it.toString()) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -71,7 +52,6 @@ private constructor(
     }
 
     /** A builder for [InferencePipelineListParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var projectId: String? = null
@@ -245,6 +225,24 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> projectId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                name?.let { put("name", it) }
+                page?.let { put("page", it.toString()) }
+                perPage?.let { put("perPage", it.toString()) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     override fun equals(other: Any?): Boolean {
         if (this === other) {

@@ -20,27 +20,27 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
-import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class TestResultListResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("items")
-    @ExcludeMissing
-    private val items: JsonField<List<Item>> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val items: JsonField<List<Item>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of()
+    ) : this(items, mutableMapOf())
 
     /**
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -55,20 +55,15 @@ private constructor(
      */
     @JsonProperty("items") @ExcludeMissing fun _items(): JsonField<List<Item>> = items
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): TestResultListResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        items().forEach { it.validate() }
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -154,46 +149,78 @@ private constructor(
         fun build(): TestResultListResponse =
             TestResultListResponse(
                 checkRequired("items", items).map { it.toImmutable() },
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): TestResultListResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        items().forEach { it.validate() }
+        validated = true
+    }
+
     class Item
-    @JsonCreator
     private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("dateDataEnds")
-        @ExcludeMissing
-        private val dateDataEnds: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("dateDataStarts")
-        @ExcludeMissing
-        private val dateDataStarts: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("dateUpdated")
-        @ExcludeMissing
-        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("inferencePipelineId")
-        @ExcludeMissing
-        private val inferencePipelineId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("projectVersionId")
-        @ExcludeMissing
-        private val projectVersionId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<Status> = JsonMissing.of(),
-        @JsonProperty("statusMessage")
-        @ExcludeMissing
-        private val statusMessage: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("goal") @ExcludeMissing private val goal: JsonField<Goal> = JsonMissing.of(),
-        @JsonProperty("goalId")
-        @ExcludeMissing
-        private val goalId: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val id: JsonField<String>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val dateDataEnds: JsonField<OffsetDateTime>,
+        private val dateDataStarts: JsonField<OffsetDateTime>,
+        private val dateUpdated: JsonField<OffsetDateTime>,
+        private val inferencePipelineId: JsonField<String>,
+        private val projectVersionId: JsonField<String>,
+        private val status: JsonField<Status>,
+        private val statusMessage: JsonField<String>,
+        private val goal: JsonField<Goal>,
+        private val goalId: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateDataEnds")
+            @ExcludeMissing
+            dateDataEnds: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateDataStarts")
+            @ExcludeMissing
+            dateDataStarts: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("inferencePipelineId")
+            @ExcludeMissing
+            inferencePipelineId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("projectVersionId")
+            @ExcludeMissing
+            projectVersionId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+            @JsonProperty("statusMessage")
+            @ExcludeMissing
+            statusMessage: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("goal") @ExcludeMissing goal: JsonField<Goal> = JsonMissing.of(),
+            @JsonProperty("goalId") @ExcludeMissing goalId: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            id,
+            dateCreated,
+            dateDataEnds,
+            dateDataStarts,
+            dateUpdated,
+            inferencePipelineId,
+            projectVersionId,
+            status,
+            statusMessage,
+            goal,
+            goalId,
+            mutableMapOf(),
+        )
 
         /**
          * Project version (commit) id.
@@ -382,30 +409,15 @@ private constructor(
          */
         @JsonProperty("goalId") @ExcludeMissing fun _goalId(): JsonField<String> = goalId
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Item = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            dateCreated()
-            dateDataEnds()
-            dateDataStarts()
-            dateUpdated()
-            inferencePipelineId()
-            projectVersionId()
-            status()
-            statusMessage()
-            goal().ifPresent { it.validate() }
-            goalId()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -692,8 +704,29 @@ private constructor(
                     checkRequired("statusMessage", statusMessage),
                     goal,
                     goalId,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Item = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            dateCreated()
+            dateDataEnds()
+            dateDataStarts()
+            dateUpdated()
+            inferencePipelineId()
+            projectVersionId()
+            status()
+            statusMessage()
+            goal().ifPresent { it.validate() }
+            goalId()
+            validated = true
         }
 
         /** The status of the test. */
@@ -817,79 +850,118 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        @NoAutoDetect
         class Goal
-        @JsonCreator
         private constructor(
-            @JsonProperty("id")
-            @ExcludeMissing
-            private val id: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("commentCount")
-            @ExcludeMissing
-            private val commentCount: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("creatorId")
-            @ExcludeMissing
-            private val creatorId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("dateArchived")
-            @ExcludeMissing
-            private val dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("dateCreated")
-            @ExcludeMissing
-            private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("dateUpdated")
-            @ExcludeMissing
-            private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("description")
-            @ExcludeMissing
-            private val description: JsonValue = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("number")
-            @ExcludeMissing
-            private val number: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("originProjectVersionId")
-            @ExcludeMissing
-            private val originProjectVersionId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("subtype")
-            @ExcludeMissing
-            private val subtype: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("suggested")
-            @ExcludeMissing
-            private val suggested: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("thresholds")
-            @ExcludeMissing
-            private val thresholds: JsonField<List<Threshold>> = JsonMissing.of(),
-            @JsonProperty("type")
-            @ExcludeMissing
-            private val type: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("archived")
-            @ExcludeMissing
-            private val archived: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("delayWindow")
-            @ExcludeMissing
-            private val delayWindow: JsonField<Double> = JsonMissing.of(),
-            @JsonProperty("evaluationWindow")
-            @ExcludeMissing
-            private val evaluationWindow: JsonField<Double> = JsonMissing.of(),
-            @JsonProperty("usesMlModel")
-            @ExcludeMissing
-            private val usesMlModel: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("usesProductionData")
-            @ExcludeMissing
-            private val usesProductionData: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("usesReferenceDataset")
-            @ExcludeMissing
-            private val usesReferenceDataset: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("usesTrainingDataset")
-            @ExcludeMissing
-            private val usesTrainingDataset: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("usesValidationDataset")
-            @ExcludeMissing
-            private val usesValidationDataset: JsonField<Boolean> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val id: JsonField<String>,
+            private val commentCount: JsonField<Long>,
+            private val creatorId: JsonField<String>,
+            private val dateArchived: JsonField<OffsetDateTime>,
+            private val dateCreated: JsonField<OffsetDateTime>,
+            private val dateUpdated: JsonField<OffsetDateTime>,
+            private val description: JsonValue,
+            private val name: JsonField<String>,
+            private val number: JsonField<Long>,
+            private val originProjectVersionId: JsonField<String>,
+            private val subtype: JsonField<String>,
+            private val suggested: JsonField<Boolean>,
+            private val thresholds: JsonField<List<Threshold>>,
+            private val type: JsonField<String>,
+            private val archived: JsonField<Boolean>,
+            private val delayWindow: JsonField<Double>,
+            private val evaluationWindow: JsonField<Double>,
+            private val usesMlModel: JsonField<Boolean>,
+            private val usesProductionData: JsonField<Boolean>,
+            private val usesReferenceDataset: JsonField<Boolean>,
+            private val usesTrainingDataset: JsonField<Boolean>,
+            private val usesValidationDataset: JsonField<Boolean>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("commentCount")
+                @ExcludeMissing
+                commentCount: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("creatorId")
+                @ExcludeMissing
+                creatorId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("dateArchived")
+                @ExcludeMissing
+                dateArchived: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("dateCreated")
+                @ExcludeMissing
+                dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("dateUpdated")
+                @ExcludeMissing
+                dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("description")
+                @ExcludeMissing
+                description: JsonValue = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("number") @ExcludeMissing number: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("originProjectVersionId")
+                @ExcludeMissing
+                originProjectVersionId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("subtype")
+                @ExcludeMissing
+                subtype: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("suggested")
+                @ExcludeMissing
+                suggested: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("thresholds")
+                @ExcludeMissing
+                thresholds: JsonField<List<Threshold>> = JsonMissing.of(),
+                @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("archived")
+                @ExcludeMissing
+                archived: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("delayWindow")
+                @ExcludeMissing
+                delayWindow: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("evaluationWindow")
+                @ExcludeMissing
+                evaluationWindow: JsonField<Double> = JsonMissing.of(),
+                @JsonProperty("usesMlModel")
+                @ExcludeMissing
+                usesMlModel: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("usesProductionData")
+                @ExcludeMissing
+                usesProductionData: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("usesReferenceDataset")
+                @ExcludeMissing
+                usesReferenceDataset: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("usesTrainingDataset")
+                @ExcludeMissing
+                usesTrainingDataset: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("usesValidationDataset")
+                @ExcludeMissing
+                usesValidationDataset: JsonField<Boolean> = JsonMissing.of(),
+            ) : this(
+                id,
+                commentCount,
+                creatorId,
+                dateArchived,
+                dateCreated,
+                dateUpdated,
+                description,
+                name,
+                number,
+                originProjectVersionId,
+                subtype,
+                suggested,
+                thresholds,
+                type,
+                archived,
+                delayWindow,
+                evaluationWindow,
+                usesMlModel,
+                usesProductionData,
+                usesReferenceDataset,
+                usesTrainingDataset,
+                usesValidationDataset,
+                mutableMapOf(),
+            )
 
             /**
              * The test id.
@@ -1274,40 +1346,15 @@ private constructor(
             @ExcludeMissing
             fun _usesValidationDataset(): JsonField<Boolean> = usesValidationDataset
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Goal = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                id()
-                commentCount()
-                creatorId()
-                dateArchived()
-                dateCreated()
-                dateUpdated()
-                name()
-                number()
-                originProjectVersionId()
-                subtype()
-                suggested()
-                thresholds().forEach { it.validate() }
-                type()
-                archived()
-                delayWindow()
-                evaluationWindow()
-                usesMlModel()
-                usesProductionData()
-                usesReferenceDataset()
-                usesTrainingDataset()
-                usesValidationDataset()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1806,32 +1853,76 @@ private constructor(
                         usesReferenceDataset,
                         usesTrainingDataset,
                         usesValidationDataset,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
             }
 
-            @NoAutoDetect
+            private var validated: Boolean = false
+
+            fun validate(): Goal = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                id()
+                commentCount()
+                creatorId()
+                dateArchived()
+                dateCreated()
+                dateUpdated()
+                name()
+                number()
+                originProjectVersionId()
+                subtype()
+                suggested()
+                thresholds().forEach { it.validate() }
+                type()
+                archived()
+                delayWindow()
+                evaluationWindow()
+                usesMlModel()
+                usesProductionData()
+                usesReferenceDataset()
+                usesTrainingDataset()
+                usesValidationDataset()
+                validated = true
+            }
+
             class Threshold
-            @JsonCreator
             private constructor(
-                @JsonProperty("insightName")
-                @ExcludeMissing
-                private val insightName: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("insightParameters")
-                @ExcludeMissing
-                private val insightParameters: JsonField<List<JsonValue>> = JsonMissing.of(),
-                @JsonProperty("measurement")
-                @ExcludeMissing
-                private val measurement: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("operator")
-                @ExcludeMissing
-                private val operator: JsonField<String> = JsonMissing.of(),
-                @JsonProperty("value")
-                @ExcludeMissing
-                private val value: JsonField<Value> = JsonMissing.of(),
-                @JsonAnySetter
-                private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+                private val insightName: JsonField<String>,
+                private val insightParameters: JsonField<List<JsonValue>>,
+                private val measurement: JsonField<String>,
+                private val operator: JsonField<String>,
+                private val value: JsonField<Value>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("insightName")
+                    @ExcludeMissing
+                    insightName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("insightParameters")
+                    @ExcludeMissing
+                    insightParameters: JsonField<List<JsonValue>> = JsonMissing.of(),
+                    @JsonProperty("measurement")
+                    @ExcludeMissing
+                    measurement: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("operator")
+                    @ExcludeMissing
+                    operator: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("value")
+                    @ExcludeMissing
+                    value: JsonField<Value> = JsonMissing.of(),
+                ) : this(
+                    insightName,
+                    insightParameters,
+                    measurement,
+                    operator,
+                    value,
+                    mutableMapOf(),
+                )
 
                 /**
                  * The insight name to be evaluated.
@@ -1923,24 +2014,15 @@ private constructor(
                  */
                 @JsonProperty("value") @ExcludeMissing fun _value(): JsonField<Value> = value
 
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
                 @JsonAnyGetter
                 @ExcludeMissing
-                fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-                private var validated: Boolean = false
-
-                fun validate(): Threshold = apply {
-                    if (validated) {
-                        return@apply
-                    }
-
-                    insightName()
-                    insightParameters()
-                    measurement()
-                    operator()
-                    value().ifPresent { it.validate() }
-                    validated = true
-                }
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
 
                 fun toBuilder() = Builder().from(this)
 
@@ -2094,8 +2176,23 @@ private constructor(
                             measurement,
                             operator,
                             value,
-                            additionalProperties.toImmutable(),
+                            additionalProperties.toMutableMap(),
                         )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Threshold = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    insightName()
+                    insightParameters()
+                    measurement()
+                    operator()
+                    value().ifPresent { it.validate() }
+                    validated = true
                 }
 
                 /** The value to be compared. */

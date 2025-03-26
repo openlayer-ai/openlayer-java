@@ -10,14 +10,12 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
-import com.openlayer.api.core.immutableEmptyMap
-import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
@@ -58,164 +56,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    @JvmSynthetic internal fun _body(): Body = body
-
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> inferencePipelineId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                put("inferenceId", inferenceId)
-                putAll(additionalQueryParams)
-            }
-            .build()
-
-    @NoAutoDetect
-    class Body
-    @JsonCreator
-    private constructor(
-        @JsonProperty("row") @ExcludeMissing private val row: JsonValue = JsonMissing.of(),
-        @JsonProperty("config")
-        @ExcludeMissing
-        private val config: JsonField<Config> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
-    ) {
-
-        @JsonProperty("row") @ExcludeMissing fun _row(): JsonValue = row
-
-        /**
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun config(): Optional<Config> = Optional.ofNullable(config.getNullable("config"))
-
-        /**
-         * Returns the raw JSON value of [config].
-         *
-         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
-
-        @JsonAnyGetter
-        @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Body = apply {
-            if (validated) {
-                return@apply
-            }
-
-            config().ifPresent { it.validate() }
-            validated = true
-        }
-
-        fun toBuilder() = Builder().from(this)
-
-        companion object {
-
-            /**
-             * Returns a mutable builder for constructing an instance of [Body].
-             *
-             * The following fields are required:
-             * ```java
-             * .row()
-             * ```
-             */
-            @JvmStatic fun builder() = Builder()
-        }
-
-        /** A builder for [Body]. */
-        class Builder internal constructor() {
-
-            private var row: JsonValue? = null
-            private var config: JsonField<Config> = JsonMissing.of()
-            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
-
-            @JvmSynthetic
-            internal fun from(body: Body) = apply {
-                row = body.row
-                config = body.config
-                additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            fun row(row: JsonValue) = apply { this.row = row }
-
-            fun config(config: Config?) = config(JsonField.ofNullable(config))
-
-            /** Alias for calling [Builder.config] with `config.orElse(null)`. */
-            fun config(config: Optional<Config>) = config(config.getOrNull())
-
-            /**
-             * Sets [Builder.config] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.config] with a well-typed [Config] value instead.
-             * This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun config(config: JsonField<Config>) = apply { this.config = config }
-
-            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.clear()
-                putAllAdditionalProperties(additionalProperties)
-            }
-
-            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
-                additionalProperties.put(key, value)
-            }
-
-            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
-                this.additionalProperties.putAll(additionalProperties)
-            }
-
-            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
-
-            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
-                keys.forEach(::removeAdditionalProperty)
-            }
-
-            /**
-             * Returns an immutable instance of [Body].
-             *
-             * Further updates to this [Builder] will not mutate the returned instance.
-             *
-             * The following fields are required:
-             * ```java
-             * .row()
-             * ```
-             *
-             * @throws IllegalStateException if any required field is unset.
-             */
-            fun build(): Body =
-                Body(checkRequired("row", row), config, additionalProperties.toImmutable())
-        }
-
-        override fun equals(other: Any?): Boolean {
-            if (this === other) {
-                return true
-            }
-
-            return /* spotless:off */ other is Body && row == other.row && config == other.config && additionalProperties == other.additionalProperties /* spotless:on */
-        }
-
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(row, config, additionalProperties) }
-        /* spotless:on */
-
-        override fun hashCode(): Int = hashCode
-
-        override fun toString() =
-            "Body{row=$row, config=$config, additionalProperties=$additionalProperties}"
-    }
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -234,7 +74,6 @@ private constructor(
     }
 
     /** A builder for [RowUpdateParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
@@ -415,28 +254,206 @@ private constructor(
             )
     }
 
-    @NoAutoDetect
-    class Config
-    @JsonCreator
+    @JvmSynthetic internal fun _body(): Body = body
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> inferencePipelineId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                put("inferenceId", inferenceId)
+                putAll(additionalQueryParams)
+            }
+            .build()
+
+    class Body
     private constructor(
-        @JsonProperty("groundTruthColumnName")
-        @ExcludeMissing
-        private val groundTruthColumnName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("humanFeedbackColumnName")
-        @ExcludeMissing
-        private val humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("inferenceIdColumnName")
-        @ExcludeMissing
-        private val inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("latencyColumnName")
-        @ExcludeMissing
-        private val latencyColumnName: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("timestampColumnName")
-        @ExcludeMissing
-        private val timestampColumnName: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val row: JsonValue,
+        private val config: JsonField<Config>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("row") @ExcludeMissing row: JsonValue = JsonMissing.of(),
+            @JsonProperty("config") @ExcludeMissing config: JsonField<Config> = JsonMissing.of(),
+        ) : this(row, config, mutableMapOf())
+
+        @JsonProperty("row") @ExcludeMissing fun _row(): JsonValue = row
+
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun config(): Optional<Config> = Optional.ofNullable(config.getNullable("config"))
+
+        /**
+         * Returns the raw JSON value of [config].
+         *
+         * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [Body].
+             *
+             * The following fields are required:
+             * ```java
+             * .row()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [Body]. */
+        class Builder internal constructor() {
+
+            private var row: JsonValue? = null
+            private var config: JsonField<Config> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(body: Body) = apply {
+                row = body.row
+                config = body.config
+                additionalProperties = body.additionalProperties.toMutableMap()
+            }
+
+            fun row(row: JsonValue) = apply { this.row = row }
+
+            fun config(config: Config?) = config(JsonField.ofNullable(config))
+
+            /** Alias for calling [Builder.config] with `config.orElse(null)`. */
+            fun config(config: Optional<Config>) = config(config.getOrNull())
+
+            /**
+             * Sets [Builder.config] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.config] with a well-typed [Config] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun config(config: JsonField<Config>) = apply { this.config = config }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [Body].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .row()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): Body =
+                Body(checkRequired("row", row), config, additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Body = apply {
+            if (validated) {
+                return@apply
+            }
+
+            config().ifPresent { it.validate() }
+            validated = true
+        }
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Body && row == other.row && config == other.config && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(row, config, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "Body{row=$row, config=$config, additionalProperties=$additionalProperties}"
+    }
+
+    class Config
+    private constructor(
+        private val groundTruthColumnName: JsonField<String>,
+        private val humanFeedbackColumnName: JsonField<String>,
+        private val inferenceIdColumnName: JsonField<String>,
+        private val latencyColumnName: JsonField<String>,
+        private val timestampColumnName: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("groundTruthColumnName")
+            @ExcludeMissing
+            groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("humanFeedbackColumnName")
+            @ExcludeMissing
+            humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("inferenceIdColumnName")
+            @ExcludeMissing
+            inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("latencyColumnName")
+            @ExcludeMissing
+            latencyColumnName: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("timestampColumnName")
+            @ExcludeMissing
+            timestampColumnName: JsonField<String> = JsonMissing.of(),
+        ) : this(
+            groundTruthColumnName,
+            humanFeedbackColumnName,
+            inferenceIdColumnName,
+            latencyColumnName,
+            timestampColumnName,
+            mutableMapOf(),
+        )
 
         /**
          * Name of the column with the ground truths.
@@ -535,24 +552,15 @@ private constructor(
         @ExcludeMissing
         fun _timestampColumnName(): JsonField<String> = timestampColumnName
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Config = apply {
-            if (validated) {
-                return@apply
-            }
-
-            groundTruthColumnName()
-            humanFeedbackColumnName()
-            inferenceIdColumnName()
-            latencyColumnName()
-            timestampColumnName()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -728,8 +736,23 @@ private constructor(
                     inferenceIdColumnName,
                     latencyColumnName,
                     timestampColumnName,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Config = apply {
+            if (validated) {
+                return@apply
+            }
+
+            groundTruthColumnName()
+            humanFeedbackColumnName()
+            inferenceIdColumnName()
+            latencyColumnName()
+            timestampColumnName()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {

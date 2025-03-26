@@ -10,24 +10,27 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.checkRequired
-import com.openlayer.api.core.immutableEmptyMap
-import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class PresignedUrlCreateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("storageUri")
-    @ExcludeMissing
-    private val storageUri: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("url") @ExcludeMissing private val url: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("fields") @ExcludeMissing private val fields: JsonValue = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val storageUri: JsonField<String>,
+    private val url: JsonField<String>,
+    private val fields: JsonValue,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("storageUri")
+        @ExcludeMissing
+        storageUri: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("fields") @ExcludeMissing fields: JsonValue = JsonMissing.of(),
+    ) : this(storageUri, url, fields, mutableMapOf())
 
     /**
      * The storage URI to send back to the backend after the upload was completed.
@@ -62,21 +65,15 @@ private constructor(
      */
     @JsonProperty("url") @ExcludeMissing fun _url(): JsonField<String> = url
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): PresignedUrlCreateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        storageUri()
-        url()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -173,8 +170,20 @@ private constructor(
                 checkRequired("storageUri", storageUri),
                 checkRequired("url", url),
                 fields,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): PresignedUrlCreateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        storageUri()
+        url()
+        validated = true
     }
 
     override fun equals(other: Any?): Boolean {
