@@ -5,7 +5,6 @@ package com.openlayer.api.models.inferencepipelines
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.Params
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
@@ -34,22 +33,6 @@ private constructor(
 
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
-    fun _pathParam(index: Int): String =
-        when (index) {
-            0 -> inferencePipelineId
-            else -> ""
-        }
-
-    override fun _headers(): Headers = additionalHeaders
-
-    override fun _queryParams(): QueryParams =
-        QueryParams.builder()
-            .apply {
-                expand?.let { put("expand", it.joinToString(",") { it.toString() }) }
-                putAll(additionalQueryParams)
-            }
-            .build()
-
     fun toBuilder() = Builder().from(this)
 
     companion object {
@@ -67,7 +50,6 @@ private constructor(
     }
 
     /** A builder for [InferencePipelineRetrieveParams]. */
-    @NoAutoDetect
     class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
@@ -222,6 +204,22 @@ private constructor(
                 additionalQueryParams.build(),
             )
     }
+
+    fun _pathParam(index: Int): String =
+        when (index) {
+            0 -> inferencePipelineId
+            else -> ""
+        }
+
+    override fun _headers(): Headers = additionalHeaders
+
+    override fun _queryParams(): QueryParams =
+        QueryParams.builder()
+            .apply {
+                expand?.let { put("expand", it.joinToString(",") { it.toString() }) }
+                putAll(additionalQueryParams)
+            }
+            .build()
 
     class Expand @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 

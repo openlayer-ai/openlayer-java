@@ -11,22 +11,21 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.checkRequired
-import com.openlayer.api.core.immutableEmptyMap
-import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.util.Collections
 import java.util.Objects
 
-@NoAutoDetect
 class RowUpdateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("success")
-    @ExcludeMissing
-    private val success: JsonField<Success> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val success: JsonField<Success>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("success") @ExcludeMissing success: JsonField<Success> = JsonMissing.of()
+    ) : this(success, mutableMapOf())
 
     /**
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -41,20 +40,15 @@ private constructor(
      */
     @JsonProperty("success") @ExcludeMissing fun _success(): JsonField<Success> = success
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): RowUpdateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        success()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -125,7 +119,21 @@ private constructor(
          * @throws IllegalStateException if any required field is unset.
          */
         fun build(): RowUpdateResponse =
-            RowUpdateResponse(checkRequired("success", success), additionalProperties.toImmutable())
+            RowUpdateResponse(
+                checkRequired("success", success),
+                additionalProperties.toMutableMap(),
+            )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): RowUpdateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        success()
+        validated = true
     }
 
     class Success @JsonCreator private constructor(private val value: JsonField<Boolean>) : Enum {

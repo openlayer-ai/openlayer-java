@@ -11,72 +11,105 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
-import com.openlayer.api.core.NoAutoDetect
 import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
-import com.openlayer.api.core.immutableEmptyMap
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.LocalDate
 import java.time.OffsetDateTime
+import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-@NoAutoDetect
 class InferencePipelineUpdateResponse
-@JsonCreator
 private constructor(
-    @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("dateCreated")
-    @ExcludeMissing
-    private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dateLastEvaluated")
-    @ExcludeMissing
-    private val dateLastEvaluated: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dateLastSampleReceived")
-    @ExcludeMissing
-    private val dateLastSampleReceived: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dateOfNextEvaluation")
-    @ExcludeMissing
-    private val dateOfNextEvaluation: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("dateUpdated")
-    @ExcludeMissing
-    private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
-    @JsonProperty("description")
-    @ExcludeMissing
-    private val description: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("failingGoalCount")
-    @ExcludeMissing
-    private val failingGoalCount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("links") @ExcludeMissing private val links: JsonField<Links> = JsonMissing.of(),
-    @JsonProperty("name") @ExcludeMissing private val name: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("passingGoalCount")
-    @ExcludeMissing
-    private val passingGoalCount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("projectId")
-    @ExcludeMissing
-    private val projectId: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("status")
-    @ExcludeMissing
-    private val status: JsonField<Status> = JsonMissing.of(),
-    @JsonProperty("statusMessage")
-    @ExcludeMissing
-    private val statusMessage: JsonField<String> = JsonMissing.of(),
-    @JsonProperty("totalGoalCount")
-    @ExcludeMissing
-    private val totalGoalCount: JsonField<Long> = JsonMissing.of(),
-    @JsonProperty("project")
-    @ExcludeMissing
-    private val project: JsonField<Project> = JsonMissing.of(),
-    @JsonProperty("workspace")
-    @ExcludeMissing
-    private val workspace: JsonField<Workspace> = JsonMissing.of(),
-    @JsonProperty("workspaceId")
-    @ExcludeMissing
-    private val workspaceId: JsonField<String> = JsonMissing.of(),
-    @JsonAnySetter private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+    private val id: JsonField<String>,
+    private val dateCreated: JsonField<OffsetDateTime>,
+    private val dateLastEvaluated: JsonField<OffsetDateTime>,
+    private val dateLastSampleReceived: JsonField<OffsetDateTime>,
+    private val dateOfNextEvaluation: JsonField<OffsetDateTime>,
+    private val dateUpdated: JsonField<OffsetDateTime>,
+    private val description: JsonField<String>,
+    private val failingGoalCount: JsonField<Long>,
+    private val links: JsonField<Links>,
+    private val name: JsonField<String>,
+    private val passingGoalCount: JsonField<Long>,
+    private val projectId: JsonField<String>,
+    private val status: JsonField<Status>,
+    private val statusMessage: JsonField<String>,
+    private val totalGoalCount: JsonField<Long>,
+    private val project: JsonField<Project>,
+    private val workspace: JsonField<Workspace>,
+    private val workspaceId: JsonField<String>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateLastEvaluated")
+        @ExcludeMissing
+        dateLastEvaluated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateLastSampleReceived")
+        @ExcludeMissing
+        dateLastSampleReceived: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateOfNextEvaluation")
+        @ExcludeMissing
+        dateOfNextEvaluation: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("description")
+        @ExcludeMissing
+        description: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("failingGoalCount")
+        @ExcludeMissing
+        failingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("links") @ExcludeMissing links: JsonField<Links> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("passingGoalCount")
+        @ExcludeMissing
+        passingGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("projectId") @ExcludeMissing projectId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("statusMessage")
+        @ExcludeMissing
+        statusMessage: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("totalGoalCount")
+        @ExcludeMissing
+        totalGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("project") @ExcludeMissing project: JsonField<Project> = JsonMissing.of(),
+        @JsonProperty("workspace")
+        @ExcludeMissing
+        workspace: JsonField<Workspace> = JsonMissing.of(),
+        @JsonProperty("workspaceId")
+        @ExcludeMissing
+        workspaceId: JsonField<String> = JsonMissing.of(),
+    ) : this(
+        id,
+        dateCreated,
+        dateLastEvaluated,
+        dateLastSampleReceived,
+        dateOfNextEvaluation,
+        dateUpdated,
+        description,
+        failingGoalCount,
+        links,
+        name,
+        passingGoalCount,
+        projectId,
+        status,
+        statusMessage,
+        totalGoalCount,
+        project,
+        workspace,
+        workspaceId,
+        mutableMapOf(),
+    )
 
     /**
      * The inference pipeline id.
@@ -371,37 +404,15 @@ private constructor(
      */
     @JsonProperty("workspaceId") @ExcludeMissing fun _workspaceId(): JsonField<String> = workspaceId
 
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
     @JsonAnyGetter
     @ExcludeMissing
-    fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-    private var validated: Boolean = false
-
-    fun validate(): InferencePipelineUpdateResponse = apply {
-        if (validated) {
-            return@apply
-        }
-
-        id()
-        dateCreated()
-        dateLastEvaluated()
-        dateLastSampleReceived()
-        dateOfNextEvaluation()
-        dateUpdated()
-        description()
-        failingGoalCount()
-        links().validate()
-        name()
-        passingGoalCount()
-        projectId()
-        status()
-        statusMessage()
-        totalGoalCount()
-        project().ifPresent { it.validate() }
-        workspace().ifPresent { it.validate() }
-        workspaceId()
-        validated = true
-    }
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
 
     fun toBuilder() = Builder().from(this)
 
@@ -809,18 +820,48 @@ private constructor(
                 project,
                 workspace,
                 workspaceId,
-                additionalProperties.toImmutable(),
+                additionalProperties.toMutableMap(),
             )
     }
 
-    @NoAutoDetect
+    private var validated: Boolean = false
+
+    fun validate(): InferencePipelineUpdateResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        dateCreated()
+        dateLastEvaluated()
+        dateLastSampleReceived()
+        dateOfNextEvaluation()
+        dateUpdated()
+        description()
+        failingGoalCount()
+        links().validate()
+        name()
+        passingGoalCount()
+        projectId()
+        status()
+        statusMessage()
+        totalGoalCount()
+        project().ifPresent { it.validate() }
+        workspace().ifPresent { it.validate() }
+        workspaceId()
+        validated = true
+    }
+
     class Links
-    @JsonCreator
     private constructor(
-        @JsonProperty("app") @ExcludeMissing private val app: JsonField<String> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val app: JsonField<String>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("app") @ExcludeMissing app: JsonField<String> = JsonMissing.of()
+        ) : this(app, mutableMapOf())
 
         /**
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -835,20 +876,15 @@ private constructor(
          */
         @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Links = apply {
-            if (validated) {
-                return@apply
-            }
-
-            app()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -920,7 +956,18 @@ private constructor(
              * @throws IllegalStateException if any required field is unset.
              */
             fun build(): Links =
-                Links(checkRequired("app", app), additionalProperties.toImmutable())
+                Links(checkRequired("app", app), additionalProperties.toMutableMap())
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Links = apply {
+            if (validated) {
+                return@apply
+            }
+
+            app()
+            validated = true
         }
 
         override fun equals(other: Any?): Boolean {
@@ -1065,59 +1112,86 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    @NoAutoDetect
     class Project
-    @JsonCreator
     private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("creatorId")
-        @ExcludeMissing
-        private val creatorId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("dateUpdated")
-        @ExcludeMissing
-        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("developmentGoalCount")
-        @ExcludeMissing
-        private val developmentGoalCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("goalCount")
-        @ExcludeMissing
-        private val goalCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("inferencePipelineCount")
-        @ExcludeMissing
-        private val inferencePipelineCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("links")
-        @ExcludeMissing
-        private val links: JsonField<Links> = JsonMissing.of(),
-        @JsonProperty("monitoringGoalCount")
-        @ExcludeMissing
-        private val monitoringGoalCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("source")
-        @ExcludeMissing
-        private val source: JsonField<Source> = JsonMissing.of(),
-        @JsonProperty("taskType")
-        @ExcludeMissing
-        private val taskType: JsonField<TaskType> = JsonMissing.of(),
-        @JsonProperty("versionCount")
-        @ExcludeMissing
-        private val versionCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("workspaceId")
-        @ExcludeMissing
-        private val workspaceId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("description")
-        @ExcludeMissing
-        private val description: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("gitRepo")
-        @ExcludeMissing
-        private val gitRepo: JsonField<GitRepo> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val id: JsonField<String>,
+        private val creatorId: JsonField<String>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val dateUpdated: JsonField<OffsetDateTime>,
+        private val developmentGoalCount: JsonField<Long>,
+        private val goalCount: JsonField<Long>,
+        private val inferencePipelineCount: JsonField<Long>,
+        private val links: JsonField<Links>,
+        private val monitoringGoalCount: JsonField<Long>,
+        private val name: JsonField<String>,
+        private val source: JsonField<Source>,
+        private val taskType: JsonField<TaskType>,
+        private val versionCount: JsonField<Long>,
+        private val workspaceId: JsonField<String>,
+        private val description: JsonField<String>,
+        private val gitRepo: JsonField<GitRepo>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            creatorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("developmentGoalCount")
+            @ExcludeMissing
+            developmentGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("goalCount")
+            @ExcludeMissing
+            goalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("inferencePipelineCount")
+            @ExcludeMissing
+            inferencePipelineCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("links") @ExcludeMissing links: JsonField<Links> = JsonMissing.of(),
+            @JsonProperty("monitoringGoalCount")
+            @ExcludeMissing
+            monitoringGoalCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("source") @ExcludeMissing source: JsonField<Source> = JsonMissing.of(),
+            @JsonProperty("taskType")
+            @ExcludeMissing
+            taskType: JsonField<TaskType> = JsonMissing.of(),
+            @JsonProperty("versionCount")
+            @ExcludeMissing
+            versionCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("workspaceId")
+            @ExcludeMissing
+            workspaceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("description")
+            @ExcludeMissing
+            description: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("gitRepo") @ExcludeMissing gitRepo: JsonField<GitRepo> = JsonMissing.of(),
+        ) : this(
+            id,
+            creatorId,
+            dateCreated,
+            dateUpdated,
+            developmentGoalCount,
+            goalCount,
+            inferencePipelineCount,
+            links,
+            monitoringGoalCount,
+            name,
+            source,
+            taskType,
+            versionCount,
+            workspaceId,
+            description,
+            gitRepo,
+            mutableMapOf(),
+        )
 
         /**
          * The project id.
@@ -1380,35 +1454,15 @@ private constructor(
          */
         @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo(): JsonField<GitRepo> = gitRepo
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Project = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            creatorId()
-            dateCreated()
-            dateUpdated()
-            developmentGoalCount()
-            goalCount()
-            inferencePipelineCount()
-            links().validate()
-            monitoringGoalCount()
-            name()
-            source()
-            taskType()
-            versionCount()
-            workspaceId()
-            description()
-            gitRepo().ifPresent { it.validate() }
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -1767,21 +1821,47 @@ private constructor(
                     checkRequired("workspaceId", workspaceId),
                     description,
                     gitRepo,
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
         }
 
+        private var validated: Boolean = false
+
+        fun validate(): Project = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            creatorId()
+            dateCreated()
+            dateUpdated()
+            developmentGoalCount()
+            goalCount()
+            inferencePipelineCount()
+            links().validate()
+            monitoringGoalCount()
+            name()
+            source()
+            taskType()
+            versionCount()
+            workspaceId()
+            description()
+            gitRepo().ifPresent { it.validate() }
+            validated = true
+        }
+
         /** Links to the project. */
-        @NoAutoDetect
         class Links
-        @JsonCreator
         private constructor(
-            @JsonProperty("app")
-            @ExcludeMissing
-            private val app: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val app: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("app") @ExcludeMissing app: JsonField<String> = JsonMissing.of()
+            ) : this(app, mutableMapOf())
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -1797,20 +1877,15 @@ private constructor(
              */
             @JsonProperty("app") @ExcludeMissing fun _app(): JsonField<String> = app
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): Links = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                app()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -1885,7 +1960,18 @@ private constructor(
                  * @throws IllegalStateException if any required field is unset.
                  */
                 fun build(): Links =
-                    Links(checkRequired("app", app), additionalProperties.toImmutable())
+                    Links(checkRequired("app", app), additionalProperties.toMutableMap())
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): Links = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                app()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2130,49 +2216,66 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        @NoAutoDetect
         class GitRepo
-        @JsonCreator
         private constructor(
-            @JsonProperty("id")
-            @ExcludeMissing
-            private val id: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("dateConnected")
-            @ExcludeMissing
-            private val dateConnected: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("dateUpdated")
-            @ExcludeMissing
-            private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("gitAccountId")
-            @ExcludeMissing
-            private val gitAccountId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("gitId")
-            @ExcludeMissing
-            private val gitId: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("name")
-            @ExcludeMissing
-            private val name: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("private")
-            @ExcludeMissing
-            private val private_: JsonField<Boolean> = JsonMissing.of(),
-            @JsonProperty("projectId")
-            @ExcludeMissing
-            private val projectId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("slug")
-            @ExcludeMissing
-            private val slug: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("url")
-            @ExcludeMissing
-            private val url: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("branch")
-            @ExcludeMissing
-            private val branch: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("rootDir")
-            @ExcludeMissing
-            private val rootDir: JsonField<String> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val id: JsonField<String>,
+            private val dateConnected: JsonField<OffsetDateTime>,
+            private val dateUpdated: JsonField<OffsetDateTime>,
+            private val gitAccountId: JsonField<String>,
+            private val gitId: JsonField<Long>,
+            private val name: JsonField<String>,
+            private val private_: JsonField<Boolean>,
+            private val projectId: JsonField<String>,
+            private val slug: JsonField<String>,
+            private val url: JsonField<String>,
+            private val branch: JsonField<String>,
+            private val rootDir: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("dateConnected")
+                @ExcludeMissing
+                dateConnected: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("dateUpdated")
+                @ExcludeMissing
+                dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+                @JsonProperty("gitAccountId")
+                @ExcludeMissing
+                gitAccountId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("gitId") @ExcludeMissing gitId: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("private")
+                @ExcludeMissing
+                private_: JsonField<Boolean> = JsonMissing.of(),
+                @JsonProperty("projectId")
+                @ExcludeMissing
+                projectId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("branch")
+                @ExcludeMissing
+                branch: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("rootDir")
+                @ExcludeMissing
+                rootDir: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                id,
+                dateConnected,
+                dateUpdated,
+                gitAccountId,
+                gitId,
+                name,
+                private_,
+                projectId,
+                slug,
+                url,
+                branch,
+                rootDir,
+                mutableMapOf(),
+            )
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -2353,31 +2456,15 @@ private constructor(
              */
             @JsonProperty("rootDir") @ExcludeMissing fun _rootDir(): JsonField<String> = rootDir
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): GitRepo = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                id()
-                dateConnected()
-                dateUpdated()
-                gitAccountId()
-                gitId()
-                name()
-                private_()
-                projectId()
-                slug()
-                url()
-                branch()
-                rootDir()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -2634,8 +2721,30 @@ private constructor(
                         checkRequired("url", url),
                         branch,
                         rootDir,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): GitRepo = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                id()
+                dateConnected()
+                dateUpdated()
+                gitAccountId()
+                gitId()
+                name()
+                private_()
+                projectId()
+                slug()
+                url()
+                branch()
+                rootDir()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
@@ -2674,59 +2783,88 @@ private constructor(
             "Project{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, description=$description, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
     }
 
-    @NoAutoDetect
     class Workspace
-    @JsonCreator
     private constructor(
-        @JsonProperty("id") @ExcludeMissing private val id: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("creatorId")
-        @ExcludeMissing
-        private val creatorId: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("dateCreated")
-        @ExcludeMissing
-        private val dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("dateUpdated")
-        @ExcludeMissing
-        private val dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("inviteCount")
-        @ExcludeMissing
-        private val inviteCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("memberCount")
-        @ExcludeMissing
-        private val memberCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("name")
-        @ExcludeMissing
-        private val name: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("periodEndDate")
-        @ExcludeMissing
-        private val periodEndDate: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("periodStartDate")
-        @ExcludeMissing
-        private val periodStartDate: JsonField<OffsetDateTime> = JsonMissing.of(),
-        @JsonProperty("projectCount")
-        @ExcludeMissing
-        private val projectCount: JsonField<Long> = JsonMissing.of(),
-        @JsonProperty("slug")
-        @ExcludeMissing
-        private val slug: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("status")
-        @ExcludeMissing
-        private val status: JsonField<Status> = JsonMissing.of(),
-        @JsonProperty("inviteCode")
-        @ExcludeMissing
-        private val inviteCode: JsonField<String> = JsonMissing.of(),
-        @JsonProperty("monthlyUsage")
-        @ExcludeMissing
-        private val monthlyUsage: JsonField<List<MonthlyUsage>> = JsonMissing.of(),
-        @JsonProperty("samlOnlyAccess")
-        @ExcludeMissing
-        private val samlOnlyAccess: JsonField<Boolean> = JsonMissing.of(),
-        @JsonProperty("wildcardDomains")
-        @ExcludeMissing
-        private val wildcardDomains: JsonField<List<String>> = JsonMissing.of(),
-        @JsonAnySetter
-        private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+        private val id: JsonField<String>,
+        private val creatorId: JsonField<String>,
+        private val dateCreated: JsonField<OffsetDateTime>,
+        private val dateUpdated: JsonField<OffsetDateTime>,
+        private val inviteCount: JsonField<Long>,
+        private val memberCount: JsonField<Long>,
+        private val name: JsonField<String>,
+        private val periodEndDate: JsonField<OffsetDateTime>,
+        private val periodStartDate: JsonField<OffsetDateTime>,
+        private val projectCount: JsonField<Long>,
+        private val slug: JsonField<String>,
+        private val status: JsonField<Status>,
+        private val inviteCode: JsonField<String>,
+        private val monthlyUsage: JsonField<List<MonthlyUsage>>,
+        private val samlOnlyAccess: JsonField<Boolean>,
+        private val wildcardDomains: JsonField<List<String>>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("creatorId")
+            @ExcludeMissing
+            creatorId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dateCreated")
+            @ExcludeMissing
+            dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("dateUpdated")
+            @ExcludeMissing
+            dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("inviteCount")
+            @ExcludeMissing
+            inviteCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("memberCount")
+            @ExcludeMissing
+            memberCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("periodEndDate")
+            @ExcludeMissing
+            periodEndDate: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("periodStartDate")
+            @ExcludeMissing
+            periodStartDate: JsonField<OffsetDateTime> = JsonMissing.of(),
+            @JsonProperty("projectCount")
+            @ExcludeMissing
+            projectCount: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+            @JsonProperty("inviteCode")
+            @ExcludeMissing
+            inviteCode: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("monthlyUsage")
+            @ExcludeMissing
+            monthlyUsage: JsonField<List<MonthlyUsage>> = JsonMissing.of(),
+            @JsonProperty("samlOnlyAccess")
+            @ExcludeMissing
+            samlOnlyAccess: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("wildcardDomains")
+            @ExcludeMissing
+            wildcardDomains: JsonField<List<String>> = JsonMissing.of(),
+        ) : this(
+            id,
+            creatorId,
+            dateCreated,
+            dateUpdated,
+            inviteCount,
+            memberCount,
+            name,
+            periodEndDate,
+            periodStartDate,
+            projectCount,
+            slug,
+            status,
+            inviteCode,
+            monthlyUsage,
+            samlOnlyAccess,
+            wildcardDomains,
+            mutableMapOf(),
+        )
 
         /**
          * The workspace id.
@@ -2996,35 +3134,15 @@ private constructor(
         @ExcludeMissing
         fun _wildcardDomains(): JsonField<List<String>> = wildcardDomains
 
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
         @JsonAnyGetter
         @ExcludeMissing
-        fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-        private var validated: Boolean = false
-
-        fun validate(): Workspace = apply {
-            if (validated) {
-                return@apply
-            }
-
-            id()
-            creatorId()
-            dateCreated()
-            dateUpdated()
-            inviteCount()
-            memberCount()
-            name()
-            periodEndDate()
-            periodStartDate()
-            projectCount()
-            slug()
-            status()
-            inviteCode()
-            monthlyUsage().ifPresent { it.forEach { it.validate() } }
-            samlOnlyAccess()
-            wildcardDomains()
-            validated = true
-        }
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
 
         fun toBuilder() = Builder().from(this)
 
@@ -3399,8 +3517,34 @@ private constructor(
                     (monthlyUsage ?: JsonMissing.of()).map { it.toImmutable() },
                     samlOnlyAccess,
                     (wildcardDomains ?: JsonMissing.of()).map { it.toImmutable() },
-                    additionalProperties.toImmutable(),
+                    additionalProperties.toMutableMap(),
                 )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): Workspace = apply {
+            if (validated) {
+                return@apply
+            }
+
+            id()
+            creatorId()
+            dateCreated()
+            dateUpdated()
+            inviteCount()
+            memberCount()
+            name()
+            periodEndDate()
+            periodStartDate()
+            projectCount()
+            slug()
+            status()
+            inviteCode()
+            monthlyUsage().ifPresent { it.forEach { it.validate() } }
+            samlOnlyAccess()
+            wildcardDomains()
+            validated = true
         }
 
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -3541,22 +3685,26 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        @NoAutoDetect
         class MonthlyUsage
-        @JsonCreator
         private constructor(
-            @JsonProperty("executionTimeMs")
-            @ExcludeMissing
-            private val executionTimeMs: JsonField<Long> = JsonMissing.of(),
-            @JsonProperty("monthYear")
-            @ExcludeMissing
-            private val monthYear: JsonField<LocalDate> = JsonMissing.of(),
-            @JsonProperty("predictionCount")
-            @ExcludeMissing
-            private val predictionCount: JsonField<Long> = JsonMissing.of(),
-            @JsonAnySetter
-            private val additionalProperties: Map<String, JsonValue> = immutableEmptyMap(),
+            private val executionTimeMs: JsonField<Long>,
+            private val monthYear: JsonField<LocalDate>,
+            private val predictionCount: JsonField<Long>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("executionTimeMs")
+                @ExcludeMissing
+                executionTimeMs: JsonField<Long> = JsonMissing.of(),
+                @JsonProperty("monthYear")
+                @ExcludeMissing
+                monthYear: JsonField<LocalDate> = JsonMissing.of(),
+                @JsonProperty("predictionCount")
+                @ExcludeMissing
+                predictionCount: JsonField<Long> = JsonMissing.of(),
+            ) : this(executionTimeMs, monthYear, predictionCount, mutableMapOf())
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
@@ -3609,22 +3757,15 @@ private constructor(
             @ExcludeMissing
             fun _predictionCount(): JsonField<Long> = predictionCount
 
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
             @JsonAnyGetter
             @ExcludeMissing
-            fun _additionalProperties(): Map<String, JsonValue> = additionalProperties
-
-            private var validated: Boolean = false
-
-            fun validate(): MonthlyUsage = apply {
-                if (validated) {
-                    return@apply
-                }
-
-                executionTimeMs()
-                monthYear()
-                predictionCount()
-                validated = true
-            }
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
 
             fun toBuilder() = Builder().from(this)
 
@@ -3737,8 +3878,21 @@ private constructor(
                         executionTimeMs,
                         monthYear,
                         predictionCount,
-                        additionalProperties.toImmutable(),
+                        additionalProperties.toMutableMap(),
                     )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): MonthlyUsage = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                executionTimeMs()
+                monthYear()
+                predictionCount()
+                validated = true
             }
 
             override fun equals(other: Any?): Boolean {
