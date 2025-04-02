@@ -20,7 +20,7 @@ internal class TestResultServiceTest {
                 .build()
         val testResultService = client.commits().testResults()
 
-        val testResult =
+        val testResults =
             testResultService.list(
                 TestResultListParams.builder()
                     .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -32,6 +32,6 @@ internal class TestResultServiceTest {
                     .build()
             )
 
-        testResult.validate()
+        testResults.validate()
     }
 }

@@ -131,7 +131,7 @@ internal class InferencePipelineServiceAsyncTest {
                 .build()
         val inferencePipelineServiceAsync = client.projects().inferencePipelines()
 
-        val inferencePipelineFuture =
+        val inferencePipelinesFuture =
             inferencePipelineServiceAsync.list(
                 InferencePipelineListParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -141,7 +141,7 @@ internal class InferencePipelineServiceAsyncTest {
                     .build()
             )
 
-        val inferencePipeline = inferencePipelineFuture.get()
-        inferencePipeline.validate()
+        val inferencePipelines = inferencePipelinesFuture.get()
+        inferencePipelines.validate()
     }
 }

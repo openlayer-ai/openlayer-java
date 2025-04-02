@@ -77,7 +77,7 @@ internal class ProjectServiceTest {
                 .build()
         val projectService = client.projects()
 
-        val project =
+        val projects =
             projectService.list(
                 ProjectListParams.builder()
                     .name("name")
@@ -87,6 +87,6 @@ internal class ProjectServiceTest {
                     .build()
             )
 
-        project.validate()
+        projects.validate()
     }
 }
