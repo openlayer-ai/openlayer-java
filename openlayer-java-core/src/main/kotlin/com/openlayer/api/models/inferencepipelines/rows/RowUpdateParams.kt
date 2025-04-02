@@ -401,6 +401,22 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (config.asKnown().getOrNull()?.validity() ?: 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -754,6 +770,28 @@ private constructor(
             timestampColumnName()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                (if (humanFeedbackColumnName.asKnown().isPresent) 1 else 0) +
+                (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                (if (timestampColumnName.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
