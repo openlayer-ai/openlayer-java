@@ -805,7 +805,7 @@ private constructor(
         mlModelId()
         passingGoalCount()
         projectId()
-        status()
+        status().validate()
         statusMessage()
         storageUri()
         totalGoalCount()
@@ -816,6 +816,39 @@ private constructor(
         links().ifPresent { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: OpenlayerInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (commit.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (dateArchived.asKnown().isPresent) 1 else 0) +
+            (if (dateCreated.asKnown().isPresent) 1 else 0) +
+            (if (failingGoalCount.asKnown().isPresent) 1 else 0) +
+            (if (mlModelId.asKnown().isPresent) 1 else 0) +
+            (if (passingGoalCount.asKnown().isPresent) 1 else 0) +
+            (if (projectId.asKnown().isPresent) 1 else 0) +
+            (status.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (statusMessage.asKnown().isPresent) 1 else 0) +
+            (if (storageUri.asKnown().isPresent) 1 else 0) +
+            (if (totalGoalCount.asKnown().isPresent) 1 else 0) +
+            (if (trainingDatasetId.asKnown().isPresent) 1 else 0) +
+            (if (validationDatasetId.asKnown().isPresent) 1 else 0) +
+            (if (archived.asKnown().isPresent) 1 else 0) +
+            (if (deploymentStatus.asKnown().isPresent) 1 else 0) +
+            (links.asKnown().getOrNull()?.validity() ?: 0)
 
     /** The details of a commit (project version). */
     class Commit
@@ -1416,6 +1449,35 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (id.asKnown().isPresent) 1 else 0) +
+                (if (authorId.asKnown().isPresent) 1 else 0) +
+                (if (fileSize.asKnown().isPresent) 1 else 0) +
+                (if (message.asKnown().isPresent) 1 else 0) +
+                (if (mlModelId.asKnown().isPresent) 1 else 0) +
+                (if (storageUri.asKnown().isPresent) 1 else 0) +
+                (if (trainingDatasetId.asKnown().isPresent) 1 else 0) +
+                (if (validationDatasetId.asKnown().isPresent) 1 else 0) +
+                (if (dateCreated.asKnown().isPresent) 1 else 0) +
+                (if (gitCommitRef.asKnown().isPresent) 1 else 0) +
+                (if (gitCommitSha.asKnown().isPresent) 1 else 0) +
+                (if (gitCommitUrl.asKnown().isPresent) 1 else 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1549,6 +1611,33 @@ private constructor(
                 OpenlayerInvalidDataException("Value is not a String")
             }
 
+        private var validated: Boolean = false
+
+        fun validate(): Status = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -1679,6 +1768,22 @@ private constructor(
             app()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = (if (app.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {

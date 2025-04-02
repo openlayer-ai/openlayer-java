@@ -20,6 +20,7 @@ import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
+import com.openlayer.api.core.allMaxBy
 import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
@@ -163,6 +164,23 @@ private constructor(
         items().forEach { it.validate() }
         validated = true
     }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: OpenlayerInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Item
     private constructor(
@@ -722,12 +740,40 @@ private constructor(
             dateUpdated()
             inferencePipelineId()
             projectVersionId()
-            status()
+            status().validate()
             statusMessage()
             goal().ifPresent { it.validate() }
             goalId()
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (id.asKnown().isPresent) 1 else 0) +
+                (if (dateCreated.asKnown().isPresent) 1 else 0) +
+                (if (dateDataEnds.asKnown().isPresent) 1 else 0) +
+                (if (dateDataStarts.asKnown().isPresent) 1 else 0) +
+                (if (dateUpdated.asKnown().isPresent) 1 else 0) +
+                (if (inferencePipelineId.asKnown().isPresent) 1 else 0) +
+                (if (projectVersionId.asKnown().isPresent) 1 else 0) +
+                (status.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (statusMessage.asKnown().isPresent) 1 else 0) +
+                (goal.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (goalId.asKnown().isPresent) 1 else 0)
 
         /** The status of the test. */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
@@ -836,6 +882,33 @@ private constructor(
                 _value().asString().orElseThrow {
                     OpenlayerInvalidDataException("Value is not a String")
                 }
+
+            private var validated: Boolean = false
+
+            fun validate(): Status = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -1888,6 +1961,44 @@ private constructor(
                 validated = true
             }
 
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (id.asKnown().isPresent) 1 else 0) +
+                    (if (commentCount.asKnown().isPresent) 1 else 0) +
+                    (if (creatorId.asKnown().isPresent) 1 else 0) +
+                    (if (dateArchived.asKnown().isPresent) 1 else 0) +
+                    (if (dateCreated.asKnown().isPresent) 1 else 0) +
+                    (if (dateUpdated.asKnown().isPresent) 1 else 0) +
+                    (if (name.asKnown().isPresent) 1 else 0) +
+                    (if (number.asKnown().isPresent) 1 else 0) +
+                    (if (originProjectVersionId.asKnown().isPresent) 1 else 0) +
+                    (if (subtype.asKnown().isPresent) 1 else 0) +
+                    (if (suggested.asKnown().isPresent) 1 else 0) +
+                    (thresholds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                    (if (type.asKnown().isPresent) 1 else 0) +
+                    (if (archived.asKnown().isPresent) 1 else 0) +
+                    (if (delayWindow.asKnown().isPresent) 1 else 0) +
+                    (if (evaluationWindow.asKnown().isPresent) 1 else 0) +
+                    (if (usesMlModel.asKnown().isPresent) 1 else 0) +
+                    (if (usesProductionData.asKnown().isPresent) 1 else 0) +
+                    (if (usesReferenceDataset.asKnown().isPresent) 1 else 0) +
+                    (if (usesTrainingDataset.asKnown().isPresent) 1 else 0) +
+                    (if (usesValidationDataset.asKnown().isPresent) 1 else 0)
+
             class Threshold
             private constructor(
                 private val insightName: JsonField<String>,
@@ -2195,6 +2306,28 @@ private constructor(
                     validated = true
                 }
 
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (insightName.asKnown().isPresent) 1 else 0) +
+                        (insightParameters.asKnown().getOrNull()?.size ?: 0) +
+                        (if (measurement.asKnown().isPresent) 1 else 0) +
+                        (if (operator.asKnown().isPresent) 1 else 0) +
+                        (value.asKnown().getOrNull()?.validity() ?: 0)
+
                 /** The value to be compared. */
                 @JsonDeserialize(using = Value.Deserializer::class)
                 @JsonSerialize(using = Value.Serializer::class)
@@ -2233,15 +2366,14 @@ private constructor(
 
                     fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
-                    fun <T> accept(visitor: Visitor<T>): T {
-                        return when {
+                    fun <T> accept(visitor: Visitor<T>): T =
+                        when {
                             number != null -> visitor.visitNumber(number)
                             bool != null -> visitor.visitBool(bool)
                             string != null -> visitor.visitString(string)
                             strings != null -> visitor.visitStrings(strings)
                             else -> visitor.unknown(_json)
                         }
-                    }
 
                     private var validated: Boolean = false
 
@@ -2263,6 +2395,36 @@ private constructor(
                         )
                         validated = true
                     }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: OpenlayerInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int =
+                        accept(
+                            object : Visitor<Int> {
+                                override fun visitNumber(number: Double) = 1
+
+                                override fun visitBool(bool: Boolean) = 1
+
+                                override fun visitString(string: String) = 1
+
+                                override fun visitStrings(strings: List<String>) = strings.size
+
+                                override fun unknown(json: JsonValue?) = 0
+                            }
+                        )
 
                     override fun equals(other: Any?): Boolean {
                         if (this === other) {
@@ -2329,20 +2491,36 @@ private constructor(
                         override fun ObjectCodec.deserialize(node: JsonNode): Value {
                             val json = JsonValue.fromJsonNode(node)
 
-                            tryDeserialize(node, jacksonTypeRef<Double>())?.let {
-                                return Value(number = it, _json = json)
+                            val bestMatches =
+                                sequenceOf(
+                                        tryDeserialize(node, jacksonTypeRef<Double>())?.let {
+                                            Value(number = it, _json = json)
+                                        },
+                                        tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
+                                            Value(bool = it, _json = json)
+                                        },
+                                        tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                            Value(string = it, _json = json)
+                                        },
+                                        tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
+                                            Value(strings = it, _json = json)
+                                        },
+                                    )
+                                    .filterNotNull()
+                                    .allMaxBy { it.validity() }
+                                    .toList()
+                            return when (bestMatches.size) {
+                                // This can happen if what we're deserializing is completely
+                                // incompatible with all the possible variants (e.g. deserializing
+                                // from object).
+                                0 -> Value(_json = json)
+                                1 -> bestMatches.single()
+                                // If there's more than one match with the highest validity, then
+                                // use the first completely valid match, or simply the first match
+                                // if none are completely valid.
+                                else ->
+                                    bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
                             }
-                            tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
-                                return Value(bool = it, _json = json)
-                            }
-                            tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                                return Value(string = it, _json = json)
-                            }
-                            tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
-                                return Value(strings = it, _json = json)
-                            }
-
-                            return Value(_json = json)
                         }
                     }
 

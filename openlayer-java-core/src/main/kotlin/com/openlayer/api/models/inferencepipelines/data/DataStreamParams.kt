@@ -20,6 +20,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.Params
+import com.openlayer.api.core.allMaxBy
 import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.getOrThrow
@@ -520,6 +521,25 @@ private constructor(
             validated = true
         }
 
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (config.asKnown().getOrNull()?.validity() ?: 0) +
+                (rows.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
         override fun equals(other: Any?): Boolean {
             if (this === other) {
                 return true
@@ -582,8 +602,8 @@ private constructor(
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
-        fun <T> accept(visitor: Visitor<T>): T {
-            return when {
+        fun <T> accept(visitor: Visitor<T>): T =
+            when {
                 llmData != null -> visitor.visitLlmData(llmData)
                 tabularClassificationData != null ->
                     visitor.visitTabularClassificationData(tabularClassificationData)
@@ -593,7 +613,6 @@ private constructor(
                     visitor.visitTextClassificationData(textClassificationData)
                 else -> visitor.unknown(_json)
             }
-        }
 
         private var validated: Boolean = false
 
@@ -629,6 +648,42 @@ private constructor(
             )
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            accept(
+                object : Visitor<Int> {
+                    override fun visitLlmData(llmData: LlmData) = llmData.validity()
+
+                    override fun visitTabularClassificationData(
+                        tabularClassificationData: TabularClassificationData
+                    ) = tabularClassificationData.validity()
+
+                    override fun visitTabularRegressionData(
+                        tabularRegressionData: TabularRegressionData
+                    ) = tabularRegressionData.validity()
+
+                    override fun visitTextClassificationData(
+                        textClassificationData: TextClassificationData
+                    ) = textClassificationData.validity()
+
+                    override fun unknown(json: JsonValue?) = 0
+                }
+            )
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -703,24 +758,34 @@ private constructor(
             override fun ObjectCodec.deserialize(node: JsonNode): Config {
                 val json = JsonValue.fromJsonNode(node)
 
-                tryDeserialize(node, jacksonTypeRef<LlmData>()) { it.validate() }
-                    ?.let {
-                        return Config(llmData = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<TabularClassificationData>()) { it.validate() }
-                    ?.let {
-                        return Config(tabularClassificationData = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<TabularRegressionData>()) { it.validate() }
-                    ?.let {
-                        return Config(tabularRegressionData = it, _json = json)
-                    }
-                tryDeserialize(node, jacksonTypeRef<TextClassificationData>()) { it.validate() }
-                    ?.let {
-                        return Config(textClassificationData = it, _json = json)
-                    }
-
-                return Config(_json = json)
+                val bestMatches =
+                    sequenceOf(
+                            tryDeserialize(node, jacksonTypeRef<LlmData>())?.let {
+                                Config(llmData = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<TabularClassificationData>())?.let {
+                                Config(tabularClassificationData = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<TabularRegressionData>())?.let {
+                                Config(tabularRegressionData = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<TextClassificationData>())?.let {
+                                Config(textClassificationData = it, _json = json)
+                            },
+                        )
+                        .filterNotNull()
+                        .allMaxBy { it.validity() }
+                        .toList()
+                return when (bestMatches.size) {
+                    // This can happen if what we're deserializing is completely incompatible with
+                    // all the possible variants (e.g. deserializing from boolean).
+                    0 -> Config(_json = json)
+                    1 -> bestMatches.single()
+                    // If there's more than one match with the highest validity, then use the first
+                    // completely valid match, or simply the first match if none are completely
+                    // valid.
+                    else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                }
             }
         }
 
@@ -1371,6 +1436,34 @@ private constructor(
                 validated = true
             }
 
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (if (outputColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (contextColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (costColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                    (inputVariableNames.asKnown().getOrNull()?.size ?: 0) +
+                    (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (numOfTokenColumnName.asKnown().isPresent) 1 else 0) +
+                    (prompt.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+                    (if (questionColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
             class Prompt
             private constructor(
                 private val content: JsonField<String>,
@@ -1516,6 +1609,25 @@ private constructor(
                     role()
                     validated = true
                 }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (content.asKnown().isPresent) 1 else 0) +
+                        (if (role.asKnown().isPresent) 1 else 0)
 
                 override fun equals(other: Any?): Boolean {
                     if (this === other) {
@@ -2116,6 +2228,32 @@ private constructor(
                 validated = true
             }
 
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (classNames.asKnown().getOrNull()?.size ?: 0) +
+                    (categoricalFeatureNames.asKnown().getOrNull()?.size ?: 0) +
+                    (featureNames.asKnown().getOrNull()?.size ?: 0) +
+                    (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (labelColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (predictionsColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (predictionScoresColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -2571,6 +2709,30 @@ private constructor(
                 timestampColumnName()
                 validated = true
             }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (categoricalFeatureNames.asKnown().getOrNull()?.size ?: 0) +
+                    (featureNames.asKnown().getOrNull()?.size ?: 0) +
+                    (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (predictionsColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (targetColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (timestampColumnName.asKnown().isPresent) 1 else 0)
 
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
@@ -3078,6 +3240,31 @@ private constructor(
                 validated = true
             }
 
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (classNames.asKnown().getOrNull()?.size ?: 0) +
+                    (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (labelColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (predictionsColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (predictionScoresColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (textColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
             override fun equals(other: Any?): Boolean {
                 if (this === other) {
                     return true
@@ -3162,6 +3349,24 @@ private constructor(
 
             validated = true
         }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            additionalProperties.count { (_, value) -> !value.isNull() && !value.isMissing() }
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
