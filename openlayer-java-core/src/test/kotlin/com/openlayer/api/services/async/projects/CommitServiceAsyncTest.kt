@@ -80,7 +80,7 @@ internal class CommitServiceAsyncTest {
                 .build()
         val commitServiceAsync = client.projects().commits()
 
-        val commitFuture =
+        val commitsFuture =
             commitServiceAsync.list(
                 CommitListParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -89,7 +89,7 @@ internal class CommitServiceAsyncTest {
                     .build()
             )
 
-        val commit = commitFuture.get()
-        commit.validate()
+        val commits = commitsFuture.get()
+        commits.validate()
     }
 }

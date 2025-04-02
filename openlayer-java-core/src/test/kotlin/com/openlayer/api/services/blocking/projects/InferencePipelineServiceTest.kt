@@ -130,7 +130,7 @@ internal class InferencePipelineServiceTest {
                 .build()
         val inferencePipelineService = client.projects().inferencePipelines()
 
-        val inferencePipeline =
+        val inferencePipelines =
             inferencePipelineService.list(
                 InferencePipelineListParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -140,6 +140,6 @@ internal class InferencePipelineServiceTest {
                     .build()
             )
 
-        inferencePipeline.validate()
+        inferencePipelines.validate()
     }
 }

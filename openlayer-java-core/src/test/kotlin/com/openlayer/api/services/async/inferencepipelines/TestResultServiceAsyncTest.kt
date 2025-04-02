@@ -20,7 +20,7 @@ internal class TestResultServiceAsyncTest {
                 .build()
         val testResultServiceAsync = client.inferencePipelines().testResults()
 
-        val testResultFuture =
+        val testResultsFuture =
             testResultServiceAsync.list(
                 TestResultListParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -31,7 +31,7 @@ internal class TestResultServiceAsyncTest {
                     .build()
             )
 
-        val testResult = testResultFuture.get()
-        testResult.validate()
+        val testResults = testResultsFuture.get()
+        testResults.validate()
     }
 }

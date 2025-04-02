@@ -78,7 +78,7 @@ internal class ProjectServiceAsyncTest {
                 .build()
         val projectServiceAsync = client.projects()
 
-        val projectFuture =
+        val projectsFuture =
             projectServiceAsync.list(
                 ProjectListParams.builder()
                     .name("name")
@@ -88,7 +88,7 @@ internal class ProjectServiceAsyncTest {
                     .build()
             )
 
-        val project = projectFuture.get()
-        project.validate()
+        val projects = projectsFuture.get()
+        projects.validate()
     }
 }
