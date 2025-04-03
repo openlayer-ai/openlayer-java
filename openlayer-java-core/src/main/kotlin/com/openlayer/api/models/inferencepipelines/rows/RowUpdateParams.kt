@@ -98,6 +98,16 @@ private constructor(
         /** Specify the inference id as a query param. */
         fun inferenceId(inferenceId: String) = apply { this.inferenceId = inferenceId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [row]
+         * - [config]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         fun row(row: JsonValue) = apply { body.row(row) }
 
         fun config(config: Config?) = apply { body.config(config) }
@@ -254,7 +264,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
