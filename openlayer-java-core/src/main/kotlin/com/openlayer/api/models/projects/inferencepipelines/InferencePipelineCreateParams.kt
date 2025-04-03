@@ -360,6 +360,20 @@ private constructor(
 
         fun pathProjectId(pathProjectId: String) = apply { this.pathProjectId = pathProjectId }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [id]
+         * - [dateCreated]
+         * - [dateLastEvaluated]
+         * - [dateLastSampleReceived]
+         * - [dateOfNextEvaluation]
+         * - etc.
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** The inference pipeline id. */
         fun id(id: String) = apply { body.id(id) }
 
@@ -782,7 +796,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
