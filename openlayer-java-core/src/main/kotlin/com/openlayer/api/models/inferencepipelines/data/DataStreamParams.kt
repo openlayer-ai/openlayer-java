@@ -117,6 +117,16 @@ private constructor(
             this.inferencePipelineId = inferencePipelineId
         }
 
+        /**
+         * Sets the entire request body.
+         *
+         * This is generally only useful if you are already constructing the body separately.
+         * Otherwise, it's more convenient to use the top-level setters instead:
+         * - [config]
+         * - [rows]
+         */
+        fun body(body: Body) = apply { this.body = body.toBuilder() }
+
         /** Configuration for the data stream. Depends on your **Openlayer project task type**. */
         fun config(config: Config) = apply { body.config(config) }
 
@@ -312,7 +322,7 @@ private constructor(
             )
     }
 
-    @JvmSynthetic internal fun _body(): Body = body
+    fun _body(): Body = body
 
     fun _pathParam(index: Int): String =
         when (index) {
