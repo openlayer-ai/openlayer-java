@@ -906,7 +906,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun contextColumnName(): Optional<String> =
-                Optional.ofNullable(contextColumnName.getNullable("contextColumnName"))
+                contextColumnName.getOptional("contextColumnName")
 
             /**
              * Name of the column with the cost associated with each row.
@@ -914,8 +914,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun costColumnName(): Optional<String> =
-                Optional.ofNullable(costColumnName.getNullable("costColumnName"))
+            fun costColumnName(): Optional<String> = costColumnName.getOptional("costColumnName")
 
             /**
              * Name of the column with the ground truths.
@@ -924,7 +923,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun groundTruthColumnName(): Optional<String> =
-                Optional.ofNullable(groundTruthColumnName.getNullable("groundTruthColumnName"))
+                groundTruthColumnName.getOptional("groundTruthColumnName")
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
@@ -934,7 +933,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
-                Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
+                inferenceIdColumnName.getOptional("inferenceIdColumnName")
 
             /**
              * Array of input variable names. Each input variable should be a dataset column.
@@ -943,7 +942,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun inputVariableNames(): Optional<List<String>> =
-                Optional.ofNullable(inputVariableNames.getNullable("inputVariableNames"))
+                inputVariableNames.getOptional("inputVariableNames")
 
             /**
              * Name of the column with the latencies.
@@ -952,7 +951,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun latencyColumnName(): Optional<String> =
-                Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
+                latencyColumnName.getOptional("latencyColumnName")
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
@@ -964,7 +963,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun numOfTokenColumnName(): Optional<String> =
-                Optional.ofNullable(numOfTokenColumnName.getNullable("numOfTokenColumnName"))
+                numOfTokenColumnName.getOptional("numOfTokenColumnName")
 
             /**
              * Prompt for the LLM.
@@ -972,7 +971,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun prompt(): Optional<List<Prompt>> = Optional.ofNullable(prompt.getNullable("prompt"))
+            fun prompt(): Optional<List<Prompt>> = prompt.getOptional("prompt")
 
             /**
              * Name of the column with the questions. Applies to RAG use cases. Providing the
@@ -982,7 +981,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun questionColumnName(): Optional<String> =
-                Optional.ofNullable(questionColumnName.getNullable("questionColumnName"))
+                questionColumnName.getOptional("questionColumnName")
 
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
@@ -992,7 +991,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
-                Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
+                timestampColumnName.getOptional("timestampColumnName")
 
             /**
              * Returns the raw JSON value of [outputColumnName].
@@ -1495,8 +1494,7 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun content(): Optional<String> =
-                    Optional.ofNullable(content.getNullable("content"))
+                fun content(): Optional<String> = content.getOptional("content")
 
                 /**
                  * Role of the prompt.
@@ -1504,7 +1502,7 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun role(): Optional<String> = Optional.ofNullable(role.getNullable("role"))
+                fun role(): Optional<String> = role.getOptional("role")
 
                 /**
                  * Returns the raw JSON value of [content].
@@ -1752,7 +1750,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun categoricalFeatureNames(): Optional<List<String>> =
-                Optional.ofNullable(categoricalFeatureNames.getNullable("categoricalFeatureNames"))
+                categoricalFeatureNames.getOptional("categoricalFeatureNames")
 
             /**
              * Array with all input feature names.
@@ -1760,8 +1758,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun featureNames(): Optional<List<String>> =
-                Optional.ofNullable(featureNames.getNullable("featureNames"))
+            fun featureNames(): Optional<List<String>> = featureNames.getOptional("featureNames")
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
@@ -1771,7 +1768,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
-                Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
+                inferenceIdColumnName.getOptional("inferenceIdColumnName")
 
             /**
              * Name of the column with the labels. The data in this column must be **zero-indexed
@@ -1780,8 +1777,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun labelColumnName(): Optional<String> =
-                Optional.ofNullable(labelColumnName.getNullable("labelColumnName"))
+            fun labelColumnName(): Optional<String> = labelColumnName.getOptional("labelColumnName")
 
             /**
              * Name of the column with the latencies.
@@ -1790,7 +1786,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun latencyColumnName(): Optional<String> =
-                Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
+                latencyColumnName.getOptional("latencyColumnName")
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
@@ -1802,7 +1798,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun predictionsColumnName(): Optional<String> =
-                Optional.ofNullable(predictionsColumnName.getNullable("predictionsColumnName"))
+                predictionsColumnName.getOptional("predictionsColumnName")
 
             /**
              * Name of the column with the model's predictions as **lists of class probabilities**.
@@ -1811,9 +1807,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun predictionScoresColumnName(): Optional<String> =
-                Optional.ofNullable(
-                    predictionScoresColumnName.getNullable("predictionScoresColumnName")
-                )
+                predictionScoresColumnName.getOptional("predictionScoresColumnName")
 
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
@@ -1823,7 +1817,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
-                Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
+                timestampColumnName.getOptional("timestampColumnName")
 
             /**
              * Returns the raw JSON value of [classNames].
@@ -2339,7 +2333,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun categoricalFeatureNames(): Optional<List<String>> =
-                Optional.ofNullable(categoricalFeatureNames.getNullable("categoricalFeatureNames"))
+                categoricalFeatureNames.getOptional("categoricalFeatureNames")
 
             /**
              * Array with all input feature names.
@@ -2347,8 +2341,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun featureNames(): Optional<List<String>> =
-                Optional.ofNullable(featureNames.getNullable("featureNames"))
+            fun featureNames(): Optional<List<String>> = featureNames.getOptional("featureNames")
 
             /**
              * Name of the column with the inference ids. This is useful if you want to update rows
@@ -2358,7 +2351,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
-                Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
+                inferenceIdColumnName.getOptional("inferenceIdColumnName")
 
             /**
              * Name of the column with the latencies.
@@ -2367,7 +2360,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun latencyColumnName(): Optional<String> =
-                Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
+                latencyColumnName.getOptional("latencyColumnName")
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
@@ -2379,7 +2372,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun predictionsColumnName(): Optional<String> =
-                Optional.ofNullable(predictionsColumnName.getNullable("predictionsColumnName"))
+                predictionsColumnName.getOptional("predictionsColumnName")
 
             /**
              * Name of the column with the targets (ground truth values).
@@ -2388,7 +2381,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun targetColumnName(): Optional<String> =
-                Optional.ofNullable(targetColumnName.getNullable("targetColumnName"))
+                targetColumnName.getOptional("targetColumnName")
 
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
@@ -2398,7 +2391,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
-                Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
+                timestampColumnName.getOptional("timestampColumnName")
 
             /**
              * Returns the raw JSON value of [categoricalFeatureNames].
@@ -2834,7 +2827,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun inferenceIdColumnName(): Optional<String> =
-                Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
+                inferenceIdColumnName.getOptional("inferenceIdColumnName")
 
             /**
              * Name of the column with the labels. The data in this column must be **zero-indexed
@@ -2843,8 +2836,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun labelColumnName(): Optional<String> =
-                Optional.ofNullable(labelColumnName.getNullable("labelColumnName"))
+            fun labelColumnName(): Optional<String> = labelColumnName.getOptional("labelColumnName")
 
             /**
              * Name of the column with the latencies.
@@ -2853,7 +2845,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun latencyColumnName(): Optional<String> =
-                Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
+                latencyColumnName.getOptional("latencyColumnName")
 
             /** Object with metadata. */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
@@ -2865,7 +2857,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun predictionsColumnName(): Optional<String> =
-                Optional.ofNullable(predictionsColumnName.getNullable("predictionsColumnName"))
+                predictionsColumnName.getOptional("predictionsColumnName")
 
             /**
              * Name of the column with the model's predictions as **lists of class probabilities**.
@@ -2874,9 +2866,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun predictionScoresColumnName(): Optional<String> =
-                Optional.ofNullable(
-                    predictionScoresColumnName.getNullable("predictionScoresColumnName")
-                )
+                predictionScoresColumnName.getOptional("predictionScoresColumnName")
 
             /**
              * Name of the column with the text data.
@@ -2884,8 +2874,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun textColumnName(): Optional<String> =
-                Optional.ofNullable(textColumnName.getNullable("textColumnName"))
+            fun textColumnName(): Optional<String> = textColumnName.getOptional("textColumnName")
 
             /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
@@ -2895,7 +2884,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun timestampColumnName(): Optional<String> =
-                Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
+                timestampColumnName.getOptional("timestampColumnName")
 
             /**
              * Returns the raw JSON value of [classNames].
