@@ -459,6 +459,30 @@ JsonValue complexValue = JsonValue.from(Map.of(
 ));
 ```
 
+Normally a `Builder` class's `build` method will throw [`IllegalStateException`](https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalStateException.html) if any required parameter or property is unset.
+
+To forcibly omit a required parameter or property, pass [`JsonMissing`](openlayer-java-core/src/main/kotlin/com/openlayer/api/core/Values.kt):
+
+```java
+import com.openlayer.api.core.JsonMissing;
+import com.openlayer.api.core.JsonValue;
+import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
+
+DataStreamParams params = DataStreamParams.builder()
+    .config(DataStreamParams.Config.LlmData.builder()
+        .outputColumnName("output")
+        .build())
+    .addRow(DataStreamParams.Row.builder()
+        .putAdditionalProperty("user_query", JsonValue.from("bar"))
+        .putAdditionalProperty("output", JsonValue.from("bar"))
+        .putAdditionalProperty("tokens", JsonValue.from("bar"))
+        .putAdditionalProperty("cost", JsonValue.from("bar"))
+        .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+        .build())
+    .inferencePipelineId(JsonMissing.of())
+    .build();
+```
+
 ### Response properties
 
 To access undocumented response properties, call the `_additionalProperties()` method:
