@@ -357,8 +357,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * The inference pipeline name.
@@ -366,7 +365,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = Optional.ofNullable(name.getNullable("name"))
+        fun name(): Optional<String> = name.getOptional("name")
 
         /**
          * The storage uri of your reference dataset. We recommend using the Python SDK or the UI to
@@ -376,7 +375,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun referenceDatasetUri(): Optional<String> =
-            Optional.ofNullable(referenceDatasetUri.getNullable("referenceDatasetUri"))
+            referenceDatasetUri.getOptional("referenceDatasetUri")
 
         /**
          * Returns the raw JSON value of [description].

@@ -262,8 +262,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun dateDataEnds(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateDataEnds.getNullable("dateDataEnds"))
+        fun dateDataEnds(): Optional<OffsetDateTime> = dateDataEnds.getOptional("dateDataEnds")
 
         /**
          * The data start date.
@@ -272,7 +271,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun dateDataStarts(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateDataStarts.getNullable("dateDataStarts"))
+            dateDataStarts.getOptional("dateDataStarts")
 
         /**
          * The last updated date.
@@ -289,7 +288,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun inferencePipelineId(): Optional<String> =
-            Optional.ofNullable(inferencePipelineId.getNullable("inferencePipelineId"))
+            inferencePipelineId.getOptional("inferencePipelineId")
 
         /**
          * The project version (commit) id.
@@ -297,8 +296,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun projectVersionId(): Optional<String> =
-            Optional.ofNullable(projectVersionId.getNullable("projectVersionId"))
+        fun projectVersionId(): Optional<String> = projectVersionId.getOptional("projectVersionId")
 
         /**
          * The status of the test.
@@ -314,14 +312,13 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun statusMessage(): Optional<String> =
-            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+        fun statusMessage(): Optional<String> = statusMessage.getOptional("statusMessage")
 
         /**
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun goal(): Optional<Goal> = Optional.ofNullable(goal.getNullable("goal"))
+        fun goal(): Optional<Goal> = goal.getOptional("goal")
 
         /**
          * The test id.
@@ -329,7 +326,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun goalId(): Optional<String> = Optional.ofNullable(goalId.getNullable("goalId"))
+        fun goalId(): Optional<String> = goalId.getOptional("goalId")
 
         /**
          * Returns the raw JSON value of [id].
@@ -1060,8 +1057,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun creatorId(): Optional<String> =
-                Optional.ofNullable(creatorId.getNullable("creatorId"))
+            fun creatorId(): Optional<String> = creatorId.getOptional("creatorId")
 
             /**
              * The date the test was archived.
@@ -1069,8 +1065,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun dateArchived(): Optional<OffsetDateTime> =
-                Optional.ofNullable(dateArchived.getNullable("dateArchived"))
+            fun dateArchived(): Optional<OffsetDateTime> = dateArchived.getOptional("dateArchived")
 
             /**
              * The creation date.
@@ -1118,7 +1113,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun originProjectVersionId(): Optional<String> =
-                Optional.ofNullable(originProjectVersionId.getNullable("originProjectVersionId"))
+                originProjectVersionId.getOptional("originProjectVersionId")
 
             /**
              * The test subtype.
@@ -1160,8 +1155,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun archived(): Optional<Boolean> =
-                Optional.ofNullable(archived.getNullable("archived"))
+            fun archived(): Optional<Boolean> = archived.getOptional("archived")
 
             /**
              * The delay window in seconds. Only applies to tests that use production data.
@@ -1169,8 +1163,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun delayWindow(): Optional<Double> =
-                Optional.ofNullable(delayWindow.getNullable("delayWindow"))
+            fun delayWindow(): Optional<Double> = delayWindow.getOptional("delayWindow")
 
             /**
              * The evaluation window in seconds. Only applies to tests that use production data.
@@ -1179,7 +1172,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun evaluationWindow(): Optional<Double> =
-                Optional.ofNullable(evaluationWindow.getNullable("evaluationWindow"))
+                evaluationWindow.getOptional("evaluationWindow")
 
             /**
              * Whether the test uses an ML model.
@@ -1187,8 +1180,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun usesMlModel(): Optional<Boolean> =
-                Optional.ofNullable(usesMlModel.getNullable("usesMlModel"))
+            fun usesMlModel(): Optional<Boolean> = usesMlModel.getOptional("usesMlModel")
 
             /**
              * Whether the test uses production data (monitoring mode only).
@@ -1197,7 +1189,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun usesProductionData(): Optional<Boolean> =
-                Optional.ofNullable(usesProductionData.getNullable("usesProductionData"))
+                usesProductionData.getOptional("usesProductionData")
 
             /**
              * Whether the test uses a reference dataset (monitoring mode only).
@@ -1206,7 +1198,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun usesReferenceDataset(): Optional<Boolean> =
-                Optional.ofNullable(usesReferenceDataset.getNullable("usesReferenceDataset"))
+                usesReferenceDataset.getOptional("usesReferenceDataset")
 
             /**
              * Whether the test uses a training dataset.
@@ -1215,7 +1207,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun usesTrainingDataset(): Optional<Boolean> =
-                Optional.ofNullable(usesTrainingDataset.getNullable("usesTrainingDataset"))
+                usesTrainingDataset.getOptional("usesTrainingDataset")
 
             /**
              * Whether the test uses a validation dataset.
@@ -1224,7 +1216,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun usesValidationDataset(): Optional<Boolean> =
-                Optional.ofNullable(usesValidationDataset.getNullable("usesValidationDataset"))
+                usesValidationDataset.getOptional("usesValidationDataset")
 
             /**
              * Returns the raw JSON value of [id].
@@ -2041,15 +2033,14 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun insightName(): Optional<String> =
-                    Optional.ofNullable(insightName.getNullable("insightName"))
+                fun insightName(): Optional<String> = insightName.getOptional("insightName")
 
                 /**
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
                 fun insightParameters(): Optional<List<JsonValue>> =
-                    Optional.ofNullable(insightParameters.getNullable("insightParameters"))
+                    insightParameters.getOptional("insightParameters")
 
                 /**
                  * The measurement to be evaluated.
@@ -2057,8 +2048,7 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun measurement(): Optional<String> =
-                    Optional.ofNullable(measurement.getNullable("measurement"))
+                fun measurement(): Optional<String> = measurement.getOptional("measurement")
 
                 /**
                  * The operator to be used for the evaluation.
@@ -2066,8 +2056,7 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun operator(): Optional<String> =
-                    Optional.ofNullable(operator.getNullable("operator"))
+                fun operator(): Optional<String> = operator.getOptional("operator")
 
                 /**
                  * The value to be compared.
@@ -2075,7 +2064,7 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun value(): Optional<Value> = Optional.ofNullable(value.getNullable("value"))
+                fun value(): Optional<Value> = value.getOptional("value")
 
                 /**
                  * Returns the raw JSON value of [insightName].
