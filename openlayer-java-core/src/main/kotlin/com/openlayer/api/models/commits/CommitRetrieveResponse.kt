@@ -123,8 +123,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun dateArchived(): Optional<OffsetDateTime> =
-        Optional.ofNullable(dateArchived.getNullable("dateArchived"))
+    fun dateArchived(): Optional<OffsetDateTime> = dateArchived.getOptional("dateArchived")
 
     /**
      * The project version (commit) creation date.
@@ -148,7 +147,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun mlModelId(): Optional<String> = Optional.ofNullable(mlModelId.getNullable("mlModelId"))
+    fun mlModelId(): Optional<String> = mlModelId.getOptional("mlModelId")
 
     /**
      * The number of tests that are passing for the commit.
@@ -181,8 +180,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun statusMessage(): Optional<String> =
-        Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+    fun statusMessage(): Optional<String> = statusMessage.getOptional("statusMessage")
 
     /**
      * The storage URI where the commit bundle is stored.
@@ -206,8 +204,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun trainingDatasetId(): Optional<String> =
-        Optional.ofNullable(trainingDatasetId.getNullable("trainingDatasetId"))
+    fun trainingDatasetId(): Optional<String> = trainingDatasetId.getOptional("trainingDatasetId")
 
     /**
      * The validation dataset id.
@@ -216,7 +213,7 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun validationDatasetId(): Optional<String> =
-        Optional.ofNullable(validationDatasetId.getNullable("validationDatasetId"))
+        validationDatasetId.getOptional("validationDatasetId")
 
     /**
      * Whether the commit is archived.
@@ -224,7 +221,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun archived(): Optional<Boolean> = Optional.ofNullable(archived.getNullable("archived"))
+    fun archived(): Optional<Boolean> = archived.getOptional("archived")
 
     /**
      * The deployment status associated with the commit's model.
@@ -232,14 +229,13 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun deploymentStatus(): Optional<String> =
-        Optional.ofNullable(deploymentStatus.getNullable("deploymentStatus"))
+    fun deploymentStatus(): Optional<String> = deploymentStatus.getOptional("deploymentStatus")
 
     /**
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun links(): Optional<Links> = Optional.ofNullable(links.getNullable("links"))
+    fun links(): Optional<Links> = links.getOptional("links")
 
     /**
      * Returns the raw JSON value of [id].
@@ -938,7 +934,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun fileSize(): Optional<Long> = Optional.ofNullable(fileSize.getNullable("fileSize"))
+        fun fileSize(): Optional<Long> = fileSize.getOptional("fileSize")
 
         /**
          * The commit message.
@@ -954,7 +950,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun mlModelId(): Optional<String> = Optional.ofNullable(mlModelId.getNullable("mlModelId"))
+        fun mlModelId(): Optional<String> = mlModelId.getOptional("mlModelId")
 
         /**
          * The storage URI where the commit bundle is stored.
@@ -971,7 +967,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun trainingDatasetId(): Optional<String> =
-            Optional.ofNullable(trainingDatasetId.getNullable("trainingDatasetId"))
+            trainingDatasetId.getOptional("trainingDatasetId")
 
         /**
          * The validation dataset id.
@@ -980,7 +976,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun validationDatasetId(): Optional<String> =
-            Optional.ofNullable(validationDatasetId.getNullable("validationDatasetId"))
+            validationDatasetId.getOptional("validationDatasetId")
 
         /**
          * The commit creation date.
@@ -988,8 +984,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun dateCreated(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateCreated.getNullable("dateCreated"))
+        fun dateCreated(): Optional<OffsetDateTime> = dateCreated.getOptional("dateCreated")
 
         /**
          * The ref of the corresponding git commit.
@@ -997,8 +992,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun gitCommitRef(): Optional<String> =
-            Optional.ofNullable(gitCommitRef.getNullable("gitCommitRef"))
+        fun gitCommitRef(): Optional<String> = gitCommitRef.getOptional("gitCommitRef")
 
         /**
          * The SHA of the corresponding git commit.
@@ -1006,8 +1000,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun gitCommitSha(): Optional<Long> =
-            Optional.ofNullable(gitCommitSha.getNullable("gitCommitSha"))
+        fun gitCommitSha(): Optional<Long> = gitCommitSha.getOptional("gitCommitSha")
 
         /**
          * The URL of the corresponding git commit.
@@ -1015,8 +1008,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun gitCommitUrl(): Optional<String> =
-            Optional.ofNullable(gitCommitUrl.getNullable("gitCommitUrl"))
+        fun gitCommitUrl(): Optional<String> = gitCommitUrl.getOptional("gitCommitUrl")
 
         /**
          * Returns the raw JSON value of [id].

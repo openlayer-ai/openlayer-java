@@ -301,7 +301,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun config(): Optional<Config> = Optional.ofNullable(config.getNullable("config"))
+        fun config(): Optional<Config> = config.getOptional("config")
 
         /**
          * Returns the raw JSON value of [config].
@@ -488,7 +488,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun groundTruthColumnName(): Optional<String> =
-            Optional.ofNullable(groundTruthColumnName.getNullable("groundTruthColumnName"))
+            groundTruthColumnName.getOptional("groundTruthColumnName")
 
         /**
          * Name of the column with human feedback.
@@ -497,7 +497,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun humanFeedbackColumnName(): Optional<String> =
-            Optional.ofNullable(humanFeedbackColumnName.getNullable("humanFeedbackColumnName"))
+            humanFeedbackColumnName.getOptional("humanFeedbackColumnName")
 
         /**
          * Name of the column with the inference ids. This is useful if you want to update rows at a
@@ -507,7 +507,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun inferenceIdColumnName(): Optional<String> =
-            Optional.ofNullable(inferenceIdColumnName.getNullable("inferenceIdColumnName"))
+            inferenceIdColumnName.getOptional("inferenceIdColumnName")
 
         /**
          * Name of the column with the latencies.
@@ -516,7 +516,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun latencyColumnName(): Optional<String> =
-            Optional.ofNullable(latencyColumnName.getNullable("latencyColumnName"))
+            latencyColumnName.getOptional("latencyColumnName")
 
         /**
          * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
@@ -526,7 +526,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun timestampColumnName(): Optional<String> =
-            Optional.ofNullable(timestampColumnName.getNullable("timestampColumnName"))
+            timestampColumnName.getOptional("timestampColumnName")
 
         /**
          * Returns the raw JSON value of [groundTruthColumnName].

@@ -266,7 +266,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun creatorId(): Optional<String> = Optional.ofNullable(creatorId.getNullable("creatorId"))
+        fun creatorId(): Optional<String> = creatorId.getOptional("creatorId")
 
         /**
          * The project creation date.
@@ -339,7 +339,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
+        fun source(): Optional<Source> = source.getOptional("source")
 
         /**
          * The task type of the project.
@@ -363,8 +363,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun workspaceId(): Optional<String> =
-            Optional.ofNullable(workspaceId.getNullable("workspaceId"))
+        fun workspaceId(): Optional<String> = workspaceId.getOptional("workspaceId")
 
         /**
          * The project description.
@@ -372,14 +371,13 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
+        fun gitRepo(): Optional<GitRepo> = gitRepo.getOptional("gitRepo")
 
         /**
          * Returns the raw JSON value of [id].
@@ -1513,13 +1511,13 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
+            fun branch(): Optional<String> = branch.getOptional("branch")
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun rootDir(): Optional<String> = Optional.ofNullable(rootDir.getNullable("rootDir"))
+            fun rootDir(): Optional<String> = rootDir.getOptional("rootDir")
 
             /**
              * Returns the raw JSON value of [id].

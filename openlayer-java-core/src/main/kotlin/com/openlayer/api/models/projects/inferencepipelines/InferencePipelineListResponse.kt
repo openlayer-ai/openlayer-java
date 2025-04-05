@@ -287,7 +287,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun dateLastEvaluated(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateLastEvaluated.getNullable("dateLastEvaluated"))
+            dateLastEvaluated.getOptional("dateLastEvaluated")
 
         /**
          * The last data sample received date.
@@ -296,7 +296,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun dateLastSampleReceived(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateLastSampleReceived.getNullable("dateLastSampleReceived"))
+            dateLastSampleReceived.getOptional("dateLastSampleReceived")
 
         /**
          * The next test evaluation date.
@@ -305,7 +305,7 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun dateOfNextEvaluation(): Optional<OffsetDateTime> =
-            Optional.ofNullable(dateOfNextEvaluation.getNullable("dateOfNextEvaluation"))
+            dateOfNextEvaluation.getOptional("dateOfNextEvaluation")
 
         /**
          * The last updated date.
@@ -321,8 +321,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun description(): Optional<String> =
-            Optional.ofNullable(description.getNullable("description"))
+        fun description(): Optional<String> = description.getOptional("description")
 
         /**
          * The number of tests failing.
@@ -376,8 +375,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun statusMessage(): Optional<String> =
-            Optional.ofNullable(statusMessage.getNullable("statusMessage"))
+        fun statusMessage(): Optional<String> = statusMessage.getOptional("statusMessage")
 
         /**
          * The total number of tests.
@@ -391,14 +389,13 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun project(): Optional<Project> = Optional.ofNullable(project.getNullable("project"))
+        fun project(): Optional<Project> = project.getOptional("project")
 
         /**
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun workspace(): Optional<Workspace> =
-            Optional.ofNullable(workspace.getNullable("workspace"))
+        fun workspace(): Optional<Workspace> = workspace.getOptional("workspace")
 
         /**
          * The workspace id.
@@ -406,8 +403,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun workspaceId(): Optional<String> =
-            Optional.ofNullable(workspaceId.getNullable("workspaceId"))
+        fun workspaceId(): Optional<String> = workspaceId.getOptional("workspaceId")
 
         /**
          * Returns the raw JSON value of [id].
@@ -1466,8 +1462,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun creatorId(): Optional<String> =
-                Optional.ofNullable(creatorId.getNullable("creatorId"))
+            fun creatorId(): Optional<String> = creatorId.getOptional("creatorId")
 
             /**
              * The project creation date.
@@ -1549,7 +1544,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun source(): Optional<Source> = Optional.ofNullable(source.getNullable("source"))
+            fun source(): Optional<Source> = source.getOptional("source")
 
             /**
              * The task type of the project.
@@ -1575,8 +1570,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun workspaceId(): Optional<String> =
-                Optional.ofNullable(workspaceId.getNullable("workspaceId"))
+            fun workspaceId(): Optional<String> = workspaceId.getOptional("workspaceId")
 
             /**
              * The project description.
@@ -1584,14 +1578,13 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun description(): Optional<String> =
-                Optional.ofNullable(description.getNullable("description"))
+            fun description(): Optional<String> = description.getOptional("description")
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun gitRepo(): Optional<GitRepo> = Optional.ofNullable(gitRepo.getNullable("gitRepo"))
+            fun gitRepo(): Optional<GitRepo> = gitRepo.getOptional("gitRepo")
 
             /**
              * Returns the raw JSON value of [id].
@@ -2755,14 +2748,13 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun branch(): Optional<String> = Optional.ofNullable(branch.getNullable("branch"))
+                fun branch(): Optional<String> = branch.getOptional("branch")
 
                 /**
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun rootDir(): Optional<String> =
-                    Optional.ofNullable(rootDir.getNullable("rootDir"))
+                fun rootDir(): Optional<String> = rootDir.getOptional("rootDir")
 
                 /**
                  * Returns the raw JSON value of [id].
@@ -3327,8 +3319,7 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun creatorId(): Optional<String> =
-                Optional.ofNullable(creatorId.getNullable("creatorId"))
+            fun creatorId(): Optional<String> = creatorId.getOptional("creatorId")
 
             /**
              * The workspace creation date.
@@ -3382,7 +3373,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun periodEndDate(): Optional<OffsetDateTime> =
-                Optional.ofNullable(periodEndDate.getNullable("periodEndDate"))
+                periodEndDate.getOptional("periodEndDate")
 
             /**
              * The start date of the current billing period.
@@ -3391,7 +3382,7 @@ private constructor(
              *   if the server responded with an unexpected value).
              */
             fun periodStartDate(): Optional<OffsetDateTime> =
-                Optional.ofNullable(periodStartDate.getNullable("periodStartDate"))
+                periodStartDate.getOptional("periodStartDate")
 
             /**
              * The number of projects in the workspace.
@@ -3424,15 +3415,14 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun inviteCode(): Optional<String> =
-                Optional.ofNullable(inviteCode.getNullable("inviteCode"))
+            fun inviteCode(): Optional<String> = inviteCode.getOptional("inviteCode")
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
             fun monthlyUsage(): Optional<List<MonthlyUsage>> =
-                Optional.ofNullable(monthlyUsage.getNullable("monthlyUsage"))
+                monthlyUsage.getOptional("monthlyUsage")
 
             /**
              * Whether the workspace only allows SAML authentication.
@@ -3440,15 +3430,14 @@ private constructor(
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
-            fun samlOnlyAccess(): Optional<Boolean> =
-                Optional.ofNullable(samlOnlyAccess.getNullable("samlOnlyAccess"))
+            fun samlOnlyAccess(): Optional<Boolean> = samlOnlyAccess.getOptional("samlOnlyAccess")
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
              */
             fun wildcardDomains(): Optional<List<String>> =
-                Optional.ofNullable(wildcardDomains.getNullable("wildcardDomains"))
+                wildcardDomains.getOptional("wildcardDomains")
 
             /**
              * Returns the raw JSON value of [id].
@@ -4250,21 +4239,20 @@ private constructor(
                  *   (e.g. if the server responded with an unexpected value).
                  */
                 fun executionTimeMs(): Optional<Long> =
-                    Optional.ofNullable(executionTimeMs.getNullable("executionTimeMs"))
+                    executionTimeMs.getOptional("executionTimeMs")
 
                 /**
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun monthYear(): Optional<LocalDate> =
-                    Optional.ofNullable(monthYear.getNullable("monthYear"))
+                fun monthYear(): Optional<LocalDate> = monthYear.getOptional("monthYear")
 
                 /**
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
                 fun predictionCount(): Optional<Long> =
-                    Optional.ofNullable(predictionCount.getNullable("predictionCount"))
+                    predictionCount.getOptional("predictionCount")
 
                 /**
                  * Returns the raw JSON value of [executionTimeMs].
