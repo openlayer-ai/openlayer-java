@@ -49,7 +49,7 @@ internal class CommitServiceAsyncTest {
                     .mlModelId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .passingGoalCount(5L)
                     .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .status(CommitCreateParams.Status.QUEUED)
+                    .status(CommitCreateParams.Status.COMPLETED)
                     .statusMessage("Commit successfully processed.")
                     .storageUri("s3://...")
                     .totalGoalCount(6L)

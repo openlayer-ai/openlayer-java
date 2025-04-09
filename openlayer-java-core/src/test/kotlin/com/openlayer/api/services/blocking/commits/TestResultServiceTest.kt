@@ -27,7 +27,7 @@ internal class TestResultServiceTest {
                     .includeArchived(true)
                     .page(1L)
                     .perPage(1L)
-                    .status(TestResultListParams.Status.RUNNING)
+                    .status(TestResultListParams.Status.PASSING)
                     .type(TestResultListParams.Type.INTEGRITY)
                     .build()
             )
