@@ -15,7 +15,7 @@ internal class TestResultListParamsTest {
             .includeArchived(true)
             .page(1L)
             .perPage(1L)
-            .status(TestResultListParams.Status.RUNNING)
+            .status(TestResultListParams.Status.PASSING)
             .type(TestResultListParams.Type.INTEGRITY)
             .build()
     }
@@ -40,7 +40,7 @@ internal class TestResultListParamsTest {
                 .includeArchived(true)
                 .page(1L)
                 .perPage(1L)
-                .status(TestResultListParams.Status.RUNNING)
+                .status(TestResultListParams.Status.PASSING)
                 .type(TestResultListParams.Type.INTEGRITY)
                 .build()
 
@@ -52,7 +52,7 @@ internal class TestResultListParamsTest {
                     .put("includeArchived", "true")
                     .put("page", "1")
                     .put("perPage", "1")
-                    .put("status", "running")
+                    .put("status", "passing")
                     .put("type", "integrity")
                     .build()
             )

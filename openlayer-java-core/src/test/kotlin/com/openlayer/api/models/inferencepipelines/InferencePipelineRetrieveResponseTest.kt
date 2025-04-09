@@ -33,7 +33,7 @@ internal class InferencePipelineRetrieveResponseTest {
                 .name("production")
                 .passingGoalCount(5L)
                 .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .status(InferencePipelineRetrieveResponse.Status.QUEUED)
+                .status(InferencePipelineRetrieveResponse.Status.COMPLETED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
                 .project(
@@ -133,7 +133,7 @@ internal class InferencePipelineRetrieveResponseTest {
         assertThat(inferencePipelineRetrieveResponse.projectId())
             .isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
         assertThat(inferencePipelineRetrieveResponse.status())
-            .isEqualTo(InferencePipelineRetrieveResponse.Status.QUEUED)
+            .isEqualTo(InferencePipelineRetrieveResponse.Status.COMPLETED)
         assertThat(inferencePipelineRetrieveResponse.statusMessage())
             .contains("Tests successfully evaluated")
         assertThat(inferencePipelineRetrieveResponse.totalGoalCount()).isEqualTo(6L)
@@ -232,7 +232,7 @@ internal class InferencePipelineRetrieveResponseTest {
                 .name("production")
                 .passingGoalCount(5L)
                 .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                .status(InferencePipelineRetrieveResponse.Status.QUEUED)
+                .status(InferencePipelineRetrieveResponse.Status.COMPLETED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
                 .project(

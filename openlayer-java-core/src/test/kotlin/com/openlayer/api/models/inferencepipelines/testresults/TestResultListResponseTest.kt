@@ -24,7 +24,7 @@ internal class TestResultListResponseTest {
                         .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                         .inferencePipelineId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .status(TestResultListResponse.Item.Status.RUNNING)
+                        .status(TestResultListResponse.Item.Status.PASSING)
                         .statusMessage("Test successfully processed.")
                         .goal(
                             TestResultListResponse.Item.Goal.builder()
@@ -79,7 +79,7 @@ internal class TestResultListResponseTest {
                     .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                     .inferencePipelineId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .status(TestResultListResponse.Item.Status.RUNNING)
+                    .status(TestResultListResponse.Item.Status.PASSING)
                     .statusMessage("Test successfully processed.")
                     .goal(
                         TestResultListResponse.Item.Goal.builder()
@@ -138,7 +138,7 @@ internal class TestResultListResponseTest {
                         .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                         .inferencePipelineId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .status(TestResultListResponse.Item.Status.RUNNING)
+                        .status(TestResultListResponse.Item.Status.PASSING)
                         .statusMessage("Test successfully processed.")
                         .goal(
                             TestResultListResponse.Item.Goal.builder()

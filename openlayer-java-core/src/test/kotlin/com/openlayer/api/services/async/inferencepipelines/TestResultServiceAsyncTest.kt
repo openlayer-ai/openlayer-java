@@ -26,7 +26,7 @@ internal class TestResultServiceAsyncTest {
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .page(1L)
                     .perPage(1L)
-                    .status(TestResultListParams.Status.RUNNING)
+                    .status(TestResultListParams.Status.PASSING)
                     .type(TestResultListParams.Type.INTEGRITY)
                     .build()
             )
