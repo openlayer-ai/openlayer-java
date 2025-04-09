@@ -45,7 +45,7 @@ internal class InferencePipelineServiceAsyncTest {
                     .name("production")
                     .passingGoalCount(5L)
                     .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .status(InferencePipelineCreateParams.Status.QUEUED)
+                    .status(InferencePipelineCreateParams.Status.COMPLETED)
                     .statusMessage("Tests successfully evaluated")
                     .totalGoalCount(6L)
                     .project(

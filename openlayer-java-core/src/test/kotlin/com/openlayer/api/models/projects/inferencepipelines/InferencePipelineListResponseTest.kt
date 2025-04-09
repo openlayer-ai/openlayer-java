@@ -35,7 +35,7 @@ internal class InferencePipelineListResponseTest {
                         .name("production")
                         .passingGoalCount(5L)
                         .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .status(InferencePipelineListResponse.Item.Status.QUEUED)
+                        .status(InferencePipelineListResponse.Item.Status.COMPLETED)
                         .statusMessage("Tests successfully evaluated")
                         .totalGoalCount(6L)
                         .project(
@@ -137,7 +137,7 @@ internal class InferencePipelineListResponseTest {
                     .name("production")
                     .passingGoalCount(5L)
                     .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .status(InferencePipelineListResponse.Item.Status.QUEUED)
+                    .status(InferencePipelineListResponse.Item.Status.COMPLETED)
                     .statusMessage("Tests successfully evaluated")
                     .totalGoalCount(6L)
                     .project(
@@ -236,7 +236,7 @@ internal class InferencePipelineListResponseTest {
                         .name("production")
                         .passingGoalCount(5L)
                         .projectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                        .status(InferencePipelineListResponse.Item.Status.QUEUED)
+                        .status(InferencePipelineListResponse.Item.Status.COMPLETED)
                         .statusMessage("Tests successfully evaluated")
                         .totalGoalCount(6L)
                         .project(
