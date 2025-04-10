@@ -52,7 +52,7 @@ import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-// Configures using the `OPENLAYER_API_KEY` environment variable
+// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
 DataStreamParams params = DataStreamParams.builder()
@@ -83,7 +83,7 @@ Configure the client using environment variables:
 import com.openlayer.api.client.OpenlayerClient;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
 
-// Configures using the `OPENLAYER_API_KEY` environment variable
+// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 ```
 
@@ -105,7 +105,7 @@ import com.openlayer.api.client.OpenlayerClient;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
 
 OpenlayerClient client = OpenlayerOkHttpClient.builder()
-    // Configures using the `OPENLAYER_API_KEY` environment variable
+    // Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
     .fromEnv()
     .apiKey("My API Key")
     .build();
@@ -113,9 +113,10 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter   | Environment variable | Required | Default value |
-| -------- | -------------------- | -------- | ------------- |
-| `apiKey` | `OPENLAYER_API_KEY`  | false    | -             |
+| Setter    | Environment variable | Required | Default value                    |
+| --------- | -------------------- | -------- | -------------------------------- |
+| `apiKey`  | `OPENLAYER_API_KEY`  | false    | -                                |
+| `baseUrl` | `OPENLAYER_BASE_URL` | true     | `"https://api.openlayer.com/v1"` |
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -147,7 +148,7 @@ import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `OPENLAYER_API_KEY` environment variable
+// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
 DataStreamParams params = DataStreamParams.builder()
@@ -180,7 +181,7 @@ import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `OPENLAYER_API_KEY` environment variable
+// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClientAsync client = OpenlayerOkHttpClientAsync.fromEnv();
 
 DataStreamParams params = DataStreamParams.builder()
