@@ -377,6 +377,42 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
     .build();
 ```
 
+### Custom HTTP client
+
+The SDK consists of three artifacts:
+
+- `openlayer-java-core`
+  - Contains core SDK logic
+  - Does not depend on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`OpenlayerClient`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClient.kt), [`OpenlayerClientAsync`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientAsync.kt), [`OpenlayerClientImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientImpl.kt), and [`OpenlayerClientAsyncImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientAsyncImpl.kt), all of which can work with any HTTP client
+- `openlayer-java-client-okhttp`
+  - Depends on [OkHttp](https://square.github.io/okhttp)
+  - Exposes [`OpenlayerOkHttpClient`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OpenlayerOkHttpClient.kt) and [`OpenlayerOkHttpClientAsync`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OpenlayerOkHttpClientAsync.kt), which provide a way to construct [`OpenlayerClientImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientImpl.kt) and [`OpenlayerClientAsyncImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientAsyncImpl.kt), respectively, using OkHttp
+- `openlayer-java`
+  - Depends on and exposes the APIs of both `openlayer-java-core` and `openlayer-java-client-okhttp`
+  - Does not have its own logic
+
+This structure allows replacing the SDK's default HTTP client without pulling in unnecessary dependencies.
+
+#### Customized [`OkHttpClient`](https://square.github.io/okhttp/3.x/okhttp/okhttp3/OkHttpClient.html)
+
+> [!TIP]
+> Try the available [network options](#network-options) before replacing the default client.
+
+To use a customized `OkHttpClient`:
+
+1. Replace your [`openlayer-java` dependency](#installation) with `openlayer-java-core`
+2. Copy `openlayer-java-client-okhttp`'s [`OkHttpClient`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OkHttpClient.kt) class into your code and customize it
+3. Construct [`OpenlayerClientImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientImpl.kt) or [`OpenlayerClientAsyncImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientAsyncImpl.kt), similarly to [`OpenlayerOkHttpClient`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OpenlayerOkHttpClient.kt) or [`OpenlayerOkHttpClientAsync`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OpenlayerOkHttpClientAsync.kt), using your customized client
+
+### Completely custom HTTP client
+
+To use a completely custom HTTP client:
+
+1. Replace your [`openlayer-java` dependency](#installation) with `openlayer-java-core`
+2. Write a class that implements the [`HttpClient`](openlayer-java-core/src/main/kotlin/com/openlayer/api/core/http/HttpClient.kt) interface
+3. Construct [`OpenlayerClientImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientImpl.kt) or [`OpenlayerClientAsyncImpl`](openlayer-java-core/src/main/kotlin/com/openlayer/api/client/OpenlayerClientAsyncImpl.kt), similarly to [`OpenlayerOkHttpClient`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OpenlayerOkHttpClient.kt) or [`OpenlayerOkHttpClientAsync`](openlayer-java-client-okhttp/src/main/kotlin/com/openlayer/api/client/okhttp/OpenlayerOkHttpClientAsync.kt), using your new client class
+
 ## Undocumented API functionality
 
 The SDK is typed for convenient usage of the documented API. However, it also supports working with undocumented or not yet supported parts of the API.
