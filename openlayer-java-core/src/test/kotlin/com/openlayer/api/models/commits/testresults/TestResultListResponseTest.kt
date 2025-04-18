@@ -47,9 +47,23 @@ internal class TestResultListResponseTest {
                                 .addThreshold(
                                     TestResultListResponse.Item.Goal.Threshold.builder()
                                         .insightName("duplicateRowCount")
-                                        .addInsightParameter(JsonValue.from(mapOf<String, Any>()))
+                                        .addInsightParameter(
+                                            TestResultListResponse.Item.Goal.Threshold
+                                                .InsightParameter
+                                                .builder()
+                                                .name("column_name")
+                                                .value(JsonValue.from("Age"))
+                                                .build()
+                                        )
                                         .measurement("duplicateRowCount")
-                                        .operator("<=")
+                                        .operator(
+                                            TestResultListResponse.Item.Goal.Threshold.Operator
+                                                .LESS_OR_EQUALS
+                                        )
+                                        .thresholdMode(
+                                            TestResultListResponse.Item.Goal.Threshold.ThresholdMode
+                                                .AUTOMATIC
+                                        )
                                         .value(0.0)
                                         .build()
                                 )
@@ -102,9 +116,22 @@ internal class TestResultListResponseTest {
                             .addThreshold(
                                 TestResultListResponse.Item.Goal.Threshold.builder()
                                     .insightName("duplicateRowCount")
-                                    .addInsightParameter(JsonValue.from(mapOf<String, Any>()))
+                                    .addInsightParameter(
+                                        TestResultListResponse.Item.Goal.Threshold.InsightParameter
+                                            .builder()
+                                            .name("column_name")
+                                            .value(JsonValue.from("Age"))
+                                            .build()
+                                    )
                                     .measurement("duplicateRowCount")
-                                    .operator("<=")
+                                    .operator(
+                                        TestResultListResponse.Item.Goal.Threshold.Operator
+                                            .LESS_OR_EQUALS
+                                    )
+                                    .thresholdMode(
+                                        TestResultListResponse.Item.Goal.Threshold.ThresholdMode
+                                            .AUTOMATIC
+                                    )
                                     .value(0.0)
                                     .build()
                             )
@@ -161,9 +188,23 @@ internal class TestResultListResponseTest {
                                 .addThreshold(
                                     TestResultListResponse.Item.Goal.Threshold.builder()
                                         .insightName("duplicateRowCount")
-                                        .addInsightParameter(JsonValue.from(mapOf<String, Any>()))
+                                        .addInsightParameter(
+                                            TestResultListResponse.Item.Goal.Threshold
+                                                .InsightParameter
+                                                .builder()
+                                                .name("column_name")
+                                                .value(JsonValue.from("Age"))
+                                                .build()
+                                        )
                                         .measurement("duplicateRowCount")
-                                        .operator("<=")
+                                        .operator(
+                                            TestResultListResponse.Item.Goal.Threshold.Operator
+                                                .LESS_OR_EQUALS
+                                        )
+                                        .thresholdMode(
+                                            TestResultListResponse.Item.Goal.Threshold.ThresholdMode
+                                                .AUTOMATIC
+                                        )
                                         .value(0.0)
                                         .build()
                                 )

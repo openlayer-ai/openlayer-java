@@ -1994,9 +1994,10 @@ private constructor(
             class Threshold
             private constructor(
                 private val insightName: JsonField<String>,
-                private val insightParameters: JsonField<List<JsonValue>>,
+                private val insightParameters: JsonField<List<InsightParameter>>,
                 private val measurement: JsonField<String>,
-                private val operator: JsonField<String>,
+                private val operator: JsonField<Operator>,
+                private val thresholdMode: JsonField<ThresholdMode>,
                 private val value: JsonField<Value>,
                 private val additionalProperties: MutableMap<String, JsonValue>,
             ) {
@@ -2008,13 +2009,16 @@ private constructor(
                     insightName: JsonField<String> = JsonMissing.of(),
                     @JsonProperty("insightParameters")
                     @ExcludeMissing
-                    insightParameters: JsonField<List<JsonValue>> = JsonMissing.of(),
+                    insightParameters: JsonField<List<InsightParameter>> = JsonMissing.of(),
                     @JsonProperty("measurement")
                     @ExcludeMissing
                     measurement: JsonField<String> = JsonMissing.of(),
                     @JsonProperty("operator")
                     @ExcludeMissing
-                    operator: JsonField<String> = JsonMissing.of(),
+                    operator: JsonField<Operator> = JsonMissing.of(),
+                    @JsonProperty("thresholdMode")
+                    @ExcludeMissing
+                    thresholdMode: JsonField<ThresholdMode> = JsonMissing.of(),
                     @JsonProperty("value")
                     @ExcludeMissing
                     value: JsonField<Value> = JsonMissing.of(),
@@ -2023,6 +2027,7 @@ private constructor(
                     insightParameters,
                     measurement,
                     operator,
+                    thresholdMode,
                     value,
                     mutableMapOf(),
                 )
@@ -2036,10 +2041,12 @@ private constructor(
                 fun insightName(): Optional<String> = insightName.getOptional("insightName")
 
                 /**
+                 * The insight parameters. Required only for some test subtypes.
+                 *
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun insightParameters(): Optional<List<JsonValue>> =
+                fun insightParameters(): Optional<List<InsightParameter>> =
                     insightParameters.getOptional("insightParameters")
 
                 /**
@@ -2056,7 +2063,16 @@ private constructor(
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
                  */
-                fun operator(): Optional<String> = operator.getOptional("operator")
+                fun operator(): Optional<Operator> = operator.getOptional("operator")
+
+                /**
+                 * Whether to use automatic anomaly detection or manual thresholds
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun thresholdMode(): Optional<ThresholdMode> =
+                    thresholdMode.getOptional("thresholdMode")
 
                 /**
                  * The value to be compared.
@@ -2084,7 +2100,7 @@ private constructor(
                  */
                 @JsonProperty("insightParameters")
                 @ExcludeMissing
-                fun _insightParameters(): JsonField<List<JsonValue>> = insightParameters
+                fun _insightParameters(): JsonField<List<InsightParameter>> = insightParameters
 
                 /**
                  * Returns the raw JSON value of [measurement].
@@ -2104,7 +2120,17 @@ private constructor(
                  */
                 @JsonProperty("operator")
                 @ExcludeMissing
-                fun _operator(): JsonField<String> = operator
+                fun _operator(): JsonField<Operator> = operator
+
+                /**
+                 * Returns the raw JSON value of [thresholdMode].
+                 *
+                 * Unlike [thresholdMode], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("thresholdMode")
+                @ExcludeMissing
+                fun _thresholdMode(): JsonField<ThresholdMode> = thresholdMode
 
                 /**
                  * Returns the raw JSON value of [value].
@@ -2136,9 +2162,10 @@ private constructor(
                 class Builder internal constructor() {
 
                     private var insightName: JsonField<String> = JsonMissing.of()
-                    private var insightParameters: JsonField<MutableList<JsonValue>>? = null
+                    private var insightParameters: JsonField<MutableList<InsightParameter>>? = null
                     private var measurement: JsonField<String> = JsonMissing.of()
-                    private var operator: JsonField<String> = JsonMissing.of()
+                    private var operator: JsonField<Operator> = JsonMissing.of()
+                    private var thresholdMode: JsonField<ThresholdMode> = JsonMissing.of()
                     private var value: JsonField<Value> = JsonMissing.of()
                     private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
@@ -2148,6 +2175,7 @@ private constructor(
                         insightParameters = threshold.insightParameters.map { it.toMutableList() }
                         measurement = threshold.measurement
                         operator = threshold.operator
+                        thresholdMode = threshold.thresholdMode
                         value = threshold.value
                         additionalProperties = threshold.additionalProperties.toMutableMap()
                     }
@@ -2166,26 +2194,35 @@ private constructor(
                         this.insightName = insightName
                     }
 
-                    fun insightParameters(insightParameters: List<JsonValue>) =
-                        insightParameters(JsonField.of(insightParameters))
+                    /** The insight parameters. Required only for some test subtypes. */
+                    fun insightParameters(insightParameters: List<InsightParameter>?) =
+                        insightParameters(JsonField.ofNullable(insightParameters))
+
+                    /**
+                     * Alias for calling [Builder.insightParameters] with
+                     * `insightParameters.orElse(null)`.
+                     */
+                    fun insightParameters(insightParameters: Optional<List<InsightParameter>>) =
+                        insightParameters(insightParameters.getOrNull())
 
                     /**
                      * Sets [Builder.insightParameters] to an arbitrary JSON value.
                      *
                      * You should usually call [Builder.insightParameters] with a well-typed
-                     * `List<JsonValue>` value instead. This method is primarily for setting the
-                     * field to an undocumented or not yet supported value.
+                     * `List<InsightParameter>` value instead. This method is primarily for setting
+                     * the field to an undocumented or not yet supported value.
                      */
-                    fun insightParameters(insightParameters: JsonField<List<JsonValue>>) = apply {
-                        this.insightParameters = insightParameters.map { it.toMutableList() }
-                    }
+                    fun insightParameters(insightParameters: JsonField<List<InsightParameter>>) =
+                        apply {
+                            this.insightParameters = insightParameters.map { it.toMutableList() }
+                        }
 
                     /**
-                     * Adds a single [JsonValue] to [insightParameters].
+                     * Adds a single [InsightParameter] to [insightParameters].
                      *
                      * @throws IllegalStateException if the field was previously set to a non-list.
                      */
-                    fun addInsightParameter(insightParameter: JsonValue) = apply {
+                    fun addInsightParameter(insightParameter: InsightParameter) = apply {
                         insightParameters =
                             (insightParameters ?: JsonField.of(mutableListOf())).also {
                                 checkKnown("insightParameters", it).add(insightParameter)
@@ -2207,16 +2244,31 @@ private constructor(
                     }
 
                     /** The operator to be used for the evaluation. */
-                    fun operator(operator: String) = operator(JsonField.of(operator))
+                    fun operator(operator: Operator) = operator(JsonField.of(operator))
 
                     /**
                      * Sets [Builder.operator] to an arbitrary JSON value.
                      *
-                     * You should usually call [Builder.operator] with a well-typed [String] value
+                     * You should usually call [Builder.operator] with a well-typed [Operator] value
                      * instead. This method is primarily for setting the field to an undocumented or
                      * not yet supported value.
                      */
-                    fun operator(operator: JsonField<String>) = apply { this.operator = operator }
+                    fun operator(operator: JsonField<Operator>) = apply { this.operator = operator }
+
+                    /** Whether to use automatic anomaly detection or manual thresholds */
+                    fun thresholdMode(thresholdMode: ThresholdMode) =
+                        thresholdMode(JsonField.of(thresholdMode))
+
+                    /**
+                     * Sets [Builder.thresholdMode] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.thresholdMode] with a well-typed
+                     * [ThresholdMode] value instead. This method is primarily for setting the field
+                     * to an undocumented or not yet supported value.
+                     */
+                    fun thresholdMode(thresholdMode: JsonField<ThresholdMode>) = apply {
+                        this.thresholdMode = thresholdMode
+                    }
 
                     /** The value to be compared. */
                     fun value(value: Value) = value(JsonField.of(value))
@@ -2275,6 +2327,7 @@ private constructor(
                             (insightParameters ?: JsonMissing.of()).map { it.toImmutable() },
                             measurement,
                             operator,
+                            thresholdMode,
                             value,
                             additionalProperties.toMutableMap(),
                         )
@@ -2288,9 +2341,10 @@ private constructor(
                     }
 
                     insightName()
-                    insightParameters()
+                    insightParameters().ifPresent { it.forEach { it.validate() } }
                     measurement()
-                    operator()
+                    operator().ifPresent { it.validate() }
+                    thresholdMode().ifPresent { it.validate() }
                     value().ifPresent { it.validate() }
                     validated = true
                 }
@@ -2312,10 +2366,490 @@ private constructor(
                 @JvmSynthetic
                 internal fun validity(): Int =
                     (if (insightName.asKnown().isPresent) 1 else 0) +
-                        (insightParameters.asKnown().getOrNull()?.size ?: 0) +
+                        (insightParameters.asKnown().getOrNull()?.sumOf { it.validity().toInt() }
+                            ?: 0) +
                         (if (measurement.asKnown().isPresent) 1 else 0) +
-                        (if (operator.asKnown().isPresent) 1 else 0) +
+                        (operator.asKnown().getOrNull()?.validity() ?: 0) +
+                        (thresholdMode.asKnown().getOrNull()?.validity() ?: 0) +
                         (value.asKnown().getOrNull()?.validity() ?: 0)
+
+                class InsightParameter
+                private constructor(
+                    private val name: JsonField<String>,
+                    private val value: JsonValue,
+                    private val additionalProperties: MutableMap<String, JsonValue>,
+                ) {
+
+                    @JsonCreator
+                    private constructor(
+                        @JsonProperty("name")
+                        @ExcludeMissing
+                        name: JsonField<String> = JsonMissing.of(),
+                        @JsonProperty("value") @ExcludeMissing value: JsonValue = JsonMissing.of(),
+                    ) : this(name, value, mutableMapOf())
+
+                    /**
+                     * The name of the insight filter.
+                     *
+                     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected
+                     *   type or is unexpectedly missing or null (e.g. if the server responded with
+                     *   an unexpected value).
+                     */
+                    fun name(): String = name.getRequired("name")
+
+                    @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
+
+                    /**
+                     * Returns the raw JSON value of [name].
+                     *
+                     * Unlike [name], this method doesn't throw if the JSON field has an unexpected
+                     * type.
+                     */
+                    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+                    @JsonAnySetter
+                    private fun putAdditionalProperty(key: String, value: JsonValue) {
+                        additionalProperties.put(key, value)
+                    }
+
+                    @JsonAnyGetter
+                    @ExcludeMissing
+                    fun _additionalProperties(): Map<String, JsonValue> =
+                        Collections.unmodifiableMap(additionalProperties)
+
+                    fun toBuilder() = Builder().from(this)
+
+                    companion object {
+
+                        /**
+                         * Returns a mutable builder for constructing an instance of
+                         * [InsightParameter].
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .name()
+                         * .value()
+                         * ```
+                         */
+                        @JvmStatic fun builder() = Builder()
+                    }
+
+                    /** A builder for [InsightParameter]. */
+                    class Builder internal constructor() {
+
+                        private var name: JsonField<String>? = null
+                        private var value: JsonValue? = null
+                        private var additionalProperties: MutableMap<String, JsonValue> =
+                            mutableMapOf()
+
+                        @JvmSynthetic
+                        internal fun from(insightParameter: InsightParameter) = apply {
+                            name = insightParameter.name
+                            value = insightParameter.value
+                            additionalProperties =
+                                insightParameter.additionalProperties.toMutableMap()
+                        }
+
+                        /** The name of the insight filter. */
+                        fun name(name: String) = name(JsonField.of(name))
+
+                        /**
+                         * Sets [Builder.name] to an arbitrary JSON value.
+                         *
+                         * You should usually call [Builder.name] with a well-typed [String] value
+                         * instead. This method is primarily for setting the field to an
+                         * undocumented or not yet supported value.
+                         */
+                        fun name(name: JsonField<String>) = apply { this.name = name }
+
+                        fun value(value: JsonValue) = apply { this.value = value }
+
+                        fun additionalProperties(additionalProperties: Map<String, JsonValue>) =
+                            apply {
+                                this.additionalProperties.clear()
+                                putAllAdditionalProperties(additionalProperties)
+                            }
+
+                        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                            additionalProperties.put(key, value)
+                        }
+
+                        fun putAllAdditionalProperties(
+                            additionalProperties: Map<String, JsonValue>
+                        ) = apply { this.additionalProperties.putAll(additionalProperties) }
+
+                        fun removeAdditionalProperty(key: String) = apply {
+                            additionalProperties.remove(key)
+                        }
+
+                        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                            keys.forEach(::removeAdditionalProperty)
+                        }
+
+                        /**
+                         * Returns an immutable instance of [InsightParameter].
+                         *
+                         * Further updates to this [Builder] will not mutate the returned instance.
+                         *
+                         * The following fields are required:
+                         * ```java
+                         * .name()
+                         * .value()
+                         * ```
+                         *
+                         * @throws IllegalStateException if any required field is unset.
+                         */
+                        fun build(): InsightParameter =
+                            InsightParameter(
+                                checkRequired("name", name),
+                                checkRequired("value", value),
+                                additionalProperties.toMutableMap(),
+                            )
+                    }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): InsightParameter = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        name()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: OpenlayerInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return /* spotless:off */ other is InsightParameter && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+                    }
+
+                    /* spotless:off */
+                    private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
+                    /* spotless:on */
+
+                    override fun hashCode(): Int = hashCode
+
+                    override fun toString() =
+                        "InsightParameter{name=$name, value=$value, additionalProperties=$additionalProperties}"
+                }
+
+                /** The operator to be used for the evaluation. */
+                class Operator
+                @JsonCreator
+                private constructor(private val value: JsonField<String>) : Enum {
+
+                    /**
+                     * Returns this class instance's raw value.
+                     *
+                     * This is usually only useful if this instance was deserialized from data that
+                     * doesn't match any known member, and you want to know that value. For example,
+                     * if the SDK is on an older version than the API, then the API may respond with
+                     * new members that the SDK is unaware of.
+                     */
+                    @com.fasterxml.jackson.annotation.JsonValue
+                    fun _value(): JsonField<String> = value
+
+                    companion object {
+
+                        @JvmField val IS = of("is")
+
+                        @JvmField val GREATER = of(">")
+
+                        @JvmField val GREATER_OR_EQUALS = of(">=")
+
+                        @JvmField val LESS = of("<")
+
+                        @JvmField val LESS_OR_EQUALS = of("<=")
+
+                        @JvmField val NOT_EQUALS = of("!=")
+
+                        @JvmStatic fun of(value: String) = Operator(JsonField.of(value))
+                    }
+
+                    /** An enum containing [Operator]'s known values. */
+                    enum class Known {
+                        IS,
+                        GREATER,
+                        GREATER_OR_EQUALS,
+                        LESS,
+                        LESS_OR_EQUALS,
+                        NOT_EQUALS,
+                    }
+
+                    /**
+                     * An enum containing [Operator]'s known values, as well as an [_UNKNOWN]
+                     * member.
+                     *
+                     * An instance of [Operator] can contain an unknown value in a couple of cases:
+                     * - It was deserialized from data that doesn't match any known member. For
+                     *   example, if the SDK is on an older version than the API, then the API may
+                     *   respond with new members that the SDK is unaware of.
+                     * - It was constructed with an arbitrary value using the [of] method.
+                     */
+                    enum class Value {
+                        IS,
+                        GREATER,
+                        GREATER_OR_EQUALS,
+                        LESS,
+                        LESS_OR_EQUALS,
+                        NOT_EQUALS,
+                        /**
+                         * An enum member indicating that [Operator] was instantiated with an
+                         * unknown value.
+                         */
+                        _UNKNOWN,
+                    }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value, or
+                     * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                     *
+                     * Use the [known] method instead if you're certain the value is always known or
+                     * if you want to throw for the unknown case.
+                     */
+                    fun value(): Value =
+                        when (this) {
+                            IS -> Value.IS
+                            GREATER -> Value.GREATER
+                            GREATER_OR_EQUALS -> Value.GREATER_OR_EQUALS
+                            LESS -> Value.LESS
+                            LESS_OR_EQUALS -> Value.LESS_OR_EQUALS
+                            NOT_EQUALS -> Value.NOT_EQUALS
+                            else -> Value._UNKNOWN
+                        }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value.
+                     *
+                     * Use the [value] method instead if you're uncertain the value is always known
+                     * and don't want to throw for the unknown case.
+                     *
+                     * @throws OpenlayerInvalidDataException if this class instance's value is a not
+                     *   a known member.
+                     */
+                    fun known(): Known =
+                        when (this) {
+                            IS -> Known.IS
+                            GREATER -> Known.GREATER
+                            GREATER_OR_EQUALS -> Known.GREATER_OR_EQUALS
+                            LESS -> Known.LESS
+                            LESS_OR_EQUALS -> Known.LESS_OR_EQUALS
+                            NOT_EQUALS -> Known.NOT_EQUALS
+                            else -> throw OpenlayerInvalidDataException("Unknown Operator: $value")
+                        }
+
+                    /**
+                     * Returns this class instance's primitive wire representation.
+                     *
+                     * This differs from the [toString] method because that method is primarily for
+                     * debugging and generally doesn't throw.
+                     *
+                     * @throws OpenlayerInvalidDataException if this class instance's value does not
+                     *   have the expected primitive type.
+                     */
+                    fun asString(): String =
+                        _value().asString().orElseThrow {
+                            OpenlayerInvalidDataException("Value is not a String")
+                        }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): Operator = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        known()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: OpenlayerInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return /* spotless:off */ other is Operator && value == other.value /* spotless:on */
+                    }
+
+                    override fun hashCode() = value.hashCode()
+
+                    override fun toString() = value.toString()
+                }
+
+                /** Whether to use automatic anomaly detection or manual thresholds */
+                class ThresholdMode
+                @JsonCreator
+                private constructor(private val value: JsonField<String>) : Enum {
+
+                    /**
+                     * Returns this class instance's raw value.
+                     *
+                     * This is usually only useful if this instance was deserialized from data that
+                     * doesn't match any known member, and you want to know that value. For example,
+                     * if the SDK is on an older version than the API, then the API may respond with
+                     * new members that the SDK is unaware of.
+                     */
+                    @com.fasterxml.jackson.annotation.JsonValue
+                    fun _value(): JsonField<String> = value
+
+                    companion object {
+
+                        @JvmField val AUTOMATIC = of("automatic")
+
+                        @JvmField val MANUAL = of("manual")
+
+                        @JvmStatic fun of(value: String) = ThresholdMode(JsonField.of(value))
+                    }
+
+                    /** An enum containing [ThresholdMode]'s known values. */
+                    enum class Known {
+                        AUTOMATIC,
+                        MANUAL,
+                    }
+
+                    /**
+                     * An enum containing [ThresholdMode]'s known values, as well as an [_UNKNOWN]
+                     * member.
+                     *
+                     * An instance of [ThresholdMode] can contain an unknown value in a couple of
+                     * cases:
+                     * - It was deserialized from data that doesn't match any known member. For
+                     *   example, if the SDK is on an older version than the API, then the API may
+                     *   respond with new members that the SDK is unaware of.
+                     * - It was constructed with an arbitrary value using the [of] method.
+                     */
+                    enum class Value {
+                        AUTOMATIC,
+                        MANUAL,
+                        /**
+                         * An enum member indicating that [ThresholdMode] was instantiated with an
+                         * unknown value.
+                         */
+                        _UNKNOWN,
+                    }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value, or
+                     * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                     *
+                     * Use the [known] method instead if you're certain the value is always known or
+                     * if you want to throw for the unknown case.
+                     */
+                    fun value(): Value =
+                        when (this) {
+                            AUTOMATIC -> Value.AUTOMATIC
+                            MANUAL -> Value.MANUAL
+                            else -> Value._UNKNOWN
+                        }
+
+                    /**
+                     * Returns an enum member corresponding to this class instance's value.
+                     *
+                     * Use the [value] method instead if you're uncertain the value is always known
+                     * and don't want to throw for the unknown case.
+                     *
+                     * @throws OpenlayerInvalidDataException if this class instance's value is a not
+                     *   a known member.
+                     */
+                    fun known(): Known =
+                        when (this) {
+                            AUTOMATIC -> Known.AUTOMATIC
+                            MANUAL -> Known.MANUAL
+                            else ->
+                                throw OpenlayerInvalidDataException("Unknown ThresholdMode: $value")
+                        }
+
+                    /**
+                     * Returns this class instance's primitive wire representation.
+                     *
+                     * This differs from the [toString] method because that method is primarily for
+                     * debugging and generally doesn't throw.
+                     *
+                     * @throws OpenlayerInvalidDataException if this class instance's value does not
+                     *   have the expected primitive type.
+                     */
+                    fun asString(): String =
+                        _value().asString().orElseThrow {
+                            OpenlayerInvalidDataException("Value is not a String")
+                        }
+
+                    private var validated: Boolean = false
+
+                    fun validate(): ThresholdMode = apply {
+                        if (validated) {
+                            return@apply
+                        }
+
+                        known()
+                        validated = true
+                    }
+
+                    fun isValid(): Boolean =
+                        try {
+                            validate()
+                            true
+                        } catch (e: OpenlayerInvalidDataException) {
+                            false
+                        }
+
+                    /**
+                     * Returns a score indicating how many valid values are contained in this object
+                     * recursively.
+                     *
+                     * Used for best match union deserialization.
+                     */
+                    @JvmSynthetic
+                    internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                    override fun equals(other: Any?): Boolean {
+                        if (this === other) {
+                            return true
+                        }
+
+                        return /* spotless:off */ other is ThresholdMode && value == other.value /* spotless:on */
+                    }
+
+                    override fun hashCode() = value.hashCode()
+
+                    override fun toString() = value.toString()
+                }
 
                 /** The value to be compared. */
                 @JsonDeserialize(using = Value.Deserializer::class)
@@ -2537,17 +3071,17 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Threshold && insightName == other.insightName && insightParameters == other.insightParameters && measurement == other.measurement && operator == other.operator && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+                    return /* spotless:off */ other is Threshold && insightName == other.insightName && insightParameters == other.insightParameters && measurement == other.measurement && operator == other.operator && thresholdMode == other.thresholdMode && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
                 }
 
                 /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(insightName, insightParameters, measurement, operator, value, additionalProperties) }
+                private val hashCode: Int by lazy { Objects.hash(insightName, insightParameters, measurement, operator, thresholdMode, value, additionalProperties) }
                 /* spotless:on */
 
                 override fun hashCode(): Int = hashCode
 
                 override fun toString() =
-                    "Threshold{insightName=$insightName, insightParameters=$insightParameters, measurement=$measurement, operator=$operator, value=$value, additionalProperties=$additionalProperties}"
+                    "Threshold{insightName=$insightName, insightParameters=$insightParameters, measurement=$measurement, operator=$operator, thresholdMode=$thresholdMode, value=$value, additionalProperties=$additionalProperties}"
             }
 
             override fun equals(other: Any?): Boolean {
