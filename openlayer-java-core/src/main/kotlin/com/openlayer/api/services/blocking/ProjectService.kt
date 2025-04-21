@@ -11,6 +11,7 @@ import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
 import com.openlayer.api.services.blocking.projects.CommitService
 import com.openlayer.api.services.blocking.projects.InferencePipelineService
+import com.openlayer.api.services.blocking.projects.TestService
 
 interface ProjectService {
 
@@ -22,6 +23,8 @@ interface ProjectService {
     fun commits(): CommitService
 
     fun inferencePipelines(): InferencePipelineService
+
+    fun tests(): TestService
 
     /** Create a project in your workspace. */
     fun create(params: ProjectCreateParams): ProjectCreateResponse =
@@ -56,6 +59,8 @@ interface ProjectService {
         fun commits(): CommitService.WithRawResponse
 
         fun inferencePipelines(): InferencePipelineService.WithRawResponse
+
+        fun tests(): TestService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /projects`, but is otherwise the same as

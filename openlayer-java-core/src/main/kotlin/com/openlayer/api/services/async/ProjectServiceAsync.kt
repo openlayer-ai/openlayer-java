@@ -11,6 +11,7 @@ import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
 import com.openlayer.api.services.async.projects.CommitServiceAsync
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync
+import com.openlayer.api.services.async.projects.TestServiceAsync
 import java.util.concurrent.CompletableFuture
 
 interface ProjectServiceAsync {
@@ -23,6 +24,8 @@ interface ProjectServiceAsync {
     fun commits(): CommitServiceAsync
 
     fun inferencePipelines(): InferencePipelineServiceAsync
+
+    fun tests(): TestServiceAsync
 
     /** Create a project in your workspace. */
     fun create(params: ProjectCreateParams): CompletableFuture<ProjectCreateResponse> =
@@ -60,6 +63,8 @@ interface ProjectServiceAsync {
         fun commits(): CommitServiceAsync.WithRawResponse
 
         fun inferencePipelines(): InferencePipelineServiceAsync.WithRawResponse
+
+        fun tests(): TestServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /projects`, but is otherwise the same as
