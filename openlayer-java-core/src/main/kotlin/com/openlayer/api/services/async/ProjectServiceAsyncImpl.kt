@@ -23,6 +23,8 @@ import com.openlayer.api.services.async.projects.CommitServiceAsync
 import com.openlayer.api.services.async.projects.CommitServiceAsyncImpl
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsyncImpl
+import com.openlayer.api.services.async.projects.TestServiceAsync
+import com.openlayer.api.services.async.projects.TestServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
 
 class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -38,11 +40,15 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
         InferencePipelineServiceAsyncImpl(clientOptions)
     }
 
+    private val tests: TestServiceAsync by lazy { TestServiceAsyncImpl(clientOptions) }
+
     override fun withRawResponse(): ProjectServiceAsync.WithRawResponse = withRawResponse
 
     override fun commits(): CommitServiceAsync = commits
 
     override fun inferencePipelines(): InferencePipelineServiceAsync = inferencePipelines
+
+    override fun tests(): TestServiceAsync = tests
 
     override fun create(
         params: ProjectCreateParams,
@@ -71,10 +77,16 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
             InferencePipelineServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val tests: TestServiceAsync.WithRawResponse by lazy {
+            TestServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun commits(): CommitServiceAsync.WithRawResponse = commits
 
         override fun inferencePipelines(): InferencePipelineServiceAsync.WithRawResponse =
             inferencePipelines
+
+        override fun tests(): TestServiceAsync.WithRawResponse = tests
 
         private val createHandler: Handler<ProjectCreateResponse> =
             jsonHandler<ProjectCreateResponse>(clientOptions.jsonMapper)

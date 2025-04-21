@@ -23,6 +23,8 @@ import com.openlayer.api.services.blocking.projects.CommitService
 import com.openlayer.api.services.blocking.projects.CommitServiceImpl
 import com.openlayer.api.services.blocking.projects.InferencePipelineService
 import com.openlayer.api.services.blocking.projects.InferencePipelineServiceImpl
+import com.openlayer.api.services.blocking.projects.TestService
+import com.openlayer.api.services.blocking.projects.TestServiceImpl
 
 class ProjectServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectService {
@@ -37,11 +39,15 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
         InferencePipelineServiceImpl(clientOptions)
     }
 
+    private val tests: TestService by lazy { TestServiceImpl(clientOptions) }
+
     override fun withRawResponse(): ProjectService.WithRawResponse = withRawResponse
 
     override fun commits(): CommitService = commits
 
     override fun inferencePipelines(): InferencePipelineService = inferencePipelines
+
+    override fun tests(): TestService = tests
 
     override fun create(
         params: ProjectCreateParams,
@@ -70,10 +76,16 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
             InferencePipelineServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val tests: TestService.WithRawResponse by lazy {
+            TestServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun commits(): CommitService.WithRawResponse = commits
 
         override fun inferencePipelines(): InferencePipelineService.WithRawResponse =
             inferencePipelines
+
+        override fun tests(): TestService.WithRawResponse = tests
 
         private val createHandler: Handler<ProjectCreateResponse> =
             jsonHandler<ProjectCreateResponse>(clientOptions.jsonMapper)

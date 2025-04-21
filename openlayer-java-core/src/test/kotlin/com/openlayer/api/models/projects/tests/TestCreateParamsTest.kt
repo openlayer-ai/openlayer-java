@@ -1,0 +1,205 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.openlayer.api.models.projects.tests
+
+import com.openlayer.api.core.JsonValue
+import java.time.OffsetDateTime
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class TestCreateParamsTest {
+
+    @Test
+    fun create() {
+        TestCreateParams.builder()
+            .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+            .commentCount(0L)
+            .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+            .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+            .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+            .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+            .description(JsonValue.from("This test checks for duplicate rows in the dataset."))
+            .name("No duplicate rows")
+            .number(1L)
+            .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+            .subtype("duplicateRowCount")
+            .suggested(false)
+            .addThreshold(
+                TestCreateParams.Threshold.builder()
+                    .insightName("duplicateRowCount")
+                    .addInsightParameter(
+                        TestCreateParams.Threshold.InsightParameter.builder()
+                            .name("column_name")
+                            .value(JsonValue.from("Age"))
+                            .build()
+                    )
+                    .measurement("duplicateRowCount")
+                    .operator(TestCreateParams.Threshold.Operator.LESS_OR_EQUALS)
+                    .thresholdMode(TestCreateParams.Threshold.ThresholdMode.AUTOMATIC)
+                    .value(0.0)
+                    .build()
+            )
+            .type("integrity")
+            .archived(false)
+            .delayWindow(0.0)
+            .evaluationWindow(3600.0)
+            .usesMlModel(false)
+            .usesProductionData(false)
+            .usesReferenceDataset(false)
+            .usesTrainingDataset(false)
+            .usesValidationDataset(true)
+            .build()
+    }
+
+    @Test
+    fun pathParams() {
+        val params =
+            TestCreateParams.builder()
+                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .commentCount(0L)
+                .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+                .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .description(JsonValue.from("This test checks for duplicate rows in the dataset."))
+                .name("No duplicate rows")
+                .number(1L)
+                .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .subtype("duplicateRowCount")
+                .suggested(false)
+                .addThreshold(TestCreateParams.Threshold.builder().build())
+                .type("integrity")
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
+    fun body() {
+        val params =
+            TestCreateParams.builder()
+                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .commentCount(0L)
+                .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+                .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .description(JsonValue.from("This test checks for duplicate rows in the dataset."))
+                .name("No duplicate rows")
+                .number(1L)
+                .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .subtype("duplicateRowCount")
+                .suggested(false)
+                .addThreshold(
+                    TestCreateParams.Threshold.builder()
+                        .insightName("duplicateRowCount")
+                        .addInsightParameter(
+                            TestCreateParams.Threshold.InsightParameter.builder()
+                                .name("column_name")
+                                .value(JsonValue.from("Age"))
+                                .build()
+                        )
+                        .measurement("duplicateRowCount")
+                        .operator(TestCreateParams.Threshold.Operator.LESS_OR_EQUALS)
+                        .thresholdMode(TestCreateParams.Threshold.ThresholdMode.AUTOMATIC)
+                        .value(0.0)
+                        .build()
+                )
+                .type("integrity")
+                .archived(false)
+                .delayWindow(0.0)
+                .evaluationWindow(3600.0)
+                .usesMlModel(false)
+                .usesProductionData(false)
+                .usesReferenceDataset(false)
+                .usesTrainingDataset(false)
+                .usesValidationDataset(true)
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.commentCount()).isEqualTo(0L)
+        assertThat(body.creatorId()).contains("589ece63-49a2-41b4-98e1-10547761d4b0")
+        assertThat(body.dateArchived()).contains(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+        assertThat(body.dateCreated()).isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+        assertThat(body.dateUpdated()).isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+        assertThat(body._description())
+            .isEqualTo(JsonValue.from("This test checks for duplicate rows in the dataset."))
+        assertThat(body.name()).isEqualTo("No duplicate rows")
+        assertThat(body.number()).isEqualTo(1L)
+        assertThat(body.originProjectVersionId()).contains("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.subtype()).isEqualTo("duplicateRowCount")
+        assertThat(body.suggested()).isEqualTo(false)
+        assertThat(body.thresholds())
+            .containsExactly(
+                TestCreateParams.Threshold.builder()
+                    .insightName("duplicateRowCount")
+                    .addInsightParameter(
+                        TestCreateParams.Threshold.InsightParameter.builder()
+                            .name("column_name")
+                            .value(JsonValue.from("Age"))
+                            .build()
+                    )
+                    .measurement("duplicateRowCount")
+                    .operator(TestCreateParams.Threshold.Operator.LESS_OR_EQUALS)
+                    .thresholdMode(TestCreateParams.Threshold.ThresholdMode.AUTOMATIC)
+                    .value(0.0)
+                    .build()
+            )
+        assertThat(body.type()).isEqualTo("integrity")
+        assertThat(body.archived()).contains(false)
+        assertThat(body.delayWindow()).contains(0.0)
+        assertThat(body.evaluationWindow()).contains(3600.0)
+        assertThat(body.usesMlModel()).contains(false)
+        assertThat(body.usesProductionData()).contains(false)
+        assertThat(body.usesReferenceDataset()).contains(false)
+        assertThat(body.usesTrainingDataset()).contains(false)
+        assertThat(body.usesValidationDataset()).contains(true)
+    }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            TestCreateParams.builder()
+                .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .commentCount(0L)
+                .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
+                .dateArchived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                .description(JsonValue.from("This test checks for duplicate rows in the dataset."))
+                .name("No duplicate rows")
+                .number(1L)
+                .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                .subtype("duplicateRowCount")
+                .suggested(false)
+                .addThreshold(TestCreateParams.Threshold.builder().build())
+                .type("integrity")
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.commentCount()).isEqualTo(0L)
+        assertThat(body.creatorId()).contains("589ece63-49a2-41b4-98e1-10547761d4b0")
+        assertThat(body.dateArchived()).contains(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+        assertThat(body.dateCreated()).isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+        assertThat(body.dateUpdated()).isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+        assertThat(body._description())
+            .isEqualTo(JsonValue.from("This test checks for duplicate rows in the dataset."))
+        assertThat(body.name()).isEqualTo("No duplicate rows")
+        assertThat(body.number()).isEqualTo(1L)
+        assertThat(body.originProjectVersionId()).contains("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(body.subtype()).isEqualTo("duplicateRowCount")
+        assertThat(body.suggested()).isEqualTo(false)
+        assertThat(body.thresholds()).containsExactly(TestCreateParams.Threshold.builder().build())
+        assertThat(body.type()).isEqualTo("integrity")
+    }
+}
