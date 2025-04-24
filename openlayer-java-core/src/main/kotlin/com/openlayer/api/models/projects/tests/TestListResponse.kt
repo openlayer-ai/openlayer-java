@@ -34,20 +34,35 @@ import kotlin.jvm.optionals.getOrNull
 
 class TestListResponse
 private constructor(
+    private val _meta: JsonField<_Meta>,
     private val items: JsonField<List<Item>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
 ) {
 
     @JsonCreator
     private constructor(
-        @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of()
-    ) : this(items, mutableMapOf())
+        @JsonProperty("_meta") @ExcludeMissing _meta: JsonField<_Meta> = JsonMissing.of(),
+        @JsonProperty("items") @ExcludeMissing items: JsonField<List<Item>> = JsonMissing.of(),
+    ) : this(_meta, items, mutableMapOf())
+
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun _meta(): _Meta = _meta.getRequired("_meta")
 
     /**
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
     fun items(): List<Item> = items.getRequired("items")
+
+    /**
+     * Returns the raw JSON value of [_meta].
+     *
+     * Unlike [_meta], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("_meta") @ExcludeMissing fun __meta(): JsonField<_Meta> = _meta
 
     /**
      * Returns the raw JSON value of [items].
@@ -75,6 +90,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * ._meta()
          * .items()
          * ```
          */
@@ -84,14 +100,26 @@ private constructor(
     /** A builder for [TestListResponse]. */
     class Builder internal constructor() {
 
+        private var _meta: JsonField<_Meta>? = null
         private var items: JsonField<MutableList<Item>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
         internal fun from(testListResponse: TestListResponse) = apply {
+            _meta = testListResponse._meta
             items = testListResponse.items.map { it.toMutableList() }
             additionalProperties = testListResponse.additionalProperties.toMutableMap()
         }
+
+        fun _meta(_meta: _Meta) = _meta(JsonField.of(_meta))
+
+        /**
+         * Sets [Builder._meta] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder._meta] with a well-typed [_Meta] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun _meta(_meta: JsonField<_Meta>) = apply { this._meta = _meta }
 
         fun items(items: List<Item>) = items(JsonField.of(items))
 
@@ -142,6 +170,7 @@ private constructor(
          *
          * The following fields are required:
          * ```java
+         * ._meta()
          * .items()
          * ```
          *
@@ -149,6 +178,7 @@ private constructor(
          */
         fun build(): TestListResponse =
             TestListResponse(
+                checkRequired("_meta", _meta),
                 checkRequired("items", items).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -161,6 +191,7 @@ private constructor(
             return@apply
         }
 
+        _meta().validate()
         items().forEach { it.validate() }
         validated = true
     }
@@ -180,7 +211,280 @@ private constructor(
      */
     @JvmSynthetic
     internal fun validity(): Int =
-        (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+        (_meta.asKnown().getOrNull()?.validity() ?: 0) +
+            (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
+
+    class _Meta
+    private constructor(
+        private val page: JsonField<Long>,
+        private val perPage: JsonField<Long>,
+        private val totalItems: JsonField<Long>,
+        private val totalPages: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("page") @ExcludeMissing page: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("perPage") @ExcludeMissing perPage: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("totalItems")
+            @ExcludeMissing
+            totalItems: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("totalPages")
+            @ExcludeMissing
+            totalPages: JsonField<Long> = JsonMissing.of(),
+        ) : this(page, perPage, totalItems, totalPages, mutableMapOf())
+
+        /**
+         * The current page.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun page(): Long = page.getRequired("page")
+
+        /**
+         * The number of items per page.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun perPage(): Long = perPage.getRequired("perPage")
+
+        /**
+         * The total number of items.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun totalItems(): Long = totalItems.getRequired("totalItems")
+
+        /**
+         * The total number of pages.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+         *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+         */
+        fun totalPages(): Long = totalPages.getRequired("totalPages")
+
+        /**
+         * Returns the raw JSON value of [page].
+         *
+         * Unlike [page], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("page") @ExcludeMissing fun _page(): JsonField<Long> = page
+
+        /**
+         * Returns the raw JSON value of [perPage].
+         *
+         * Unlike [perPage], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("perPage") @ExcludeMissing fun _perPage(): JsonField<Long> = perPage
+
+        /**
+         * Returns the raw JSON value of [totalItems].
+         *
+         * Unlike [totalItems], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("totalItems") @ExcludeMissing fun _totalItems(): JsonField<Long> = totalItems
+
+        /**
+         * Returns the raw JSON value of [totalPages].
+         *
+         * Unlike [totalPages], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("totalPages") @ExcludeMissing fun _totalPages(): JsonField<Long> = totalPages
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /**
+             * Returns a mutable builder for constructing an instance of [_Meta].
+             *
+             * The following fields are required:
+             * ```java
+             * .page()
+             * .perPage()
+             * .totalItems()
+             * .totalPages()
+             * ```
+             */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [_Meta]. */
+        class Builder internal constructor() {
+
+            private var page: JsonField<Long>? = null
+            private var perPage: JsonField<Long>? = null
+            private var totalItems: JsonField<Long>? = null
+            private var totalPages: JsonField<Long>? = null
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(_meta: _Meta) = apply {
+                page = _meta.page
+                perPage = _meta.perPage
+                totalItems = _meta.totalItems
+                totalPages = _meta.totalPages
+                additionalProperties = _meta.additionalProperties.toMutableMap()
+            }
+
+            /** The current page. */
+            fun page(page: Long) = page(JsonField.of(page))
+
+            /**
+             * Sets [Builder.page] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.page] with a well-typed [Long] value instead. This
+             * method is primarily for setting the field to an undocumented or not yet supported
+             * value.
+             */
+            fun page(page: JsonField<Long>) = apply { this.page = page }
+
+            /** The number of items per page. */
+            fun perPage(perPage: Long) = perPage(JsonField.of(perPage))
+
+            /**
+             * Sets [Builder.perPage] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.perPage] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun perPage(perPage: JsonField<Long>) = apply { this.perPage = perPage }
+
+            /** The total number of items. */
+            fun totalItems(totalItems: Long) = totalItems(JsonField.of(totalItems))
+
+            /**
+             * Sets [Builder.totalItems] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.totalItems] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun totalItems(totalItems: JsonField<Long>) = apply { this.totalItems = totalItems }
+
+            /** The total number of pages. */
+            fun totalPages(totalPages: Long) = totalPages(JsonField.of(totalPages))
+
+            /**
+             * Sets [Builder.totalPages] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.totalPages] with a well-typed [Long] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun totalPages(totalPages: JsonField<Long>) = apply { this.totalPages = totalPages }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [_Meta].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             *
+             * The following fields are required:
+             * ```java
+             * .page()
+             * .perPage()
+             * .totalItems()
+             * .totalPages()
+             * ```
+             *
+             * @throws IllegalStateException if any required field is unset.
+             */
+            fun build(): _Meta =
+                _Meta(
+                    checkRequired("page", page),
+                    checkRequired("perPage", perPage),
+                    checkRequired("totalItems", totalItems),
+                    checkRequired("totalPages", totalPages),
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): _Meta = apply {
+            if (validated) {
+                return@apply
+            }
+
+            page()
+            perPage()
+            totalItems()
+            totalPages()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (page.asKnown().isPresent) 1 else 0) +
+                (if (perPage.asKnown().isPresent) 1 else 0) +
+                (if (totalItems.asKnown().isPresent) 1 else 0) +
+                (if (totalPages.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is _Meta && page == other.page && perPage == other.perPage && totalItems == other.totalItems && totalPages == other.totalPages && additionalProperties == other.additionalProperties /* spotless:on */
+        }
+
+        /* spotless:off */
+        private val hashCode: Int by lazy { Objects.hash(page, perPage, totalItems, totalPages, additionalProperties) }
+        /* spotless:on */
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "_Meta{page=$page, perPage=$perPage, totalItems=$totalItems, totalPages=$totalPages, additionalProperties=$additionalProperties}"
+    }
 
     class Item
     private constructor(
@@ -2816,15 +3120,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TestListResponse && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+        return /* spotless:off */ other is TestListResponse && _meta == other._meta && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
     }
 
     /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(items, additionalProperties) }
+    private val hashCode: Int by lazy { Objects.hash(_meta, items, additionalProperties) }
     /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "TestListResponse{items=$items, additionalProperties=$additionalProperties}"
+        "TestListResponse{_meta=$_meta, items=$items, additionalProperties=$additionalProperties}"
 }

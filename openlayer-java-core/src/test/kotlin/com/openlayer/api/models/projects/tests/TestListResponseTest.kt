@@ -15,6 +15,15 @@ internal class TestListResponseTest {
     fun create() {
         val testListResponse =
             TestListResponse.builder()
+                ._meta(
+                    TestListResponse._Meta
+                        .builder()
+                        .page(1L)
+                        .perPage(1L)
+                        .totalItems(0L)
+                        .totalPages(0L)
+                        .build()
+                )
                 .addItem(
                     TestListResponse.Item.builder()
                         .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -61,6 +70,16 @@ internal class TestListResponseTest {
                 )
                 .build()
 
+        assertThat(testListResponse._meta())
+            .isEqualTo(
+                TestListResponse._Meta
+                    .builder()
+                    .page(1L)
+                    .perPage(1L)
+                    .totalItems(0L)
+                    .totalPages(0L)
+                    .build()
+            )
         assertThat(testListResponse.items())
             .containsExactly(
                 TestListResponse.Item.builder()
@@ -111,6 +130,15 @@ internal class TestListResponseTest {
         val jsonMapper = jsonMapper()
         val testListResponse =
             TestListResponse.builder()
+                ._meta(
+                    TestListResponse._Meta
+                        .builder()
+                        .page(1L)
+                        .perPage(1L)
+                        .totalItems(0L)
+                        .totalPages(0L)
+                        .build()
+                )
                 .addItem(
                     TestListResponse.Item.builder()
                         .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
