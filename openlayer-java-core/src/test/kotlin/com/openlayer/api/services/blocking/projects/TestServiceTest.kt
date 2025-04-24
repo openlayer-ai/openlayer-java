@@ -38,7 +38,7 @@ internal class TestServiceTest {
                     .name("No duplicate rows")
                     .number(1L)
                     .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                    .subtype("duplicateRowCount")
+                    .subtype(TestCreateParams.Subtype.DUPLICATE_ROW_COUNT)
                     .suggested(false)
                     .addThreshold(
                         TestCreateParams.Threshold.builder()
@@ -55,7 +55,7 @@ internal class TestServiceTest {
                             .value(0.0)
                             .build()
                     )
-                    .type("integrity")
+                    .type(TestCreateParams.Type.INTEGRITY)
                     .archived(false)
                     .delayWindow(0.0)
                     .evaluationWindow(3600.0)

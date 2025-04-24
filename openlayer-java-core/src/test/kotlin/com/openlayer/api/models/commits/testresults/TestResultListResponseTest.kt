@@ -42,7 +42,9 @@ internal class TestResultListResponseTest {
                                 .name("No duplicate rows")
                                 .number(1L)
                                 .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                                .subtype("duplicateRowCount")
+                                .subtype(
+                                    TestResultListResponse.Item.Goal.Subtype.DUPLICATE_ROW_COUNT
+                                )
                                 .suggested(false)
                                 .addThreshold(
                                     TestResultListResponse.Item.Goal.Threshold.builder()
@@ -67,7 +69,7 @@ internal class TestResultListResponseTest {
                                         .value(0.0)
                                         .build()
                                 )
-                                .type("integrity")
+                                .type(TestResultListResponse.Item.Goal.Type.INTEGRITY)
                                 .archived(false)
                                 .delayWindow(0.0)
                                 .evaluationWindow(3600.0)
@@ -111,7 +113,7 @@ internal class TestResultListResponseTest {
                             .name("No duplicate rows")
                             .number(1L)
                             .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                            .subtype("duplicateRowCount")
+                            .subtype(TestResultListResponse.Item.Goal.Subtype.DUPLICATE_ROW_COUNT)
                             .suggested(false)
                             .addThreshold(
                                 TestResultListResponse.Item.Goal.Threshold.builder()
@@ -135,7 +137,7 @@ internal class TestResultListResponseTest {
                                     .value(0.0)
                                     .build()
                             )
-                            .type("integrity")
+                            .type(TestResultListResponse.Item.Goal.Type.INTEGRITY)
                             .archived(false)
                             .delayWindow(0.0)
                             .evaluationWindow(3600.0)
@@ -183,7 +185,9 @@ internal class TestResultListResponseTest {
                                 .name("No duplicate rows")
                                 .number(1L)
                                 .originProjectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-                                .subtype("duplicateRowCount")
+                                .subtype(
+                                    TestResultListResponse.Item.Goal.Subtype.DUPLICATE_ROW_COUNT
+                                )
                                 .suggested(false)
                                 .addThreshold(
                                     TestResultListResponse.Item.Goal.Threshold.builder()
@@ -208,7 +212,7 @@ internal class TestResultListResponseTest {
                                         .value(0.0)
                                         .build()
                                 )
-                                .type("integrity")
+                                .type(TestResultListResponse.Item.Goal.Type.INTEGRITY)
                                 .archived(false)
                                 .delayWindow(0.0)
                                 .evaluationWindow(3600.0)
