@@ -127,7 +127,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun subtype(): String = body.subtype()
+    fun subtype(): Subtype = body.subtype()
 
     /**
      * Whether the test is suggested or user-created.
@@ -149,7 +149,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
      */
-    fun type(): String = body.type()
+    fun type(): Type = body.type()
 
     /**
      * Whether the test is archived.
@@ -284,7 +284,7 @@ private constructor(
      *
      * Unlike [subtype], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _subtype(): JsonField<String> = body._subtype()
+    fun _subtype(): JsonField<Subtype> = body._subtype()
 
     /**
      * Returns the raw JSON value of [suggested].
@@ -305,7 +305,7 @@ private constructor(
      *
      * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
      */
-    fun _type(): JsonField<String> = body._type()
+    fun _type(): JsonField<Type> = body._type()
 
     /**
      * Returns the raw JSON value of [archived].
@@ -568,15 +568,15 @@ private constructor(
         }
 
         /** The test subtype. */
-        fun subtype(subtype: String) = apply { body.subtype(subtype) }
+        fun subtype(subtype: Subtype) = apply { body.subtype(subtype) }
 
         /**
          * Sets [Builder.subtype] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.subtype] with a well-typed [String] value instead. This
+         * You should usually call [Builder.subtype] with a well-typed [Subtype] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun subtype(subtype: JsonField<String>) = apply { body.subtype(subtype) }
+        fun subtype(subtype: JsonField<Subtype>) = apply { body.subtype(subtype) }
 
         /** Whether the test is suggested or user-created. */
         fun suggested(suggested: Boolean) = apply { body.suggested(suggested) }
@@ -611,15 +611,15 @@ private constructor(
         fun addThreshold(threshold: Threshold) = apply { body.addThreshold(threshold) }
 
         /** The test type. */
-        fun type(type: String) = apply { body.type(type) }
+        fun type(type: Type) = apply { body.type(type) }
 
         /**
          * Sets [Builder.type] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.type] with a well-typed [String] value instead. This
+         * You should usually call [Builder.type] with a well-typed [Type] value instead. This
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
-        fun type(type: JsonField<String>) = apply { body.type(type) }
+        fun type(type: JsonField<Type>) = apply { body.type(type) }
 
         /** Whether the test is archived. */
         fun archived(archived: Boolean) = apply { body.archived(archived) }
@@ -935,10 +935,10 @@ private constructor(
         private val name: JsonField<String>,
         private val number: JsonField<Long>,
         private val originProjectVersionId: JsonField<String>,
-        private val subtype: JsonField<String>,
+        private val subtype: JsonField<Subtype>,
         private val suggested: JsonField<Boolean>,
         private val thresholds: JsonField<List<Threshold>>,
-        private val type: JsonField<String>,
+        private val type: JsonField<Type>,
         private val archived: JsonField<Boolean>,
         private val delayWindow: JsonField<Double>,
         private val evaluationWindow: JsonField<Double>,
@@ -974,14 +974,14 @@ private constructor(
             @JsonProperty("originProjectVersionId")
             @ExcludeMissing
             originProjectVersionId: JsonField<String> = JsonMissing.of(),
-            @JsonProperty("subtype") @ExcludeMissing subtype: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("subtype") @ExcludeMissing subtype: JsonField<Subtype> = JsonMissing.of(),
             @JsonProperty("suggested")
             @ExcludeMissing
             suggested: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("thresholds")
             @ExcludeMissing
             thresholds: JsonField<List<Threshold>> = JsonMissing.of(),
-            @JsonProperty("type") @ExcludeMissing type: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("type") @ExcludeMissing type: JsonField<Type> = JsonMissing.of(),
             @JsonProperty("archived")
             @ExcludeMissing
             archived: JsonField<Boolean> = JsonMissing.of(),
@@ -1114,7 +1114,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun subtype(): String = subtype.getRequired("subtype")
+        fun subtype(): Subtype = subtype.getRequired("subtype")
 
         /**
          * Whether the test is suggested or user-created.
@@ -1136,7 +1136,7 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
          */
-        fun type(): String = type.getRequired("type")
+        fun type(): Type = type.getRequired("type")
 
         /**
          * Whether the test is archived.
@@ -1287,7 +1287,7 @@ private constructor(
          *
          * Unlike [subtype], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<String> = subtype
+        @JsonProperty("subtype") @ExcludeMissing fun _subtype(): JsonField<Subtype> = subtype
 
         /**
          * Returns the raw JSON value of [suggested].
@@ -1310,7 +1310,7 @@ private constructor(
          *
          * Unlike [type], this method doesn't throw if the JSON field has an unexpected type.
          */
-        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<String> = type
+        @JsonProperty("type") @ExcludeMissing fun _type(): JsonField<Type> = type
 
         /**
          * Returns the raw JSON value of [archived].
@@ -1438,10 +1438,10 @@ private constructor(
             private var name: JsonField<String>? = null
             private var number: JsonField<Long>? = null
             private var originProjectVersionId: JsonField<String>? = null
-            private var subtype: JsonField<String>? = null
+            private var subtype: JsonField<Subtype>? = null
             private var suggested: JsonField<Boolean>? = null
             private var thresholds: JsonField<MutableList<Threshold>>? = null
-            private var type: JsonField<String>? = null
+            private var type: JsonField<Type>? = null
             private var archived: JsonField<Boolean> = JsonMissing.of()
             private var delayWindow: JsonField<Double> = JsonMissing.of()
             private var evaluationWindow: JsonField<Double> = JsonMissing.of()
@@ -1617,16 +1617,16 @@ private constructor(
             }
 
             /** The test subtype. */
-            fun subtype(subtype: String) = subtype(JsonField.of(subtype))
+            fun subtype(subtype: Subtype) = subtype(JsonField.of(subtype))
 
             /**
              * Sets [Builder.subtype] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.subtype] with a well-typed [String] value instead.
+             * You should usually call [Builder.subtype] with a well-typed [Subtype] value instead.
              * This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun subtype(subtype: JsonField<String>) = apply { this.subtype = subtype }
+            fun subtype(subtype: JsonField<Subtype>) = apply { this.subtype = subtype }
 
             /** Whether the test is suggested or user-created. */
             fun suggested(suggested: Boolean) = suggested(JsonField.of(suggested))
@@ -1666,16 +1666,16 @@ private constructor(
             }
 
             /** The test type. */
-            fun type(type: String) = type(JsonField.of(type))
+            fun type(type: Type) = type(JsonField.of(type))
 
             /**
              * Sets [Builder.type] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.type] with a well-typed [String] value instead. This
+             * You should usually call [Builder.type] with a well-typed [Type] value instead. This
              * method is primarily for setting the field to an undocumented or not yet supported
              * value.
              */
-            fun type(type: JsonField<String>) = apply { this.type = type }
+            fun type(type: JsonField<Type>) = apply { this.type = type }
 
             /** Whether the test is archived. */
             fun archived(archived: Boolean) = archived(JsonField.of(archived))
@@ -1904,10 +1904,10 @@ private constructor(
             name()
             number()
             originProjectVersionId()
-            subtype()
+            subtype().validate()
             suggested()
             thresholds().forEach { it.validate() }
-            type()
+            type().validate()
             archived()
             delayWindow()
             evaluationWindow()
@@ -1944,10 +1944,10 @@ private constructor(
                 (if (name.asKnown().isPresent) 1 else 0) +
                 (if (number.asKnown().isPresent) 1 else 0) +
                 (if (originProjectVersionId.asKnown().isPresent) 1 else 0) +
-                (if (subtype.asKnown().isPresent) 1 else 0) +
+                (subtype.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (suggested.asKnown().isPresent) 1 else 0) +
                 (thresholds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
-                (if (type.asKnown().isPresent) 1 else 0) +
+                (type.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (archived.asKnown().isPresent) 1 else 0) +
                 (if (delayWindow.asKnown().isPresent) 1 else 0) +
                 (if (evaluationWindow.asKnown().isPresent) 1 else 0) +
@@ -1973,6 +1973,368 @@ private constructor(
 
         override fun toString() =
             "Body{id=$id, commentCount=$commentCount, creatorId=$creatorId, dateArchived=$dateArchived, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, name=$name, number=$number, originProjectVersionId=$originProjectVersionId, subtype=$subtype, suggested=$suggested, thresholds=$thresholds, type=$type, archived=$archived, delayWindow=$delayWindow, evaluationWindow=$evaluationWindow, usesMlModel=$usesMlModel, usesProductionData=$usesProductionData, usesReferenceDataset=$usesReferenceDataset, usesTrainingDataset=$usesTrainingDataset, usesValidationDataset=$usesValidationDataset, additionalProperties=$additionalProperties}"
+    }
+
+    /** The test subtype. */
+    class Subtype @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val ANOMALOUS_COLUMN_COUNT = of("anomalousColumnCount")
+
+            @JvmField val CHARACTER_LENGTH = of("characterLength")
+
+            @JvmField val CLASS_IMBALANCE_RATIO = of("classImbalanceRatio")
+
+            @JvmField val EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B = of("expectColumnAToBeInColumnB")
+
+            @JvmField val COLUMN_AVERAGE = of("columnAverage")
+
+            @JvmField val COLUMN_DRIFT = of("columnDrift")
+
+            @JvmField val COLUMN_STATISTIC = of("columnStatistic")
+
+            @JvmField val COLUMN_VALUES_MATCH = of("columnValuesMatch")
+
+            @JvmField val CONFLICTING_LABEL_ROW_COUNT = of("conflictingLabelRowCount")
+
+            @JvmField val CONTAINS_PII = of("containsPii")
+
+            @JvmField val CONTAINS_VALID_URL = of("containsValidUrl")
+
+            @JvmField val CORRELATED_FEATURE_COUNT = of("correlatedFeatureCount")
+
+            @JvmField val CUSTOM_METRIC_THRESHOLD = of("customMetricThreshold")
+
+            @JvmField val DUPLICATE_ROW_COUNT = of("duplicateRowCount")
+
+            @JvmField val EMPTY_FEATURE = of("emptyFeature")
+
+            @JvmField val EMPTY_FEATURE_COUNT = of("emptyFeatureCount")
+
+            @JvmField val DRIFTED_FEATURE_COUNT = of("driftedFeatureCount")
+
+            @JvmField val FEATURE_MISSING_VALUES = of("featureMissingValues")
+
+            @JvmField val FEATURE_VALUE_VALIDATION = of("featureValueValidation")
+
+            @JvmField val GREAT_EXPECTATIONS = of("greatExpectations")
+
+            @JvmField val GROUP_BY_COLUMN_STATS_CHECK = of("groupByColumnStatsCheck")
+
+            @JvmField val ILL_FORMED_ROW_COUNT = of("illFormedRowCount")
+
+            @JvmField val IS_CODE = of("isCode")
+
+            @JvmField val IS_JSON = of("isJson")
+
+            @JvmField val LLM_RUBRIC_THRESHOLD_V2 = of("llmRubricThresholdV2")
+
+            @JvmField val LABEL_DRIFT = of("labelDrift")
+
+            @JvmField val METRIC_THRESHOLD = of("metricThreshold")
+
+            @JvmField val NEW_CATEGORY_COUNT = of("newCategoryCount")
+
+            @JvmField val NEW_LABEL_COUNT = of("newLabelCount")
+
+            @JvmField val NULL_ROW_COUNT = of("nullRowCount")
+
+            @JvmField val ROW_COUNT = of("rowCount")
+
+            @JvmField val PP_SCORE_VALUE_VALIDATION = of("ppScoreValueValidation")
+
+            @JvmField val QUASI_CONSTANT_FEATURE = of("quasiConstantFeature")
+
+            @JvmField val QUASI_CONSTANT_FEATURE_COUNT = of("quasiConstantFeatureCount")
+
+            @JvmField val SQL_QUERY = of("sqlQuery")
+
+            @JvmField val DTYPE_VALIDATION = of("dtypeValidation")
+
+            @JvmField val SENTENCE_LENGTH = of("sentenceLength")
+
+            @JvmField val SIZE_RATIO = of("sizeRatio")
+
+            @JvmField val SPECIAL_CHARACTERS_RATIO = of("specialCharactersRatio")
+
+            @JvmField val STRING_VALIDATION = of("stringValidation")
+
+            @JvmField val TRAIN_VAL_LEAKAGE_ROW_COUNT = of("trainValLeakageRowCount")
+
+            @JvmStatic fun of(value: String) = Subtype(JsonField.of(value))
+        }
+
+        /** An enum containing [Subtype]'s known values. */
+        enum class Known {
+            ANOMALOUS_COLUMN_COUNT,
+            CHARACTER_LENGTH,
+            CLASS_IMBALANCE_RATIO,
+            EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B,
+            COLUMN_AVERAGE,
+            COLUMN_DRIFT,
+            COLUMN_STATISTIC,
+            COLUMN_VALUES_MATCH,
+            CONFLICTING_LABEL_ROW_COUNT,
+            CONTAINS_PII,
+            CONTAINS_VALID_URL,
+            CORRELATED_FEATURE_COUNT,
+            CUSTOM_METRIC_THRESHOLD,
+            DUPLICATE_ROW_COUNT,
+            EMPTY_FEATURE,
+            EMPTY_FEATURE_COUNT,
+            DRIFTED_FEATURE_COUNT,
+            FEATURE_MISSING_VALUES,
+            FEATURE_VALUE_VALIDATION,
+            GREAT_EXPECTATIONS,
+            GROUP_BY_COLUMN_STATS_CHECK,
+            ILL_FORMED_ROW_COUNT,
+            IS_CODE,
+            IS_JSON,
+            LLM_RUBRIC_THRESHOLD_V2,
+            LABEL_DRIFT,
+            METRIC_THRESHOLD,
+            NEW_CATEGORY_COUNT,
+            NEW_LABEL_COUNT,
+            NULL_ROW_COUNT,
+            ROW_COUNT,
+            PP_SCORE_VALUE_VALIDATION,
+            QUASI_CONSTANT_FEATURE,
+            QUASI_CONSTANT_FEATURE_COUNT,
+            SQL_QUERY,
+            DTYPE_VALIDATION,
+            SENTENCE_LENGTH,
+            SIZE_RATIO,
+            SPECIAL_CHARACTERS_RATIO,
+            STRING_VALIDATION,
+            TRAIN_VAL_LEAKAGE_ROW_COUNT,
+        }
+
+        /**
+         * An enum containing [Subtype]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Subtype] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            ANOMALOUS_COLUMN_COUNT,
+            CHARACTER_LENGTH,
+            CLASS_IMBALANCE_RATIO,
+            EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B,
+            COLUMN_AVERAGE,
+            COLUMN_DRIFT,
+            COLUMN_STATISTIC,
+            COLUMN_VALUES_MATCH,
+            CONFLICTING_LABEL_ROW_COUNT,
+            CONTAINS_PII,
+            CONTAINS_VALID_URL,
+            CORRELATED_FEATURE_COUNT,
+            CUSTOM_METRIC_THRESHOLD,
+            DUPLICATE_ROW_COUNT,
+            EMPTY_FEATURE,
+            EMPTY_FEATURE_COUNT,
+            DRIFTED_FEATURE_COUNT,
+            FEATURE_MISSING_VALUES,
+            FEATURE_VALUE_VALIDATION,
+            GREAT_EXPECTATIONS,
+            GROUP_BY_COLUMN_STATS_CHECK,
+            ILL_FORMED_ROW_COUNT,
+            IS_CODE,
+            IS_JSON,
+            LLM_RUBRIC_THRESHOLD_V2,
+            LABEL_DRIFT,
+            METRIC_THRESHOLD,
+            NEW_CATEGORY_COUNT,
+            NEW_LABEL_COUNT,
+            NULL_ROW_COUNT,
+            ROW_COUNT,
+            PP_SCORE_VALUE_VALIDATION,
+            QUASI_CONSTANT_FEATURE,
+            QUASI_CONSTANT_FEATURE_COUNT,
+            SQL_QUERY,
+            DTYPE_VALIDATION,
+            SENTENCE_LENGTH,
+            SIZE_RATIO,
+            SPECIAL_CHARACTERS_RATIO,
+            STRING_VALIDATION,
+            TRAIN_VAL_LEAKAGE_ROW_COUNT,
+            /** An enum member indicating that [Subtype] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                ANOMALOUS_COLUMN_COUNT -> Value.ANOMALOUS_COLUMN_COUNT
+                CHARACTER_LENGTH -> Value.CHARACTER_LENGTH
+                CLASS_IMBALANCE_RATIO -> Value.CLASS_IMBALANCE_RATIO
+                EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B -> Value.EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B
+                COLUMN_AVERAGE -> Value.COLUMN_AVERAGE
+                COLUMN_DRIFT -> Value.COLUMN_DRIFT
+                COLUMN_STATISTIC -> Value.COLUMN_STATISTIC
+                COLUMN_VALUES_MATCH -> Value.COLUMN_VALUES_MATCH
+                CONFLICTING_LABEL_ROW_COUNT -> Value.CONFLICTING_LABEL_ROW_COUNT
+                CONTAINS_PII -> Value.CONTAINS_PII
+                CONTAINS_VALID_URL -> Value.CONTAINS_VALID_URL
+                CORRELATED_FEATURE_COUNT -> Value.CORRELATED_FEATURE_COUNT
+                CUSTOM_METRIC_THRESHOLD -> Value.CUSTOM_METRIC_THRESHOLD
+                DUPLICATE_ROW_COUNT -> Value.DUPLICATE_ROW_COUNT
+                EMPTY_FEATURE -> Value.EMPTY_FEATURE
+                EMPTY_FEATURE_COUNT -> Value.EMPTY_FEATURE_COUNT
+                DRIFTED_FEATURE_COUNT -> Value.DRIFTED_FEATURE_COUNT
+                FEATURE_MISSING_VALUES -> Value.FEATURE_MISSING_VALUES
+                FEATURE_VALUE_VALIDATION -> Value.FEATURE_VALUE_VALIDATION
+                GREAT_EXPECTATIONS -> Value.GREAT_EXPECTATIONS
+                GROUP_BY_COLUMN_STATS_CHECK -> Value.GROUP_BY_COLUMN_STATS_CHECK
+                ILL_FORMED_ROW_COUNT -> Value.ILL_FORMED_ROW_COUNT
+                IS_CODE -> Value.IS_CODE
+                IS_JSON -> Value.IS_JSON
+                LLM_RUBRIC_THRESHOLD_V2 -> Value.LLM_RUBRIC_THRESHOLD_V2
+                LABEL_DRIFT -> Value.LABEL_DRIFT
+                METRIC_THRESHOLD -> Value.METRIC_THRESHOLD
+                NEW_CATEGORY_COUNT -> Value.NEW_CATEGORY_COUNT
+                NEW_LABEL_COUNT -> Value.NEW_LABEL_COUNT
+                NULL_ROW_COUNT -> Value.NULL_ROW_COUNT
+                ROW_COUNT -> Value.ROW_COUNT
+                PP_SCORE_VALUE_VALIDATION -> Value.PP_SCORE_VALUE_VALIDATION
+                QUASI_CONSTANT_FEATURE -> Value.QUASI_CONSTANT_FEATURE
+                QUASI_CONSTANT_FEATURE_COUNT -> Value.QUASI_CONSTANT_FEATURE_COUNT
+                SQL_QUERY -> Value.SQL_QUERY
+                DTYPE_VALIDATION -> Value.DTYPE_VALIDATION
+                SENTENCE_LENGTH -> Value.SENTENCE_LENGTH
+                SIZE_RATIO -> Value.SIZE_RATIO
+                SPECIAL_CHARACTERS_RATIO -> Value.SPECIAL_CHARACTERS_RATIO
+                STRING_VALIDATION -> Value.STRING_VALIDATION
+                TRAIN_VAL_LEAKAGE_ROW_COUNT -> Value.TRAIN_VAL_LEAKAGE_ROW_COUNT
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                ANOMALOUS_COLUMN_COUNT -> Known.ANOMALOUS_COLUMN_COUNT
+                CHARACTER_LENGTH -> Known.CHARACTER_LENGTH
+                CLASS_IMBALANCE_RATIO -> Known.CLASS_IMBALANCE_RATIO
+                EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B -> Known.EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B
+                COLUMN_AVERAGE -> Known.COLUMN_AVERAGE
+                COLUMN_DRIFT -> Known.COLUMN_DRIFT
+                COLUMN_STATISTIC -> Known.COLUMN_STATISTIC
+                COLUMN_VALUES_MATCH -> Known.COLUMN_VALUES_MATCH
+                CONFLICTING_LABEL_ROW_COUNT -> Known.CONFLICTING_LABEL_ROW_COUNT
+                CONTAINS_PII -> Known.CONTAINS_PII
+                CONTAINS_VALID_URL -> Known.CONTAINS_VALID_URL
+                CORRELATED_FEATURE_COUNT -> Known.CORRELATED_FEATURE_COUNT
+                CUSTOM_METRIC_THRESHOLD -> Known.CUSTOM_METRIC_THRESHOLD
+                DUPLICATE_ROW_COUNT -> Known.DUPLICATE_ROW_COUNT
+                EMPTY_FEATURE -> Known.EMPTY_FEATURE
+                EMPTY_FEATURE_COUNT -> Known.EMPTY_FEATURE_COUNT
+                DRIFTED_FEATURE_COUNT -> Known.DRIFTED_FEATURE_COUNT
+                FEATURE_MISSING_VALUES -> Known.FEATURE_MISSING_VALUES
+                FEATURE_VALUE_VALIDATION -> Known.FEATURE_VALUE_VALIDATION
+                GREAT_EXPECTATIONS -> Known.GREAT_EXPECTATIONS
+                GROUP_BY_COLUMN_STATS_CHECK -> Known.GROUP_BY_COLUMN_STATS_CHECK
+                ILL_FORMED_ROW_COUNT -> Known.ILL_FORMED_ROW_COUNT
+                IS_CODE -> Known.IS_CODE
+                IS_JSON -> Known.IS_JSON
+                LLM_RUBRIC_THRESHOLD_V2 -> Known.LLM_RUBRIC_THRESHOLD_V2
+                LABEL_DRIFT -> Known.LABEL_DRIFT
+                METRIC_THRESHOLD -> Known.METRIC_THRESHOLD
+                NEW_CATEGORY_COUNT -> Known.NEW_CATEGORY_COUNT
+                NEW_LABEL_COUNT -> Known.NEW_LABEL_COUNT
+                NULL_ROW_COUNT -> Known.NULL_ROW_COUNT
+                ROW_COUNT -> Known.ROW_COUNT
+                PP_SCORE_VALUE_VALIDATION -> Known.PP_SCORE_VALUE_VALIDATION
+                QUASI_CONSTANT_FEATURE -> Known.QUASI_CONSTANT_FEATURE
+                QUASI_CONSTANT_FEATURE_COUNT -> Known.QUASI_CONSTANT_FEATURE_COUNT
+                SQL_QUERY -> Known.SQL_QUERY
+                DTYPE_VALIDATION -> Known.DTYPE_VALIDATION
+                SENTENCE_LENGTH -> Known.SENTENCE_LENGTH
+                SIZE_RATIO -> Known.SIZE_RATIO
+                SPECIAL_CHARACTERS_RATIO -> Known.SPECIAL_CHARACTERS_RATIO
+                STRING_VALIDATION -> Known.STRING_VALIDATION
+                TRAIN_VAL_LEAKAGE_ROW_COUNT -> Known.TRAIN_VAL_LEAKAGE_ROW_COUNT
+                else -> throw OpenlayerInvalidDataException("Unknown Subtype: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): Subtype = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     class Threshold
@@ -3030,6 +3392,140 @@ private constructor(
 
         override fun toString() =
             "Threshold{insightName=$insightName, insightParameters=$insightParameters, measurement=$measurement, operator=$operator, thresholdMode=$thresholdMode, value=$value, additionalProperties=$additionalProperties}"
+    }
+
+    /** The test type. */
+    class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val INTEGRITY = of("integrity")
+
+            @JvmField val CONSISTENCY = of("consistency")
+
+            @JvmField val PERFORMANCE = of("performance")
+
+            @JvmStatic fun of(value: String) = Type(JsonField.of(value))
+        }
+
+        /** An enum containing [Type]'s known values. */
+        enum class Known {
+            INTEGRITY,
+            CONSISTENCY,
+            PERFORMANCE,
+        }
+
+        /**
+         * An enum containing [Type]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Type] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            INTEGRITY,
+            CONSISTENCY,
+            PERFORMANCE,
+            /** An enum member indicating that [Type] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                INTEGRITY -> Value.INTEGRITY
+                CONSISTENCY -> Value.CONSISTENCY
+                PERFORMANCE -> Value.PERFORMANCE
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                INTEGRITY -> Known.INTEGRITY
+                CONSISTENCY -> Known.CONSISTENCY
+                PERFORMANCE -> Known.PERFORMANCE
+                else -> throw OpenlayerInvalidDataException("Unknown Type: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): Type = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
     }
 
     override fun equals(other: Any?): Boolean {

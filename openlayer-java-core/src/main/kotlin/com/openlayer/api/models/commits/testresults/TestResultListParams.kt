@@ -29,7 +29,7 @@ private constructor(
 
     fun projectVersionId(): String = projectVersionId
 
-    /** Include archived goals. */
+    /** Filter for archived tests. */
     fun includeArchived(): Optional<Boolean> = Optional.ofNullable(includeArchived)
 
     /** The page to return in a paginated query. */
@@ -97,7 +97,7 @@ private constructor(
             this.projectVersionId = projectVersionId
         }
 
-        /** Include archived goals. */
+        /** Filter for archived tests. */
         fun includeArchived(includeArchived: Boolean?) = apply {
             this.includeArchived = includeArchived
         }
