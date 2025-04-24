@@ -17,6 +17,8 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.projects.tests.TestCreateParams
 import com.openlayer.api.models.projects.tests.TestCreateResponse
+import com.openlayer.api.models.projects.tests.TestListParams
+import com.openlayer.api.models.projects.tests.TestListResponse
 
 class TestServiceImpl internal constructor(private val clientOptions: ClientOptions) : TestService {
 
@@ -32,6 +34,10 @@ class TestServiceImpl internal constructor(private val clientOptions: ClientOpti
     ): TestCreateResponse =
         // post /projects/{projectId}/tests
         withRawResponse().create(params, requestOptions).parse()
+
+    override fun list(params: TestListParams, requestOptions: RequestOptions): TestListResponse =
+        // get /projects/{projectId}/tests
+        withRawResponse().list(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TestService.WithRawResponse {
@@ -57,6 +63,32 @@ class TestServiceImpl internal constructor(private val clientOptions: ClientOpti
             return response.parseable {
                 response
                     .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val listHandler: Handler<TestListResponse> =
+            jsonHandler<TestListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun list(
+            params: TestListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<TestListResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("projects", params._pathParam(0), "tests")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
