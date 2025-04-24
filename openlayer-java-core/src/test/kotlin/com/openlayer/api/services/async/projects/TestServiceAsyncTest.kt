@@ -6,6 +6,7 @@ import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.models.projects.tests.TestCreateParams
+import com.openlayer.api.models.projects.tests.TestListParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -69,5 +70,32 @@ internal class TestServiceAsyncTest {
 
         val test = testFuture.get()
         test.validate()
+    }
+
+    @Test
+    fun list() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val testServiceAsync = client.projects().tests()
+
+        val testsFuture =
+            testServiceAsync.list(
+                TestListParams.builder()
+                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .includeArchived(true)
+                    .originVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    .page(1L)
+                    .perPage(1L)
+                    .suggested(true)
+                    .type(TestListParams.Type.INTEGRITY)
+                    .usesProductionData(true)
+                    .build()
+            )
+
+        val tests = testsFuture.get()
+        tests.validate()
     }
 }
