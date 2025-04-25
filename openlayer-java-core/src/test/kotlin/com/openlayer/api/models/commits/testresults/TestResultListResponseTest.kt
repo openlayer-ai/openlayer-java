@@ -48,7 +48,10 @@ internal class TestResultListResponseTest {
                                 .suggested(false)
                                 .addThreshold(
                                     TestResultListResponse.Item.Goal.Threshold.builder()
-                                        .insightName("duplicateRowCount")
+                                        .insightName(
+                                            TestResultListResponse.Item.Goal.Threshold.InsightName
+                                                .DUPLICATE_ROW_COUNT
+                                        )
                                         .addInsightParameter(
                                             TestResultListResponse.Item.Goal.Threshold
                                                 .InsightParameter
@@ -117,7 +120,10 @@ internal class TestResultListResponseTest {
                             .suggested(false)
                             .addThreshold(
                                 TestResultListResponse.Item.Goal.Threshold.builder()
-                                    .insightName("duplicateRowCount")
+                                    .insightName(
+                                        TestResultListResponse.Item.Goal.Threshold.InsightName
+                                            .DUPLICATE_ROW_COUNT
+                                    )
                                     .addInsightParameter(
                                         TestResultListResponse.Item.Goal.Threshold.InsightParameter
                                             .builder()
@@ -191,7 +197,10 @@ internal class TestResultListResponseTest {
                                 .suggested(false)
                                 .addThreshold(
                                     TestResultListResponse.Item.Goal.Threshold.builder()
-                                        .insightName("duplicateRowCount")
+                                        .insightName(
+                                            TestResultListResponse.Item.Goal.Threshold.InsightName
+                                                .DUPLICATE_ROW_COUNT
+                                        )
                                         .addInsightParameter(
                                             TestResultListResponse.Item.Goal.Threshold
                                                 .InsightParameter
