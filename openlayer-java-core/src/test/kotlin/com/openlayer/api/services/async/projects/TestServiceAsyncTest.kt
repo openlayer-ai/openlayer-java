@@ -43,7 +43,7 @@ internal class TestServiceAsyncTest {
                     .suggested(false)
                     .addThreshold(
                         TestCreateParams.Threshold.builder()
-                            .insightName(TestCreateParams.Threshold.InsightName.DUPLICATE_ROW_COUNT)
+                            .insightName("duplicateRowCount")
                             .addInsightParameter(
                                 TestCreateParams.Threshold.InsightParameter.builder()
                                     .name("column_name")

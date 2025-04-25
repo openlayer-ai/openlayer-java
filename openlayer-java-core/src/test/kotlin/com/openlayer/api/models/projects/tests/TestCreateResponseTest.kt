@@ -29,7 +29,7 @@ internal class TestCreateResponseTest {
                 .suggested(false)
                 .addThreshold(
                     TestCreateResponse.Threshold.builder()
-                        .insightName(TestCreateResponse.Threshold.InsightName.DUPLICATE_ROW_COUNT)
+                        .insightName("duplicateRowCount")
                         .addInsightParameter(
                             TestCreateResponse.Threshold.InsightParameter.builder()
                                 .name("column_name")
@@ -74,7 +74,7 @@ internal class TestCreateResponseTest {
         assertThat(testCreateResponse.thresholds())
             .containsExactly(
                 TestCreateResponse.Threshold.builder()
-                    .insightName(TestCreateResponse.Threshold.InsightName.DUPLICATE_ROW_COUNT)
+                    .insightName("duplicateRowCount")
                     .addInsightParameter(
                         TestCreateResponse.Threshold.InsightParameter.builder()
                             .name("column_name")
@@ -117,7 +117,7 @@ internal class TestCreateResponseTest {
                 .suggested(false)
                 .addThreshold(
                     TestCreateResponse.Threshold.builder()
-                        .insightName(TestCreateResponse.Threshold.InsightName.DUPLICATE_ROW_COUNT)
+                        .insightName("duplicateRowCount")
                         .addInsightParameter(
                             TestCreateResponse.Threshold.InsightParameter.builder()
                                 .name("column_name")
