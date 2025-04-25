@@ -7,6 +7,7 @@ import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.models.projects.tests.TestCreateParams
 import com.openlayer.api.models.projects.tests.TestListParams
+import com.openlayer.api.models.projects.tests.TestUpdateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -43,7 +44,7 @@ internal class TestServiceAsyncTest {
                     .suggested(false)
                     .addThreshold(
                         TestCreateParams.Threshold.builder()
-                            .insightName("duplicateRowCount")
+                            .insightName(TestCreateParams.Threshold.InsightName.DUPLICATE_ROW_COUNT)
                             .addInsightParameter(
                                 TestCreateParams.Threshold.InsightParameter.builder()
                                     .name("column_name")
@@ -65,6 +66,62 @@ internal class TestServiceAsyncTest {
                     .usesReferenceDataset(false)
                     .usesTrainingDataset(false)
                     .usesValidationDataset(true)
+                    .build()
+            )
+
+        val test = testFuture.get()
+        test.validate()
+    }
+
+    @Test
+    fun update() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val testServiceAsync = client.projects().tests()
+
+        val testFuture =
+            testServiceAsync.update(
+                TestUpdateParams.builder()
+                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .addPayload(
+                        TestUpdateParams.Payload.builder()
+                            .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .archived(false)
+                            .description(
+                                JsonValue.from(
+                                    "This test checks for duplicate rows in the dataset."
+                                )
+                            )
+                            .name("No duplicate rows")
+                            .suggested(TestUpdateParams.Payload.Suggested.FALSE)
+                            .addThreshold(
+                                TestUpdateParams.Payload.Threshold.builder()
+                                    .insightName(
+                                        TestUpdateParams.Payload.Threshold.InsightName
+                                            .DUPLICATE_ROW_COUNT
+                                    )
+                                    .addInsightParameter(
+                                        TestUpdateParams.Payload.Threshold.InsightParameter
+                                            .builder()
+                                            .name("column_name")
+                                            .value(JsonValue.from("Age"))
+                                            .build()
+                                    )
+                                    .measurement("duplicateRowCount")
+                                    .operator(
+                                        TestUpdateParams.Payload.Threshold.Operator.LESS_OR_EQUALS
+                                    )
+                                    .thresholdMode(
+                                        TestUpdateParams.Payload.Threshold.ThresholdMode.AUTOMATIC
+                                    )
+                                    .value(0.0)
+                                    .build()
+                            )
+                            .build()
+                    )
                     .build()
             )
 

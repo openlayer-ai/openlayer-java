@@ -19,6 +19,8 @@ import com.openlayer.api.models.projects.tests.TestCreateParams
 import com.openlayer.api.models.projects.tests.TestCreateResponse
 import com.openlayer.api.models.projects.tests.TestListParams
 import com.openlayer.api.models.projects.tests.TestListResponse
+import com.openlayer.api.models.projects.tests.TestUpdateParams
+import com.openlayer.api.models.projects.tests.TestUpdateResponse
 import java.util.concurrent.CompletableFuture
 
 class TestServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -36,6 +38,13 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
     ): CompletableFuture<TestCreateResponse> =
         // post /projects/{projectId}/tests
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
+
+    override fun update(
+        params: TestUpdateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<TestUpdateResponse> =
+        // put /projects/{projectId}/tests
+        withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
     override fun list(
         params: TestListParams,
@@ -70,6 +79,36 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
                     response.parseable {
                         response
                             .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val updateHandler: Handler<TestUpdateResponse> =
+            jsonHandler<TestUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+
+        override fun update(
+            params: TestUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<TestUpdateResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PUT)
+                    .addPathSegments("projects", params._pathParam(0), "tests")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    response.parseable {
+                        response
+                            .use { updateHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
