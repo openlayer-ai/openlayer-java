@@ -9,6 +9,8 @@ import com.openlayer.api.models.projects.tests.TestCreateParams
 import com.openlayer.api.models.projects.tests.TestCreateResponse
 import com.openlayer.api.models.projects.tests.TestListParams
 import com.openlayer.api.models.projects.tests.TestListResponse
+import com.openlayer.api.models.projects.tests.TestUpdateParams
+import com.openlayer.api.models.projects.tests.TestUpdateResponse
 
 interface TestService {
 
@@ -25,6 +27,15 @@ interface TestService {
         params: TestCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestCreateResponse
+
+    /** Update tests. */
+    fun update(params: TestUpdateParams): TestUpdateResponse = update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        params: TestUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): TestUpdateResponse
 
     /** List tests under a project. */
     fun list(params: TestListParams): TestListResponse = list(params, RequestOptions.none())
@@ -52,6 +63,21 @@ interface TestService {
             params: TestCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<TestCreateResponse>
+
+        /**
+         * Returns a raw HTTP response for `put /projects/{projectId}/tests`, but is otherwise the
+         * same as [TestService.update].
+         */
+        @MustBeClosed
+        fun update(params: TestUpdateParams): HttpResponseFor<TestUpdateResponse> =
+            update(params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: TestUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<TestUpdateResponse>
 
         /**
          * Returns a raw HTTP response for `get /projects/{projectId}/tests`, but is otherwise the

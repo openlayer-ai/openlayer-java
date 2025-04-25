@@ -1406,7 +1406,7 @@ private constructor(
 
     class Threshold
     private constructor(
-        private val insightName: JsonField<String>,
+        private val insightName: JsonField<InsightName>,
         private val insightParameters: JsonField<List<InsightParameter>>,
         private val measurement: JsonField<String>,
         private val operator: JsonField<Operator>,
@@ -1419,7 +1419,7 @@ private constructor(
         private constructor(
             @JsonProperty("insightName")
             @ExcludeMissing
-            insightName: JsonField<String> = JsonMissing.of(),
+            insightName: JsonField<InsightName> = JsonMissing.of(),
             @JsonProperty("insightParameters")
             @ExcludeMissing
             insightParameters: JsonField<List<InsightParameter>> = JsonMissing.of(),
@@ -1449,10 +1449,12 @@ private constructor(
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun insightName(): Optional<String> = insightName.getOptional("insightName")
+        fun insightName(): Optional<InsightName> = insightName.getOptional("insightName")
 
         /**
-         * The insight parameters. Required only for some test subtypes.
+         * The insight parameters. Required only for some test subtypes. For example, for tests that
+         * require a column name, the insight parameters will be
+         * [{'name': 'column_name', 'value': 'Age'}]
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -1499,7 +1501,7 @@ private constructor(
          */
         @JsonProperty("insightName")
         @ExcludeMissing
-        fun _insightName(): JsonField<String> = insightName
+        fun _insightName(): JsonField<InsightName> = insightName
 
         /**
          * Returns the raw JSON value of [insightParameters].
@@ -1565,7 +1567,7 @@ private constructor(
         /** A builder for [Threshold]. */
         class Builder internal constructor() {
 
-            private var insightName: JsonField<String> = JsonMissing.of()
+            private var insightName: JsonField<InsightName> = JsonMissing.of()
             private var insightParameters: JsonField<MutableList<InsightParameter>>? = null
             private var measurement: JsonField<String> = JsonMissing.of()
             private var operator: JsonField<Operator> = JsonMissing.of()
@@ -1585,20 +1587,24 @@ private constructor(
             }
 
             /** The insight name to be evaluated. */
-            fun insightName(insightName: String) = insightName(JsonField.of(insightName))
+            fun insightName(insightName: InsightName) = insightName(JsonField.of(insightName))
 
             /**
              * Sets [Builder.insightName] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.insightName] with a well-typed [String] value
+             * You should usually call [Builder.insightName] with a well-typed [InsightName] value
              * instead. This method is primarily for setting the field to an undocumented or not yet
              * supported value.
              */
-            fun insightName(insightName: JsonField<String>) = apply {
+            fun insightName(insightName: JsonField<InsightName>) = apply {
                 this.insightName = insightName
             }
 
-            /** The insight parameters. Required only for some test subtypes. */
+            /**
+             * The insight parameters. Required only for some test subtypes. For example, for tests
+             * that require a column name, the insight parameters will be
+             * [{'name': 'column_name', 'value': 'Age'}]
+             */
             fun insightParameters(insightParameters: List<InsightParameter>?) =
                 insightParameters(JsonField.ofNullable(insightParameters))
 
@@ -1739,7 +1745,7 @@ private constructor(
                 return@apply
             }
 
-            insightName()
+            insightName().ifPresent { it.validate() }
             insightParameters().ifPresent { it.forEach { it.validate() } }
             measurement()
             operator().ifPresent { it.validate() }
@@ -1764,12 +1770,336 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (insightName.asKnown().isPresent) 1 else 0) +
+            (insightName.asKnown().getOrNull()?.validity() ?: 0) +
                 (insightParameters.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (if (measurement.asKnown().isPresent) 1 else 0) +
                 (operator.asKnown().getOrNull()?.validity() ?: 0) +
                 (thresholdMode.asKnown().getOrNull()?.validity() ?: 0) +
                 (value.asKnown().getOrNull()?.validity() ?: 0)
+
+        /** The insight name to be evaluated. */
+        class InsightName @JsonCreator private constructor(private val value: JsonField<String>) :
+            Enum {
+
+            /**
+             * Returns this class instance's raw value.
+             *
+             * This is usually only useful if this instance was deserialized from data that doesn't
+             * match any known member, and you want to know that value. For example, if the SDK is
+             * on an older version than the API, then the API may respond with new members that the
+             * SDK is unaware of.
+             */
+            @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+            companion object {
+
+                @JvmField val CHARACTER_LENGTH = of("characterLength")
+
+                @JvmField val CLASS_IMBALANCE = of("classImbalance")
+
+                @JvmField val EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B = of("expectColumnAToBeInColumnB")
+
+                @JvmField val COLUMN_AVERAGE = of("columnAverage")
+
+                @JvmField val COLUMN_DRIFT = of("columnDrift")
+
+                @JvmField val COLUMN_VALUES_MATCH = of("columnValuesMatch")
+
+                @JvmField val CONFIDENCE_DISTRIBUTION = of("confidenceDistribution")
+
+                @JvmField val CONFLICTING_LABEL_ROW_COUNT = of("conflictingLabelRowCount")
+
+                @JvmField val CONTAINS_PII = of("containsPii")
+
+                @JvmField val CONTAINS_VALID_URL = of("containsValidUrl")
+
+                @JvmField val CORRELATED_FEATURES = of("correlatedFeatures")
+
+                @JvmField val CUSTOM_METRIC = of("customMetric")
+
+                @JvmField val DUPLICATE_ROW_COUNT = of("duplicateRowCount")
+
+                @JvmField val EMPTY_FEATURES = of("emptyFeatures")
+
+                @JvmField val FEATURE_DRIFT = of("featureDrift")
+
+                @JvmField val FEATURE_PROFILE = of("featureProfile")
+
+                @JvmField val GREAT_EXPECTATIONS = of("greatExpectations")
+
+                @JvmField val GROUP_BY_COLUMN_STATS_CHECK = of("groupByColumnStatsCheck")
+
+                @JvmField val ILL_FORMED_ROW_COUNT = of("illFormedRowCount")
+
+                @JvmField val IS_CODE = of("isCode")
+
+                @JvmField val IS_JSON = of("isJson")
+
+                @JvmField val LLM_RUBRIC_V2 = of("llmRubricV2")
+
+                @JvmField val LABEL_DRIFT = of("labelDrift")
+
+                @JvmField val METRICS = of("metrics")
+
+                @JvmField val NEW_CATEGORIES = of("newCategories")
+
+                @JvmField val NEW_LABELS = of("newLabels")
+
+                @JvmField val NULL_ROW_COUNT = of("nullRowCount")
+
+                @JvmField val PP_SCORE = of("ppScore")
+
+                @JvmField val QUASI_CONSTANT_FEATURES = of("quasiConstantFeatures")
+
+                @JvmField val SENTENCE_LENGTH = of("sentenceLength")
+
+                @JvmField val SIZE_RATIO = of("sizeRatio")
+
+                @JvmField val SPECIAL_CHARACTERS = of("specialCharacters")
+
+                @JvmField val STRING_VALIDATION = of("stringValidation")
+
+                @JvmField val TRAIN_VAL_LEAKAGE_ROW_COUNT = of("trainValLeakageRowCount")
+
+                @JvmStatic fun of(value: String) = InsightName(JsonField.of(value))
+            }
+
+            /** An enum containing [InsightName]'s known values. */
+            enum class Known {
+                CHARACTER_LENGTH,
+                CLASS_IMBALANCE,
+                EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B,
+                COLUMN_AVERAGE,
+                COLUMN_DRIFT,
+                COLUMN_VALUES_MATCH,
+                CONFIDENCE_DISTRIBUTION,
+                CONFLICTING_LABEL_ROW_COUNT,
+                CONTAINS_PII,
+                CONTAINS_VALID_URL,
+                CORRELATED_FEATURES,
+                CUSTOM_METRIC,
+                DUPLICATE_ROW_COUNT,
+                EMPTY_FEATURES,
+                FEATURE_DRIFT,
+                FEATURE_PROFILE,
+                GREAT_EXPECTATIONS,
+                GROUP_BY_COLUMN_STATS_CHECK,
+                ILL_FORMED_ROW_COUNT,
+                IS_CODE,
+                IS_JSON,
+                LLM_RUBRIC_V2,
+                LABEL_DRIFT,
+                METRICS,
+                NEW_CATEGORIES,
+                NEW_LABELS,
+                NULL_ROW_COUNT,
+                PP_SCORE,
+                QUASI_CONSTANT_FEATURES,
+                SENTENCE_LENGTH,
+                SIZE_RATIO,
+                SPECIAL_CHARACTERS,
+                STRING_VALIDATION,
+                TRAIN_VAL_LEAKAGE_ROW_COUNT,
+            }
+
+            /**
+             * An enum containing [InsightName]'s known values, as well as an [_UNKNOWN] member.
+             *
+             * An instance of [InsightName] can contain an unknown value in a couple of cases:
+             * - It was deserialized from data that doesn't match any known member. For example, if
+             *   the SDK is on an older version than the API, then the API may respond with new
+             *   members that the SDK is unaware of.
+             * - It was constructed with an arbitrary value using the [of] method.
+             */
+            enum class Value {
+                CHARACTER_LENGTH,
+                CLASS_IMBALANCE,
+                EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B,
+                COLUMN_AVERAGE,
+                COLUMN_DRIFT,
+                COLUMN_VALUES_MATCH,
+                CONFIDENCE_DISTRIBUTION,
+                CONFLICTING_LABEL_ROW_COUNT,
+                CONTAINS_PII,
+                CONTAINS_VALID_URL,
+                CORRELATED_FEATURES,
+                CUSTOM_METRIC,
+                DUPLICATE_ROW_COUNT,
+                EMPTY_FEATURES,
+                FEATURE_DRIFT,
+                FEATURE_PROFILE,
+                GREAT_EXPECTATIONS,
+                GROUP_BY_COLUMN_STATS_CHECK,
+                ILL_FORMED_ROW_COUNT,
+                IS_CODE,
+                IS_JSON,
+                LLM_RUBRIC_V2,
+                LABEL_DRIFT,
+                METRICS,
+                NEW_CATEGORIES,
+                NEW_LABELS,
+                NULL_ROW_COUNT,
+                PP_SCORE,
+                QUASI_CONSTANT_FEATURES,
+                SENTENCE_LENGTH,
+                SIZE_RATIO,
+                SPECIAL_CHARACTERS,
+                STRING_VALIDATION,
+                TRAIN_VAL_LEAKAGE_ROW_COUNT,
+                /**
+                 * An enum member indicating that [InsightName] was instantiated with an unknown
+                 * value.
+                 */
+                _UNKNOWN,
+            }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value, or
+             * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+             *
+             * Use the [known] method instead if you're certain the value is always known or if you
+             * want to throw for the unknown case.
+             */
+            fun value(): Value =
+                when (this) {
+                    CHARACTER_LENGTH -> Value.CHARACTER_LENGTH
+                    CLASS_IMBALANCE -> Value.CLASS_IMBALANCE
+                    EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B -> Value.EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B
+                    COLUMN_AVERAGE -> Value.COLUMN_AVERAGE
+                    COLUMN_DRIFT -> Value.COLUMN_DRIFT
+                    COLUMN_VALUES_MATCH -> Value.COLUMN_VALUES_MATCH
+                    CONFIDENCE_DISTRIBUTION -> Value.CONFIDENCE_DISTRIBUTION
+                    CONFLICTING_LABEL_ROW_COUNT -> Value.CONFLICTING_LABEL_ROW_COUNT
+                    CONTAINS_PII -> Value.CONTAINS_PII
+                    CONTAINS_VALID_URL -> Value.CONTAINS_VALID_URL
+                    CORRELATED_FEATURES -> Value.CORRELATED_FEATURES
+                    CUSTOM_METRIC -> Value.CUSTOM_METRIC
+                    DUPLICATE_ROW_COUNT -> Value.DUPLICATE_ROW_COUNT
+                    EMPTY_FEATURES -> Value.EMPTY_FEATURES
+                    FEATURE_DRIFT -> Value.FEATURE_DRIFT
+                    FEATURE_PROFILE -> Value.FEATURE_PROFILE
+                    GREAT_EXPECTATIONS -> Value.GREAT_EXPECTATIONS
+                    GROUP_BY_COLUMN_STATS_CHECK -> Value.GROUP_BY_COLUMN_STATS_CHECK
+                    ILL_FORMED_ROW_COUNT -> Value.ILL_FORMED_ROW_COUNT
+                    IS_CODE -> Value.IS_CODE
+                    IS_JSON -> Value.IS_JSON
+                    LLM_RUBRIC_V2 -> Value.LLM_RUBRIC_V2
+                    LABEL_DRIFT -> Value.LABEL_DRIFT
+                    METRICS -> Value.METRICS
+                    NEW_CATEGORIES -> Value.NEW_CATEGORIES
+                    NEW_LABELS -> Value.NEW_LABELS
+                    NULL_ROW_COUNT -> Value.NULL_ROW_COUNT
+                    PP_SCORE -> Value.PP_SCORE
+                    QUASI_CONSTANT_FEATURES -> Value.QUASI_CONSTANT_FEATURES
+                    SENTENCE_LENGTH -> Value.SENTENCE_LENGTH
+                    SIZE_RATIO -> Value.SIZE_RATIO
+                    SPECIAL_CHARACTERS -> Value.SPECIAL_CHARACTERS
+                    STRING_VALIDATION -> Value.STRING_VALIDATION
+                    TRAIN_VAL_LEAKAGE_ROW_COUNT -> Value.TRAIN_VAL_LEAKAGE_ROW_COUNT
+                    else -> Value._UNKNOWN
+                }
+
+            /**
+             * Returns an enum member corresponding to this class instance's value.
+             *
+             * Use the [value] method instead if you're uncertain the value is always known and
+             * don't want to throw for the unknown case.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+             *   member.
+             */
+            fun known(): Known =
+                when (this) {
+                    CHARACTER_LENGTH -> Known.CHARACTER_LENGTH
+                    CLASS_IMBALANCE -> Known.CLASS_IMBALANCE
+                    EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B -> Known.EXPECT_COLUMN_A_TO_BE_IN_COLUMN_B
+                    COLUMN_AVERAGE -> Known.COLUMN_AVERAGE
+                    COLUMN_DRIFT -> Known.COLUMN_DRIFT
+                    COLUMN_VALUES_MATCH -> Known.COLUMN_VALUES_MATCH
+                    CONFIDENCE_DISTRIBUTION -> Known.CONFIDENCE_DISTRIBUTION
+                    CONFLICTING_LABEL_ROW_COUNT -> Known.CONFLICTING_LABEL_ROW_COUNT
+                    CONTAINS_PII -> Known.CONTAINS_PII
+                    CONTAINS_VALID_URL -> Known.CONTAINS_VALID_URL
+                    CORRELATED_FEATURES -> Known.CORRELATED_FEATURES
+                    CUSTOM_METRIC -> Known.CUSTOM_METRIC
+                    DUPLICATE_ROW_COUNT -> Known.DUPLICATE_ROW_COUNT
+                    EMPTY_FEATURES -> Known.EMPTY_FEATURES
+                    FEATURE_DRIFT -> Known.FEATURE_DRIFT
+                    FEATURE_PROFILE -> Known.FEATURE_PROFILE
+                    GREAT_EXPECTATIONS -> Known.GREAT_EXPECTATIONS
+                    GROUP_BY_COLUMN_STATS_CHECK -> Known.GROUP_BY_COLUMN_STATS_CHECK
+                    ILL_FORMED_ROW_COUNT -> Known.ILL_FORMED_ROW_COUNT
+                    IS_CODE -> Known.IS_CODE
+                    IS_JSON -> Known.IS_JSON
+                    LLM_RUBRIC_V2 -> Known.LLM_RUBRIC_V2
+                    LABEL_DRIFT -> Known.LABEL_DRIFT
+                    METRICS -> Known.METRICS
+                    NEW_CATEGORIES -> Known.NEW_CATEGORIES
+                    NEW_LABELS -> Known.NEW_LABELS
+                    NULL_ROW_COUNT -> Known.NULL_ROW_COUNT
+                    PP_SCORE -> Known.PP_SCORE
+                    QUASI_CONSTANT_FEATURES -> Known.QUASI_CONSTANT_FEATURES
+                    SENTENCE_LENGTH -> Known.SENTENCE_LENGTH
+                    SIZE_RATIO -> Known.SIZE_RATIO
+                    SPECIAL_CHARACTERS -> Known.SPECIAL_CHARACTERS
+                    STRING_VALIDATION -> Known.STRING_VALIDATION
+                    TRAIN_VAL_LEAKAGE_ROW_COUNT -> Known.TRAIN_VAL_LEAKAGE_ROW_COUNT
+                    else -> throw OpenlayerInvalidDataException("Unknown InsightName: $value")
+                }
+
+            /**
+             * Returns this class instance's primitive wire representation.
+             *
+             * This differs from the [toString] method because that method is primarily for
+             * debugging and generally doesn't throw.
+             *
+             * @throws OpenlayerInvalidDataException if this class instance's value does not have
+             *   the expected primitive type.
+             */
+            fun asString(): String =
+                _value().asString().orElseThrow {
+                    OpenlayerInvalidDataException("Value is not a String")
+                }
+
+            private var validated: Boolean = false
+
+            fun validate(): InsightName = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                known()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return /* spotless:off */ other is InsightName && value == other.value /* spotless:on */
+            }
+
+            override fun hashCode() = value.hashCode()
+
+            override fun toString() = value.toString()
+        }
 
         class InsightParameter
         private constructor(
