@@ -456,14 +456,14 @@ import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 
 DataStreamParams params = DataStreamParams.builder()
-    .config(DataStreamParams.Config.LlmData.builder()
-        .addInputVariableName("user_query")
-        .outputColumnName("output")
-        .numOfTokenColumnName("tokens")
-        .costColumnName("cost")
-        .timestampColumnName("timestamp")
+    .config(JsonValue.from(42))
+    .addRow(DataStreamParams.Row.builder()
+        .putAdditionalProperty("user_query", JsonValue.from("what is the meaning of life?"))
+        .putAdditionalProperty("output", JsonValue.from("42"))
+        .putAdditionalProperty("tokens", JsonValue.from(7))
+        .putAdditionalProperty("cost", JsonValue.from(0.02))
+        .putAdditionalProperty("timestamp", JsonValue.from(1610000000))
         .build())
-    .rows(JsonValue.from(42))
     .build();
 ```
 
