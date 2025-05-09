@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.toImmutable
@@ -18,13 +17,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Retrieve inference pipeline. */
 class InferencePipelineRetrieveParams
 private constructor(
-    private val inferencePipelineId: String,
+    private val inferencePipelineId: String?,
     private val expand: List<Expand>?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun inferencePipelineId(): String = inferencePipelineId
+    fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId)
 
     /** Expand specific nested objects. */
     fun expand(): Optional<List<Expand>> = Optional.ofNullable(expand)
@@ -37,14 +36,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): InferencePipelineRetrieveParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [InferencePipelineRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -67,9 +63,15 @@ private constructor(
                     inferencePipelineRetrieveParams.additionalQueryParams.toBuilder()
             }
 
-        fun inferencePipelineId(inferencePipelineId: String) = apply {
+        fun inferencePipelineId(inferencePipelineId: String?) = apply {
             this.inferencePipelineId = inferencePipelineId
         }
+
+        /**
+         * Alias for calling [Builder.inferencePipelineId] with `inferencePipelineId.orElse(null)`.
+         */
+        fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+            inferencePipelineId(inferencePipelineId.getOrNull())
 
         /** Expand specific nested objects. */
         fun expand(expand: List<Expand>?) = apply { this.expand = expand?.toMutableList() }
@@ -188,17 +190,10 @@ private constructor(
          * Returns an immutable instance of [InferencePipelineRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): InferencePipelineRetrieveParams =
             InferencePipelineRetrieveParams(
-                checkRequired("inferencePipelineId", inferencePipelineId),
+                inferencePipelineId,
                 expand?.toImmutable(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -207,7 +202,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> inferencePipelineId
+            0 -> inferencePipelineId ?: ""
             else -> ""
         }
 

@@ -5,6 +5,7 @@ package com.openlayer.api.services.blocking.inferencepipelines
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
 import com.openlayer.api.core.handlers.withErrorHandler
@@ -17,6 +18,7 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateResponse
+import kotlin.jvm.optionals.getOrNull
 
 class RowServiceImpl internal constructor(private val clientOptions: ClientOptions) : RowService {
 
@@ -45,6 +47,9 @@ class RowServiceImpl internal constructor(private val clientOptions: ClientOptio
             params: RowUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<RowUpdateResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)

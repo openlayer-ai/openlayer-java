@@ -16,6 +16,18 @@ interface RowService {
     fun withRawResponse(): WithRawResponse
 
     /** Update an inference data point in an inference pipeline. */
+    fun update(inferencePipelineId: String, params: RowUpdateParams): RowUpdateResponse =
+        update(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        inferencePipelineId: String,
+        params: RowUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RowUpdateResponse =
+        update(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [update] */
     fun update(params: RowUpdateParams): RowUpdateResponse = update(params, RequestOptions.none())
 
     /** @see [update] */
@@ -31,6 +43,26 @@ interface RowService {
          * Returns a raw HTTP response for `put /inference-pipelines/{inferencePipelineId}/rows`,
          * but is otherwise the same as [RowService.update].
          */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String,
+            params: RowUpdateParams,
+        ): HttpResponseFor<RowUpdateResponse> =
+            update(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String,
+            params: RowUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RowUpdateResponse> =
+            update(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [update] */
         @MustBeClosed
         fun update(params: RowUpdateParams): HttpResponseFor<RowUpdateResponse> =
             update(params, RequestOptions.none())

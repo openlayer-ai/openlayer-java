@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
@@ -17,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
 /** List the latest test results for an inference pipeline. */
 class TestResultListParams
 private constructor(
-    private val inferencePipelineId: String,
+    private val inferencePipelineId: String?,
     private val page: Long?,
     private val perPage: Long?,
     private val status: Status?,
@@ -26,7 +25,7 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun inferencePipelineId(): String = inferencePipelineId
+    fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId)
 
     /** The page to return in a paginated query. */
     fun page(): Optional<Long> = Optional.ofNullable(page)
@@ -54,14 +53,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [TestResultListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
-         */
+        @JvmStatic fun none(): TestResultListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [TestResultListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -87,9 +81,15 @@ private constructor(
             additionalQueryParams = testResultListParams.additionalQueryParams.toBuilder()
         }
 
-        fun inferencePipelineId(inferencePipelineId: String) = apply {
+        fun inferencePipelineId(inferencePipelineId: String?) = apply {
             this.inferencePipelineId = inferencePipelineId
         }
+
+        /**
+         * Alias for calling [Builder.inferencePipelineId] with `inferencePipelineId.orElse(null)`.
+         */
+        fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+            inferencePipelineId(inferencePipelineId.getOrNull())
 
         /** The page to return in a paginated query. */
         fun page(page: Long?) = apply { this.page = page }
@@ -237,17 +237,10 @@ private constructor(
          * Returns an immutable instance of [TestResultListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): TestResultListParams =
             TestResultListParams(
-                checkRequired("inferencePipelineId", inferencePipelineId),
+                inferencePipelineId,
                 page,
                 perPage,
                 status,
@@ -259,7 +252,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> inferencePipelineId
+            0 -> inferencePipelineId ?: ""
             else -> ""
         }
 

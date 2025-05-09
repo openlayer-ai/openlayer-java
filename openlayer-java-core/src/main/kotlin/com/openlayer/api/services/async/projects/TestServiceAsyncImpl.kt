@@ -5,6 +5,7 @@ package com.openlayer.api.services.async.projects
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
 import com.openlayer.api.core.handlers.withErrorHandler
@@ -22,6 +23,7 @@ import com.openlayer.api.models.projects.tests.TestListResponse
 import com.openlayer.api.models.projects.tests.TestUpdateParams
 import com.openlayer.api.models.projects.tests.TestUpdateResponse
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class TestServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     TestServiceAsync {
@@ -65,6 +67,9 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: TestCreateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<TestCreateResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -95,6 +100,9 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: TestUpdateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<TestUpdateResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
@@ -125,6 +133,9 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: TestListParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<TestListResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

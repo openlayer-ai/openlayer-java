@@ -5,6 +5,7 @@ package com.openlayer.api.services.async.inferencepipelines
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
 import com.openlayer.api.core.handlers.withErrorHandler
@@ -18,6 +19,7 @@ import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class DataServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     DataServiceAsync {
@@ -47,6 +49,9 @@ class DataServiceAsyncImpl internal constructor(private val clientOptions: Clien
             params: DataStreamParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<DataStreamResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)

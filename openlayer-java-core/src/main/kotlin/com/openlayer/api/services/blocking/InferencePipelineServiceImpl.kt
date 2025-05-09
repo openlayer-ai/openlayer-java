@@ -5,6 +5,7 @@ package com.openlayer.api.services.blocking
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.emptyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
@@ -28,6 +29,7 @@ import com.openlayer.api.services.blocking.inferencepipelines.RowService
 import com.openlayer.api.services.blocking.inferencepipelines.RowServiceImpl
 import com.openlayer.api.services.blocking.inferencepipelines.TestResultService
 import com.openlayer.api.services.blocking.inferencepipelines.TestResultServiceImpl
+import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     InferencePipelineService {
@@ -100,6 +102,9 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             params: InferencePipelineRetrieveParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<InferencePipelineRetrieveResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
@@ -127,6 +132,9 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             params: InferencePipelineUpdateParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<InferencePipelineUpdateResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
@@ -153,6 +161,9 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             params: InferencePipelineDeleteParams,
             requestOptions: RequestOptions,
         ): HttpResponse {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.DELETE)

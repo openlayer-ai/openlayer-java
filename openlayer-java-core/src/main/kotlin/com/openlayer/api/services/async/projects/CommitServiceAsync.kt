@@ -19,6 +19,21 @@ interface CommitServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Create a new commit (project version) in a project. */
+    fun create(
+        pathProjectId: String,
+        params: CommitCreateParams,
+    ): CompletableFuture<CommitCreateResponse> =
+        create(pathProjectId, params, RequestOptions.none())
+
+    /** @see [create] */
+    fun create(
+        pathProjectId: String,
+        params: CommitCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<CommitCreateResponse> =
+        create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
+
+    /** @see [create] */
     fun create(params: CommitCreateParams): CompletableFuture<CommitCreateResponse> =
         create(params, RequestOptions.none())
 
@@ -29,14 +44,39 @@ interface CommitServiceAsync {
     ): CompletableFuture<CommitCreateResponse>
 
     /** List the commits (project versions) in a project. */
-    fun list(params: CommitListParams): CompletableFuture<CommitListResponse> =
-        list(params, RequestOptions.none())
+    fun list(projectId: String): CompletableFuture<CommitListResponse> =
+        list(projectId, CommitListParams.none())
+
+    /** @see [list] */
+    fun list(
+        projectId: String,
+        params: CommitListParams = CommitListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<CommitListResponse> =
+        list(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+    /** @see [list] */
+    fun list(
+        projectId: String,
+        params: CommitListParams = CommitListParams.none(),
+    ): CompletableFuture<CommitListResponse> = list(projectId, params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
         params: CommitListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CommitListResponse>
+
+    /** @see [list] */
+    fun list(params: CommitListParams): CompletableFuture<CommitListResponse> =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
+    fun list(
+        projectId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<CommitListResponse> =
+        list(projectId, CommitListParams.none(), requestOptions)
 
     /**
      * A view of [CommitServiceAsync] that provides access to raw HTTP responses for each method.
@@ -47,6 +87,23 @@ interface CommitServiceAsync {
          * Returns a raw HTTP response for `post /projects/{projectId}/versions`, but is otherwise
          * the same as [CommitServiceAsync.create].
          */
+        @MustBeClosed
+        fun create(
+            pathProjectId: String,
+            params: CommitCreateParams,
+        ): CompletableFuture<HttpResponseFor<CommitCreateResponse>> =
+            create(pathProjectId, params, RequestOptions.none())
+
+        /** @see [create] */
+        @MustBeClosed
+        fun create(
+            pathProjectId: String,
+            params: CommitCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<CommitCreateResponse>> =
+            create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: CommitCreateParams
@@ -65,8 +122,25 @@ interface CommitServiceAsync {
          * the same as [CommitServiceAsync.list].
          */
         @MustBeClosed
-        fun list(params: CommitListParams): CompletableFuture<HttpResponseFor<CommitListResponse>> =
-            list(params, RequestOptions.none())
+        fun list(projectId: String): CompletableFuture<HttpResponseFor<CommitListResponse>> =
+            list(projectId, CommitListParams.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            projectId: String,
+            params: CommitListParams = CommitListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<CommitListResponse>> =
+            list(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            projectId: String,
+            params: CommitListParams = CommitListParams.none(),
+        ): CompletableFuture<HttpResponseFor<CommitListResponse>> =
+            list(projectId, params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
@@ -74,5 +148,18 @@ interface CommitServiceAsync {
             params: CommitListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CommitListResponse>>
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(params: CommitListParams): CompletableFuture<HttpResponseFor<CommitListResponse>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            projectId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<CommitListResponse>> =
+            list(projectId, CommitListParams.none(), requestOptions)
     }
 }

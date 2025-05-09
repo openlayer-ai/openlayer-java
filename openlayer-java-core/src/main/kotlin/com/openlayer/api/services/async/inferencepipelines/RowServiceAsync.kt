@@ -17,6 +17,21 @@ interface RowServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Update an inference data point in an inference pipeline. */
+    fun update(
+        inferencePipelineId: String,
+        params: RowUpdateParams,
+    ): CompletableFuture<RowUpdateResponse> =
+        update(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        inferencePipelineId: String,
+        params: RowUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RowUpdateResponse> =
+        update(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [update] */
     fun update(params: RowUpdateParams): CompletableFuture<RowUpdateResponse> =
         update(params, RequestOptions.none())
 
@@ -33,6 +48,26 @@ interface RowServiceAsync {
          * Returns a raw HTTP response for `put /inference-pipelines/{inferencePipelineId}/rows`,
          * but is otherwise the same as [RowServiceAsync.update].
          */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String,
+            params: RowUpdateParams,
+        ): CompletableFuture<HttpResponseFor<RowUpdateResponse>> =
+            update(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String,
+            params: RowUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RowUpdateResponse>> =
+            update(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [update] */
         @MustBeClosed
         fun update(params: RowUpdateParams): CompletableFuture<HttpResponseFor<RowUpdateResponse>> =
             update(params, RequestOptions.none())

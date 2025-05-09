@@ -3,7 +3,6 @@
 package com.openlayer.api.models.projects.commits
 
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import java.util.Objects
@@ -13,14 +12,14 @@ import kotlin.jvm.optionals.getOrNull
 /** List the commits (project versions) in a project. */
 class CommitListParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val page: Long?,
     private val perPage: Long?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /** The page to return in a paginated query. */
     fun page(): Optional<Long> = Optional.ofNullable(page)
@@ -36,14 +35,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [CommitListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         */
+        @JvmStatic fun none(): CommitListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [CommitListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -65,7 +59,10 @@ private constructor(
             additionalQueryParams = commitListParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /** The page to return in a paginated query. */
         fun page(page: Long?) = apply { this.page = page }
@@ -195,17 +192,10 @@ private constructor(
          * Returns an immutable instance of [CommitListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): CommitListParams =
             CommitListParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 page,
                 perPage,
                 additionalHeaders.build(),
@@ -215,7 +205,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 
