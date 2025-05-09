@@ -4,32 +4,52 @@ package com.openlayer.api.services.blocking.projects
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.ProjectInferencePipelineCreateParams
-import com.openlayer.api.models.ProjectInferencePipelineListParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateParams
+import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
 import java.time.LocalDate
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class InferencePipelineServiceTest {
+internal class InferencePipelineServiceTest {
 
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val inferencePipelineService = client.projects().inferencePipelines()
-        val projectInferencePipelineCreateResponse =
+
+        val inferencePipeline =
             inferencePipelineService.create(
-                ProjectInferencePipelineCreateParams.builder()
-                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                InferencePipelineCreateParams.builder()
+                    .pathProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                    .dateLastEvaluated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                    .dateLastSampleReceived(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                    .dateOfNextEvaluation(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
+                    .dateUpdated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
                     .description("This pipeline is used for production.")
+                    .failingGoalCount(1L)
+                    .links(
+                        InferencePipelineCreateParams.Links.builder()
+                            .app(
+                                "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6/inference-pipeline/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+                            )
+                            .build()
+                    )
                     .name("production")
+                    .passingGoalCount(5L)
+                    .bodyProjectId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    .status(InferencePipelineCreateParams.Status.COMPLETED)
+                    .statusMessage("Tests successfully evaluated")
+                    .totalGoalCount(6L)
                     .project(
-                        ProjectInferencePipelineCreateParams.Project.builder()
+                        InferencePipelineCreateParams.Project.builder()
                             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                             .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
                             .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -38,7 +58,7 @@ class InferencePipelineServiceTest {
                             .goalCount(10L)
                             .inferencePipelineCount(1L)
                             .links(
-                                ProjectInferencePipelineCreateParams.Project.Links.builder()
+                                InferencePipelineCreateParams.Project.Links.builder()
                                     .app(
                                         "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                                     )
@@ -46,15 +66,13 @@ class InferencePipelineServiceTest {
                             )
                             .monitoringGoalCount(5L)
                             .name("My Project")
-                            .source(ProjectInferencePipelineCreateParams.Project.Source.WEB)
-                            .taskType(
-                                ProjectInferencePipelineCreateParams.Project.TaskType.LLM_BASE
-                            )
+                            .source(InferencePipelineCreateParams.Project.Source.WEB)
+                            .taskType(InferencePipelineCreateParams.Project.TaskType.LLM_BASE)
                             .versionCount(2L)
                             .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
                             .description("My project description.")
                             .gitRepo(
-                                ProjectInferencePipelineCreateParams.Project.GitRepo.builder()
+                                InferencePipelineCreateParams.Project.GitRepo.builder()
                                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                     .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                                     .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -72,7 +90,7 @@ class InferencePipelineServiceTest {
                             .build()
                     )
                     .workspace(
-                        ProjectInferencePipelineCreateParams.Workspace.builder()
+                        InferencePipelineCreateParams.Workspace.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .creatorId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                             .dateCreated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -84,46 +102,44 @@ class InferencePipelineServiceTest {
                             .periodStartDate(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                             .projectCount(0L)
                             .slug("openlayer")
-                            .status(ProjectInferencePipelineCreateParams.Workspace.Status.ACTIVE)
-                            .inviteCode("inviteCode")
-                            .monthlyUsage(
-                                listOf(
-                                    ProjectInferencePipelineCreateParams.Workspace.MonthlyUsage
-                                        .builder()
-                                        .executionTimeMs(0L)
-                                        .monthYear(LocalDate.parse("2019-12-27"))
-                                        .predictionCount(0L)
-                                        .build()
-                                )
+                            .status(InferencePipelineCreateParams.Workspace.Status.ACTIVE)
+                            .addMonthlyUsage(
+                                InferencePipelineCreateParams.Workspace.MonthlyUsage.builder()
+                                    .executionTimeMs(0L)
+                                    .monthYear(LocalDate.parse("2019-12-27"))
+                                    .predictionCount(0L)
+                                    .build()
                             )
                             .samlOnlyAccess(true)
-                            .wildcardDomains(listOf("string"))
+                            .addWildcardDomain("string")
                             .build()
                     )
+                    .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
                     .build()
             )
-        println(projectInferencePipelineCreateResponse)
-        projectInferencePipelineCreateResponse.validate()
+
+        inferencePipeline.validate()
     }
 
     @Test
-    fun callList() {
+    fun list() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val inferencePipelineService = client.projects().inferencePipelines()
-        val projectInferencePipelineListResponse =
+
+        val inferencePipelines =
             inferencePipelineService.list(
-                ProjectInferencePipelineListParams.builder()
+                InferencePipelineListParams.builder()
                     .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .name("name")
                     .page(1L)
                     .perPage(1L)
                     .build()
             )
-        println(projectInferencePipelineListResponse)
-        projectInferencePipelineListResponse.validate()
+
+        inferencePipelines.validate()
     }
 }

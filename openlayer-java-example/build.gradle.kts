@@ -1,7 +1,10 @@
 plugins {
-    id("openlayer.kotlin")
-    id("java")
+    id("openlayer.java")
     application
+}
+
+repositories {
+    mavenCentral()
 }
 
 dependencies {

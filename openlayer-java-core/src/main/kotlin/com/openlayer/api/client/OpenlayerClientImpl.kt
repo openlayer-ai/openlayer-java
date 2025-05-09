@@ -13,10 +13,7 @@ import com.openlayer.api.services.blocking.ProjectServiceImpl
 import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.StorageServiceImpl
 
-class OpenlayerClientImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : OpenlayerClient {
+class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerClient {
 
     private val clientOptionsWithUserAgent =
         if (clientOptions.headers.names().contains("User-Agent")) clientOptions
@@ -28,6 +25,10 @@ constructor(
 
     // Pass the original clientOptions so that this client sets its own User-Agent.
     private val async: OpenlayerClientAsync by lazy { OpenlayerClientAsyncImpl(clientOptions) }
+
+    private val withRawResponse: OpenlayerClient.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
     private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptionsWithUserAgent) }
 
@@ -41,6 +42,8 @@ constructor(
 
     override fun async(): OpenlayerClientAsync = async
 
+    override fun withRawResponse(): OpenlayerClient.WithRawResponse = withRawResponse
+
     override fun projects(): ProjectService = projects
 
     override fun commits(): CommitService = commits
@@ -48,4 +51,35 @@ constructor(
     override fun inferencePipelines(): InferencePipelineService = inferencePipelines
 
     override fun storage(): StorageService = storage
+
+    override fun close() = clientOptions.httpClient.close()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        OpenlayerClient.WithRawResponse {
+
+        private val projects: ProjectService.WithRawResponse by lazy {
+            ProjectServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val commits: CommitService.WithRawResponse by lazy {
+            CommitServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val inferencePipelines: InferencePipelineService.WithRawResponse by lazy {
+            InferencePipelineServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val storage: StorageService.WithRawResponse by lazy {
+            StorageServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        override fun projects(): ProjectService.WithRawResponse = projects
+
+        override fun commits(): CommitService.WithRawResponse = commits
+
+        override fun inferencePipelines(): InferencePipelineService.WithRawResponse =
+            inferencePipelines
+
+        override fun storage(): StorageService.WithRawResponse = storage
+    }
 }

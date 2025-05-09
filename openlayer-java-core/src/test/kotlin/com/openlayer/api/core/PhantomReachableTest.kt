@@ -14,13 +14,13 @@ internal class PhantomReachableTest {
             // Pass an inline object for the object to observe so that it becomes immediately
             // unreachable.
             Any(),
-            closeable
+            closeable,
         )
 
         assertThat(closed).isFalse()
 
         System.gc()
-        Thread.sleep(3000)
+        Thread.sleep(100)
 
         assertThat(closed).isTrue()
     }

@@ -1,0 +1,58 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.openlayer.api.models.inferencepipelines
+
+import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.Test
+
+internal class InferencePipelineUpdateParamsTest {
+
+    @Test
+    fun create() {
+        InferencePipelineUpdateParams.builder()
+            .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .description("This pipeline is used for production.")
+            .name("production")
+            .referenceDatasetUri("referenceDatasetUri")
+            .build()
+    }
+
+    @Test
+    fun pathParams() {
+        val params =
+            InferencePipelineUpdateParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .build()
+
+        assertThat(params._pathParam(0)).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        // out-of-bound path param
+        assertThat(params._pathParam(1)).isEqualTo("")
+    }
+
+    @Test
+    fun body() {
+        val params =
+            InferencePipelineUpdateParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .description("This pipeline is used for production.")
+                .name("production")
+                .referenceDatasetUri("referenceDatasetUri")
+                .build()
+
+        val body = params._body()
+
+        assertThat(body.description()).contains("This pipeline is used for production.")
+        assertThat(body.name()).contains("production")
+        assertThat(body.referenceDatasetUri()).contains("referenceDatasetUri")
+    }
+
+    @Test
+    fun bodyWithoutOptionalFields() {
+        val params =
+            InferencePipelineUpdateParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .build()
+
+        val body = params._body()
+    }
+}

@@ -4,26 +4,27 @@ package com.openlayer.api.services.blocking.storage
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.StoragePresignedUrlCreateParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
-class PresignedUrlServiceTest {
+internal class PresignedUrlServiceTest {
 
     @Test
-    fun callCreate() {
+    fun create() {
         val client =
             OpenlayerOkHttpClient.builder()
                 .baseUrl(TestServerExtension.BASE_URL)
                 .apiKey("My API Key")
                 .build()
         val presignedUrlService = client.storage().presignedUrl()
-        val storagePresignedUrlCreateResponse =
+
+        val presignedUrl =
             presignedUrlService.create(
-                StoragePresignedUrlCreateParams.builder().objectName("objectName").build()
+                PresignedUrlCreateParams.builder().objectName("objectName").build()
             )
-        println(storagePresignedUrlCreateResponse)
-        storagePresignedUrlCreateResponse.validate()
+
+        presignedUrl.validate()
     }
 }

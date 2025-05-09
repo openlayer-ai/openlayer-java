@@ -6,7 +6,7 @@ import java.util.TreeMap
 class Headers
 private constructor(
     private val map: Map<String, List<String>>,
-    @get:JvmName("size") val size: Int
+    @get:JvmName("size") val size: Int,
 ) {
 
     fun isEmpty(): Boolean = map.isEmpty()
@@ -22,7 +22,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    class Builder {
+    class Builder internal constructor() {
 
         private val map: MutableMap<String, MutableList<String>> =
             TreeMap(String.CASE_INSENSITIVE_ORDER)
@@ -74,7 +74,7 @@ private constructor(
                         values.toImmutable()
                     }
                     .toImmutable(),
-                size
+                size,
             )
     }
 
