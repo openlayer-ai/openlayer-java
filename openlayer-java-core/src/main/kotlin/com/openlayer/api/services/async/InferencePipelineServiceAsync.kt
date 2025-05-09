@@ -31,9 +31,27 @@ interface InferencePipelineServiceAsync {
 
     /** Retrieve inference pipeline. */
     fun retrieve(
-        params: InferencePipelineRetrieveParams
+        inferencePipelineId: String
     ): CompletableFuture<InferencePipelineRetrieveResponse> =
-        retrieve(params, RequestOptions.none())
+        retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        inferencePipelineId: String,
+        params: InferencePipelineRetrieveParams = InferencePipelineRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<InferencePipelineRetrieveResponse> =
+        retrieve(
+            params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+            requestOptions,
+        )
+
+    /** @see [retrieve] */
+    fun retrieve(
+        inferencePipelineId: String,
+        params: InferencePipelineRetrieveParams = InferencePipelineRetrieveParams.none(),
+    ): CompletableFuture<InferencePipelineRetrieveResponse> =
+        retrieve(inferencePipelineId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
@@ -41,10 +59,37 @@ interface InferencePipelineServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineRetrieveResponse>
 
+    /** @see [retrieve] */
+    fun retrieve(
+        params: InferencePipelineRetrieveParams
+    ): CompletableFuture<InferencePipelineRetrieveResponse> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        inferencePipelineId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<InferencePipelineRetrieveResponse> =
+        retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none(), requestOptions)
+
     /** Update inference pipeline. */
+    fun update(inferencePipelineId: String): CompletableFuture<InferencePipelineUpdateResponse> =
+        update(inferencePipelineId, InferencePipelineUpdateParams.none())
+
+    /** @see [update] */
     fun update(
-        params: InferencePipelineUpdateParams
-    ): CompletableFuture<InferencePipelineUpdateResponse> = update(params, RequestOptions.none())
+        inferencePipelineId: String,
+        params: InferencePipelineUpdateParams = InferencePipelineUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<InferencePipelineUpdateResponse> =
+        update(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [update] */
+    fun update(
+        inferencePipelineId: String,
+        params: InferencePipelineUpdateParams = InferencePipelineUpdateParams.none(),
+    ): CompletableFuture<InferencePipelineUpdateResponse> =
+        update(inferencePipelineId, params, RequestOptions.none())
 
     /** @see [update] */
     fun update(
@@ -52,15 +97,52 @@ interface InferencePipelineServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineUpdateResponse>
 
+    /** @see [update] */
+    fun update(
+        params: InferencePipelineUpdateParams
+    ): CompletableFuture<InferencePipelineUpdateResponse> = update(params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        inferencePipelineId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<InferencePipelineUpdateResponse> =
+        update(inferencePipelineId, InferencePipelineUpdateParams.none(), requestOptions)
+
     /** Delete inference pipeline. */
-    fun delete(params: InferencePipelineDeleteParams): CompletableFuture<Void?> =
-        delete(params, RequestOptions.none())
+    fun delete(inferencePipelineId: String): CompletableFuture<Void?> =
+        delete(inferencePipelineId, InferencePipelineDeleteParams.none())
+
+    /** @see [delete] */
+    fun delete(
+        inferencePipelineId: String,
+        params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Void?> =
+        delete(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [delete] */
+    fun delete(
+        inferencePipelineId: String,
+        params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
+    ): CompletableFuture<Void?> = delete(inferencePipelineId, params, RequestOptions.none())
 
     /** @see [delete] */
     fun delete(
         params: InferencePipelineDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<Void?>
+
+    /** @see [delete] */
+    fun delete(params: InferencePipelineDeleteParams): CompletableFuture<Void?> =
+        delete(params, RequestOptions.none())
+
+    /** @see [delete] */
+    fun delete(
+        inferencePipelineId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<Void?> =
+        delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)
 
     /**
      * A view of [InferencePipelineServiceAsync] that provides access to raw HTTP responses for each
@@ -80,9 +162,29 @@ interface InferencePipelineServiceAsync {
          */
         @MustBeClosed
         fun retrieve(
-            params: InferencePipelineRetrieveParams
+            inferencePipelineId: String
         ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>> =
-            retrieve(params, RequestOptions.none())
+            retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            inferencePipelineId: String,
+            params: InferencePipelineRetrieveParams = InferencePipelineRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>> =
+            retrieve(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            inferencePipelineId: String,
+            params: InferencePipelineRetrieveParams = InferencePipelineRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>> =
+            retrieve(inferencePipelineId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -91,10 +193,59 @@ interface InferencePipelineServiceAsync {
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>>
 
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: InferencePipelineRetrieveParams
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveResponse>> =
+            retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none(), requestOptions)
+
         /**
          * Returns a raw HTTP response for `put /inference-pipelines/{inferencePipelineId}`, but is
          * otherwise the same as [InferencePipelineServiceAsync.update].
          */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String
+        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>> =
+            update(inferencePipelineId, InferencePipelineUpdateParams.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String,
+            params: InferencePipelineUpdateParams = InferencePipelineUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>> =
+            update(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            inferencePipelineId: String,
+            params: InferencePipelineUpdateParams = InferencePipelineUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>> =
+            update(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            params: InferencePipelineUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>>
+
+        /** @see [update] */
         @MustBeClosed
         fun update(
             params: InferencePipelineUpdateParams
@@ -104,17 +255,38 @@ interface InferencePipelineServiceAsync {
         /** @see [update] */
         @MustBeClosed
         fun update(
-            params: InferencePipelineUpdateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>>
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineUpdateResponse>> =
+            update(inferencePipelineId, InferencePipelineUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `delete /inference-pipelines/{inferencePipelineId}`, but
          * is otherwise the same as [InferencePipelineServiceAsync.delete].
          */
         @MustBeClosed
-        fun delete(params: InferencePipelineDeleteParams): CompletableFuture<HttpResponse> =
-            delete(params, RequestOptions.none())
+        fun delete(inferencePipelineId: String): CompletableFuture<HttpResponse> =
+            delete(inferencePipelineId, InferencePipelineDeleteParams.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            inferencePipelineId: String,
+            params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponse> =
+            delete(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            inferencePipelineId: String,
+            params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
+        ): CompletableFuture<HttpResponse> =
+            delete(inferencePipelineId, params, RequestOptions.none())
 
         /** @see [delete] */
         @MustBeClosed
@@ -122,5 +294,18 @@ interface InferencePipelineServiceAsync {
             params: InferencePipelineDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponse>
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(params: InferencePipelineDeleteParams): CompletableFuture<HttpResponse> =
+            delete(params, RequestOptions.none())
+
+        /** @see [delete] */
+        @MustBeClosed
+        fun delete(
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponse> =
+            delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)
     }
 }

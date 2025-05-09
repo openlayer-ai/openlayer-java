@@ -3,20 +3,21 @@
 package com.openlayer.api.models.commits
 
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Retrieve a project version (commit) by its id. */
 class CommitRetrieveParams
 private constructor(
-    private val projectVersionId: String,
+    private val projectVersionId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectVersionId(): String = projectVersionId
+    fun projectVersionId(): Optional<String> = Optional.ofNullable(projectVersionId)
 
     fun _additionalHeaders(): Headers = additionalHeaders
 
@@ -26,14 +27,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [CommitRetrieveParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectVersionId()
-         * ```
-         */
+        @JvmStatic fun none(): CommitRetrieveParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [CommitRetrieveParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -51,9 +47,13 @@ private constructor(
             additionalQueryParams = commitRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectVersionId(projectVersionId: String) = apply {
+        fun projectVersionId(projectVersionId: String?) = apply {
             this.projectVersionId = projectVersionId
         }
+
+        /** Alias for calling [Builder.projectVersionId] with `projectVersionId.orElse(null)`. */
+        fun projectVersionId(projectVersionId: Optional<String>) =
+            projectVersionId(projectVersionId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -157,17 +157,10 @@ private constructor(
          * Returns an immutable instance of [CommitRetrieveParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectVersionId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): CommitRetrieveParams =
             CommitRetrieveParams(
-                checkRequired("projectVersionId", projectVersionId),
+                projectVersionId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
             )
@@ -175,7 +168,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectVersionId
+            0 -> projectVersionId ?: ""
             else -> ""
         }
 

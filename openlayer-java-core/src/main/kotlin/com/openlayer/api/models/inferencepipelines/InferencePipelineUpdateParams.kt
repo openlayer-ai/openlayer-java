@@ -11,7 +11,6 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
@@ -23,13 +22,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Update inference pipeline. */
 class InferencePipelineUpdateParams
 private constructor(
-    private val inferencePipelineId: String,
+    private val inferencePipelineId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun inferencePipelineId(): String = inferencePipelineId
+    fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId)
 
     /**
      * The inference pipeline description.
@@ -88,14 +87,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): InferencePipelineUpdateParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [InferencePipelineUpdateParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -116,9 +112,15 @@ private constructor(
             additionalQueryParams = inferencePipelineUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun inferencePipelineId(inferencePipelineId: String) = apply {
+        fun inferencePipelineId(inferencePipelineId: String?) = apply {
             this.inferencePipelineId = inferencePipelineId
         }
+
+        /**
+         * Alias for calling [Builder.inferencePipelineId] with `inferencePipelineId.orElse(null)`.
+         */
+        fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+            inferencePipelineId(inferencePipelineId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -303,17 +305,10 @@ private constructor(
          * Returns an immutable instance of [InferencePipelineUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): InferencePipelineUpdateParams =
             InferencePipelineUpdateParams(
-                checkRequired("inferencePipelineId", inferencePipelineId),
+                inferencePipelineId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -324,7 +319,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> inferencePipelineId
+            0 -> inferencePipelineId ?: ""
             else -> ""
         }
 

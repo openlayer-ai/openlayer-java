@@ -4,7 +4,6 @@ package com.openlayer.api.services.blocking
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.commits.CommitRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -20,12 +19,7 @@ internal class CommitServiceTest {
                 .build()
         val commitService = client.commits()
 
-        val commit =
-            commitService.retrieve(
-                CommitRetrieveParams.builder()
-                    .projectVersionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val commit = commitService.retrieve("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         commit.validate()
     }

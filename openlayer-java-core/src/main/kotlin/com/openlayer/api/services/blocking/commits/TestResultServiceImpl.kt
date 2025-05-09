@@ -5,6 +5,7 @@ package com.openlayer.api.services.blocking.commits
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
 import com.openlayer.api.core.handlers.withErrorHandler
@@ -16,6 +17,7 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.commits.testresults.TestResultListParams
 import com.openlayer.api.models.commits.testresults.TestResultListResponse
+import kotlin.jvm.optionals.getOrNull
 
 class TestResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     TestResultService {
@@ -46,6 +48,9 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
             params: TestResultListParams,
             requestOptions: RequestOptions,
         ): HttpResponseFor<TestResultListResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectVersionId", params.projectVersionId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

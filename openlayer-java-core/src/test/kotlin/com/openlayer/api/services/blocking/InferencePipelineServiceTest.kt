@@ -4,7 +4,6 @@ package com.openlayer.api.services.blocking
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
-import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
 import org.junit.jupiter.api.Test
@@ -64,10 +63,6 @@ internal class InferencePipelineServiceTest {
                 .build()
         val inferencePipelineService = client.inferencePipelines()
 
-        inferencePipelineService.delete(
-            InferencePipelineDeleteParams.builder()
-                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                .build()
-        )
+        inferencePipelineService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     }
 }

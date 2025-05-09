@@ -21,6 +21,18 @@ interface TestServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Create a test. */
+    fun create(projectId: String, params: TestCreateParams): CompletableFuture<TestCreateResponse> =
+        create(projectId, params, RequestOptions.none())
+
+    /** @see [create] */
+    fun create(
+        projectId: String,
+        params: TestCreateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TestCreateResponse> =
+        create(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+    /** @see [create] */
     fun create(params: TestCreateParams): CompletableFuture<TestCreateResponse> =
         create(params, RequestOptions.none())
 
@@ -31,6 +43,18 @@ interface TestServiceAsync {
     ): CompletableFuture<TestCreateResponse>
 
     /** Update tests. */
+    fun update(projectId: String, params: TestUpdateParams): CompletableFuture<TestUpdateResponse> =
+        update(projectId, params, RequestOptions.none())
+
+    /** @see [update] */
+    fun update(
+        projectId: String,
+        params: TestUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TestUpdateResponse> =
+        update(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+    /** @see [update] */
     fun update(params: TestUpdateParams): CompletableFuture<TestUpdateResponse> =
         update(params, RequestOptions.none())
 
@@ -41,14 +65,38 @@ interface TestServiceAsync {
     ): CompletableFuture<TestUpdateResponse>
 
     /** List tests under a project. */
-    fun list(params: TestListParams): CompletableFuture<TestListResponse> =
-        list(params, RequestOptions.none())
+    fun list(projectId: String): CompletableFuture<TestListResponse> =
+        list(projectId, TestListParams.none())
+
+    /** @see [list] */
+    fun list(
+        projectId: String,
+        params: TestListParams = TestListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TestListResponse> =
+        list(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+    /** @see [list] */
+    fun list(
+        projectId: String,
+        params: TestListParams = TestListParams.none(),
+    ): CompletableFuture<TestListResponse> = list(projectId, params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
         params: TestListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestListResponse>
+
+    /** @see [list] */
+    fun list(params: TestListParams): CompletableFuture<TestListResponse> =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
+    fun list(
+        projectId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<TestListResponse> = list(projectId, TestListParams.none(), requestOptions)
 
     /** A view of [TestServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -57,6 +105,23 @@ interface TestServiceAsync {
          * Returns a raw HTTP response for `post /projects/{projectId}/tests`, but is otherwise the
          * same as [TestServiceAsync.create].
          */
+        @MustBeClosed
+        fun create(
+            projectId: String,
+            params: TestCreateParams,
+        ): CompletableFuture<HttpResponseFor<TestCreateResponse>> =
+            create(projectId, params, RequestOptions.none())
+
+        /** @see [create] */
+        @MustBeClosed
+        fun create(
+            projectId: String,
+            params: TestCreateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TestCreateResponse>> =
+            create(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+        /** @see [create] */
         @MustBeClosed
         fun create(
             params: TestCreateParams
@@ -76,6 +141,23 @@ interface TestServiceAsync {
          */
         @MustBeClosed
         fun update(
+            projectId: String,
+            params: TestUpdateParams,
+        ): CompletableFuture<HttpResponseFor<TestUpdateResponse>> =
+            update(projectId, params, RequestOptions.none())
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
+            projectId: String,
+            params: TestUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TestUpdateResponse>> =
+            update(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+        /** @see [update] */
+        @MustBeClosed
+        fun update(
             params: TestUpdateParams
         ): CompletableFuture<HttpResponseFor<TestUpdateResponse>> =
             update(params, RequestOptions.none())
@@ -92,8 +174,25 @@ interface TestServiceAsync {
          * same as [TestServiceAsync.list].
          */
         @MustBeClosed
-        fun list(params: TestListParams): CompletableFuture<HttpResponseFor<TestListResponse>> =
-            list(params, RequestOptions.none())
+        fun list(projectId: String): CompletableFuture<HttpResponseFor<TestListResponse>> =
+            list(projectId, TestListParams.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            projectId: String,
+            params: TestListParams = TestListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TestListResponse>> =
+            list(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            projectId: String,
+            params: TestListParams = TestListParams.none(),
+        ): CompletableFuture<HttpResponseFor<TestListResponse>> =
+            list(projectId, params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
@@ -101,5 +200,18 @@ interface TestServiceAsync {
             params: TestListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestListResponse>>
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(params: TestListParams): CompletableFuture<HttpResponseFor<TestListResponse>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            projectId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<TestListResponse>> =
+            list(projectId, TestListParams.none(), requestOptions)
     }
 }

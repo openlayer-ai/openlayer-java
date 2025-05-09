@@ -456,7 +456,6 @@ import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 
 DataStreamParams params = DataStreamParams.builder()
-    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
     .config(DataStreamParams.Config.LlmData.builder()
         .addInputVariableName("user_query")
         .outputColumnName("output")

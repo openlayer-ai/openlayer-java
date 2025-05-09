@@ -17,14 +17,40 @@ interface TestResultServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** List the latest test results for an inference pipeline. */
-    fun list(params: TestResultListParams): CompletableFuture<TestResultListResponse> =
-        list(params, RequestOptions.none())
+    fun list(inferencePipelineId: String): CompletableFuture<TestResultListResponse> =
+        list(inferencePipelineId, TestResultListParams.none())
+
+    /** @see [list] */
+    fun list(
+        inferencePipelineId: String,
+        params: TestResultListParams = TestResultListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TestResultListResponse> =
+        list(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [list] */
+    fun list(
+        inferencePipelineId: String,
+        params: TestResultListParams = TestResultListParams.none(),
+    ): CompletableFuture<TestResultListResponse> =
+        list(inferencePipelineId, params, RequestOptions.none())
 
     /** @see [list] */
     fun list(
         params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestResultListResponse>
+
+    /** @see [list] */
+    fun list(params: TestResultListParams): CompletableFuture<TestResultListResponse> =
+        list(params, RequestOptions.none())
+
+    /** @see [list] */
+    fun list(
+        inferencePipelineId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<TestResultListResponse> =
+        list(inferencePipelineId, TestResultListParams.none(), requestOptions)
 
     /**
      * A view of [TestResultServiceAsync] that provides access to raw HTTP responses for each
@@ -38,9 +64,29 @@ interface TestResultServiceAsync {
          */
         @MustBeClosed
         fun list(
-            params: TestResultListParams
+            inferencePipelineId: String
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
-            list(params, RequestOptions.none())
+            list(inferencePipelineId, TestResultListParams.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            inferencePipelineId: String,
+            params: TestResultListParams = TestResultListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
+            list(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            inferencePipelineId: String,
+            params: TestResultListParams = TestResultListParams.none(),
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
+            list(inferencePipelineId, params, RequestOptions.none())
 
         /** @see [list] */
         @MustBeClosed
@@ -48,5 +94,20 @@ interface TestResultServiceAsync {
             params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>>
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            params: TestResultListParams
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
+            list(params, RequestOptions.none())
+
+        /** @see [list] */
+        @MustBeClosed
+        fun list(
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
+            list(inferencePipelineId, TestResultListParams.none(), requestOptions)
     }
 }
