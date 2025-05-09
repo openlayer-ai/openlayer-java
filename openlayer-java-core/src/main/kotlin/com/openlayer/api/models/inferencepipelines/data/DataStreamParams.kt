@@ -36,13 +36,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Publish an inference data point to an inference pipeline. */
 class DataStreamParams
 private constructor(
-    private val inferencePipelineId: String,
+    private val inferencePipelineId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun inferencePipelineId(): String = inferencePipelineId
+    fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId)
 
     /**
      * Configuration for the data stream. Depends on your **Openlayer project task type**.
@@ -89,7 +89,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .inferencePipelineId()
          * .config()
          * .rows()
          * ```
@@ -113,9 +112,15 @@ private constructor(
             additionalQueryParams = dataStreamParams.additionalQueryParams.toBuilder()
         }
 
-        fun inferencePipelineId(inferencePipelineId: String) = apply {
+        fun inferencePipelineId(inferencePipelineId: String?) = apply {
             this.inferencePipelineId = inferencePipelineId
         }
+
+        /**
+         * Alias for calling [Builder.inferencePipelineId] with `inferencePipelineId.orElse(null)`.
+         */
+        fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+            inferencePipelineId(inferencePipelineId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -306,7 +311,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .inferencePipelineId()
          * .config()
          * .rows()
          * ```
@@ -315,7 +319,7 @@ private constructor(
          */
         fun build(): DataStreamParams =
             DataStreamParams(
-                checkRequired("inferencePipelineId", inferencePipelineId),
+                inferencePipelineId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -326,7 +330,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> inferencePipelineId
+            0 -> inferencePipelineId ?: ""
             else -> ""
         }
 

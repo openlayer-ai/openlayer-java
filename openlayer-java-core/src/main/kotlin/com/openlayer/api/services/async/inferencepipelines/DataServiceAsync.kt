@@ -17,6 +17,21 @@ interface DataServiceAsync {
     fun withRawResponse(): WithRawResponse
 
     /** Publish an inference data point to an inference pipeline. */
+    fun stream(
+        inferencePipelineId: String,
+        params: DataStreamParams,
+    ): CompletableFuture<DataStreamResponse> =
+        stream(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see [stream] */
+    fun stream(
+        inferencePipelineId: String,
+        params: DataStreamParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<DataStreamResponse> =
+        stream(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [stream] */
     fun stream(params: DataStreamParams): CompletableFuture<DataStreamResponse> =
         stream(params, RequestOptions.none())
 
@@ -34,6 +49,26 @@ interface DataServiceAsync {
          * /inference-pipelines/{inferencePipelineId}/data-stream`, but is otherwise the same as
          * [DataServiceAsync.stream].
          */
+        @MustBeClosed
+        fun stream(
+            inferencePipelineId: String,
+            params: DataStreamParams,
+        ): CompletableFuture<HttpResponseFor<DataStreamResponse>> =
+            stream(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see [stream] */
+        @MustBeClosed
+        fun stream(
+            inferencePipelineId: String,
+            params: DataStreamParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<DataStreamResponse>> =
+            stream(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [stream] */
         @MustBeClosed
         fun stream(
             params: DataStreamParams

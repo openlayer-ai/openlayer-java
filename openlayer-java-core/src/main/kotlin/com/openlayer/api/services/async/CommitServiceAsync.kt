@@ -20,14 +20,40 @@ interface CommitServiceAsync {
     fun testResults(): TestResultServiceAsync
 
     /** Retrieve a project version (commit) by its id. */
-    fun retrieve(params: CommitRetrieveParams): CompletableFuture<CommitRetrieveResponse> =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(projectVersionId: String): CompletableFuture<CommitRetrieveResponse> =
+        retrieve(projectVersionId, CommitRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectVersionId: String,
+        params: CommitRetrieveParams = CommitRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<CommitRetrieveResponse> =
+        retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectVersionId: String,
+        params: CommitRetrieveParams = CommitRetrieveParams.none(),
+    ): CompletableFuture<CommitRetrieveResponse> =
+        retrieve(projectVersionId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: CommitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CommitRetrieveResponse>
+
+    /** @see [retrieve] */
+    fun retrieve(params: CommitRetrieveParams): CompletableFuture<CommitRetrieveResponse> =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectVersionId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<CommitRetrieveResponse> =
+        retrieve(projectVersionId, CommitRetrieveParams.none(), requestOptions)
 
     /**
      * A view of [CommitServiceAsync] that provides access to raw HTTP responses for each method.
@@ -42,9 +68,26 @@ interface CommitServiceAsync {
          */
         @MustBeClosed
         fun retrieve(
-            params: CommitRetrieveParams
+            projectVersionId: String
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
-            retrieve(params, RequestOptions.none())
+            retrieve(projectVersionId, CommitRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectVersionId: String,
+            params: CommitRetrieveParams = CommitRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
+            retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectVersionId: String,
+            params: CommitRetrieveParams = CommitRetrieveParams.none(),
+        ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
+            retrieve(projectVersionId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -52,5 +95,20 @@ interface CommitServiceAsync {
             params: CommitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            params: CommitRetrieveParams
+        ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectVersionId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
+            retrieve(projectVersionId, CommitRetrieveParams.none(), requestOptions)
     }
 }

@@ -6,7 +6,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
@@ -17,7 +16,7 @@ import kotlin.jvm.optionals.getOrNull
 /** List tests under a project. */
 class TestListParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val includeArchived: Boolean?,
     private val originVersionId: String?,
     private val page: Long?,
@@ -29,7 +28,7 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /** Filter for archived tests. */
     fun includeArchived(): Optional<Boolean> = Optional.ofNullable(includeArchived)
@@ -63,14 +62,9 @@ private constructor(
 
     companion object {
 
-        /**
-         * Returns a mutable builder for constructing an instance of [TestListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         */
+        @JvmStatic fun none(): TestListParams = builder().build()
+
+        /** Returns a mutable builder for constructing an instance of [TestListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
@@ -102,7 +96,10 @@ private constructor(
             additionalQueryParams = testListParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /** Filter for archived tests. */
         fun includeArchived(includeArchived: Boolean?) = apply {
@@ -298,17 +295,10 @@ private constructor(
          * Returns an immutable instance of [TestListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): TestListParams =
             TestListParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 includeArchived,
                 originVersionId,
                 page,
@@ -323,7 +313,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 

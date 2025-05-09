@@ -28,13 +28,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Create an inference pipeline in a project. */
 class InferencePipelineCreateParams
 private constructor(
-    private val pathProjectId: String,
+    private val pathProjectId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun pathProjectId(): String = pathProjectId
+    fun pathProjectId(): Optional<String> = Optional.ofNullable(pathProjectId)
 
     /**
      * The inference pipeline id.
@@ -321,7 +321,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .pathProjectId()
          * .id()
          * .dateCreated()
          * .dateLastEvaluated()
@@ -358,7 +357,11 @@ private constructor(
             additionalQueryParams = inferencePipelineCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun pathProjectId(pathProjectId: String) = apply { this.pathProjectId = pathProjectId }
+        fun pathProjectId(pathProjectId: String?) = apply { this.pathProjectId = pathProjectId }
+
+        /** Alias for calling [Builder.pathProjectId] with `pathProjectId.orElse(null)`. */
+        fun pathProjectId(pathProjectId: Optional<String>) =
+            pathProjectId(pathProjectId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -767,7 +770,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .pathProjectId()
          * .id()
          * .dateCreated()
          * .dateLastEvaluated()
@@ -789,7 +791,7 @@ private constructor(
          */
         fun build(): InferencePipelineCreateParams =
             InferencePipelineCreateParams(
-                checkRequired("pathProjectId", pathProjectId),
+                pathProjectId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -800,7 +802,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> pathProjectId
+            0 -> pathProjectId ?: ""
             else -> ""
         }
 

@@ -4,23 +4,23 @@ package com.openlayer.api.models.inferencepipelines
 
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
 
 /** Delete inference pipeline. */
 class InferencePipelineDeleteParams
 private constructor(
-    private val inferencePipelineId: String,
+    private val inferencePipelineId: String?,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
     private val additionalBodyProperties: Map<String, JsonValue>,
 ) : Params {
 
-    fun inferencePipelineId(): String = inferencePipelineId
+    fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId)
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = additionalBodyProperties
 
@@ -32,14 +32,11 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): InferencePipelineDeleteParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of
          * [InferencePipelineDeleteParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -61,9 +58,15 @@ private constructor(
                 inferencePipelineDeleteParams.additionalBodyProperties.toMutableMap()
         }
 
-        fun inferencePipelineId(inferencePipelineId: String) = apply {
+        fun inferencePipelineId(inferencePipelineId: String?) = apply {
             this.inferencePipelineId = inferencePipelineId
         }
+
+        /**
+         * Alias for calling [Builder.inferencePipelineId] with `inferencePipelineId.orElse(null)`.
+         */
+        fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+            inferencePipelineId(inferencePipelineId.getOrNull())
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {
             this.additionalHeaders.clear()
@@ -189,17 +192,10 @@ private constructor(
          * Returns an immutable instance of [InferencePipelineDeleteParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .inferencePipelineId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): InferencePipelineDeleteParams =
             InferencePipelineDeleteParams(
-                checkRequired("inferencePipelineId", inferencePipelineId),
+                inferencePipelineId,
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
                 additionalBodyProperties.toImmutable(),
@@ -211,7 +207,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> inferencePipelineId
+            0 -> inferencePipelineId ?: ""
             else -> ""
         }
 

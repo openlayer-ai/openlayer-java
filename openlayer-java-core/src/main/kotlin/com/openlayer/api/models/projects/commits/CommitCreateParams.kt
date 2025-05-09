@@ -25,13 +25,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Create a new commit (project version) in a project. */
 class CommitCreateParams
 private constructor(
-    private val pathProjectId: String,
+    private val pathProjectId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun pathProjectId(): String = pathProjectId
+    fun pathProjectId(): Optional<String> = Optional.ofNullable(pathProjectId)
 
     /**
      * The project version (commit) id.
@@ -307,7 +307,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .pathProjectId()
          * .id()
          * .commit()
          * .dateArchived()
@@ -343,7 +342,11 @@ private constructor(
             additionalQueryParams = commitCreateParams.additionalQueryParams.toBuilder()
         }
 
-        fun pathProjectId(pathProjectId: String) = apply { this.pathProjectId = pathProjectId }
+        fun pathProjectId(pathProjectId: String?) = apply { this.pathProjectId = pathProjectId }
+
+        /** Alias for calling [Builder.pathProjectId] with `pathProjectId.orElse(null)`. */
+        fun pathProjectId(pathProjectId: Optional<String>) =
+            pathProjectId(pathProjectId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -746,7 +749,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .pathProjectId()
          * .id()
          * .commit()
          * .dateArchived()
@@ -767,7 +769,7 @@ private constructor(
          */
         fun build(): CommitCreateParams =
             CommitCreateParams(
-                checkRequired("pathProjectId", pathProjectId),
+                pathProjectId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -778,7 +780,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> pathProjectId
+            0 -> pathProjectId ?: ""
             else -> ""
         }
 

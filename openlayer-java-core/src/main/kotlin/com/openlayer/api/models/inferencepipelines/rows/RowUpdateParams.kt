@@ -23,14 +23,14 @@ import kotlin.jvm.optionals.getOrNull
 /** Update an inference data point in an inference pipeline. */
 class RowUpdateParams
 private constructor(
-    private val inferencePipelineId: String,
+    private val inferencePipelineId: String?,
     private val inferenceId: String,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun inferencePipelineId(): String = inferencePipelineId
+    fun inferencePipelineId(): Optional<String> = Optional.ofNullable(inferencePipelineId)
 
     /** Specify the inference id as a query param. */
     fun inferenceId(): String = inferenceId
@@ -65,7 +65,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .inferencePipelineId()
          * .inferenceId()
          * .row()
          * ```
@@ -91,9 +90,15 @@ private constructor(
             additionalQueryParams = rowUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun inferencePipelineId(inferencePipelineId: String) = apply {
+        fun inferencePipelineId(inferencePipelineId: String?) = apply {
             this.inferencePipelineId = inferencePipelineId
         }
+
+        /**
+         * Alias for calling [Builder.inferencePipelineId] with `inferencePipelineId.orElse(null)`.
+         */
+        fun inferencePipelineId(inferencePipelineId: Optional<String>) =
+            inferencePipelineId(inferencePipelineId.getOrNull())
 
         /** Specify the inference id as a query param. */
         fun inferenceId(inferenceId: String) = apply { this.inferenceId = inferenceId }
@@ -247,7 +252,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .inferencePipelineId()
          * .inferenceId()
          * .row()
          * ```
@@ -256,7 +260,7 @@ private constructor(
          */
         fun build(): RowUpdateParams =
             RowUpdateParams(
-                checkRequired("inferencePipelineId", inferencePipelineId),
+                inferencePipelineId,
                 checkRequired("inferenceId", inferenceId),
                 body.build(),
                 additionalHeaders.build(),
@@ -268,7 +272,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> inferencePipelineId
+            0 -> inferencePipelineId ?: ""
             else -> ""
         }
 

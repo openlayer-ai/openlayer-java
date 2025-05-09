@@ -19,14 +19,36 @@ interface CommitService {
     fun testResults(): TestResultService
 
     /** Retrieve a project version (commit) by its id. */
-    fun retrieve(params: CommitRetrieveParams): CommitRetrieveResponse =
-        retrieve(params, RequestOptions.none())
+    fun retrieve(projectVersionId: String): CommitRetrieveResponse =
+        retrieve(projectVersionId, CommitRetrieveParams.none())
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectVersionId: String,
+        params: CommitRetrieveParams = CommitRetrieveParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CommitRetrieveResponse =
+        retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
+
+    /** @see [retrieve] */
+    fun retrieve(
+        projectVersionId: String,
+        params: CommitRetrieveParams = CommitRetrieveParams.none(),
+    ): CommitRetrieveResponse = retrieve(projectVersionId, params, RequestOptions.none())
 
     /** @see [retrieve] */
     fun retrieve(
         params: CommitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CommitRetrieveResponse
+
+    /** @see [retrieve] */
+    fun retrieve(params: CommitRetrieveParams): CommitRetrieveResponse =
+        retrieve(params, RequestOptions.none())
+
+    /** @see [retrieve] */
+    fun retrieve(projectVersionId: String, requestOptions: RequestOptions): CommitRetrieveResponse =
+        retrieve(projectVersionId, CommitRetrieveParams.none(), requestOptions)
 
     /** A view of [CommitService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
@@ -38,8 +60,25 @@ interface CommitService {
          * same as [CommitService.retrieve].
          */
         @MustBeClosed
-        fun retrieve(params: CommitRetrieveParams): HttpResponseFor<CommitRetrieveResponse> =
-            retrieve(params, RequestOptions.none())
+        fun retrieve(projectVersionId: String): HttpResponseFor<CommitRetrieveResponse> =
+            retrieve(projectVersionId, CommitRetrieveParams.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectVersionId: String,
+            params: CommitRetrieveParams = CommitRetrieveParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<CommitRetrieveResponse> =
+            retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectVersionId: String,
+            params: CommitRetrieveParams = CommitRetrieveParams.none(),
+        ): HttpResponseFor<CommitRetrieveResponse> =
+            retrieve(projectVersionId, params, RequestOptions.none())
 
         /** @see [retrieve] */
         @MustBeClosed
@@ -47,5 +86,18 @@ interface CommitService {
             params: CommitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CommitRetrieveResponse>
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(params: CommitRetrieveParams): HttpResponseFor<CommitRetrieveResponse> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see [retrieve] */
+        @MustBeClosed
+        fun retrieve(
+            projectVersionId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<CommitRetrieveResponse> =
+            retrieve(projectVersionId, CommitRetrieveParams.none(), requestOptions)
     }
 }

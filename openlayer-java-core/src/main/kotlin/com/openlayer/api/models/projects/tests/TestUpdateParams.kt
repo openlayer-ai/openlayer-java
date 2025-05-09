@@ -37,13 +37,13 @@ import kotlin.jvm.optionals.getOrNull
 /** Update tests. */
 class TestUpdateParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /**
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -73,7 +73,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .projectId()
          * .payloads()
          * ```
          */
@@ -96,7 +95,10 @@ private constructor(
             additionalQueryParams = testUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -249,7 +251,6 @@ private constructor(
          *
          * The following fields are required:
          * ```java
-         * .projectId()
          * .payloads()
          * ```
          *
@@ -257,7 +258,7 @@ private constructor(
          */
         fun build(): TestUpdateParams =
             TestUpdateParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -268,7 +269,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 

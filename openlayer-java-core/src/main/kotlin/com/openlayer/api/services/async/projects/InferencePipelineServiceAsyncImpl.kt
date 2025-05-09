@@ -5,6 +5,7 @@ package com.openlayer.api.services.async.projects
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
 import com.openlayer.api.core.handlers.withErrorHandler
@@ -20,6 +21,7 @@ import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCre
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
 import java.util.concurrent.CompletableFuture
+import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineServiceAsyncImpl
 internal constructor(private val clientOptions: ClientOptions) : InferencePipelineServiceAsync {
@@ -57,6 +59,9 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             params: InferencePipelineCreateParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("pathProjectId", params.pathProjectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
@@ -88,6 +93,9 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             params: InferencePipelineListParams,
             requestOptions: RequestOptions,
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)

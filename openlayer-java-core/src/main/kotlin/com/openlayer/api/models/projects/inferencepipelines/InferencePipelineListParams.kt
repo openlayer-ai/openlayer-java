@@ -3,7 +3,6 @@
 package com.openlayer.api.models.projects.inferencepipelines
 
 import com.openlayer.api.core.Params
-import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import java.util.Objects
@@ -13,7 +12,7 @@ import kotlin.jvm.optionals.getOrNull
 /** List the inference pipelines in a project. */
 class InferencePipelineListParams
 private constructor(
-    private val projectId: String,
+    private val projectId: String?,
     private val name: String?,
     private val page: Long?,
     private val perPage: Long?,
@@ -21,7 +20,7 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun projectId(): String = projectId
+    fun projectId(): Optional<String> = Optional.ofNullable(projectId)
 
     /** Filter list of items by name. */
     fun name(): Optional<String> = Optional.ofNullable(name)
@@ -40,13 +39,10 @@ private constructor(
 
     companion object {
 
+        @JvmStatic fun none(): InferencePipelineListParams = builder().build()
+
         /**
          * Returns a mutable builder for constructing an instance of [InferencePipelineListParams].
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
          */
         @JvmStatic fun builder() = Builder()
     }
@@ -71,7 +67,10 @@ private constructor(
             additionalQueryParams = inferencePipelineListParams.additionalQueryParams.toBuilder()
         }
 
-        fun projectId(projectId: String) = apply { this.projectId = projectId }
+        fun projectId(projectId: String?) = apply { this.projectId = projectId }
+
+        /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
+        fun projectId(projectId: Optional<String>) = projectId(projectId.getOrNull())
 
         /** Filter list of items by name. */
         fun name(name: String?) = apply { this.name = name }
@@ -207,17 +206,10 @@ private constructor(
          * Returns an immutable instance of [InferencePipelineListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
-         *
-         * The following fields are required:
-         * ```java
-         * .projectId()
-         * ```
-         *
-         * @throws IllegalStateException if any required field is unset.
          */
         fun build(): InferencePipelineListParams =
             InferencePipelineListParams(
-                checkRequired("projectId", projectId),
+                projectId,
                 name,
                 page,
                 perPage,
@@ -228,7 +220,7 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> projectId
+            0 -> projectId ?: ""
             else -> ""
         }
 

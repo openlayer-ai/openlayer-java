@@ -4,7 +4,6 @@ package com.openlayer.api.services.async
 
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
-import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
 import org.junit.jupiter.api.Test
@@ -66,12 +65,7 @@ internal class InferencePipelineServiceAsyncTest {
                 .build()
         val inferencePipelineServiceAsync = client.inferencePipelines()
 
-        val future =
-            inferencePipelineServiceAsync.delete(
-                InferencePipelineDeleteParams.builder()
-                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-                    .build()
-            )
+        val future = inferencePipelineServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val response = future.get()
     }

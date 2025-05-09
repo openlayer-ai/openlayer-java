@@ -16,6 +16,18 @@ interface DataService {
     fun withRawResponse(): WithRawResponse
 
     /** Publish an inference data point to an inference pipeline. */
+    fun stream(inferencePipelineId: String, params: DataStreamParams): DataStreamResponse =
+        stream(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see [stream] */
+    fun stream(
+        inferencePipelineId: String,
+        params: DataStreamParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): DataStreamResponse =
+        stream(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see [stream] */
     fun stream(params: DataStreamParams): DataStreamResponse = stream(params, RequestOptions.none())
 
     /** @see [stream] */
@@ -32,6 +44,26 @@ interface DataService {
          * /inference-pipelines/{inferencePipelineId}/data-stream`, but is otherwise the same as
          * [DataService.stream].
          */
+        @MustBeClosed
+        fun stream(
+            inferencePipelineId: String,
+            params: DataStreamParams,
+        ): HttpResponseFor<DataStreamResponse> =
+            stream(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see [stream] */
+        @MustBeClosed
+        fun stream(
+            inferencePipelineId: String,
+            params: DataStreamParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<DataStreamResponse> =
+            stream(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see [stream] */
         @MustBeClosed
         fun stream(params: DataStreamParams): HttpResponseFor<DataStreamResponse> =
             stream(params, RequestOptions.none())
