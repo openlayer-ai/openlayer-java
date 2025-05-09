@@ -335,8 +335,6 @@ Requests time out after 1 minute by default.
 To set a custom timeout, configure the method call using the `timeout` method:
 
 ```java
-import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
 DataStreamResponse response = client.inferencePipelines().data().stream(
@@ -602,8 +600,6 @@ DataStreamResponse response = client.inferencePipelines().data().stream(params).
 Or configure the method call to validate the response using the `responseValidation` method:
 
 ```java
-import com.openlayer.api.core.JsonValue;
-import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
 DataStreamResponse response = client.inferencePipelines().data().stream(
