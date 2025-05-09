@@ -1,24 +1,21 @@
 name: CI
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-      - next
+    branches-ignore:
+      - 'generated'
+      - 'codegen/**'
+      - 'integrated/**'
+      - 'stl-preview-head/**'
+      - 'stl-preview-base/**'
 
 jobs:
   lint:
+    timeout-minutes: 10
     name: lint
-    runs-on: ubuntu-latest
-    
+    runs-on: ${{ github.repository == 'stainless-sdks/openlayer-java' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
 
     steps:
       - uses: actions/checkout@v4
-
-      - name: Validate Gradle wrapper
-        uses: gradle/actions/wrapper-validation@v3
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -26,13 +23,11 @@ jobs:
           distribution: temurin
           java-version: |
             8
-            17
+            21
           cache: gradle
 
       - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v4
 
       - name: Run lints
         run: ./scripts/lint
-
-

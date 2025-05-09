@@ -3,6 +3,7 @@
 package com.openlayer.api.services.blocking.commits
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
@@ -10,43 +11,58 @@ import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse.Handler
-import com.openlayer.api.errors.OpenlayerError
-import com.openlayer.api.models.CommitTestResultListParams
-import com.openlayer.api.models.CommitTestResultListResponse
+import com.openlayer.api.core.http.HttpResponseFor
+import com.openlayer.api.core.http.parseable
+import com.openlayer.api.core.prepare
+import com.openlayer.api.models.commits.testresults.TestResultListParams
+import com.openlayer.api.models.commits.testresults.TestResultListResponse
 
-class TestResultServiceImpl
-constructor(
-    private val clientOptions: ClientOptions,
-) : TestResultService {
+class TestResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
+    TestResultService {
 
-    private val errorHandler: Handler<OpenlayerError> = errorHandler(clientOptions.jsonMapper)
+    private val withRawResponse: TestResultService.WithRawResponse by lazy {
+        WithRawResponseImpl(clientOptions)
+    }
 
-    private val listHandler: Handler<CommitTestResultListResponse> =
-        jsonHandler<CommitTestResultListResponse>(clientOptions.jsonMapper)
-            .withErrorHandler(errorHandler)
+    override fun withRawResponse(): TestResultService.WithRawResponse = withRawResponse
 
-    /** List the test results for a project commit (project version). */
     override fun list(
-        params: CommitTestResultListParams,
-        requestOptions: RequestOptions
-    ): CommitTestResultListResponse {
-        val request =
-            HttpRequest.builder()
-                .method(HttpMethod.GET)
-                .addPathSegments("versions", params.getPathParam(0), "results")
-                .putAllQueryParams(clientOptions.queryParams)
-                .replaceAllQueryParams(params.getQueryParams())
-                .putAllHeaders(clientOptions.headers)
-                .replaceAllHeaders(params.getHeaders())
-                .build()
-        return clientOptions.httpClient.execute(request, requestOptions).let { response ->
-            response
-                .use { listHandler.handle(it) }
-                .apply {
-                    if (requestOptions.responseValidation ?: clientOptions.responseValidation) {
-                        validate()
+        params: TestResultListParams,
+        requestOptions: RequestOptions,
+    ): TestResultListResponse =
+        // get /versions/{projectVersionId}/results
+        withRawResponse().list(params, requestOptions).parse()
+
+    class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
+        TestResultService.WithRawResponse {
+
+        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        private val listHandler: Handler<TestResultListResponse> =
+            jsonHandler<TestResultListResponse>(clientOptions.jsonMapper)
+                .withErrorHandler(errorHandler)
+
+        override fun list(
+            params: TestResultListParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<TestResultListResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .addPathSegments("versions", params._pathParam(0), "results")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return response.parseable {
+                response
+                    .use { listHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
                     }
-                }
+            }
         }
     }
 }
