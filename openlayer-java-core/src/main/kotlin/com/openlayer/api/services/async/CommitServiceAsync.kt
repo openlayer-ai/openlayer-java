@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.commits.CommitRetrieveParams
@@ -66,14 +65,12 @@ interface CommitServiceAsync {
          * Returns a raw HTTP response for `get /versions/{projectVersionId}`, but is otherwise the
          * same as [CommitServiceAsync.retrieve].
          */
-        @MustBeClosed
         fun retrieve(
             projectVersionId: String
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
             retrieve(projectVersionId, CommitRetrieveParams.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectVersionId: String,
             params: CommitRetrieveParams = CommitRetrieveParams.none(),
@@ -82,7 +79,6 @@ interface CommitServiceAsync {
             retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectVersionId: String,
             params: CommitRetrieveParams = CommitRetrieveParams.none(),
@@ -90,21 +86,18 @@ interface CommitServiceAsync {
             retrieve(projectVersionId, params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: CommitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>>
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             params: CommitRetrieveParams
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 
         /** @see [retrieve] */
-        @MustBeClosed
         fun retrieve(
             projectVersionId: String,
             requestOptions: RequestOptions,
