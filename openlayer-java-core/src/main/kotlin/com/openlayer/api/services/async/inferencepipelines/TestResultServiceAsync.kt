@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async.inferencepipelines
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.inferencepipelines.testresults.TestResultListParams
@@ -62,14 +61,12 @@ interface TestResultServiceAsync {
          * Returns a raw HTTP response for `get /inference-pipelines/{inferencePipelineId}/results`,
          * but is otherwise the same as [TestResultServiceAsync.list].
          */
-        @MustBeClosed
         fun list(
             inferencePipelineId: String
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(inferencePipelineId, TestResultListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             inferencePipelineId: String,
             params: TestResultListParams = TestResultListParams.none(),
@@ -81,7 +78,6 @@ interface TestResultServiceAsync {
             )
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             inferencePipelineId: String,
             params: TestResultListParams = TestResultListParams.none(),
@@ -89,21 +85,18 @@ interface TestResultServiceAsync {
             list(inferencePipelineId, params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: TestResultListParams
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             inferencePipelineId: String,
             requestOptions: RequestOptions,

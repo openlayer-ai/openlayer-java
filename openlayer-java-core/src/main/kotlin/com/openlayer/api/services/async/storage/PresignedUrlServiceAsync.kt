@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async.storage
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
@@ -36,14 +35,12 @@ interface PresignedUrlServiceAsync {
          * Returns a raw HTTP response for `post /storage/presigned-url`, but is otherwise the same
          * as [PresignedUrlServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: PresignedUrlCreateParams
         ): CompletableFuture<HttpResponseFor<PresignedUrlCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: PresignedUrlCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

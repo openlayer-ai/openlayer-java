@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async.inferencepipelines
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams
@@ -49,7 +48,6 @@ interface DataServiceAsync {
          * /inference-pipelines/{inferencePipelineId}/data-stream`, but is otherwise the same as
          * [DataServiceAsync.stream].
          */
-        @MustBeClosed
         fun stream(
             inferencePipelineId: String,
             params: DataStreamParams,
@@ -57,7 +55,6 @@ interface DataServiceAsync {
             stream(inferencePipelineId, params, RequestOptions.none())
 
         /** @see [stream] */
-        @MustBeClosed
         fun stream(
             inferencePipelineId: String,
             params: DataStreamParams,
@@ -69,14 +66,12 @@ interface DataServiceAsync {
             )
 
         /** @see [stream] */
-        @MustBeClosed
         fun stream(
             params: DataStreamParams
         ): CompletableFuture<HttpResponseFor<DataStreamResponse>> =
             stream(params, RequestOptions.none())
 
         /** @see [stream] */
-        @MustBeClosed
         fun stream(
             params: DataStreamParams,
             requestOptions: RequestOptions = RequestOptions.none(),
