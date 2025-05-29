@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async.projects
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.commits.CommitCreateParams
@@ -87,7 +86,6 @@ interface CommitServiceAsync {
          * Returns a raw HTTP response for `post /projects/{projectId}/versions`, but is otherwise
          * the same as [CommitServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             pathProjectId: String,
             params: CommitCreateParams,
@@ -95,7 +93,6 @@ interface CommitServiceAsync {
             create(pathProjectId, params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             pathProjectId: String,
             params: CommitCreateParams,
@@ -104,14 +101,12 @@ interface CommitServiceAsync {
             create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: CommitCreateParams
         ): CompletableFuture<HttpResponseFor<CommitCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: CommitCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -121,12 +116,10 @@ interface CommitServiceAsync {
          * Returns a raw HTTP response for `get /projects/{projectId}/versions`, but is otherwise
          * the same as [CommitServiceAsync.list].
          */
-        @MustBeClosed
         fun list(projectId: String): CompletableFuture<HttpResponseFor<CommitListResponse>> =
             list(projectId, CommitListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             params: CommitListParams = CommitListParams.none(),
@@ -135,7 +128,6 @@ interface CommitServiceAsync {
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             params: CommitListParams = CommitListParams.none(),
@@ -143,19 +135,16 @@ interface CommitServiceAsync {
             list(projectId, params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: CommitListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CommitListResponse>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(params: CommitListParams): CompletableFuture<HttpResponseFor<CommitListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             requestOptions: RequestOptions,

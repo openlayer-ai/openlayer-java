@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.ProjectCreateParams
@@ -70,14 +69,12 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `post /projects`, but is otherwise the same as
          * [ProjectServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             params: ProjectCreateParams
         ): CompletableFuture<HttpResponseFor<ProjectCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: ProjectCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -87,26 +84,22 @@ interface ProjectServiceAsync {
          * Returns a raw HTTP response for `get /projects`, but is otherwise the same as
          * [ProjectServiceAsync.list].
          */
-        @MustBeClosed
         fun list(): CompletableFuture<HttpResponseFor<ProjectListResponse>> =
             list(ProjectListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none()
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>> =

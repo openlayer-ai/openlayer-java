@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async.projects
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateParams
@@ -91,7 +90,6 @@ interface InferencePipelineServiceAsync {
          * Returns a raw HTTP response for `post /projects/{projectId}/inference-pipelines`, but is
          * otherwise the same as [InferencePipelineServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             pathProjectId: String,
             params: InferencePipelineCreateParams,
@@ -99,7 +97,6 @@ interface InferencePipelineServiceAsync {
             create(pathProjectId, params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             pathProjectId: String,
             params: InferencePipelineCreateParams,
@@ -108,14 +105,12 @@ interface InferencePipelineServiceAsync {
             create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: InferencePipelineCreateParams
         ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: InferencePipelineCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -125,14 +120,12 @@ interface InferencePipelineServiceAsync {
          * Returns a raw HTTP response for `get /projects/{projectId}/inference-pipelines`, but is
          * otherwise the same as [InferencePipelineServiceAsync.list].
          */
-        @MustBeClosed
         fun list(
             projectId: String
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(projectId, InferencePipelineListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             params: InferencePipelineListParams = InferencePipelineListParams.none(),
@@ -141,7 +134,6 @@ interface InferencePipelineServiceAsync {
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             params: InferencePipelineListParams = InferencePipelineListParams.none(),
@@ -149,21 +141,18 @@ interface InferencePipelineServiceAsync {
             list(projectId, params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: InferencePipelineListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: InferencePipelineListParams
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             requestOptions: RequestOptions,

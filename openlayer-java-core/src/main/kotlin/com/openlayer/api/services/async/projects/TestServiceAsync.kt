@@ -2,7 +2,6 @@
 
 package com.openlayer.api.services.async.projects
 
-import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.tests.TestCreateParams
@@ -105,7 +104,6 @@ interface TestServiceAsync {
          * Returns a raw HTTP response for `post /projects/{projectId}/tests`, but is otherwise the
          * same as [TestServiceAsync.create].
          */
-        @MustBeClosed
         fun create(
             projectId: String,
             params: TestCreateParams,
@@ -113,7 +111,6 @@ interface TestServiceAsync {
             create(projectId, params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             projectId: String,
             params: TestCreateParams,
@@ -122,14 +119,12 @@ interface TestServiceAsync {
             create(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: TestCreateParams
         ): CompletableFuture<HttpResponseFor<TestCreateResponse>> =
             create(params, RequestOptions.none())
 
         /** @see [create] */
-        @MustBeClosed
         fun create(
             params: TestCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -139,7 +134,6 @@ interface TestServiceAsync {
          * Returns a raw HTTP response for `put /projects/{projectId}/tests`, but is otherwise the
          * same as [TestServiceAsync.update].
          */
-        @MustBeClosed
         fun update(
             projectId: String,
             params: TestUpdateParams,
@@ -147,7 +141,6 @@ interface TestServiceAsync {
             update(projectId, params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             projectId: String,
             params: TestUpdateParams,
@@ -156,14 +149,12 @@ interface TestServiceAsync {
             update(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: TestUpdateParams
         ): CompletableFuture<HttpResponseFor<TestUpdateResponse>> =
             update(params, RequestOptions.none())
 
         /** @see [update] */
-        @MustBeClosed
         fun update(
             params: TestUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -173,12 +164,10 @@ interface TestServiceAsync {
          * Returns a raw HTTP response for `get /projects/{projectId}/tests`, but is otherwise the
          * same as [TestServiceAsync.list].
          */
-        @MustBeClosed
         fun list(projectId: String): CompletableFuture<HttpResponseFor<TestListResponse>> =
             list(projectId, TestListParams.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             params: TestListParams = TestListParams.none(),
@@ -187,7 +176,6 @@ interface TestServiceAsync {
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             params: TestListParams = TestListParams.none(),
@@ -195,19 +183,16 @@ interface TestServiceAsync {
             list(projectId, params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             params: TestListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestListResponse>>
 
         /** @see [list] */
-        @MustBeClosed
         fun list(params: TestListParams): CompletableFuture<HttpResponseFor<TestListResponse>> =
             list(params, RequestOptions.none())
 
         /** @see [list] */
-        @MustBeClosed
         fun list(
             projectId: String,
             requestOptions: RequestOptions,
