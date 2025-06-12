@@ -55,6 +55,7 @@ class TestResultServiceAsyncImpl internal constructor(private val clientOptions:
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("inference-pipelines", params._pathParam(0), "results")
                     .build()
                     .prepareAsync(clientOptions, params)

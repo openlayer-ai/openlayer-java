@@ -64,6 +64,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("projects", params._pathParam(0), "inference-pipelines")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -95,6 +96,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("projects", params._pathParam(0), "inference-pipelines")
                     .build()
                     .prepare(clientOptions, params)
