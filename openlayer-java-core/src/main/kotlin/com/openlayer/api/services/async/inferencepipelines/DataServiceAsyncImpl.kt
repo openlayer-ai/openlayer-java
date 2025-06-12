@@ -55,6 +55,7 @@ class DataServiceAsyncImpl internal constructor(private val clientOptions: Clien
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("inference-pipelines", params._pathParam(0), "data-stream")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

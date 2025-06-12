@@ -53,6 +53,7 @@ class RowServiceImpl internal constructor(private val clientOptions: ClientOptio
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.PUT)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("inference-pipelines", params._pathParam(0), "rows")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()

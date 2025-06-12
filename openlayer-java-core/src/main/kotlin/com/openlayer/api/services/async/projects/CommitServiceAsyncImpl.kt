@@ -65,6 +65,7 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("projects", params._pathParam(0), "versions")
                     .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
@@ -98,6 +99,7 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("projects", params._pathParam(0), "versions")
                     .build()
                     .prepareAsync(clientOptions, params)
