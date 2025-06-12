@@ -66,6 +66,7 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
             val request =
                 HttpRequest.builder()
                     .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("versions", params._pathParam(0))
                     .build()
                     .prepare(clientOptions, params)
