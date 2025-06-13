@@ -3,10 +3,12 @@
 package com.openlayer.api.services.blocking.inferencepipelines
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateResponse
+import java.util.function.Consumer
 
 interface RowService {
 
@@ -14,6 +16,13 @@ interface RowService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowService
 
     /** Update an inference data point in an inference pipeline. */
     fun update(inferencePipelineId: String, params: RowUpdateParams): RowUpdateResponse =
@@ -38,6 +47,13 @@ interface RowService {
 
     /** A view of [RowService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `put /inference-pipelines/{inferencePipelineId}/rows`,

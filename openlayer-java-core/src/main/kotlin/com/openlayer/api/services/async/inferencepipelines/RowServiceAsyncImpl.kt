@@ -19,6 +19,7 @@ import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class RowServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -29,6 +30,9 @@ class RowServiceAsyncImpl internal constructor(private val clientOptions: Client
     }
 
     override fun withRawResponse(): RowServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowServiceAsync =
+        RowServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun update(
         params: RowUpdateParams,
@@ -41,6 +45,13 @@ class RowServiceAsyncImpl internal constructor(private val clientOptions: Client
         RowServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): RowServiceAsync.WithRawResponse =
+            RowServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val updateHandler: Handler<RowUpdateResponse> =
             jsonHandler<RowUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

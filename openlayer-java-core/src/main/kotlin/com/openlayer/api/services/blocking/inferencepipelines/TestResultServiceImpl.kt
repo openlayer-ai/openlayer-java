@@ -17,6 +17,7 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.inferencepipelines.testresults.TestResultListParams
 import com.openlayer.api.models.inferencepipelines.testresults.TestResultListResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class TestResultServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -27,6 +28,9 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
     }
 
     override fun withRawResponse(): TestResultService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): TestResultService =
+        TestResultServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun list(
         params: TestResultListParams,
@@ -39,6 +43,13 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
         TestResultService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): TestResultService.WithRawResponse =
+            TestResultServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val listHandler: Handler<TestResultListResponse> =
             jsonHandler<TestResultListResponse>(clientOptions.jsonMapper)

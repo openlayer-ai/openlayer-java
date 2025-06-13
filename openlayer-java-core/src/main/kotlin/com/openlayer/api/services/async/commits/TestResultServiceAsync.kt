@@ -2,11 +2,13 @@
 
 package com.openlayer.api.services.async.commits
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.commits.testresults.TestResultListParams
 import com.openlayer.api.models.commits.testresults.TestResultListResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface TestResultServiceAsync {
 
@@ -14,6 +16,13 @@ interface TestResultServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): TestResultServiceAsync
 
     /** List the test results for a project commit (project version). */
     fun list(projectVersionId: String): CompletableFuture<TestResultListResponse> =
@@ -56,6 +65,15 @@ interface TestResultServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): TestResultServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `get /versions/{projectVersionId}/results`, but is

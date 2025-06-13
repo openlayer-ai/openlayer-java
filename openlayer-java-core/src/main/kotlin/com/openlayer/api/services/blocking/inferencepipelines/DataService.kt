@@ -3,10 +3,12 @@
 package com.openlayer.api.services.blocking.inferencepipelines
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse
+import java.util.function.Consumer
 
 interface DataService {
 
@@ -14,6 +16,13 @@ interface DataService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): DataService
 
     /** Publish an inference data point to an inference pipeline. */
     fun stream(inferencePipelineId: String, params: DataStreamParams): DataStreamResponse =
@@ -38,6 +47,13 @@ interface DataService {
 
     /** A view of [DataService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): DataService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post

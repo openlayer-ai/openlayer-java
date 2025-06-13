@@ -2,6 +2,7 @@
 
 package com.openlayer.api.services.async.projects
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateParams
@@ -9,6 +10,7 @@ import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCre
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface InferencePipelineServiceAsync {
 
@@ -16,6 +18,13 @@ interface InferencePipelineServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): InferencePipelineServiceAsync
 
     /** Create an inference pipeline in a project. */
     fun create(
@@ -85,6 +94,15 @@ interface InferencePipelineServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /projects/{projectId}/inference-pipelines`, but is

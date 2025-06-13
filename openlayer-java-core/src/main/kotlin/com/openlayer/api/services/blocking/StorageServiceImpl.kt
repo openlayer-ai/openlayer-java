@@ -5,6 +5,7 @@ package com.openlayer.api.services.blocking
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.services.blocking.storage.PresignedUrlService
 import com.openlayer.api.services.blocking.storage.PresignedUrlServiceImpl
+import java.util.function.Consumer
 
 class StorageServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     StorageService {
@@ -17,6 +18,9 @@ class StorageServiceImpl internal constructor(private val clientOptions: ClientO
 
     override fun withRawResponse(): StorageService.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): StorageService =
+        StorageServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun presignedUrl(): PresignedUrlService = presignedUrl
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -25,6 +29,13 @@ class StorageServiceImpl internal constructor(private val clientOptions: ClientO
         private val presignedUrl: PresignedUrlService.WithRawResponse by lazy {
             PresignedUrlServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): StorageService.WithRawResponse =
+            StorageServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun presignedUrl(): PresignedUrlService.WithRawResponse = presignedUrl
     }

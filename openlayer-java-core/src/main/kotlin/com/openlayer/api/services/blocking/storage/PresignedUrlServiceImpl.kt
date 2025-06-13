@@ -17,6 +17,7 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
+import java.util.function.Consumer
 
 class PresignedUrlServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     PresignedUrlService {
@@ -26,6 +27,9 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
     }
 
     override fun withRawResponse(): PresignedUrlService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PresignedUrlService =
+        PresignedUrlServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: PresignedUrlCreateParams,
@@ -38,6 +42,13 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
         PresignedUrlService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PresignedUrlService.WithRawResponse =
+            PresignedUrlServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<PresignedUrlCreateResponse> =
             jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)

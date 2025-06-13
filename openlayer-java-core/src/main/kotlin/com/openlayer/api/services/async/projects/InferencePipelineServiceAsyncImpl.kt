@@ -21,6 +21,7 @@ import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCre
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineServiceAsyncImpl
@@ -31,6 +32,11 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
     }
 
     override fun withRawResponse(): InferencePipelineServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(
+        modifier: Consumer<ClientOptions.Builder>
+    ): InferencePipelineServiceAsync =
+        InferencePipelineServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: InferencePipelineCreateParams,
@@ -50,6 +56,13 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
         InferencePipelineServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineServiceAsync.WithRawResponse =
+            InferencePipelineServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<InferencePipelineCreateResponse> =
             jsonHandler<InferencePipelineCreateResponse>(clientOptions.jsonMapper)

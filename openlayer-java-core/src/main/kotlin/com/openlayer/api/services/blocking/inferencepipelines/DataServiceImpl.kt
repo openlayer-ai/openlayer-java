@@ -18,6 +18,7 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class DataServiceImpl internal constructor(private val clientOptions: ClientOptions) : DataService {
@@ -27,6 +28,9 @@ class DataServiceImpl internal constructor(private val clientOptions: ClientOpti
     }
 
     override fun withRawResponse(): DataService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): DataService =
+        DataServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun stream(
         params: DataStreamParams,
@@ -39,6 +43,13 @@ class DataServiceImpl internal constructor(private val clientOptions: ClientOpti
         DataService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): DataService.WithRawResponse =
+            DataServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val streamHandler: Handler<DataStreamResponse> =
             jsonHandler<DataStreamResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)

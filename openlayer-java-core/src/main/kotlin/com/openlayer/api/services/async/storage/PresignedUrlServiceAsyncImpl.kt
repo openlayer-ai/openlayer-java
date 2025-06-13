@@ -18,6 +18,7 @@ import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class PresignedUrlServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     PresignedUrlServiceAsync {
@@ -27,6 +28,9 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
     }
 
     override fun withRawResponse(): PresignedUrlServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): PresignedUrlServiceAsync =
+        PresignedUrlServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: PresignedUrlCreateParams,
@@ -39,6 +43,13 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
         PresignedUrlServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PresignedUrlServiceAsync.WithRawResponse =
+            PresignedUrlServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<PresignedUrlCreateResponse> =
             jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)
