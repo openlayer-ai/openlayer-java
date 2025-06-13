@@ -29,6 +29,7 @@ import com.openlayer.api.services.blocking.inferencepipelines.RowService
 import com.openlayer.api.services.blocking.inferencepipelines.RowServiceImpl
 import com.openlayer.api.services.blocking.inferencepipelines.TestResultService
 import com.openlayer.api.services.blocking.inferencepipelines.TestResultServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -45,6 +46,9 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
     private val testResults: TestResultService by lazy { TestResultServiceImpl(clientOptions) }
 
     override fun withRawResponse(): InferencePipelineService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): InferencePipelineService =
+        InferencePipelineServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun data(): DataService = data
 
@@ -87,6 +91,13 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
         private val testResults: TestResultService.WithRawResponse by lazy {
             TestResultServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineService.WithRawResponse =
+            InferencePipelineServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun data(): DataService.WithRawResponse = data
 

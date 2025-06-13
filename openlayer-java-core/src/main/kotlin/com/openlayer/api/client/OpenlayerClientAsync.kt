@@ -2,10 +2,12 @@
 
 package com.openlayer.api.client
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.services.async.CommitServiceAsync
 import com.openlayer.api.services.async.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.ProjectServiceAsync
 import com.openlayer.api.services.async.StorageServiceAsync
+import java.util.function.Consumer
 
 /**
  * A client for interacting with the Openlayer REST API asynchronously. You can also switch to
@@ -36,6 +38,13 @@ interface OpenlayerClientAsync {
      */
     fun withRawResponse(): WithRawResponse
 
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): OpenlayerClientAsync
+
     fun projects(): ProjectServiceAsync
 
     fun commits(): CommitServiceAsync
@@ -61,6 +70,15 @@ interface OpenlayerClientAsync {
      * A view of [OpenlayerClientAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OpenlayerClientAsync.WithRawResponse
 
         fun projects(): ProjectServiceAsync.WithRawResponse
 

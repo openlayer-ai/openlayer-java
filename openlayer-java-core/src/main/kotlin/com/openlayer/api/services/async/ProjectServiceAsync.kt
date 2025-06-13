@@ -2,6 +2,7 @@
 
 package com.openlayer.api.services.async
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.ProjectCreateParams
@@ -12,6 +13,7 @@ import com.openlayer.api.services.async.projects.CommitServiceAsync
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.projects.TestServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface ProjectServiceAsync {
 
@@ -19,6 +21,13 @@ interface ProjectServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectServiceAsync
 
     fun commits(): CommitServiceAsync
 
@@ -58,6 +67,15 @@ interface ProjectServiceAsync {
      * A view of [ProjectServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectServiceAsync.WithRawResponse
 
         fun commits(): CommitServiceAsync.WithRawResponse
 

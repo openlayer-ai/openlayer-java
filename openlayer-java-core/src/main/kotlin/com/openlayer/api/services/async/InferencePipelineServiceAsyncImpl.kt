@@ -30,6 +30,7 @@ import com.openlayer.api.services.async.inferencepipelines.RowServiceAsyncImpl
 import com.openlayer.api.services.async.inferencepipelines.TestResultServiceAsync
 import com.openlayer.api.services.async.inferencepipelines.TestResultServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineServiceAsyncImpl
@@ -48,6 +49,11 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
     }
 
     override fun withRawResponse(): InferencePipelineServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(
+        modifier: Consumer<ClientOptions.Builder>
+    ): InferencePipelineServiceAsync =
+        InferencePipelineServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun data(): DataServiceAsync = data
 
@@ -92,6 +98,13 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
         private val testResults: TestResultServiceAsync.WithRawResponse by lazy {
             TestResultServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineServiceAsync.WithRawResponse =
+            InferencePipelineServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun data(): DataServiceAsync.WithRawResponse = data
 

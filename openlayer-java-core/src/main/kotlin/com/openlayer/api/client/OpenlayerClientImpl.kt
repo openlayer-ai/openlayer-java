@@ -12,6 +12,7 @@ import com.openlayer.api.services.blocking.ProjectService
 import com.openlayer.api.services.blocking.ProjectServiceImpl
 import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.StorageServiceImpl
+import java.util.function.Consumer
 
 class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerClient {
 
@@ -44,6 +45,9 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
 
     override fun withRawResponse(): OpenlayerClient.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): OpenlayerClient =
+        OpenlayerClientImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun projects(): ProjectService = projects
 
     override fun commits(): CommitService = commits
@@ -72,6 +76,13 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
         private val storage: StorageService.WithRawResponse by lazy {
             StorageServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OpenlayerClient.WithRawResponse =
+            OpenlayerClientImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun projects(): ProjectService.WithRawResponse = projects
 

@@ -19,6 +19,7 @@ import com.openlayer.api.models.commits.CommitRetrieveParams
 import com.openlayer.api.models.commits.CommitRetrieveResponse
 import com.openlayer.api.services.blocking.commits.TestResultService
 import com.openlayer.api.services.blocking.commits.TestResultServiceImpl
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class CommitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -31,6 +32,9 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
     private val testResults: TestResultService by lazy { TestResultServiceImpl(clientOptions) }
 
     override fun withRawResponse(): CommitService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CommitService =
+        CommitServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun testResults(): TestResultService = testResults
 
@@ -49,6 +53,13 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
         private val testResults: TestResultService.WithRawResponse by lazy {
             TestResultServiceImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CommitService.WithRawResponse =
+            CommitServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun testResults(): TestResultService.WithRawResponse = testResults
 

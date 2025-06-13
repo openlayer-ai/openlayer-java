@@ -2,11 +2,13 @@
 
 package com.openlayer.api.services.async.storage
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface PresignedUrlServiceAsync {
 
@@ -14,6 +16,13 @@ interface PresignedUrlServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): PresignedUrlServiceAsync
 
     /** Retrieve a presigned url to post storage artifacts. */
     fun create(params: PresignedUrlCreateParams): CompletableFuture<PresignedUrlCreateResponse> =
@@ -30,6 +39,15 @@ interface PresignedUrlServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): PresignedUrlServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /storage/presigned-url`, but is otherwise the same

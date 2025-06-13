@@ -21,6 +21,7 @@ import com.openlayer.api.models.projects.commits.CommitCreateResponse
 import com.openlayer.api.models.projects.commits.CommitListParams
 import com.openlayer.api.models.projects.commits.CommitListResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class CommitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -31,6 +32,9 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): CommitServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CommitServiceAsync =
+        CommitServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: CommitCreateParams,
@@ -50,6 +54,13 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
         CommitServiceAsync.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CommitServiceAsync.WithRawResponse =
+            CommitServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<CommitCreateResponse> =
             jsonHandler<CommitCreateResponse>(clientOptions.jsonMapper)

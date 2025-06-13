@@ -2,6 +2,7 @@
 
 package com.openlayer.api.services.async
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponseFor
@@ -14,6 +15,7 @@ import com.openlayer.api.services.async.inferencepipelines.DataServiceAsync
 import com.openlayer.api.services.async.inferencepipelines.RowServiceAsync
 import com.openlayer.api.services.async.inferencepipelines.TestResultServiceAsync
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface InferencePipelineServiceAsync {
 
@@ -21,6 +23,13 @@ interface InferencePipelineServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): InferencePipelineServiceAsync
 
     fun data(): DataServiceAsync
 
@@ -148,6 +157,15 @@ interface InferencePipelineServiceAsync {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineServiceAsync.WithRawResponse
 
         fun data(): DataServiceAsync.WithRawResponse
 

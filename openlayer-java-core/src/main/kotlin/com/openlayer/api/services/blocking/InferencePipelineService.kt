@@ -3,6 +3,7 @@
 package com.openlayer.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponseFor
@@ -14,6 +15,7 @@ import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateRespon
 import com.openlayer.api.services.blocking.inferencepipelines.DataService
 import com.openlayer.api.services.blocking.inferencepipelines.RowService
 import com.openlayer.api.services.blocking.inferencepipelines.TestResultService
+import java.util.function.Consumer
 
 interface InferencePipelineService {
 
@@ -21,6 +23,13 @@ interface InferencePipelineService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): InferencePipelineService
 
     fun data(): DataService
 
@@ -137,6 +146,15 @@ interface InferencePipelineService {
      * method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineService.WithRawResponse
 
         fun data(): DataService.WithRawResponse
 

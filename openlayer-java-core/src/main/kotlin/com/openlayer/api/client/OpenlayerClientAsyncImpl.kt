@@ -12,6 +12,7 @@ import com.openlayer.api.services.async.ProjectServiceAsync
 import com.openlayer.api.services.async.ProjectServiceAsyncImpl
 import com.openlayer.api.services.async.StorageServiceAsync
 import com.openlayer.api.services.async.StorageServiceAsyncImpl
+import java.util.function.Consumer
 
 class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : OpenlayerClientAsync {
 
@@ -50,6 +51,9 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
 
     override fun withRawResponse(): OpenlayerClientAsync.WithRawResponse = withRawResponse
 
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): OpenlayerClientAsync =
+        OpenlayerClientAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
     override fun projects(): ProjectServiceAsync = projects
 
     override fun commits(): CommitServiceAsync = commits
@@ -78,6 +82,13 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
         private val storage: StorageServiceAsync.WithRawResponse by lazy {
             StorageServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): OpenlayerClientAsync.WithRawResponse =
+            OpenlayerClientAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun projects(): ProjectServiceAsync.WithRawResponse = projects
 
