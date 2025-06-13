@@ -20,6 +20,7 @@ import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCre
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineCreateResponse
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListParams
 import com.openlayer.api.models.projects.inferencepipelines.InferencePipelineListResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,6 +31,9 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
     }
 
     override fun withRawResponse(): InferencePipelineService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): InferencePipelineService =
+        InferencePipelineServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: InferencePipelineCreateParams,
@@ -49,6 +53,13 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
         InferencePipelineService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): InferencePipelineService.WithRawResponse =
+            InferencePipelineServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<InferencePipelineCreateResponse> =
             jsonHandler<InferencePipelineCreateResponse>(clientOptions.jsonMapper)

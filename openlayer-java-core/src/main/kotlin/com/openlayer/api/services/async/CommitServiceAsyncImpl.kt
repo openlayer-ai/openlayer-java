@@ -20,6 +20,7 @@ import com.openlayer.api.models.commits.CommitRetrieveResponse
 import com.openlayer.api.services.async.commits.TestResultServiceAsync
 import com.openlayer.api.services.async.commits.TestResultServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class CommitServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -34,6 +35,9 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
     }
 
     override fun withRawResponse(): CommitServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CommitServiceAsync =
+        CommitServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun testResults(): TestResultServiceAsync = testResults
 
@@ -52,6 +56,13 @@ class CommitServiceAsyncImpl internal constructor(private val clientOptions: Cli
         private val testResults: TestResultServiceAsync.WithRawResponse by lazy {
             TestResultServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CommitServiceAsync.WithRawResponse =
+            CommitServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun testResults(): TestResultServiceAsync.WithRawResponse = testResults
 

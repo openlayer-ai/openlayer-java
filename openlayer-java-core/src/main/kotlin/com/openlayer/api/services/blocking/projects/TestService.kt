@@ -3,6 +3,7 @@
 package com.openlayer.api.services.blocking.projects
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.tests.TestCreateParams
@@ -11,6 +12,7 @@ import com.openlayer.api.models.projects.tests.TestListParams
 import com.openlayer.api.models.projects.tests.TestListResponse
 import com.openlayer.api.models.projects.tests.TestUpdateParams
 import com.openlayer.api.models.projects.tests.TestUpdateResponse
+import java.util.function.Consumer
 
 interface TestService {
 
@@ -18,6 +20,13 @@ interface TestService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): TestService
 
     /** Create a test. */
     fun create(projectId: String, params: TestCreateParams): TestCreateResponse =
@@ -88,6 +97,13 @@ interface TestService {
 
     /** A view of [TestService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): TestService.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /projects/{projectId}/tests`, but is otherwise the

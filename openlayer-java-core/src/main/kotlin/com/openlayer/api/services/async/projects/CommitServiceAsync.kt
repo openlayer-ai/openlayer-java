@@ -2,6 +2,7 @@
 
 package com.openlayer.api.services.async.projects
 
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.commits.CommitCreateParams
@@ -9,6 +10,7 @@ import com.openlayer.api.models.projects.commits.CommitCreateResponse
 import com.openlayer.api.models.projects.commits.CommitListParams
 import com.openlayer.api.models.projects.commits.CommitListResponse
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 interface CommitServiceAsync {
 
@@ -16,6 +18,13 @@ interface CommitServiceAsync {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): CommitServiceAsync
 
     /** Create a new commit (project version) in a project. */
     fun create(
@@ -81,6 +90,15 @@ interface CommitServiceAsync {
      * A view of [CommitServiceAsync] that provides access to raw HTTP responses for each method.
      */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CommitServiceAsync.WithRawResponse
 
         /**
          * Returns a raw HTTP response for `post /projects/{projectId}/versions`, but is otherwise

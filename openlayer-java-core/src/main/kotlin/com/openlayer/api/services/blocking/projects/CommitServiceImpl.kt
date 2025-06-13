@@ -20,6 +20,7 @@ import com.openlayer.api.models.projects.commits.CommitCreateParams
 import com.openlayer.api.models.projects.commits.CommitCreateResponse
 import com.openlayer.api.models.projects.commits.CommitListParams
 import com.openlayer.api.models.projects.commits.CommitListResponse
+import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
 class CommitServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -30,6 +31,9 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
     }
 
     override fun withRawResponse(): CommitService.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): CommitService =
+        CommitServiceImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun create(
         params: CommitCreateParams,
@@ -49,6 +53,13 @@ class CommitServiceImpl internal constructor(private val clientOptions: ClientOp
         CommitService.WithRawResponse {
 
         private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): CommitService.WithRawResponse =
+            CommitServiceImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         private val createHandler: Handler<CommitCreateResponse> =
             jsonHandler<CommitCreateResponse>(clientOptions.jsonMapper)

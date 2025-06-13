@@ -26,6 +26,7 @@ import com.openlayer.api.services.async.projects.InferencePipelineServiceAsyncIm
 import com.openlayer.api.services.async.projects.TestServiceAsync
 import com.openlayer.api.services.async.projects.TestServiceAsyncImpl
 import java.util.concurrent.CompletableFuture
+import java.util.function.Consumer
 
 class ProjectServiceAsyncImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectServiceAsync {
@@ -43,6 +44,9 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
     private val tests: TestServiceAsync by lazy { TestServiceAsyncImpl(clientOptions) }
 
     override fun withRawResponse(): ProjectServiceAsync.WithRawResponse = withRawResponse
+
+    override fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectServiceAsync =
+        ProjectServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
 
     override fun commits(): CommitServiceAsync = commits
 
@@ -80,6 +84,13 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
         private val tests: TestServiceAsync.WithRawResponse by lazy {
             TestServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
+
+        override fun withOptions(
+            modifier: Consumer<ClientOptions.Builder>
+        ): ProjectServiceAsync.WithRawResponse =
+            ProjectServiceAsyncImpl.WithRawResponseImpl(
+                clientOptions.toBuilder().apply(modifier::accept).build()
+            )
 
         override fun commits(): CommitServiceAsync.WithRawResponse = commits
 

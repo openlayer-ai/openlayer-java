@@ -3,6 +3,7 @@
 package com.openlayer.api.services.blocking
 
 import com.google.errorprone.annotations.MustBeClosed
+import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.ProjectCreateParams
@@ -12,6 +13,7 @@ import com.openlayer.api.models.projects.ProjectListResponse
 import com.openlayer.api.services.blocking.projects.CommitService
 import com.openlayer.api.services.blocking.projects.InferencePipelineService
 import com.openlayer.api.services.blocking.projects.TestService
+import java.util.function.Consumer
 
 interface ProjectService {
 
@@ -19,6 +21,13 @@ interface ProjectService {
      * Returns a view of this service that provides access to raw HTTP responses for each method.
      */
     fun withRawResponse(): WithRawResponse
+
+    /**
+     * Returns a view of this service with the given option modifications applied.
+     *
+     * The original service is not modified.
+     */
+    fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectService
 
     fun commits(): CommitService
 
@@ -55,6 +64,13 @@ interface ProjectService {
 
     /** A view of [ProjectService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
+
+        /**
+         * Returns a view of this service with the given option modifications applied.
+         *
+         * The original service is not modified.
+         */
+        fun withOptions(modifier: Consumer<ClientOptions.Builder>): ProjectService.WithRawResponse
 
         fun commits(): CommitService.WithRawResponse
 
