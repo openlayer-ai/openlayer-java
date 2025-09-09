@@ -91,7 +91,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(400)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream400WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(400).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<BadRequestException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -145,7 +203,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(401)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream401WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(401).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnauthorizedException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -199,7 +315,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(403)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream403WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(403).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<PermissionDeniedException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -253,7 +427,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(404)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream404WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(404).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<NotFoundException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -307,7 +539,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(422)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream422WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(422).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnprocessableEntityException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -361,7 +651,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(429)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream429WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(429).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<RateLimitException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -415,7 +763,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(500)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream500WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(500).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<InternalServerException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -469,7 +875,65 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
+                                .build()
+                        )
+                        .addRow(
+                            DataStreamParams.Row.builder()
+                                .putAdditionalProperty("user_query", JsonValue.from("bar"))
+                                .putAdditionalProperty("output", JsonValue.from("bar"))
+                                .putAdditionalProperty("tokens", JsonValue.from("bar"))
+                                .putAdditionalProperty("cost", JsonValue.from("bar"))
+                                .putAdditionalProperty("timestamp", JsonValue.from("bar"))
+                                .build()
+                        )
+                        .build()
+                )
+            }
+
+        assertThat(e.statusCode()).isEqualTo(999)
+        assertThat(e.headers().toMap()).contains(entry(HEADER_NAME, listOf(HEADER_VALUE)))
+        assertThat(e.body()).isEqualTo(ERROR_JSON)
+    }
+
+    @Test
+    fun dataStream999WithRawResponse() {
+        val dataService = client.inferencePipelines().data().withRawResponse()
+        stubFor(
+            post(anyUrl())
+                .willReturn(
+                    status(999).withHeader(HEADER_NAME, HEADER_VALUE).withBody(ERROR_JSON_BYTES)
+                )
+        )
+
+        val e =
+            assertThrows<UnexpectedStatusCodeException> {
+                dataService.stream(
+                    DataStreamParams.builder()
+                        .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            DataStreamParams.Config.LlmData.builder()
+                                .outputColumnName("output")
+                                .contextColumnName("context")
+                                .costColumnName("cost")
+                                .groundTruthColumnName("ground_truth")
+                                .inferenceIdColumnName("id")
+                                .addInputVariableName("user_query")
+                                .latencyColumnName("latency")
+                                .metadata(JsonValue.from(mapOf<String, Any>()))
+                                .numOfTokenColumnName("tokens")
+                                .addPrompt(
+                                    DataStreamParams.Config.LlmData.Prompt.builder()
+                                        .content("{{ user_query }}")
+                                        .role("user")
+                                        .build()
+                                )
+                                .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
+                                .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(
@@ -521,7 +985,9 @@ internal class ErrorHandlingTest {
                                         .build()
                                 )
                                 .questionColumnName("question")
+                                .sessionIdColumnName("session_id")
                                 .timestampColumnName("timestamp")
+                                .userIdColumnName("user_id")
                                 .build()
                         )
                         .addRow(

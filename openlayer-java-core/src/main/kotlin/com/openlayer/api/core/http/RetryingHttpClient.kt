@@ -3,6 +3,7 @@ package com.openlayer.api.core.http
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.errors.OpenlayerIoException
+import com.openlayer.api.errors.OpenlayerRetryableException
 import java.io.IOException
 import java.time.Clock
 import java.time.Duration
@@ -176,9 +177,10 @@ private constructor(
     }
 
     private fun shouldRetry(throwable: Throwable): Boolean =
-        // Only retry IOException and OpenlayerIoException, other exceptions are not intended to be
-        // retried.
-        throwable is IOException || throwable is OpenlayerIoException
+        // Only retry known retryable exceptions, other exceptions are not intended to be retried.
+        throwable is IOException ||
+            throwable is OpenlayerIoException ||
+            throwable is OpenlayerRetryableException
 
     private fun getRetryBackoffDuration(retries: Int, response: HttpResponse?): Duration {
         // About the Retry-After header:

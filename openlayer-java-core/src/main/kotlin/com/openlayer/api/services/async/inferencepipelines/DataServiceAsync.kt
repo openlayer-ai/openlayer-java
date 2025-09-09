@@ -31,7 +31,7 @@ interface DataServiceAsync {
     ): CompletableFuture<DataStreamResponse> =
         stream(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [stream] */
+    /** @see stream */
     fun stream(
         inferencePipelineId: String,
         params: DataStreamParams,
@@ -39,11 +39,11 @@ interface DataServiceAsync {
     ): CompletableFuture<DataStreamResponse> =
         stream(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [stream] */
+    /** @see stream */
     fun stream(params: DataStreamParams): CompletableFuture<DataStreamResponse> =
         stream(params, RequestOptions.none())
 
-    /** @see [stream] */
+    /** @see stream */
     fun stream(
         params: DataStreamParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -70,7 +70,7 @@ interface DataServiceAsync {
         ): CompletableFuture<HttpResponseFor<DataStreamResponse>> =
             stream(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [stream] */
+        /** @see stream */
         fun stream(
             inferencePipelineId: String,
             params: DataStreamParams,
@@ -81,13 +81,13 @@ interface DataServiceAsync {
                 requestOptions,
             )
 
-        /** @see [stream] */
+        /** @see stream */
         fun stream(
             params: DataStreamParams
         ): CompletableFuture<HttpResponseFor<DataStreamResponse>> =
             stream(params, RequestOptions.none())
 
-        /** @see [stream] */
+        /** @see stream */
         fun stream(
             params: DataStreamParams,
             requestOptions: RequestOptions = RequestOptions.none(),

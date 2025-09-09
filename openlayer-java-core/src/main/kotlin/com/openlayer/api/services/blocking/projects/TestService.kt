@@ -32,17 +32,17 @@ interface TestService {
     fun create(projectId: String, params: TestCreateParams): TestCreateResponse =
         create(projectId, params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         projectId: String,
         params: TestCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestCreateResponse = create(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [create] */
+    /** @see create */
     fun create(params: TestCreateParams): TestCreateResponse = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: TestCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -52,17 +52,17 @@ interface TestService {
     fun update(projectId: String, params: TestUpdateParams): TestUpdateResponse =
         update(projectId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         projectId: String,
         params: TestUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestUpdateResponse = update(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: TestUpdateParams): TestUpdateResponse = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: TestUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -71,27 +71,27 @@ interface TestService {
     /** List tests under a project. */
     fun list(projectId: String): TestListResponse = list(projectId, TestListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: TestListParams = TestListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestListResponse = list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(projectId: String, params: TestListParams = TestListParams.none()): TestListResponse =
         list(projectId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: TestListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: TestListParams): TestListResponse = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(projectId: String, requestOptions: RequestOptions): TestListResponse =
         list(projectId, TestListParams.none(), requestOptions)
 
@@ -115,7 +115,7 @@ interface TestService {
             params: TestCreateParams,
         ): HttpResponseFor<TestCreateResponse> = create(projectId, params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             projectId: String,
@@ -124,12 +124,12 @@ interface TestService {
         ): HttpResponseFor<TestCreateResponse> =
             create(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(params: TestCreateParams): HttpResponseFor<TestCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: TestCreateParams,
@@ -146,7 +146,7 @@ interface TestService {
             params: TestUpdateParams,
         ): HttpResponseFor<TestUpdateResponse> = update(projectId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             projectId: String,
@@ -155,12 +155,12 @@ interface TestService {
         ): HttpResponseFor<TestUpdateResponse> =
             update(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(params: TestUpdateParams): HttpResponseFor<TestUpdateResponse> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: TestUpdateParams,
@@ -175,7 +175,7 @@ interface TestService {
         fun list(projectId: String): HttpResponseFor<TestListResponse> =
             list(projectId, TestListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,
@@ -184,26 +184,26 @@ interface TestService {
         ): HttpResponseFor<TestListResponse> =
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,
             params: TestListParams = TestListParams.none(),
         ): HttpResponseFor<TestListResponse> = list(projectId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: TestListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<TestListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: TestListParams): HttpResponseFor<TestListResponse> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,

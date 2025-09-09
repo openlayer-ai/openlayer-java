@@ -31,7 +31,7 @@ interface CommitServiceAsync {
     fun retrieve(projectVersionId: String): CompletableFuture<CommitRetrieveResponse> =
         retrieve(projectVersionId, CommitRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectVersionId: String,
         params: CommitRetrieveParams = CommitRetrieveParams.none(),
@@ -39,24 +39,24 @@ interface CommitServiceAsync {
     ): CompletableFuture<CommitRetrieveResponse> =
         retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectVersionId: String,
         params: CommitRetrieveParams = CommitRetrieveParams.none(),
     ): CompletableFuture<CommitRetrieveResponse> =
         retrieve(projectVersionId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: CommitRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<CommitRetrieveResponse>
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: CommitRetrieveParams): CompletableFuture<CommitRetrieveResponse> =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         projectVersionId: String,
         requestOptions: RequestOptions,
@@ -88,7 +88,7 @@ interface CommitServiceAsync {
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
             retrieve(projectVersionId, CommitRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectVersionId: String,
             params: CommitRetrieveParams = CommitRetrieveParams.none(),
@@ -96,26 +96,26 @@ interface CommitServiceAsync {
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
             retrieve(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectVersionId: String,
             params: CommitRetrieveParams = CommitRetrieveParams.none(),
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
             retrieve(projectVersionId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: CommitRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             params: CommitRetrieveParams
         ): CompletableFuture<HttpResponseFor<CommitRetrieveResponse>> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         fun retrieve(
             projectVersionId: String,
             requestOptions: RequestOptions,

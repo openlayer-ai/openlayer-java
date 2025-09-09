@@ -294,8 +294,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -1645,12 +1647,49 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && id == other.id && commit == other.commit && dateArchived == other.dateArchived && dateCreated == other.dateCreated && failingGoalCount == other.failingGoalCount && mlModelId == other.mlModelId && passingGoalCount == other.passingGoalCount && bodyProjectId == other.bodyProjectId && status == other.status && statusMessage == other.statusMessage && storageUri == other.storageUri && totalGoalCount == other.totalGoalCount && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && archived == other.archived && deploymentStatus == other.deploymentStatus && links == other.links && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                id == other.id &&
+                commit == other.commit &&
+                dateArchived == other.dateArchived &&
+                dateCreated == other.dateCreated &&
+                failingGoalCount == other.failingGoalCount &&
+                mlModelId == other.mlModelId &&
+                passingGoalCount == other.passingGoalCount &&
+                bodyProjectId == other.bodyProjectId &&
+                status == other.status &&
+                statusMessage == other.statusMessage &&
+                storageUri == other.storageUri &&
+                totalGoalCount == other.totalGoalCount &&
+                trainingDatasetId == other.trainingDatasetId &&
+                validationDatasetId == other.validationDatasetId &&
+                archived == other.archived &&
+                deploymentStatus == other.deploymentStatus &&
+                links == other.links &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, commit, dateArchived, dateCreated, failingGoalCount, mlModelId, passingGoalCount, bodyProjectId, status, statusMessage, storageUri, totalGoalCount, trainingDatasetId, validationDatasetId, archived, deploymentStatus, links, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                id,
+                commit,
+                dateArchived,
+                dateCreated,
+                failingGoalCount,
+                mlModelId,
+                passingGoalCount,
+                bodyProjectId,
+                status,
+                statusMessage,
+                storageUri,
+                totalGoalCount,
+                trainingDatasetId,
+                validationDatasetId,
+                archived,
+                deploymentStatus,
+                links,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -2287,12 +2326,39 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Commit && id == other.id && authorId == other.authorId && fileSize == other.fileSize && message == other.message && mlModelId == other.mlModelId && storageUri == other.storageUri && trainingDatasetId == other.trainingDatasetId && validationDatasetId == other.validationDatasetId && dateCreated == other.dateCreated && gitCommitRef == other.gitCommitRef && gitCommitSha == other.gitCommitSha && gitCommitUrl == other.gitCommitUrl && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Commit &&
+                id == other.id &&
+                authorId == other.authorId &&
+                fileSize == other.fileSize &&
+                message == other.message &&
+                mlModelId == other.mlModelId &&
+                storageUri == other.storageUri &&
+                trainingDatasetId == other.trainingDatasetId &&
+                validationDatasetId == other.validationDatasetId &&
+                dateCreated == other.dateCreated &&
+                gitCommitRef == other.gitCommitRef &&
+                gitCommitSha == other.gitCommitSha &&
+                gitCommitUrl == other.gitCommitUrl &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, authorId, fileSize, message, mlModelId, storageUri, trainingDatasetId, validationDatasetId, dateCreated, gitCommitRef, gitCommitSha, gitCommitUrl, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                id,
+                authorId,
+                fileSize,
+                message,
+                mlModelId,
+                storageUri,
+                trainingDatasetId,
+                validationDatasetId,
+                dateCreated,
+                gitCommitRef,
+                gitCommitSha,
+                gitCommitUrl,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -2447,7 +2513,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -2594,12 +2660,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Links &&
+                app == other.app &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -2611,10 +2677,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is CommitCreateParams && pathProjectId == other.pathProjectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is CommitCreateParams &&
+            pathProjectId == other.pathProjectId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(pathProjectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(pathProjectId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "CommitCreateParams{pathProjectId=$pathProjectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

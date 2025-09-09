@@ -28,7 +28,7 @@ interface TestResultServiceAsync {
     fun list(projectVersionId: String): CompletableFuture<TestResultListResponse> =
         list(projectVersionId, TestResultListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectVersionId: String,
         params: TestResultListParams = TestResultListParams.none(),
@@ -36,24 +36,24 @@ interface TestResultServiceAsync {
     ): CompletableFuture<TestResultListResponse> =
         list(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectVersionId: String,
         params: TestResultListParams = TestResultListParams.none(),
     ): CompletableFuture<TestResultListResponse> =
         list(projectVersionId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestResultListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: TestResultListParams): CompletableFuture<TestResultListResponse> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectVersionId: String,
         requestOptions: RequestOptions,
@@ -84,7 +84,7 @@ interface TestResultServiceAsync {
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(projectVersionId, TestResultListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             projectVersionId: String,
             params: TestResultListParams = TestResultListParams.none(),
@@ -92,26 +92,26 @@ interface TestResultServiceAsync {
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             projectVersionId: String,
             params: TestResultListParams = TestResultListParams.none(),
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(projectVersionId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: TestResultListParams
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             projectVersionId: String,
             requestOptions: RequestOptions,

@@ -43,7 +43,9 @@ internal class DataServiceTest {
                                     .build()
                             )
                             .questionColumnName("question")
+                            .sessionIdColumnName("session_id")
                             .timestampColumnName("timestamp")
+                            .userIdColumnName("user_id")
                             .build()
                     )
                     .addRow(

@@ -3,13 +3,12 @@
 package com.openlayer.api.services.blocking
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.emptyHandler
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse
@@ -78,7 +77,8 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         InferencePipelineService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val data: DataService.WithRawResponse by lazy {
             DataServiceImpl.WithRawResponseImpl(clientOptions)
@@ -107,7 +107,6 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
 
         private val retrieveHandler: Handler<InferencePipelineRetrieveResponse> =
             jsonHandler<InferencePipelineRetrieveResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun retrieve(
             params: InferencePipelineRetrieveParams,
@@ -125,7 +124,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { retrieveHandler.handle(it) }
                     .also {
@@ -138,7 +137,6 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
 
         private val updateHandler: Handler<InferencePipelineUpdateResponse> =
             jsonHandler<InferencePipelineUpdateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun update(
             params: InferencePipelineUpdateParams,
@@ -157,7 +155,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { updateHandler.handle(it) }
                     .also {
@@ -168,7 +166,7 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             }
         }
 
-        private val deleteHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Void?> = emptyHandler()
 
         override fun delete(
             params: InferencePipelineDeleteParams,
@@ -187,7 +185,9 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable { response.use { deleteHandler.handle(it) } }
+            return errorHandler.handle(response).parseable {
+                response.use { deleteHandler.handle(it) }
+            }
         }
     }
 }

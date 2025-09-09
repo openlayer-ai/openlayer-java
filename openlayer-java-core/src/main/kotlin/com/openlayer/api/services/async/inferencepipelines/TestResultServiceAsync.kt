@@ -28,7 +28,7 @@ interface TestResultServiceAsync {
     fun list(inferencePipelineId: String): CompletableFuture<TestResultListResponse> =
         list(inferencePipelineId, TestResultListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         inferencePipelineId: String,
         params: TestResultListParams = TestResultListParams.none(),
@@ -36,24 +36,24 @@ interface TestResultServiceAsync {
     ): CompletableFuture<TestResultListResponse> =
         list(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         inferencePipelineId: String,
         params: TestResultListParams = TestResultListParams.none(),
     ): CompletableFuture<TestResultListResponse> =
         list(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestResultListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: TestResultListParams): CompletableFuture<TestResultListResponse> =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         inferencePipelineId: String,
         requestOptions: RequestOptions,
@@ -84,7 +84,7 @@ interface TestResultServiceAsync {
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(inferencePipelineId, TestResultListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             inferencePipelineId: String,
             params: TestResultListParams = TestResultListParams.none(),
@@ -95,26 +95,26 @@ interface TestResultServiceAsync {
                 requestOptions,
             )
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             inferencePipelineId: String,
             params: TestResultListParams = TestResultListParams.none(),
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: TestResultListParams
         ): CompletableFuture<HttpResponseFor<TestResultListResponse>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             inferencePipelineId: String,
             requestOptions: RequestOptions,

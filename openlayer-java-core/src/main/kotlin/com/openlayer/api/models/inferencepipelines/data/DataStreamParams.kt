@@ -76,8 +76,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -559,12 +561,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && config == other.config && rows == other.rows && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                config == other.config &&
+                rows == other.rows &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(config, rows, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -704,10 +707,20 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Config && llmData == other.llmData && tabularClassificationData == other.tabularClassificationData && tabularRegressionData == other.tabularRegressionData && textClassificationData == other.textClassificationData /* spotless:on */
+            return other is Config &&
+                llmData == other.llmData &&
+                tabularClassificationData == other.tabularClassificationData &&
+                tabularRegressionData == other.tabularRegressionData &&
+                textClassificationData == other.textClassificationData
         }
 
-        override fun hashCode(): Int = /* spotless:off */ Objects.hash(llmData, tabularClassificationData, tabularRegressionData, textClassificationData) /* spotless:on */
+        override fun hashCode(): Int =
+            Objects.hash(
+                llmData,
+                tabularClassificationData,
+                tabularRegressionData,
+                textClassificationData,
+            )
 
         override fun toString(): String =
             when {
@@ -837,7 +850,9 @@ private constructor(
             private val numOfTokenColumnName: JsonField<String>,
             private val prompt: JsonField<List<Prompt>>,
             private val questionColumnName: JsonField<String>,
+            private val sessionIdColumnName: JsonField<String>,
             private val timestampColumnName: JsonField<String>,
+            private val userIdColumnName: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
@@ -874,9 +889,15 @@ private constructor(
                 @JsonProperty("questionColumnName")
                 @ExcludeMissing
                 questionColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("sessionIdColumnName")
+                @ExcludeMissing
+                sessionIdColumnName: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("timestampColumnName")
                 @ExcludeMissing
                 timestampColumnName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("userIdColumnName")
+                @ExcludeMissing
+                userIdColumnName: JsonField<String> = JsonMissing.of(),
             ) : this(
                 outputColumnName,
                 contextColumnName,
@@ -889,7 +910,9 @@ private constructor(
                 numOfTokenColumnName,
                 prompt,
                 questionColumnName,
+                sessionIdColumnName,
                 timestampColumnName,
+                userIdColumnName,
                 mutableMapOf(),
             )
 
@@ -988,6 +1011,15 @@ private constructor(
                 questionColumnName.getOptional("questionColumnName")
 
             /**
+             * Name of the column with the session id.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun sessionIdColumnName(): Optional<String> =
+                sessionIdColumnName.getOptional("sessionIdColumnName")
+
+            /**
              * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If not
              * provided, the upload timestamp is used.
              *
@@ -996,6 +1028,15 @@ private constructor(
              */
             fun timestampColumnName(): Optional<String> =
                 timestampColumnName.getOptional("timestampColumnName")
+
+            /**
+             * Name of the column with the user id.
+             *
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun userIdColumnName(): Optional<String> =
+                userIdColumnName.getOptional("userIdColumnName")
 
             /**
              * Returns the raw JSON value of [outputColumnName].
@@ -1095,6 +1136,16 @@ private constructor(
             fun _questionColumnName(): JsonField<String> = questionColumnName
 
             /**
+             * Returns the raw JSON value of [sessionIdColumnName].
+             *
+             * Unlike [sessionIdColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("sessionIdColumnName")
+            @ExcludeMissing
+            fun _sessionIdColumnName(): JsonField<String> = sessionIdColumnName
+
+            /**
              * Returns the raw JSON value of [timestampColumnName].
              *
              * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
@@ -1103,6 +1154,16 @@ private constructor(
             @JsonProperty("timestampColumnName")
             @ExcludeMissing
             fun _timestampColumnName(): JsonField<String> = timestampColumnName
+
+            /**
+             * Returns the raw JSON value of [userIdColumnName].
+             *
+             * Unlike [userIdColumnName], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("userIdColumnName")
+            @ExcludeMissing
+            fun _userIdColumnName(): JsonField<String> = userIdColumnName
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1143,7 +1204,9 @@ private constructor(
                 private var numOfTokenColumnName: JsonField<String> = JsonMissing.of()
                 private var prompt: JsonField<MutableList<Prompt>>? = null
                 private var questionColumnName: JsonField<String> = JsonMissing.of()
+                private var sessionIdColumnName: JsonField<String> = JsonMissing.of()
                 private var timestampColumnName: JsonField<String> = JsonMissing.of()
+                private var userIdColumnName: JsonField<String> = JsonMissing.of()
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
@@ -1159,7 +1222,9 @@ private constructor(
                     numOfTokenColumnName = llmData.numOfTokenColumnName
                     prompt = llmData.prompt.map { it.toMutableList() }
                     questionColumnName = llmData.questionColumnName
+                    sessionIdColumnName = llmData.sessionIdColumnName
                     timestampColumnName = llmData.timestampColumnName
+                    userIdColumnName = llmData.userIdColumnName
                     additionalProperties = llmData.additionalProperties.toMutableMap()
                 }
 
@@ -1358,6 +1423,28 @@ private constructor(
                     this.questionColumnName = questionColumnName
                 }
 
+                /** Name of the column with the session id. */
+                fun sessionIdColumnName(sessionIdColumnName: String?) =
+                    sessionIdColumnName(JsonField.ofNullable(sessionIdColumnName))
+
+                /**
+                 * Alias for calling [Builder.sessionIdColumnName] with
+                 * `sessionIdColumnName.orElse(null)`.
+                 */
+                fun sessionIdColumnName(sessionIdColumnName: Optional<String>) =
+                    sessionIdColumnName(sessionIdColumnName.getOrNull())
+
+                /**
+                 * Sets [Builder.sessionIdColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.sessionIdColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun sessionIdColumnName(sessionIdColumnName: JsonField<String>) = apply {
+                    this.sessionIdColumnName = sessionIdColumnName
+                }
+
                 /**
                  * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
                  * not provided, the upload timestamp is used.
@@ -1374,6 +1461,28 @@ private constructor(
                  */
                 fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
                     this.timestampColumnName = timestampColumnName
+                }
+
+                /** Name of the column with the user id. */
+                fun userIdColumnName(userIdColumnName: String?) =
+                    userIdColumnName(JsonField.ofNullable(userIdColumnName))
+
+                /**
+                 * Alias for calling [Builder.userIdColumnName] with
+                 * `userIdColumnName.orElse(null)`.
+                 */
+                fun userIdColumnName(userIdColumnName: Optional<String>) =
+                    userIdColumnName(userIdColumnName.getOrNull())
+
+                /**
+                 * Sets [Builder.userIdColumnName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.userIdColumnName] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun userIdColumnName(userIdColumnName: JsonField<String>) = apply {
+                    this.userIdColumnName = userIdColumnName
                 }
 
                 fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
@@ -1423,7 +1532,9 @@ private constructor(
                         numOfTokenColumnName,
                         (prompt ?: JsonMissing.of()).map { it.toImmutable() },
                         questionColumnName,
+                        sessionIdColumnName,
                         timestampColumnName,
+                        userIdColumnName,
                         additionalProperties.toMutableMap(),
                     )
             }
@@ -1445,7 +1556,9 @@ private constructor(
                 numOfTokenColumnName()
                 prompt().ifPresent { it.forEach { it.validate() } }
                 questionColumnName()
+                sessionIdColumnName()
                 timestampColumnName()
+                userIdColumnName()
                 validated = true
             }
 
@@ -1475,7 +1588,9 @@ private constructor(
                     (if (numOfTokenColumnName.asKnown().isPresent) 1 else 0) +
                     (prompt.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                     (if (questionColumnName.asKnown().isPresent) 1 else 0) +
-                    (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+                    (if (sessionIdColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (timestampColumnName.asKnown().isPresent) 1 else 0) +
+                    (if (userIdColumnName.asKnown().isPresent) 1 else 0)
 
             class Prompt
             private constructor(
@@ -1646,12 +1761,15 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Prompt && content == other.content && role == other.role && additionalProperties == other.additionalProperties /* spotless:on */
+                    return other is Prompt &&
+                        content == other.content &&
+                        role == other.role &&
+                        additionalProperties == other.additionalProperties
                 }
 
-                /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(content, role, additionalProperties) }
-                /* spotless:on */
+                private val hashCode: Int by lazy {
+                    Objects.hash(content, role, additionalProperties)
+                }
 
                 override fun hashCode(): Int = hashCode
 
@@ -1664,17 +1782,48 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is LlmData && outputColumnName == other.outputColumnName && contextColumnName == other.contextColumnName && costColumnName == other.costColumnName && groundTruthColumnName == other.groundTruthColumnName && inferenceIdColumnName == other.inferenceIdColumnName && inputVariableNames == other.inputVariableNames && latencyColumnName == other.latencyColumnName && metadata == other.metadata && numOfTokenColumnName == other.numOfTokenColumnName && prompt == other.prompt && questionColumnName == other.questionColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is LlmData &&
+                    outputColumnName == other.outputColumnName &&
+                    contextColumnName == other.contextColumnName &&
+                    costColumnName == other.costColumnName &&
+                    groundTruthColumnName == other.groundTruthColumnName &&
+                    inferenceIdColumnName == other.inferenceIdColumnName &&
+                    inputVariableNames == other.inputVariableNames &&
+                    latencyColumnName == other.latencyColumnName &&
+                    metadata == other.metadata &&
+                    numOfTokenColumnName == other.numOfTokenColumnName &&
+                    prompt == other.prompt &&
+                    questionColumnName == other.questionColumnName &&
+                    sessionIdColumnName == other.sessionIdColumnName &&
+                    timestampColumnName == other.timestampColumnName &&
+                    userIdColumnName == other.userIdColumnName &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(outputColumnName, contextColumnName, costColumnName, groundTruthColumnName, inferenceIdColumnName, inputVariableNames, latencyColumnName, metadata, numOfTokenColumnName, prompt, questionColumnName, timestampColumnName, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    outputColumnName,
+                    contextColumnName,
+                    costColumnName,
+                    groundTruthColumnName,
+                    inferenceIdColumnName,
+                    inputVariableNames,
+                    latencyColumnName,
+                    metadata,
+                    numOfTokenColumnName,
+                    prompt,
+                    questionColumnName,
+                    sessionIdColumnName,
+                    timestampColumnName,
+                    userIdColumnName,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "LlmData{outputColumnName=$outputColumnName, contextColumnName=$contextColumnName, costColumnName=$costColumnName, groundTruthColumnName=$groundTruthColumnName, inferenceIdColumnName=$inferenceIdColumnName, inputVariableNames=$inputVariableNames, latencyColumnName=$latencyColumnName, metadata=$metadata, numOfTokenColumnName=$numOfTokenColumnName, prompt=$prompt, questionColumnName=$questionColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
+                "LlmData{outputColumnName=$outputColumnName, contextColumnName=$contextColumnName, costColumnName=$costColumnName, groundTruthColumnName=$groundTruthColumnName, inferenceIdColumnName=$inferenceIdColumnName, inputVariableNames=$inputVariableNames, latencyColumnName=$latencyColumnName, metadata=$metadata, numOfTokenColumnName=$numOfTokenColumnName, prompt=$prompt, questionColumnName=$questionColumnName, sessionIdColumnName=$sessionIdColumnName, timestampColumnName=$timestampColumnName, userIdColumnName=$userIdColumnName, additionalProperties=$additionalProperties}"
         }
 
         class TabularClassificationData
@@ -2267,12 +2416,35 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TabularClassificationData && classNames == other.classNames && categoricalFeatureNames == other.categoricalFeatureNames && featureNames == other.featureNames && inferenceIdColumnName == other.inferenceIdColumnName && labelColumnName == other.labelColumnName && latencyColumnName == other.latencyColumnName && metadata == other.metadata && predictionsColumnName == other.predictionsColumnName && predictionScoresColumnName == other.predictionScoresColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is TabularClassificationData &&
+                    classNames == other.classNames &&
+                    categoricalFeatureNames == other.categoricalFeatureNames &&
+                    featureNames == other.featureNames &&
+                    inferenceIdColumnName == other.inferenceIdColumnName &&
+                    labelColumnName == other.labelColumnName &&
+                    latencyColumnName == other.latencyColumnName &&
+                    metadata == other.metadata &&
+                    predictionsColumnName == other.predictionsColumnName &&
+                    predictionScoresColumnName == other.predictionScoresColumnName &&
+                    timestampColumnName == other.timestampColumnName &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(classNames, categoricalFeatureNames, featureNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, timestampColumnName, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    classNames,
+                    categoricalFeatureNames,
+                    featureNames,
+                    inferenceIdColumnName,
+                    labelColumnName,
+                    latencyColumnName,
+                    metadata,
+                    predictionsColumnName,
+                    predictionScoresColumnName,
+                    timestampColumnName,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -2746,12 +2918,31 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TabularRegressionData && categoricalFeatureNames == other.categoricalFeatureNames && featureNames == other.featureNames && inferenceIdColumnName == other.inferenceIdColumnName && latencyColumnName == other.latencyColumnName && metadata == other.metadata && predictionsColumnName == other.predictionsColumnName && targetColumnName == other.targetColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is TabularRegressionData &&
+                    categoricalFeatureNames == other.categoricalFeatureNames &&
+                    featureNames == other.featureNames &&
+                    inferenceIdColumnName == other.inferenceIdColumnName &&
+                    latencyColumnName == other.latencyColumnName &&
+                    metadata == other.metadata &&
+                    predictionsColumnName == other.predictionsColumnName &&
+                    targetColumnName == other.targetColumnName &&
+                    timestampColumnName == other.timestampColumnName &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(categoricalFeatureNames, featureNames, inferenceIdColumnName, latencyColumnName, metadata, predictionsColumnName, targetColumnName, timestampColumnName, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    categoricalFeatureNames,
+                    featureNames,
+                    inferenceIdColumnName,
+                    latencyColumnName,
+                    metadata,
+                    predictionsColumnName,
+                    targetColumnName,
+                    timestampColumnName,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -3273,12 +3464,33 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TextClassificationData && classNames == other.classNames && inferenceIdColumnName == other.inferenceIdColumnName && labelColumnName == other.labelColumnName && latencyColumnName == other.latencyColumnName && metadata == other.metadata && predictionsColumnName == other.predictionsColumnName && predictionScoresColumnName == other.predictionScoresColumnName && textColumnName == other.textColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is TextClassificationData &&
+                    classNames == other.classNames &&
+                    inferenceIdColumnName == other.inferenceIdColumnName &&
+                    labelColumnName == other.labelColumnName &&
+                    latencyColumnName == other.latencyColumnName &&
+                    metadata == other.metadata &&
+                    predictionsColumnName == other.predictionsColumnName &&
+                    predictionScoresColumnName == other.predictionScoresColumnName &&
+                    textColumnName == other.textColumnName &&
+                    timestampColumnName == other.timestampColumnName &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(classNames, inferenceIdColumnName, labelColumnName, latencyColumnName, metadata, predictionsColumnName, predictionScoresColumnName, textColumnName, timestampColumnName, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    classNames,
+                    inferenceIdColumnName,
+                    labelColumnName,
+                    latencyColumnName,
+                    metadata,
+                    predictionsColumnName,
+                    predictionScoresColumnName,
+                    textColumnName,
+                    timestampColumnName,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -3376,12 +3588,10 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Row && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Row && additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -3393,10 +3603,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is DataStreamParams && inferencePipelineId == other.inferencePipelineId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is DataStreamParams &&
+            inferencePipelineId == other.inferencePipelineId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(inferencePipelineId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "DataStreamParams{inferencePipelineId=$inferencePipelineId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
