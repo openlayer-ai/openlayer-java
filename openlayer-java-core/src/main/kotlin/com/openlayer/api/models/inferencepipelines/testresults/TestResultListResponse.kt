@@ -33,6 +33,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class TestResultListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val items: JsonField<List<Item>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -183,6 +184,7 @@ private constructor(
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Item
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val dateCreated: JsonField<OffsetDateTime>,
@@ -921,6 +923,7 @@ private constructor(
         }
 
         class Goal
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val commentCount: JsonField<Long>,
@@ -2359,6 +2362,7 @@ private constructor(
             }
 
             class Threshold
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val insightName: JsonField<InsightName>,
                 private val insightParameters: JsonField<List<InsightParameter>>,
@@ -3081,6 +3085,7 @@ private constructor(
                 }
 
                 class InsightParameter
+                @JsonCreator(mode = JsonCreator.Mode.DISABLED)
                 private constructor(
                     private val name: JsonField<String>,
                     private val value: JsonValue,

@@ -289,6 +289,7 @@ private constructor(
             .build()
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val row: JsonValue,
         private val config: JsonField<Config>,
@@ -453,6 +454,7 @@ private constructor(
     }
 
     class Config
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val groundTruthColumnName: JsonField<String>,
         private val humanFeedbackColumnName: JsonField<String>,
