@@ -16,6 +16,7 @@ import java.util.Collections
 import java.util.Objects
 
 class PresignedUrlCreateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val storageUri: JsonField<String>,
     private val url: JsonField<String>,

@@ -16,6 +16,7 @@ import java.util.Objects
 import java.util.Optional
 
 class TestUpdateResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val taskResultId: JsonField<String>,
     private val taskResultUrl: JsonField<String>,

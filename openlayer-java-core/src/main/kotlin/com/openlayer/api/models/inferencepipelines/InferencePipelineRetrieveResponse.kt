@@ -23,6 +23,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class InferencePipelineRetrieveResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
     private val dateCreated: JsonField<OffsetDateTime>,
@@ -884,6 +885,7 @@ private constructor(
             (if (workspaceId.asKnown().isPresent) 1 else 0)
 
     class Links
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val app: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1187,6 +1189,7 @@ private constructor(
     }
 
     class Project
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val creatorId: JsonField<String>,
@@ -1958,6 +1961,7 @@ private constructor(
 
         /** Links to the project. */
         class Links
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val app: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -2392,6 +2396,7 @@ private constructor(
         }
 
         class GitRepo
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val dateConnected: JsonField<OffsetDateTime>,
@@ -3050,6 +3055,7 @@ private constructor(
     }
 
     class Workspace
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val creatorId: JsonField<String>,
@@ -4008,6 +4014,7 @@ private constructor(
         }
 
         class MonthlyUsage
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val executionTimeMs: JsonField<Long>,
             private val monthYear: JsonField<LocalDate>,

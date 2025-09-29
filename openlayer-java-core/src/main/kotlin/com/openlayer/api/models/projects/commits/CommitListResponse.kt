@@ -22,6 +22,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class CommitListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val items: JsonField<List<Item>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -172,6 +173,7 @@ private constructor(
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Item
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val commit: JsonField<Commit>,
@@ -1020,6 +1022,7 @@ private constructor(
 
         /** The details of a commit (project version). */
         class Commit
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val authorId: JsonField<String>,
@@ -1867,6 +1870,7 @@ private constructor(
         }
 
         class Links
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val app: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
