@@ -22,6 +22,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 class ProjectListResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val items: JsonField<List<Item>>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -172,6 +173,7 @@ private constructor(
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
     class Item
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val creatorId: JsonField<String>,
@@ -943,6 +945,7 @@ private constructor(
 
         /** Links to the project. */
         class Links
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val app: JsonField<String>,
             private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1377,6 +1380,7 @@ private constructor(
         }
 
         class GitRepo
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val id: JsonField<String>,
             private val dateConnected: JsonField<OffsetDateTime>,

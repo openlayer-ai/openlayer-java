@@ -708,6 +708,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val creatorId: JsonField<String>,
@@ -1532,6 +1533,7 @@ private constructor(
 
     /** Links to the project. */
     class Links
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val app: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
@@ -1957,6 +1959,7 @@ private constructor(
     }
 
     class GitRepo
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val id: JsonField<String>,
         private val dateConnected: JsonField<OffsetDateTime>,

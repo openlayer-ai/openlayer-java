@@ -341,6 +341,7 @@ private constructor(
     override fun _queryParams(): QueryParams = additionalQueryParams
 
     class Body
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val config: JsonField<Config>,
         private val rows: JsonField<List<Row>>,
@@ -838,6 +839,7 @@ private constructor(
         }
 
         class LlmData
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val outputColumnName: JsonField<String>,
             private val contextColumnName: JsonField<String>,
@@ -1593,6 +1595,7 @@ private constructor(
                     (if (userIdColumnName.asKnown().isPresent) 1 else 0)
 
             class Prompt
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
             private constructor(
                 private val content: JsonField<String>,
                 private val role: JsonField<String>,
@@ -1827,6 +1830,7 @@ private constructor(
         }
 
         class TabularClassificationData
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val classNames: JsonField<List<String>>,
             private val categoricalFeatureNames: JsonField<List<String>>,
@@ -2453,6 +2457,7 @@ private constructor(
         }
 
         class TabularRegressionData
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val categoricalFeatureNames: JsonField<List<String>>,
             private val featureNames: JsonField<List<String>>,
@@ -2951,6 +2956,7 @@ private constructor(
         }
 
         class TextClassificationData
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val classNames: JsonField<List<String>>,
             private val inferenceIdColumnName: JsonField<String>,
