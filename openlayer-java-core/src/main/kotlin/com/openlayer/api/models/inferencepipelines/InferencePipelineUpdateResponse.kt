@@ -6,13 +6,24 @@ import com.fasterxml.jackson.annotation.JsonAnyGetter
 import com.fasterxml.jackson.annotation.JsonAnySetter
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.JsonGenerator
+import com.fasterxml.jackson.core.ObjectCodec
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.SerializerProvider
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
+import com.openlayer.api.core.BaseDeserializer
+import com.openlayer.api.core.BaseSerializer
 import com.openlayer.api.core.Enum
 import com.openlayer.api.core.ExcludeMissing
 import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
+import com.openlayer.api.core.allMaxBy
 import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.getOrThrow
 import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.LocalDate
@@ -40,7 +51,10 @@ private constructor(
     private val status: JsonField<Status>,
     private val statusMessage: JsonField<String>,
     private val totalGoalCount: JsonField<Long>,
+    private val dataBackend: JsonField<DataBackend>,
+    private val dateLastPolled: JsonField<OffsetDateTime>,
     private val project: JsonField<Project>,
+    private val totalRecordsCount: JsonField<Long>,
     private val workspace: JsonField<Workspace>,
     private val workspaceId: JsonField<String>,
     private val additionalProperties: MutableMap<String, JsonValue>,
@@ -83,7 +97,16 @@ private constructor(
         @JsonProperty("totalGoalCount")
         @ExcludeMissing
         totalGoalCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("dataBackend")
+        @ExcludeMissing
+        dataBackend: JsonField<DataBackend> = JsonMissing.of(),
+        @JsonProperty("dateLastPolled")
+        @ExcludeMissing
+        dateLastPolled: JsonField<OffsetDateTime> = JsonMissing.of(),
         @JsonProperty("project") @ExcludeMissing project: JsonField<Project> = JsonMissing.of(),
+        @JsonProperty("totalRecordsCount")
+        @ExcludeMissing
+        totalRecordsCount: JsonField<Long> = JsonMissing.of(),
         @JsonProperty("workspace")
         @ExcludeMissing
         workspace: JsonField<Workspace> = JsonMissing.of(),
@@ -106,7 +129,10 @@ private constructor(
         status,
         statusMessage,
         totalGoalCount,
+        dataBackend,
+        dateLastPolled,
         project,
+        totalRecordsCount,
         workspace,
         workspaceId,
         mutableMapOf(),
@@ -237,7 +263,29 @@ private constructor(
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
+    fun dataBackend(): Optional<DataBackend> = dataBackend.getOptional("dataBackend")
+
+    /**
+     * The last time the data was polled.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun dateLastPolled(): Optional<OffsetDateTime> = dateLastPolled.getOptional("dateLastPolled")
+
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
     fun project(): Optional<Project> = project.getOptional("project")
+
+    /**
+     * The total number of records in the data backend.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun totalRecordsCount(): Optional<Long> = totalRecordsCount.getOptional("totalRecordsCount")
 
     /**
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -382,11 +430,39 @@ private constructor(
     fun _totalGoalCount(): JsonField<Long> = totalGoalCount
 
     /**
+     * Returns the raw JSON value of [dataBackend].
+     *
+     * Unlike [dataBackend], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("dataBackend")
+    @ExcludeMissing
+    fun _dataBackend(): JsonField<DataBackend> = dataBackend
+
+    /**
+     * Returns the raw JSON value of [dateLastPolled].
+     *
+     * Unlike [dateLastPolled], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("dateLastPolled")
+    @ExcludeMissing
+    fun _dateLastPolled(): JsonField<OffsetDateTime> = dateLastPolled
+
+    /**
      * Returns the raw JSON value of [project].
      *
      * Unlike [project], this method doesn't throw if the JSON field has an unexpected type.
      */
     @JsonProperty("project") @ExcludeMissing fun _project(): JsonField<Project> = project
+
+    /**
+     * Returns the raw JSON value of [totalRecordsCount].
+     *
+     * Unlike [totalRecordsCount], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    @JsonProperty("totalRecordsCount")
+    @ExcludeMissing
+    fun _totalRecordsCount(): JsonField<Long> = totalRecordsCount
 
     /**
      * Returns the raw JSON value of [workspace].
@@ -460,7 +536,10 @@ private constructor(
         private var status: JsonField<Status>? = null
         private var statusMessage: JsonField<String>? = null
         private var totalGoalCount: JsonField<Long>? = null
+        private var dataBackend: JsonField<DataBackend> = JsonMissing.of()
+        private var dateLastPolled: JsonField<OffsetDateTime> = JsonMissing.of()
         private var project: JsonField<Project> = JsonMissing.of()
+        private var totalRecordsCount: JsonField<Long> = JsonMissing.of()
         private var workspace: JsonField<Workspace> = JsonMissing.of()
         private var workspaceId: JsonField<String> = JsonMissing.of()
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
@@ -483,7 +562,10 @@ private constructor(
                 status = inferencePipelineUpdateResponse.status
                 statusMessage = inferencePipelineUpdateResponse.statusMessage
                 totalGoalCount = inferencePipelineUpdateResponse.totalGoalCount
+                dataBackend = inferencePipelineUpdateResponse.dataBackend
+                dateLastPolled = inferencePipelineUpdateResponse.dateLastPolled
                 project = inferencePipelineUpdateResponse.project
+                totalRecordsCount = inferencePipelineUpdateResponse.totalRecordsCount
                 workspace = inferencePipelineUpdateResponse.workspace
                 workspaceId = inferencePipelineUpdateResponse.workspaceId
                 additionalProperties =
@@ -714,6 +796,65 @@ private constructor(
             this.totalGoalCount = totalGoalCount
         }
 
+        fun dataBackend(dataBackend: DataBackend?) = dataBackend(JsonField.ofNullable(dataBackend))
+
+        /** Alias for calling [Builder.dataBackend] with `dataBackend.orElse(null)`. */
+        fun dataBackend(dataBackend: Optional<DataBackend>) = dataBackend(dataBackend.getOrNull())
+
+        /**
+         * Sets [Builder.dataBackend] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dataBackend] with a well-typed [DataBackend] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun dataBackend(dataBackend: JsonField<DataBackend>) = apply {
+            this.dataBackend = dataBackend
+        }
+
+        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember0(unionMember0)`. */
+        fun dataBackend(unionMember0: DataBackend.UnionMember0) =
+            dataBackend(DataBackend.ofUnionMember0(unionMember0))
+
+        /** Alias for calling [dataBackend] with `DataBackend.ofBackendType(backendType)`. */
+        fun dataBackend(backendType: DataBackend.BackendType) =
+            dataBackend(DataBackend.ofBackendType(backendType))
+
+        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember2(unionMember2)`. */
+        fun dataBackend(unionMember2: DataBackend.UnionMember2) =
+            dataBackend(DataBackend.ofUnionMember2(unionMember2))
+
+        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember3(unionMember3)`. */
+        fun dataBackend(unionMember3: DataBackend.UnionMember3) =
+            dataBackend(DataBackend.ofUnionMember3(unionMember3))
+
+        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember4(unionMember4)`. */
+        fun dataBackend(unionMember4: DataBackend.UnionMember4) =
+            dataBackend(DataBackend.ofUnionMember4(unionMember4))
+
+        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember5(unionMember5)`. */
+        fun dataBackend(unionMember5: DataBackend.UnionMember5) =
+            dataBackend(DataBackend.ofUnionMember5(unionMember5))
+
+        /** The last time the data was polled. */
+        fun dateLastPolled(dateLastPolled: OffsetDateTime?) =
+            dateLastPolled(JsonField.ofNullable(dateLastPolled))
+
+        /** Alias for calling [Builder.dateLastPolled] with `dateLastPolled.orElse(null)`. */
+        fun dateLastPolled(dateLastPolled: Optional<OffsetDateTime>) =
+            dateLastPolled(dateLastPolled.getOrNull())
+
+        /**
+         * Sets [Builder.dateLastPolled] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateLastPolled] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun dateLastPolled(dateLastPolled: JsonField<OffsetDateTime>) = apply {
+            this.dateLastPolled = dateLastPolled
+        }
+
         fun project(project: Project?) = project(JsonField.ofNullable(project))
 
         /** Alias for calling [Builder.project] with `project.orElse(null)`. */
@@ -726,6 +867,33 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun project(project: JsonField<Project>) = apply { this.project = project }
+
+        /** The total number of records in the data backend. */
+        fun totalRecordsCount(totalRecordsCount: Long?) =
+            totalRecordsCount(JsonField.ofNullable(totalRecordsCount))
+
+        /**
+         * Alias for [Builder.totalRecordsCount].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun totalRecordsCount(totalRecordsCount: Long) =
+            totalRecordsCount(totalRecordsCount as Long?)
+
+        /** Alias for calling [Builder.totalRecordsCount] with `totalRecordsCount.orElse(null)`. */
+        fun totalRecordsCount(totalRecordsCount: Optional<Long>) =
+            totalRecordsCount(totalRecordsCount.getOrNull())
+
+        /**
+         * Sets [Builder.totalRecordsCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.totalRecordsCount] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun totalRecordsCount(totalRecordsCount: JsonField<Long>) = apply {
+            this.totalRecordsCount = totalRecordsCount
+        }
 
         fun workspace(workspace: Workspace?) = workspace(JsonField.ofNullable(workspace))
 
@@ -815,7 +983,10 @@ private constructor(
                 checkRequired("status", status),
                 checkRequired("statusMessage", statusMessage),
                 checkRequired("totalGoalCount", totalGoalCount),
+                dataBackend,
+                dateLastPolled,
                 project,
+                totalRecordsCount,
                 workspace,
                 workspaceId,
                 additionalProperties.toMutableMap(),
@@ -844,7 +1015,10 @@ private constructor(
         status().validate()
         statusMessage()
         totalGoalCount()
+        dataBackend().ifPresent { it.validate() }
+        dateLastPolled()
         project().ifPresent { it.validate() }
+        totalRecordsCount()
         workspace().ifPresent { it.validate() }
         workspaceId()
         validated = true
@@ -880,7 +1054,10 @@ private constructor(
             (status.asKnown().getOrNull()?.validity() ?: 0) +
             (if (statusMessage.asKnown().isPresent) 1 else 0) +
             (if (totalGoalCount.asKnown().isPresent) 1 else 0) +
+            (dataBackend.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (dateLastPolled.asKnown().isPresent) 1 else 0) +
             (project.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (totalRecordsCount.asKnown().isPresent) 1 else 0) +
             (workspace.asKnown().getOrNull()?.validity() ?: 0) +
             (if (workspaceId.asKnown().isPresent) 1 else 0)
 
@@ -1186,6 +1363,5224 @@ private constructor(
         override fun hashCode() = value.hashCode()
 
         override fun toString() = value.toString()
+    }
+
+    @JsonDeserialize(using = DataBackend.Deserializer::class)
+    @JsonSerialize(using = DataBackend.Serializer::class)
+    class DataBackend
+    private constructor(
+        private val unionMember0: UnionMember0? = null,
+        private val backendType: BackendType? = null,
+        private val unionMember2: UnionMember2? = null,
+        private val unionMember3: UnionMember3? = null,
+        private val unionMember4: UnionMember4? = null,
+        private val unionMember5: UnionMember5? = null,
+        private val _json: JsonValue? = null,
+    ) {
+
+        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+
+        fun backendType(): Optional<BackendType> = Optional.ofNullable(backendType)
+
+        fun unionMember2(): Optional<UnionMember2> = Optional.ofNullable(unionMember2)
+
+        fun unionMember3(): Optional<UnionMember3> = Optional.ofNullable(unionMember3)
+
+        fun unionMember4(): Optional<UnionMember4> = Optional.ofNullable(unionMember4)
+
+        fun unionMember5(): Optional<UnionMember5> = Optional.ofNullable(unionMember5)
+
+        fun isUnionMember0(): Boolean = unionMember0 != null
+
+        fun isBackendType(): Boolean = backendType != null
+
+        fun isUnionMember2(): Boolean = unionMember2 != null
+
+        fun isUnionMember3(): Boolean = unionMember3 != null
+
+        fun isUnionMember4(): Boolean = unionMember4 != null
+
+        fun isUnionMember5(): Boolean = unionMember5 != null
+
+        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+
+        fun asBackendType(): BackendType = backendType.getOrThrow("backendType")
+
+        fun asUnionMember2(): UnionMember2 = unionMember2.getOrThrow("unionMember2")
+
+        fun asUnionMember3(): UnionMember3 = unionMember3.getOrThrow("unionMember3")
+
+        fun asUnionMember4(): UnionMember4 = unionMember4.getOrThrow("unionMember4")
+
+        fun asUnionMember5(): UnionMember5 = unionMember5.getOrThrow("unionMember5")
+
+        fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
+
+        fun <T> accept(visitor: Visitor<T>): T =
+            when {
+                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
+                backendType != null -> visitor.visitBackendType(backendType)
+                unionMember2 != null -> visitor.visitUnionMember2(unionMember2)
+                unionMember3 != null -> visitor.visitUnionMember3(unionMember3)
+                unionMember4 != null -> visitor.visitUnionMember4(unionMember4)
+                unionMember5 != null -> visitor.visitUnionMember5(unionMember5)
+                else -> visitor.unknown(_json)
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): DataBackend = apply {
+            if (validated) {
+                return@apply
+            }
+
+            accept(
+                object : Visitor<Unit> {
+                    override fun visitUnionMember0(unionMember0: UnionMember0) {
+                        unionMember0.validate()
+                    }
+
+                    override fun visitBackendType(backendType: BackendType) {
+                        backendType.validate()
+                    }
+
+                    override fun visitUnionMember2(unionMember2: UnionMember2) {
+                        unionMember2.validate()
+                    }
+
+                    override fun visitUnionMember3(unionMember3: UnionMember3) {
+                        unionMember3.validate()
+                    }
+
+                    override fun visitUnionMember4(unionMember4: UnionMember4) {
+                        unionMember4.validate()
+                    }
+
+                    override fun visitUnionMember5(unionMember5: UnionMember5) {
+                        unionMember5.validate()
+                    }
+                }
+            )
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            accept(
+                object : Visitor<Int> {
+                    override fun visitUnionMember0(unionMember0: UnionMember0) =
+                        unionMember0.validity()
+
+                    override fun visitBackendType(backendType: BackendType) = backendType.validity()
+
+                    override fun visitUnionMember2(unionMember2: UnionMember2) =
+                        unionMember2.validity()
+
+                    override fun visitUnionMember3(unionMember3: UnionMember3) =
+                        unionMember3.validity()
+
+                    override fun visitUnionMember4(unionMember4: UnionMember4) =
+                        unionMember4.validity()
+
+                    override fun visitUnionMember5(unionMember5: UnionMember5) =
+                        unionMember5.validity()
+
+                    override fun unknown(json: JsonValue?) = 0
+                }
+            )
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is DataBackend &&
+                unionMember0 == other.unionMember0 &&
+                backendType == other.backendType &&
+                unionMember2 == other.unionMember2 &&
+                unionMember3 == other.unionMember3 &&
+                unionMember4 == other.unionMember4 &&
+                unionMember5 == other.unionMember5
+        }
+
+        override fun hashCode(): Int =
+            Objects.hash(
+                unionMember0,
+                backendType,
+                unionMember2,
+                unionMember3,
+                unionMember4,
+                unionMember5,
+            )
+
+        override fun toString(): String =
+            when {
+                unionMember0 != null -> "DataBackend{unionMember0=$unionMember0}"
+                backendType != null -> "DataBackend{backendType=$backendType}"
+                unionMember2 != null -> "DataBackend{unionMember2=$unionMember2}"
+                unionMember3 != null -> "DataBackend{unionMember3=$unionMember3}"
+                unionMember4 != null -> "DataBackend{unionMember4=$unionMember4}"
+                unionMember5 != null -> "DataBackend{unionMember5=$unionMember5}"
+                _json != null -> "DataBackend{_unknown=$_json}"
+                else -> throw IllegalStateException("Invalid DataBackend")
+            }
+
+        companion object {
+
+            @JvmStatic
+            fun ofUnionMember0(unionMember0: UnionMember0) =
+                DataBackend(unionMember0 = unionMember0)
+
+            @JvmStatic
+            fun ofBackendType(backendType: BackendType) = DataBackend(backendType = backendType)
+
+            @JvmStatic
+            fun ofUnionMember2(unionMember2: UnionMember2) =
+                DataBackend(unionMember2 = unionMember2)
+
+            @JvmStatic
+            fun ofUnionMember3(unionMember3: UnionMember3) =
+                DataBackend(unionMember3 = unionMember3)
+
+            @JvmStatic
+            fun ofUnionMember4(unionMember4: UnionMember4) =
+                DataBackend(unionMember4 = unionMember4)
+
+            @JvmStatic
+            fun ofUnionMember5(unionMember5: UnionMember5) =
+                DataBackend(unionMember5 = unionMember5)
+        }
+
+        /**
+         * An interface that defines how to map each variant of [DataBackend] to a value of type
+         * [T].
+         */
+        interface Visitor<out T> {
+
+            fun visitUnionMember0(unionMember0: UnionMember0): T
+
+            fun visitBackendType(backendType: BackendType): T
+
+            fun visitUnionMember2(unionMember2: UnionMember2): T
+
+            fun visitUnionMember3(unionMember3: UnionMember3): T
+
+            fun visitUnionMember4(unionMember4: UnionMember4): T
+
+            fun visitUnionMember5(unionMember5: UnionMember5): T
+
+            /**
+             * Maps an unknown variant of [DataBackend] to a value of type [T].
+             *
+             * An instance of [DataBackend] can contain an unknown variant if it was deserialized
+             * from data that doesn't match any known variant. For example, if the SDK is on an
+             * older version than the API, then the API may respond with new variants that the SDK
+             * is unaware of.
+             *
+             * @throws OpenlayerInvalidDataException in the default implementation.
+             */
+            fun unknown(json: JsonValue?): T {
+                throw OpenlayerInvalidDataException("Unknown DataBackend: $json")
+            }
+        }
+
+        internal class Deserializer : BaseDeserializer<DataBackend>(DataBackend::class) {
+
+            override fun ObjectCodec.deserialize(node: JsonNode): DataBackend {
+                val json = JsonValue.fromJsonNode(node)
+
+                val bestMatches =
+                    sequenceOf(
+                            tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
+                                DataBackend(unionMember0 = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<BackendType>())?.let {
+                                DataBackend(backendType = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<UnionMember2>())?.let {
+                                DataBackend(unionMember2 = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<UnionMember3>())?.let {
+                                DataBackend(unionMember3 = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<UnionMember4>())?.let {
+                                DataBackend(unionMember4 = it, _json = json)
+                            },
+                            tryDeserialize(node, jacksonTypeRef<UnionMember5>())?.let {
+                                DataBackend(unionMember5 = it, _json = json)
+                            },
+                        )
+                        .filterNotNull()
+                        .allMaxBy { it.validity() }
+                        .toList()
+                return when (bestMatches.size) {
+                    // This can happen if what we're deserializing is completely incompatible with
+                    // all the possible variants (e.g. deserializing from boolean).
+                    0 -> DataBackend(_json = json)
+                    1 -> bestMatches.single()
+                    // If there's more than one match with the highest validity, then use the first
+                    // completely valid match, or simply the first match if none are completely
+                    // valid.
+                    else -> bestMatches.firstOrNull { it.isValid() } ?: bestMatches.first()
+                }
+            }
+        }
+
+        internal class Serializer : BaseSerializer<DataBackend>(DataBackend::class) {
+
+            override fun serialize(
+                value: DataBackend,
+                generator: JsonGenerator,
+                provider: SerializerProvider,
+            ) {
+                when {
+                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
+                    value.backendType != null -> generator.writeObject(value.backendType)
+                    value.unionMember2 != null -> generator.writeObject(value.unionMember2)
+                    value.unionMember3 != null -> generator.writeObject(value.unionMember3)
+                    value.unionMember4 != null -> generator.writeObject(value.unionMember4)
+                    value.unionMember5 != null -> generator.writeObject(value.unionMember5)
+                    value._json != null -> generator.writeObject(value._json)
+                    else -> throw IllegalStateException("Invalid DataBackend")
+                }
+            }
+        }
+
+        class UnionMember0
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val backendType: JsonField<BackendType>,
+            private val bigqueryConnectionId: JsonField<String>,
+            private val config: JsonField<Config>,
+            private val datasetId: JsonField<String>,
+            private val projectId: JsonField<String>,
+            private val tableId: JsonField<String>,
+            private val partitionType: JsonField<PartitionType>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("backendType")
+                @ExcludeMissing
+                backendType: JsonField<BackendType> = JsonMissing.of(),
+                @JsonProperty("bigqueryConnectionId")
+                @ExcludeMissing
+                bigqueryConnectionId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("config")
+                @ExcludeMissing
+                config: JsonField<Config> = JsonMissing.of(),
+                @JsonProperty("datasetId")
+                @ExcludeMissing
+                datasetId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("projectId")
+                @ExcludeMissing
+                projectId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("tableId")
+                @ExcludeMissing
+                tableId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("partitionType")
+                @ExcludeMissing
+                partitionType: JsonField<PartitionType> = JsonMissing.of(),
+            ) : this(
+                backendType,
+                bigqueryConnectionId,
+                config,
+                datasetId,
+                projectId,
+                tableId,
+                partitionType,
+                mutableMapOf(),
+            )
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun backendType(): BackendType = backendType.getRequired("backendType")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun bigqueryConnectionId(): Optional<String> =
+                bigqueryConnectionId.getOptional("bigqueryConnectionId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun config(): Config = config.getRequired("config")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun datasetId(): String = datasetId.getRequired("datasetId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun projectId(): String = projectId.getRequired("projectId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun tableId(): Optional<String> = tableId.getOptional("tableId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun partitionType(): Optional<PartitionType> =
+                partitionType.getOptional("partitionType")
+
+            /**
+             * Returns the raw JSON value of [backendType].
+             *
+             * Unlike [backendType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("backendType")
+            @ExcludeMissing
+            fun _backendType(): JsonField<BackendType> = backendType
+
+            /**
+             * Returns the raw JSON value of [bigqueryConnectionId].
+             *
+             * Unlike [bigqueryConnectionId], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("bigqueryConnectionId")
+            @ExcludeMissing
+            fun _bigqueryConnectionId(): JsonField<String> = bigqueryConnectionId
+
+            /**
+             * Returns the raw JSON value of [config].
+             *
+             * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+            /**
+             * Returns the raw JSON value of [datasetId].
+             *
+             * Unlike [datasetId], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("datasetId")
+            @ExcludeMissing
+            fun _datasetId(): JsonField<String> = datasetId
+
+            /**
+             * Returns the raw JSON value of [projectId].
+             *
+             * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("projectId")
+            @ExcludeMissing
+            fun _projectId(): JsonField<String> = projectId
+
+            /**
+             * Returns the raw JSON value of [tableId].
+             *
+             * Unlike [tableId], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("tableId") @ExcludeMissing fun _tableId(): JsonField<String> = tableId
+
+            /**
+             * Returns the raw JSON value of [partitionType].
+             *
+             * Unlike [partitionType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("partitionType")
+            @ExcludeMissing
+            fun _partitionType(): JsonField<PartitionType> = partitionType
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [UnionMember0].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .bigqueryConnectionId()
+                 * .config()
+                 * .datasetId()
+                 * .projectId()
+                 * .tableId()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [UnionMember0]. */
+            class Builder internal constructor() {
+
+                private var backendType: JsonField<BackendType>? = null
+                private var bigqueryConnectionId: JsonField<String>? = null
+                private var config: JsonField<Config>? = null
+                private var datasetId: JsonField<String>? = null
+                private var projectId: JsonField<String>? = null
+                private var tableId: JsonField<String>? = null
+                private var partitionType: JsonField<PartitionType> = JsonMissing.of()
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(unionMember0: UnionMember0) = apply {
+                    backendType = unionMember0.backendType
+                    bigqueryConnectionId = unionMember0.bigqueryConnectionId
+                    config = unionMember0.config
+                    datasetId = unionMember0.datasetId
+                    projectId = unionMember0.projectId
+                    tableId = unionMember0.tableId
+                    partitionType = unionMember0.partitionType
+                    additionalProperties = unionMember0.additionalProperties.toMutableMap()
+                }
+
+                fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
+
+                /**
+                 * Sets [Builder.backendType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.backendType] with a well-typed [BackendType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun backendType(backendType: JsonField<BackendType>) = apply {
+                    this.backendType = backendType
+                }
+
+                fun bigqueryConnectionId(bigqueryConnectionId: String?) =
+                    bigqueryConnectionId(JsonField.ofNullable(bigqueryConnectionId))
+
+                /**
+                 * Alias for calling [Builder.bigqueryConnectionId] with
+                 * `bigqueryConnectionId.orElse(null)`.
+                 */
+                fun bigqueryConnectionId(bigqueryConnectionId: Optional<String>) =
+                    bigqueryConnectionId(bigqueryConnectionId.getOrNull())
+
+                /**
+                 * Sets [Builder.bigqueryConnectionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.bigqueryConnectionId] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun bigqueryConnectionId(bigqueryConnectionId: JsonField<String>) = apply {
+                    this.bigqueryConnectionId = bigqueryConnectionId
+                }
+
+                fun config(config: Config) = config(JsonField.of(config))
+
+                /**
+                 * Sets [Builder.config] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.config] with a well-typed [Config] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun config(config: JsonField<Config>) = apply { this.config = config }
+
+                fun datasetId(datasetId: String) = datasetId(JsonField.of(datasetId))
+
+                /**
+                 * Sets [Builder.datasetId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.datasetId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun datasetId(datasetId: JsonField<String>) = apply { this.datasetId = datasetId }
+
+                fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+
+                /**
+                 * Sets [Builder.projectId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.projectId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+
+                fun tableId(tableId: String?) = tableId(JsonField.ofNullable(tableId))
+
+                /** Alias for calling [Builder.tableId] with `tableId.orElse(null)`. */
+                fun tableId(tableId: Optional<String>) = tableId(tableId.getOrNull())
+
+                /**
+                 * Sets [Builder.tableId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.tableId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun tableId(tableId: JsonField<String>) = apply { this.tableId = tableId }
+
+                fun partitionType(partitionType: PartitionType?) =
+                    partitionType(JsonField.ofNullable(partitionType))
+
+                /** Alias for calling [Builder.partitionType] with `partitionType.orElse(null)`. */
+                fun partitionType(partitionType: Optional<PartitionType>) =
+                    partitionType(partitionType.getOrNull())
+
+                /**
+                 * Sets [Builder.partitionType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.partitionType] with a well-typed [PartitionType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun partitionType(partitionType: JsonField<PartitionType>) = apply {
+                    this.partitionType = partitionType
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [UnionMember0].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .bigqueryConnectionId()
+                 * .config()
+                 * .datasetId()
+                 * .projectId()
+                 * .tableId()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): UnionMember0 =
+                    UnionMember0(
+                        checkRequired("backendType", backendType),
+                        checkRequired("bigqueryConnectionId", bigqueryConnectionId),
+                        checkRequired("config", config),
+                        checkRequired("datasetId", datasetId),
+                        checkRequired("projectId", projectId),
+                        checkRequired("tableId", tableId),
+                        partitionType,
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): UnionMember0 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                backendType().validate()
+                bigqueryConnectionId()
+                config().validate()
+                datasetId()
+                projectId()
+                tableId()
+                partitionType().ifPresent { it.validate() }
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (backendType.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (bigqueryConnectionId.asKnown().isPresent) 1 else 0) +
+                    (config.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (datasetId.asKnown().isPresent) 1 else 0) +
+                    (if (projectId.asKnown().isPresent) 1 else 0) +
+                    (if (tableId.asKnown().isPresent) 1 else 0) +
+                    (partitionType.asKnown().getOrNull()?.validity() ?: 0)
+
+            class BackendType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val BIGQUERY = of("bigquery")
+
+                    @JvmStatic fun of(value: String) = BackendType(JsonField.of(value))
+                }
+
+                /** An enum containing [BackendType]'s known values. */
+                enum class Known {
+                    BIGQUERY
+                }
+
+                /**
+                 * An enum containing [BackendType]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [BackendType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    BIGQUERY,
+                    /**
+                     * An enum member indicating that [BackendType] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        BIGQUERY -> Value.BIGQUERY
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        BIGQUERY -> Known.BIGQUERY
+                        else -> throw OpenlayerInvalidDataException("Unknown BackendType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): BackendType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is BackendType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            class Config
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val groundTruthColumnName: JsonField<String>,
+                private val humanFeedbackColumnName: JsonField<String>,
+                private val inferenceIdColumnName: JsonField<String>,
+                private val latencyColumnName: JsonField<String>,
+                private val timestampColumnName: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("groundTruthColumnName")
+                    @ExcludeMissing
+                    groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("humanFeedbackColumnName")
+                    @ExcludeMissing
+                    humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("inferenceIdColumnName")
+                    @ExcludeMissing
+                    inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("latencyColumnName")
+                    @ExcludeMissing
+                    latencyColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("timestampColumnName")
+                    @ExcludeMissing
+                    timestampColumnName: JsonField<String> = JsonMissing.of(),
+                ) : this(
+                    groundTruthColumnName,
+                    humanFeedbackColumnName,
+                    inferenceIdColumnName,
+                    latencyColumnName,
+                    timestampColumnName,
+                    mutableMapOf(),
+                )
+
+                /**
+                 * Name of the column with the ground truths.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun groundTruthColumnName(): Optional<String> =
+                    groundTruthColumnName.getOptional("groundTruthColumnName")
+
+                /**
+                 * Name of the column with human feedback.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun humanFeedbackColumnName(): Optional<String> =
+                    humanFeedbackColumnName.getOptional("humanFeedbackColumnName")
+
+                /**
+                 * Name of the column with the inference ids. This is useful if you want to update
+                 * rows at a later point in time. If not provided, a unique id is generated by
+                 * Openlayer.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun inferenceIdColumnName(): Optional<String> =
+                    inferenceIdColumnName.getOptional("inferenceIdColumnName")
+
+                /**
+                 * Name of the column with the latencies.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun latencyColumnName(): Optional<String> =
+                    latencyColumnName.getOptional("latencyColumnName")
+
+                /**
+                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
+                 * not provided, the upload timestamp is used.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun timestampColumnName(): Optional<String> =
+                    timestampColumnName.getOptional("timestampColumnName")
+
+                /**
+                 * Returns the raw JSON value of [groundTruthColumnName].
+                 *
+                 * Unlike [groundTruthColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("groundTruthColumnName")
+                @ExcludeMissing
+                fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
+
+                /**
+                 * Returns the raw JSON value of [humanFeedbackColumnName].
+                 *
+                 * Unlike [humanFeedbackColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("humanFeedbackColumnName")
+                @ExcludeMissing
+                fun _humanFeedbackColumnName(): JsonField<String> = humanFeedbackColumnName
+
+                /**
+                 * Returns the raw JSON value of [inferenceIdColumnName].
+                 *
+                 * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
+
+                /**
+                 * Returns the raw JSON value of [latencyColumnName].
+                 *
+                 * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                fun _latencyColumnName(): JsonField<String> = latencyColumnName
+
+                /**
+                 * Returns the raw JSON value of [timestampColumnName].
+                 *
+                 * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                fun _timestampColumnName(): JsonField<String> = timestampColumnName
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /** Returns a mutable builder for constructing an instance of [Config]. */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [Config]. */
+                class Builder internal constructor() {
+
+                    private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
+                    private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()
+                    private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
+                    private var latencyColumnName: JsonField<String> = JsonMissing.of()
+                    private var timestampColumnName: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(config: Config) = apply {
+                        groundTruthColumnName = config.groundTruthColumnName
+                        humanFeedbackColumnName = config.humanFeedbackColumnName
+                        inferenceIdColumnName = config.inferenceIdColumnName
+                        latencyColumnName = config.latencyColumnName
+                        timestampColumnName = config.timestampColumnName
+                        additionalProperties = config.additionalProperties.toMutableMap()
+                    }
+
+                    /** Name of the column with the ground truths. */
+                    fun groundTruthColumnName(groundTruthColumnName: String?) =
+                        groundTruthColumnName(JsonField.ofNullable(groundTruthColumnName))
+
+                    /**
+                     * Alias for calling [Builder.groundTruthColumnName] with
+                     * `groundTruthColumnName.orElse(null)`.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: Optional<String>) =
+                        groundTruthColumnName(groundTruthColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.groundTruthColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.groundTruthColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
+                        this.groundTruthColumnName = groundTruthColumnName
+                    }
+
+                    /** Name of the column with human feedback. */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: String?) =
+                        humanFeedbackColumnName(JsonField.ofNullable(humanFeedbackColumnName))
+
+                    /**
+                     * Alias for calling [Builder.humanFeedbackColumnName] with
+                     * `humanFeedbackColumnName.orElse(null)`.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: Optional<String>) =
+                        humanFeedbackColumnName(humanFeedbackColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.humanFeedbackColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.humanFeedbackColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: JsonField<String>) =
+                        apply {
+                            this.humanFeedbackColumnName = humanFeedbackColumnName
+                        }
+
+                    /**
+                     * Name of the column with the inference ids. This is useful if you want to
+                     * update rows at a later point in time. If not provided, a unique id is
+                     * generated by Openlayer.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: String?) =
+                        inferenceIdColumnName(JsonField.ofNullable(inferenceIdColumnName))
+
+                    /**
+                     * Alias for calling [Builder.inferenceIdColumnName] with
+                     * `inferenceIdColumnName.orElse(null)`.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: Optional<String>) =
+                        inferenceIdColumnName(inferenceIdColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
+                        this.inferenceIdColumnName = inferenceIdColumnName
+                    }
+
+                    /** Name of the column with the latencies. */
+                    fun latencyColumnName(latencyColumnName: String?) =
+                        latencyColumnName(JsonField.ofNullable(latencyColumnName))
+
+                    /**
+                     * Alias for calling [Builder.latencyColumnName] with
+                     * `latencyColumnName.orElse(null)`.
+                     */
+                    fun latencyColumnName(latencyColumnName: Optional<String>) =
+                        latencyColumnName(latencyColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.latencyColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
+                        this.latencyColumnName = latencyColumnName
+                    }
+
+                    /**
+                     * Name of the column with the timestamps. Timestamps must be in UNIX sec
+                     * format. If not provided, the upload timestamp is used.
+                     */
+                    fun timestampColumnName(timestampColumnName: String?) =
+                        timestampColumnName(JsonField.ofNullable(timestampColumnName))
+
+                    /**
+                     * Alias for calling [Builder.timestampColumnName] with
+                     * `timestampColumnName.orElse(null)`.
+                     */
+                    fun timestampColumnName(timestampColumnName: Optional<String>) =
+                        timestampColumnName(timestampColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.timestampColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
+                        this.timestampColumnName = timestampColumnName
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [Config].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): Config =
+                        Config(
+                            groundTruthColumnName,
+                            humanFeedbackColumnName,
+                            inferenceIdColumnName,
+                            latencyColumnName,
+                            timestampColumnName,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Config = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    groundTruthColumnName()
+                    humanFeedbackColumnName()
+                    inferenceIdColumnName()
+                    latencyColumnName()
+                    timestampColumnName()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (humanFeedbackColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Config &&
+                        groundTruthColumnName == other.groundTruthColumnName &&
+                        humanFeedbackColumnName == other.humanFeedbackColumnName &&
+                        inferenceIdColumnName == other.inferenceIdColumnName &&
+                        latencyColumnName == other.latencyColumnName &&
+                        timestampColumnName == other.timestampColumnName &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(
+                        groundTruthColumnName,
+                        humanFeedbackColumnName,
+                        inferenceIdColumnName,
+                        latencyColumnName,
+                        timestampColumnName,
+                        additionalProperties,
+                    )
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "Config{groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
+            }
+
+            class PartitionType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val DAY = of("DAY")
+
+                    @JvmField val MONTH = of("MONTH")
+
+                    @JvmField val YEAR = of("YEAR")
+
+                    @JvmStatic fun of(value: String) = PartitionType(JsonField.of(value))
+                }
+
+                /** An enum containing [PartitionType]'s known values. */
+                enum class Known {
+                    DAY,
+                    MONTH,
+                    YEAR,
+                }
+
+                /**
+                 * An enum containing [PartitionType]'s known values, as well as an [_UNKNOWN]
+                 * member.
+                 *
+                 * An instance of [PartitionType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    DAY,
+                    MONTH,
+                    YEAR,
+                    /**
+                     * An enum member indicating that [PartitionType] was instantiated with an
+                     * unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        DAY -> Value.DAY
+                        MONTH -> Value.MONTH
+                        YEAR -> Value.YEAR
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        DAY -> Known.DAY
+                        MONTH -> Known.MONTH
+                        YEAR -> Known.YEAR
+                        else -> throw OpenlayerInvalidDataException("Unknown PartitionType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): PartitionType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is PartitionType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember0 &&
+                    backendType == other.backendType &&
+                    bigqueryConnectionId == other.bigqueryConnectionId &&
+                    config == other.config &&
+                    datasetId == other.datasetId &&
+                    projectId == other.projectId &&
+                    tableId == other.tableId &&
+                    partitionType == other.partitionType &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    backendType,
+                    bigqueryConnectionId,
+                    config,
+                    datasetId,
+                    projectId,
+                    tableId,
+                    partitionType,
+                    additionalProperties,
+                )
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "UnionMember0{backendType=$backendType, bigqueryConnectionId=$bigqueryConnectionId, config=$config, datasetId=$datasetId, projectId=$projectId, tableId=$tableId, partitionType=$partitionType, additionalProperties=$additionalProperties}"
+        }
+
+        class BackendType
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val backendType: JsonField<InnerBackendType>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("backendType")
+                @ExcludeMissing
+                backendType: JsonField<InnerBackendType> = JsonMissing.of()
+            ) : this(backendType, mutableMapOf())
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun backendType(): InnerBackendType = backendType.getRequired("backendType")
+
+            /**
+             * Returns the raw JSON value of [backendType].
+             *
+             * Unlike [backendType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("backendType")
+            @ExcludeMissing
+            fun _backendType(): JsonField<InnerBackendType> = backendType
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [BackendType].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [BackendType]. */
+            class Builder internal constructor() {
+
+                private var backendType: JsonField<InnerBackendType>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(backendType: BackendType) = apply {
+                    this.backendType = backendType.backendType
+                    additionalProperties = backendType.additionalProperties.toMutableMap()
+                }
+
+                fun backendType(backendType: InnerBackendType) =
+                    backendType(JsonField.of(backendType))
+
+                /**
+                 * Sets [Builder.backendType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.backendType] with a well-typed
+                 * [InnerBackendType] value instead. This method is primarily for setting the field
+                 * to an undocumented or not yet supported value.
+                 */
+                fun backendType(backendType: JsonField<InnerBackendType>) = apply {
+                    this.backendType = backendType
+                }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [BackendType].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): BackendType =
+                    BackendType(
+                        checkRequired("backendType", backendType),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): BackendType = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                backendType().validate()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int = (backendType.asKnown().getOrNull()?.validity() ?: 0)
+
+            class InnerBackendType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val DEFAULT = of("default")
+
+                    @JvmStatic fun of(value: String) = InnerBackendType(JsonField.of(value))
+                }
+
+                /** An enum containing [InnerBackendType]'s known values. */
+                enum class Known {
+                    DEFAULT
+                }
+
+                /**
+                 * An enum containing [InnerBackendType]'s known values, as well as an [_UNKNOWN]
+                 * member.
+                 *
+                 * An instance of [InnerBackendType] can contain an unknown value in a couple of
+                 * cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    DEFAULT,
+                    /**
+                     * An enum member indicating that [InnerBackendType] was instantiated with an
+                     * unknown value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        DEFAULT -> Value.DEFAULT
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        DEFAULT -> Known.DEFAULT
+                        else ->
+                            throw OpenlayerInvalidDataException("Unknown InnerBackendType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): InnerBackendType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is InnerBackendType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is BackendType &&
+                    backendType == other.backendType &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy { Objects.hash(backendType, additionalProperties) }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "BackendType{backendType=$backendType, additionalProperties=$additionalProperties}"
+        }
+
+        class UnionMember2
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val backendType: JsonField<BackendType>,
+            private val config: JsonField<Config>,
+            private val database: JsonField<String>,
+            private val schema: JsonField<String>,
+            private val snowflakeConnectionId: JsonField<String>,
+            private val table: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("backendType")
+                @ExcludeMissing
+                backendType: JsonField<BackendType> = JsonMissing.of(),
+                @JsonProperty("config")
+                @ExcludeMissing
+                config: JsonField<Config> = JsonMissing.of(),
+                @JsonProperty("database")
+                @ExcludeMissing
+                database: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("schema")
+                @ExcludeMissing
+                schema: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("snowflakeConnectionId")
+                @ExcludeMissing
+                snowflakeConnectionId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("table") @ExcludeMissing table: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                backendType,
+                config,
+                database,
+                schema,
+                snowflakeConnectionId,
+                table,
+                mutableMapOf(),
+            )
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun backendType(): BackendType = backendType.getRequired("backendType")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun config(): Config = config.getRequired("config")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun database(): String = database.getRequired("database")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun schema(): String = schema.getRequired("schema")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun snowflakeConnectionId(): Optional<String> =
+                snowflakeConnectionId.getOptional("snowflakeConnectionId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun table(): Optional<String> = table.getOptional("table")
+
+            /**
+             * Returns the raw JSON value of [backendType].
+             *
+             * Unlike [backendType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("backendType")
+            @ExcludeMissing
+            fun _backendType(): JsonField<BackendType> = backendType
+
+            /**
+             * Returns the raw JSON value of [config].
+             *
+             * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+            /**
+             * Returns the raw JSON value of [database].
+             *
+             * Unlike [database], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("database") @ExcludeMissing fun _database(): JsonField<String> = database
+
+            /**
+             * Returns the raw JSON value of [schema].
+             *
+             * Unlike [schema], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("schema") @ExcludeMissing fun _schema(): JsonField<String> = schema
+
+            /**
+             * Returns the raw JSON value of [snowflakeConnectionId].
+             *
+             * Unlike [snowflakeConnectionId], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("snowflakeConnectionId")
+            @ExcludeMissing
+            fun _snowflakeConnectionId(): JsonField<String> = snowflakeConnectionId
+
+            /**
+             * Returns the raw JSON value of [table].
+             *
+             * Unlike [table], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("table") @ExcludeMissing fun _table(): JsonField<String> = table
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [UnionMember2].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .database()
+                 * .schema()
+                 * .snowflakeConnectionId()
+                 * .table()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [UnionMember2]. */
+            class Builder internal constructor() {
+
+                private var backendType: JsonField<BackendType>? = null
+                private var config: JsonField<Config>? = null
+                private var database: JsonField<String>? = null
+                private var schema: JsonField<String>? = null
+                private var snowflakeConnectionId: JsonField<String>? = null
+                private var table: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(unionMember2: UnionMember2) = apply {
+                    backendType = unionMember2.backendType
+                    config = unionMember2.config
+                    database = unionMember2.database
+                    schema = unionMember2.schema
+                    snowflakeConnectionId = unionMember2.snowflakeConnectionId
+                    table = unionMember2.table
+                    additionalProperties = unionMember2.additionalProperties.toMutableMap()
+                }
+
+                fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
+
+                /**
+                 * Sets [Builder.backendType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.backendType] with a well-typed [BackendType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun backendType(backendType: JsonField<BackendType>) = apply {
+                    this.backendType = backendType
+                }
+
+                fun config(config: Config) = config(JsonField.of(config))
+
+                /**
+                 * Sets [Builder.config] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.config] with a well-typed [Config] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun config(config: JsonField<Config>) = apply { this.config = config }
+
+                fun database(database: String) = database(JsonField.of(database))
+
+                /**
+                 * Sets [Builder.database] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.database] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun database(database: JsonField<String>) = apply { this.database = database }
+
+                fun schema(schema: String) = schema(JsonField.of(schema))
+
+                /**
+                 * Sets [Builder.schema] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.schema] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun schema(schema: JsonField<String>) = apply { this.schema = schema }
+
+                fun snowflakeConnectionId(snowflakeConnectionId: String?) =
+                    snowflakeConnectionId(JsonField.ofNullable(snowflakeConnectionId))
+
+                /**
+                 * Alias for calling [Builder.snowflakeConnectionId] with
+                 * `snowflakeConnectionId.orElse(null)`.
+                 */
+                fun snowflakeConnectionId(snowflakeConnectionId: Optional<String>) =
+                    snowflakeConnectionId(snowflakeConnectionId.getOrNull())
+
+                /**
+                 * Sets [Builder.snowflakeConnectionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.snowflakeConnectionId] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
+                fun snowflakeConnectionId(snowflakeConnectionId: JsonField<String>) = apply {
+                    this.snowflakeConnectionId = snowflakeConnectionId
+                }
+
+                fun table(table: String?) = table(JsonField.ofNullable(table))
+
+                /** Alias for calling [Builder.table] with `table.orElse(null)`. */
+                fun table(table: Optional<String>) = table(table.getOrNull())
+
+                /**
+                 * Sets [Builder.table] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.table] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun table(table: JsonField<String>) = apply { this.table = table }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [UnionMember2].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .database()
+                 * .schema()
+                 * .snowflakeConnectionId()
+                 * .table()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): UnionMember2 =
+                    UnionMember2(
+                        checkRequired("backendType", backendType),
+                        checkRequired("config", config),
+                        checkRequired("database", database),
+                        checkRequired("schema", schema),
+                        checkRequired("snowflakeConnectionId", snowflakeConnectionId),
+                        checkRequired("table", table),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): UnionMember2 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                backendType().validate()
+                config().validate()
+                database()
+                schema()
+                snowflakeConnectionId()
+                table()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (backendType.asKnown().getOrNull()?.validity() ?: 0) +
+                    (config.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (database.asKnown().isPresent) 1 else 0) +
+                    (if (schema.asKnown().isPresent) 1 else 0) +
+                    (if (snowflakeConnectionId.asKnown().isPresent) 1 else 0) +
+                    (if (table.asKnown().isPresent) 1 else 0)
+
+            class BackendType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val SNOWFLAKE = of("snowflake")
+
+                    @JvmStatic fun of(value: String) = BackendType(JsonField.of(value))
+                }
+
+                /** An enum containing [BackendType]'s known values. */
+                enum class Known {
+                    SNOWFLAKE
+                }
+
+                /**
+                 * An enum containing [BackendType]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [BackendType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    SNOWFLAKE,
+                    /**
+                     * An enum member indicating that [BackendType] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        SNOWFLAKE -> Value.SNOWFLAKE
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        SNOWFLAKE -> Known.SNOWFLAKE
+                        else -> throw OpenlayerInvalidDataException("Unknown BackendType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): BackendType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is BackendType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            class Config
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val groundTruthColumnName: JsonField<String>,
+                private val humanFeedbackColumnName: JsonField<String>,
+                private val inferenceIdColumnName: JsonField<String>,
+                private val latencyColumnName: JsonField<String>,
+                private val timestampColumnName: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("groundTruthColumnName")
+                    @ExcludeMissing
+                    groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("humanFeedbackColumnName")
+                    @ExcludeMissing
+                    humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("inferenceIdColumnName")
+                    @ExcludeMissing
+                    inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("latencyColumnName")
+                    @ExcludeMissing
+                    latencyColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("timestampColumnName")
+                    @ExcludeMissing
+                    timestampColumnName: JsonField<String> = JsonMissing.of(),
+                ) : this(
+                    groundTruthColumnName,
+                    humanFeedbackColumnName,
+                    inferenceIdColumnName,
+                    latencyColumnName,
+                    timestampColumnName,
+                    mutableMapOf(),
+                )
+
+                /**
+                 * Name of the column with the ground truths.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun groundTruthColumnName(): Optional<String> =
+                    groundTruthColumnName.getOptional("groundTruthColumnName")
+
+                /**
+                 * Name of the column with human feedback.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun humanFeedbackColumnName(): Optional<String> =
+                    humanFeedbackColumnName.getOptional("humanFeedbackColumnName")
+
+                /**
+                 * Name of the column with the inference ids. This is useful if you want to update
+                 * rows at a later point in time. If not provided, a unique id is generated by
+                 * Openlayer.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun inferenceIdColumnName(): Optional<String> =
+                    inferenceIdColumnName.getOptional("inferenceIdColumnName")
+
+                /**
+                 * Name of the column with the latencies.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun latencyColumnName(): Optional<String> =
+                    latencyColumnName.getOptional("latencyColumnName")
+
+                /**
+                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
+                 * not provided, the upload timestamp is used.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun timestampColumnName(): Optional<String> =
+                    timestampColumnName.getOptional("timestampColumnName")
+
+                /**
+                 * Returns the raw JSON value of [groundTruthColumnName].
+                 *
+                 * Unlike [groundTruthColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("groundTruthColumnName")
+                @ExcludeMissing
+                fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
+
+                /**
+                 * Returns the raw JSON value of [humanFeedbackColumnName].
+                 *
+                 * Unlike [humanFeedbackColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("humanFeedbackColumnName")
+                @ExcludeMissing
+                fun _humanFeedbackColumnName(): JsonField<String> = humanFeedbackColumnName
+
+                /**
+                 * Returns the raw JSON value of [inferenceIdColumnName].
+                 *
+                 * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
+
+                /**
+                 * Returns the raw JSON value of [latencyColumnName].
+                 *
+                 * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                fun _latencyColumnName(): JsonField<String> = latencyColumnName
+
+                /**
+                 * Returns the raw JSON value of [timestampColumnName].
+                 *
+                 * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                fun _timestampColumnName(): JsonField<String> = timestampColumnName
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /** Returns a mutable builder for constructing an instance of [Config]. */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [Config]. */
+                class Builder internal constructor() {
+
+                    private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
+                    private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()
+                    private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
+                    private var latencyColumnName: JsonField<String> = JsonMissing.of()
+                    private var timestampColumnName: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(config: Config) = apply {
+                        groundTruthColumnName = config.groundTruthColumnName
+                        humanFeedbackColumnName = config.humanFeedbackColumnName
+                        inferenceIdColumnName = config.inferenceIdColumnName
+                        latencyColumnName = config.latencyColumnName
+                        timestampColumnName = config.timestampColumnName
+                        additionalProperties = config.additionalProperties.toMutableMap()
+                    }
+
+                    /** Name of the column with the ground truths. */
+                    fun groundTruthColumnName(groundTruthColumnName: String?) =
+                        groundTruthColumnName(JsonField.ofNullable(groundTruthColumnName))
+
+                    /**
+                     * Alias for calling [Builder.groundTruthColumnName] with
+                     * `groundTruthColumnName.orElse(null)`.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: Optional<String>) =
+                        groundTruthColumnName(groundTruthColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.groundTruthColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.groundTruthColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
+                        this.groundTruthColumnName = groundTruthColumnName
+                    }
+
+                    /** Name of the column with human feedback. */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: String?) =
+                        humanFeedbackColumnName(JsonField.ofNullable(humanFeedbackColumnName))
+
+                    /**
+                     * Alias for calling [Builder.humanFeedbackColumnName] with
+                     * `humanFeedbackColumnName.orElse(null)`.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: Optional<String>) =
+                        humanFeedbackColumnName(humanFeedbackColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.humanFeedbackColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.humanFeedbackColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: JsonField<String>) =
+                        apply {
+                            this.humanFeedbackColumnName = humanFeedbackColumnName
+                        }
+
+                    /**
+                     * Name of the column with the inference ids. This is useful if you want to
+                     * update rows at a later point in time. If not provided, a unique id is
+                     * generated by Openlayer.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: String?) =
+                        inferenceIdColumnName(JsonField.ofNullable(inferenceIdColumnName))
+
+                    /**
+                     * Alias for calling [Builder.inferenceIdColumnName] with
+                     * `inferenceIdColumnName.orElse(null)`.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: Optional<String>) =
+                        inferenceIdColumnName(inferenceIdColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
+                        this.inferenceIdColumnName = inferenceIdColumnName
+                    }
+
+                    /** Name of the column with the latencies. */
+                    fun latencyColumnName(latencyColumnName: String?) =
+                        latencyColumnName(JsonField.ofNullable(latencyColumnName))
+
+                    /**
+                     * Alias for calling [Builder.latencyColumnName] with
+                     * `latencyColumnName.orElse(null)`.
+                     */
+                    fun latencyColumnName(latencyColumnName: Optional<String>) =
+                        latencyColumnName(latencyColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.latencyColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
+                        this.latencyColumnName = latencyColumnName
+                    }
+
+                    /**
+                     * Name of the column with the timestamps. Timestamps must be in UNIX sec
+                     * format. If not provided, the upload timestamp is used.
+                     */
+                    fun timestampColumnName(timestampColumnName: String?) =
+                        timestampColumnName(JsonField.ofNullable(timestampColumnName))
+
+                    /**
+                     * Alias for calling [Builder.timestampColumnName] with
+                     * `timestampColumnName.orElse(null)`.
+                     */
+                    fun timestampColumnName(timestampColumnName: Optional<String>) =
+                        timestampColumnName(timestampColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.timestampColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
+                        this.timestampColumnName = timestampColumnName
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [Config].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): Config =
+                        Config(
+                            groundTruthColumnName,
+                            humanFeedbackColumnName,
+                            inferenceIdColumnName,
+                            latencyColumnName,
+                            timestampColumnName,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Config = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    groundTruthColumnName()
+                    humanFeedbackColumnName()
+                    inferenceIdColumnName()
+                    latencyColumnName()
+                    timestampColumnName()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (humanFeedbackColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Config &&
+                        groundTruthColumnName == other.groundTruthColumnName &&
+                        humanFeedbackColumnName == other.humanFeedbackColumnName &&
+                        inferenceIdColumnName == other.inferenceIdColumnName &&
+                        latencyColumnName == other.latencyColumnName &&
+                        timestampColumnName == other.timestampColumnName &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(
+                        groundTruthColumnName,
+                        humanFeedbackColumnName,
+                        inferenceIdColumnName,
+                        latencyColumnName,
+                        timestampColumnName,
+                        additionalProperties,
+                    )
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "Config{groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember2 &&
+                    backendType == other.backendType &&
+                    config == other.config &&
+                    database == other.database &&
+                    schema == other.schema &&
+                    snowflakeConnectionId == other.snowflakeConnectionId &&
+                    table == other.table &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    backendType,
+                    config,
+                    database,
+                    schema,
+                    snowflakeConnectionId,
+                    table,
+                    additionalProperties,
+                )
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "UnionMember2{backendType=$backendType, config=$config, database=$database, schema=$schema, snowflakeConnectionId=$snowflakeConnectionId, table=$table, additionalProperties=$additionalProperties}"
+        }
+
+        class UnionMember3
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val backendType: JsonField<BackendType>,
+            private val config: JsonField<Config>,
+            private val databricksDtlConnectionId: JsonField<String>,
+            private val tableId: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("backendType")
+                @ExcludeMissing
+                backendType: JsonField<BackendType> = JsonMissing.of(),
+                @JsonProperty("config")
+                @ExcludeMissing
+                config: JsonField<Config> = JsonMissing.of(),
+                @JsonProperty("databricksDtlConnectionId")
+                @ExcludeMissing
+                databricksDtlConnectionId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("tableId")
+                @ExcludeMissing
+                tableId: JsonField<String> = JsonMissing.of(),
+            ) : this(backendType, config, databricksDtlConnectionId, tableId, mutableMapOf())
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun backendType(): BackendType = backendType.getRequired("backendType")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun config(): Config = config.getRequired("config")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun databricksDtlConnectionId(): Optional<String> =
+                databricksDtlConnectionId.getOptional("databricksDtlConnectionId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun tableId(): Optional<String> = tableId.getOptional("tableId")
+
+            /**
+             * Returns the raw JSON value of [backendType].
+             *
+             * Unlike [backendType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("backendType")
+            @ExcludeMissing
+            fun _backendType(): JsonField<BackendType> = backendType
+
+            /**
+             * Returns the raw JSON value of [config].
+             *
+             * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+            /**
+             * Returns the raw JSON value of [databricksDtlConnectionId].
+             *
+             * Unlike [databricksDtlConnectionId], this method doesn't throw if the JSON field has
+             * an unexpected type.
+             */
+            @JsonProperty("databricksDtlConnectionId")
+            @ExcludeMissing
+            fun _databricksDtlConnectionId(): JsonField<String> = databricksDtlConnectionId
+
+            /**
+             * Returns the raw JSON value of [tableId].
+             *
+             * Unlike [tableId], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("tableId") @ExcludeMissing fun _tableId(): JsonField<String> = tableId
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [UnionMember3].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .databricksDtlConnectionId()
+                 * .tableId()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [UnionMember3]. */
+            class Builder internal constructor() {
+
+                private var backendType: JsonField<BackendType>? = null
+                private var config: JsonField<Config>? = null
+                private var databricksDtlConnectionId: JsonField<String>? = null
+                private var tableId: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(unionMember3: UnionMember3) = apply {
+                    backendType = unionMember3.backendType
+                    config = unionMember3.config
+                    databricksDtlConnectionId = unionMember3.databricksDtlConnectionId
+                    tableId = unionMember3.tableId
+                    additionalProperties = unionMember3.additionalProperties.toMutableMap()
+                }
+
+                fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
+
+                /**
+                 * Sets [Builder.backendType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.backendType] with a well-typed [BackendType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun backendType(backendType: JsonField<BackendType>) = apply {
+                    this.backendType = backendType
+                }
+
+                fun config(config: Config) = config(JsonField.of(config))
+
+                /**
+                 * Sets [Builder.config] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.config] with a well-typed [Config] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun config(config: JsonField<Config>) = apply { this.config = config }
+
+                fun databricksDtlConnectionId(databricksDtlConnectionId: String?) =
+                    databricksDtlConnectionId(JsonField.ofNullable(databricksDtlConnectionId))
+
+                /**
+                 * Alias for calling [Builder.databricksDtlConnectionId] with
+                 * `databricksDtlConnectionId.orElse(null)`.
+                 */
+                fun databricksDtlConnectionId(databricksDtlConnectionId: Optional<String>) =
+                    databricksDtlConnectionId(databricksDtlConnectionId.getOrNull())
+
+                /**
+                 * Sets [Builder.databricksDtlConnectionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.databricksDtlConnectionId] with a well-typed
+                 * [String] value instead. This method is primarily for setting the field to an
+                 * undocumented or not yet supported value.
+                 */
+                fun databricksDtlConnectionId(databricksDtlConnectionId: JsonField<String>) =
+                    apply {
+                        this.databricksDtlConnectionId = databricksDtlConnectionId
+                    }
+
+                fun tableId(tableId: String?) = tableId(JsonField.ofNullable(tableId))
+
+                /** Alias for calling [Builder.tableId] with `tableId.orElse(null)`. */
+                fun tableId(tableId: Optional<String>) = tableId(tableId.getOrNull())
+
+                /**
+                 * Sets [Builder.tableId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.tableId] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun tableId(tableId: JsonField<String>) = apply { this.tableId = tableId }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [UnionMember3].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .databricksDtlConnectionId()
+                 * .tableId()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): UnionMember3 =
+                    UnionMember3(
+                        checkRequired("backendType", backendType),
+                        checkRequired("config", config),
+                        checkRequired("databricksDtlConnectionId", databricksDtlConnectionId),
+                        checkRequired("tableId", tableId),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): UnionMember3 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                backendType().validate()
+                config().validate()
+                databricksDtlConnectionId()
+                tableId()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (backendType.asKnown().getOrNull()?.validity() ?: 0) +
+                    (config.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (databricksDtlConnectionId.asKnown().isPresent) 1 else 0) +
+                    (if (tableId.asKnown().isPresent) 1 else 0)
+
+            class BackendType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val DATABRICKS_DTL = of("databricks_dtl")
+
+                    @JvmStatic fun of(value: String) = BackendType(JsonField.of(value))
+                }
+
+                /** An enum containing [BackendType]'s known values. */
+                enum class Known {
+                    DATABRICKS_DTL
+                }
+
+                /**
+                 * An enum containing [BackendType]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [BackendType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    DATABRICKS_DTL,
+                    /**
+                     * An enum member indicating that [BackendType] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        DATABRICKS_DTL -> Value.DATABRICKS_DTL
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        DATABRICKS_DTL -> Known.DATABRICKS_DTL
+                        else -> throw OpenlayerInvalidDataException("Unknown BackendType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): BackendType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is BackendType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            class Config
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val groundTruthColumnName: JsonField<String>,
+                private val humanFeedbackColumnName: JsonField<String>,
+                private val inferenceIdColumnName: JsonField<String>,
+                private val latencyColumnName: JsonField<String>,
+                private val timestampColumnName: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("groundTruthColumnName")
+                    @ExcludeMissing
+                    groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("humanFeedbackColumnName")
+                    @ExcludeMissing
+                    humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("inferenceIdColumnName")
+                    @ExcludeMissing
+                    inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("latencyColumnName")
+                    @ExcludeMissing
+                    latencyColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("timestampColumnName")
+                    @ExcludeMissing
+                    timestampColumnName: JsonField<String> = JsonMissing.of(),
+                ) : this(
+                    groundTruthColumnName,
+                    humanFeedbackColumnName,
+                    inferenceIdColumnName,
+                    latencyColumnName,
+                    timestampColumnName,
+                    mutableMapOf(),
+                )
+
+                /**
+                 * Name of the column with the ground truths.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun groundTruthColumnName(): Optional<String> =
+                    groundTruthColumnName.getOptional("groundTruthColumnName")
+
+                /**
+                 * Name of the column with human feedback.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun humanFeedbackColumnName(): Optional<String> =
+                    humanFeedbackColumnName.getOptional("humanFeedbackColumnName")
+
+                /**
+                 * Name of the column with the inference ids. This is useful if you want to update
+                 * rows at a later point in time. If not provided, a unique id is generated by
+                 * Openlayer.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun inferenceIdColumnName(): Optional<String> =
+                    inferenceIdColumnName.getOptional("inferenceIdColumnName")
+
+                /**
+                 * Name of the column with the latencies.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun latencyColumnName(): Optional<String> =
+                    latencyColumnName.getOptional("latencyColumnName")
+
+                /**
+                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
+                 * not provided, the upload timestamp is used.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun timestampColumnName(): Optional<String> =
+                    timestampColumnName.getOptional("timestampColumnName")
+
+                /**
+                 * Returns the raw JSON value of [groundTruthColumnName].
+                 *
+                 * Unlike [groundTruthColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("groundTruthColumnName")
+                @ExcludeMissing
+                fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
+
+                /**
+                 * Returns the raw JSON value of [humanFeedbackColumnName].
+                 *
+                 * Unlike [humanFeedbackColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("humanFeedbackColumnName")
+                @ExcludeMissing
+                fun _humanFeedbackColumnName(): JsonField<String> = humanFeedbackColumnName
+
+                /**
+                 * Returns the raw JSON value of [inferenceIdColumnName].
+                 *
+                 * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
+
+                /**
+                 * Returns the raw JSON value of [latencyColumnName].
+                 *
+                 * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                fun _latencyColumnName(): JsonField<String> = latencyColumnName
+
+                /**
+                 * Returns the raw JSON value of [timestampColumnName].
+                 *
+                 * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                fun _timestampColumnName(): JsonField<String> = timestampColumnName
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /** Returns a mutable builder for constructing an instance of [Config]. */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [Config]. */
+                class Builder internal constructor() {
+
+                    private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
+                    private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()
+                    private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
+                    private var latencyColumnName: JsonField<String> = JsonMissing.of()
+                    private var timestampColumnName: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(config: Config) = apply {
+                        groundTruthColumnName = config.groundTruthColumnName
+                        humanFeedbackColumnName = config.humanFeedbackColumnName
+                        inferenceIdColumnName = config.inferenceIdColumnName
+                        latencyColumnName = config.latencyColumnName
+                        timestampColumnName = config.timestampColumnName
+                        additionalProperties = config.additionalProperties.toMutableMap()
+                    }
+
+                    /** Name of the column with the ground truths. */
+                    fun groundTruthColumnName(groundTruthColumnName: String?) =
+                        groundTruthColumnName(JsonField.ofNullable(groundTruthColumnName))
+
+                    /**
+                     * Alias for calling [Builder.groundTruthColumnName] with
+                     * `groundTruthColumnName.orElse(null)`.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: Optional<String>) =
+                        groundTruthColumnName(groundTruthColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.groundTruthColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.groundTruthColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
+                        this.groundTruthColumnName = groundTruthColumnName
+                    }
+
+                    /** Name of the column with human feedback. */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: String?) =
+                        humanFeedbackColumnName(JsonField.ofNullable(humanFeedbackColumnName))
+
+                    /**
+                     * Alias for calling [Builder.humanFeedbackColumnName] with
+                     * `humanFeedbackColumnName.orElse(null)`.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: Optional<String>) =
+                        humanFeedbackColumnName(humanFeedbackColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.humanFeedbackColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.humanFeedbackColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: JsonField<String>) =
+                        apply {
+                            this.humanFeedbackColumnName = humanFeedbackColumnName
+                        }
+
+                    /**
+                     * Name of the column with the inference ids. This is useful if you want to
+                     * update rows at a later point in time. If not provided, a unique id is
+                     * generated by Openlayer.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: String?) =
+                        inferenceIdColumnName(JsonField.ofNullable(inferenceIdColumnName))
+
+                    /**
+                     * Alias for calling [Builder.inferenceIdColumnName] with
+                     * `inferenceIdColumnName.orElse(null)`.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: Optional<String>) =
+                        inferenceIdColumnName(inferenceIdColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
+                        this.inferenceIdColumnName = inferenceIdColumnName
+                    }
+
+                    /** Name of the column with the latencies. */
+                    fun latencyColumnName(latencyColumnName: String?) =
+                        latencyColumnName(JsonField.ofNullable(latencyColumnName))
+
+                    /**
+                     * Alias for calling [Builder.latencyColumnName] with
+                     * `latencyColumnName.orElse(null)`.
+                     */
+                    fun latencyColumnName(latencyColumnName: Optional<String>) =
+                        latencyColumnName(latencyColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.latencyColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
+                        this.latencyColumnName = latencyColumnName
+                    }
+
+                    /**
+                     * Name of the column with the timestamps. Timestamps must be in UNIX sec
+                     * format. If not provided, the upload timestamp is used.
+                     */
+                    fun timestampColumnName(timestampColumnName: String?) =
+                        timestampColumnName(JsonField.ofNullable(timestampColumnName))
+
+                    /**
+                     * Alias for calling [Builder.timestampColumnName] with
+                     * `timestampColumnName.orElse(null)`.
+                     */
+                    fun timestampColumnName(timestampColumnName: Optional<String>) =
+                        timestampColumnName(timestampColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.timestampColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
+                        this.timestampColumnName = timestampColumnName
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [Config].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): Config =
+                        Config(
+                            groundTruthColumnName,
+                            humanFeedbackColumnName,
+                            inferenceIdColumnName,
+                            latencyColumnName,
+                            timestampColumnName,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Config = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    groundTruthColumnName()
+                    humanFeedbackColumnName()
+                    inferenceIdColumnName()
+                    latencyColumnName()
+                    timestampColumnName()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (humanFeedbackColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Config &&
+                        groundTruthColumnName == other.groundTruthColumnName &&
+                        humanFeedbackColumnName == other.humanFeedbackColumnName &&
+                        inferenceIdColumnName == other.inferenceIdColumnName &&
+                        latencyColumnName == other.latencyColumnName &&
+                        timestampColumnName == other.timestampColumnName &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(
+                        groundTruthColumnName,
+                        humanFeedbackColumnName,
+                        inferenceIdColumnName,
+                        latencyColumnName,
+                        timestampColumnName,
+                        additionalProperties,
+                    )
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "Config{groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember3 &&
+                    backendType == other.backendType &&
+                    config == other.config &&
+                    databricksDtlConnectionId == other.databricksDtlConnectionId &&
+                    tableId == other.tableId &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    backendType,
+                    config,
+                    databricksDtlConnectionId,
+                    tableId,
+                    additionalProperties,
+                )
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "UnionMember3{backendType=$backendType, config=$config, databricksDtlConnectionId=$databricksDtlConnectionId, tableId=$tableId, additionalProperties=$additionalProperties}"
+        }
+
+        class UnionMember4
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val backendType: JsonField<BackendType>,
+            private val config: JsonField<Config>,
+            private val redshiftConnectionId: JsonField<String>,
+            private val schemaName: JsonField<String>,
+            private val tableName: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("backendType")
+                @ExcludeMissing
+                backendType: JsonField<BackendType> = JsonMissing.of(),
+                @JsonProperty("config")
+                @ExcludeMissing
+                config: JsonField<Config> = JsonMissing.of(),
+                @JsonProperty("redshiftConnectionId")
+                @ExcludeMissing
+                redshiftConnectionId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("schemaName")
+                @ExcludeMissing
+                schemaName: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("tableName")
+                @ExcludeMissing
+                tableName: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                backendType,
+                config,
+                redshiftConnectionId,
+                schemaName,
+                tableName,
+                mutableMapOf(),
+            )
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun backendType(): BackendType = backendType.getRequired("backendType")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun config(): Config = config.getRequired("config")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun redshiftConnectionId(): Optional<String> =
+                redshiftConnectionId.getOptional("redshiftConnectionId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun schemaName(): String = schemaName.getRequired("schemaName")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun tableName(): String = tableName.getRequired("tableName")
+
+            /**
+             * Returns the raw JSON value of [backendType].
+             *
+             * Unlike [backendType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("backendType")
+            @ExcludeMissing
+            fun _backendType(): JsonField<BackendType> = backendType
+
+            /**
+             * Returns the raw JSON value of [config].
+             *
+             * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+            /**
+             * Returns the raw JSON value of [redshiftConnectionId].
+             *
+             * Unlike [redshiftConnectionId], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("redshiftConnectionId")
+            @ExcludeMissing
+            fun _redshiftConnectionId(): JsonField<String> = redshiftConnectionId
+
+            /**
+             * Returns the raw JSON value of [schemaName].
+             *
+             * Unlike [schemaName], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("schemaName")
+            @ExcludeMissing
+            fun _schemaName(): JsonField<String> = schemaName
+
+            /**
+             * Returns the raw JSON value of [tableName].
+             *
+             * Unlike [tableName], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("tableName")
+            @ExcludeMissing
+            fun _tableName(): JsonField<String> = tableName
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [UnionMember4].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .redshiftConnectionId()
+                 * .schemaName()
+                 * .tableName()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [UnionMember4]. */
+            class Builder internal constructor() {
+
+                private var backendType: JsonField<BackendType>? = null
+                private var config: JsonField<Config>? = null
+                private var redshiftConnectionId: JsonField<String>? = null
+                private var schemaName: JsonField<String>? = null
+                private var tableName: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(unionMember4: UnionMember4) = apply {
+                    backendType = unionMember4.backendType
+                    config = unionMember4.config
+                    redshiftConnectionId = unionMember4.redshiftConnectionId
+                    schemaName = unionMember4.schemaName
+                    tableName = unionMember4.tableName
+                    additionalProperties = unionMember4.additionalProperties.toMutableMap()
+                }
+
+                fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
+
+                /**
+                 * Sets [Builder.backendType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.backendType] with a well-typed [BackendType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun backendType(backendType: JsonField<BackendType>) = apply {
+                    this.backendType = backendType
+                }
+
+                fun config(config: Config) = config(JsonField.of(config))
+
+                /**
+                 * Sets [Builder.config] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.config] with a well-typed [Config] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun config(config: JsonField<Config>) = apply { this.config = config }
+
+                fun redshiftConnectionId(redshiftConnectionId: String?) =
+                    redshiftConnectionId(JsonField.ofNullable(redshiftConnectionId))
+
+                /**
+                 * Alias for calling [Builder.redshiftConnectionId] with
+                 * `redshiftConnectionId.orElse(null)`.
+                 */
+                fun redshiftConnectionId(redshiftConnectionId: Optional<String>) =
+                    redshiftConnectionId(redshiftConnectionId.getOrNull())
+
+                /**
+                 * Sets [Builder.redshiftConnectionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.redshiftConnectionId] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun redshiftConnectionId(redshiftConnectionId: JsonField<String>) = apply {
+                    this.redshiftConnectionId = redshiftConnectionId
+                }
+
+                fun schemaName(schemaName: String) = schemaName(JsonField.of(schemaName))
+
+                /**
+                 * Sets [Builder.schemaName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.schemaName] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun schemaName(schemaName: JsonField<String>) = apply {
+                    this.schemaName = schemaName
+                }
+
+                fun tableName(tableName: String) = tableName(JsonField.of(tableName))
+
+                /**
+                 * Sets [Builder.tableName] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.tableName] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun tableName(tableName: JsonField<String>) = apply { this.tableName = tableName }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [UnionMember4].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .redshiftConnectionId()
+                 * .schemaName()
+                 * .tableName()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): UnionMember4 =
+                    UnionMember4(
+                        checkRequired("backendType", backendType),
+                        checkRequired("config", config),
+                        checkRequired("redshiftConnectionId", redshiftConnectionId),
+                        checkRequired("schemaName", schemaName),
+                        checkRequired("tableName", tableName),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): UnionMember4 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                backendType().validate()
+                config().validate()
+                redshiftConnectionId()
+                schemaName()
+                tableName()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (backendType.asKnown().getOrNull()?.validity() ?: 0) +
+                    (config.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (redshiftConnectionId.asKnown().isPresent) 1 else 0) +
+                    (if (schemaName.asKnown().isPresent) 1 else 0) +
+                    (if (tableName.asKnown().isPresent) 1 else 0)
+
+            class BackendType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val REDSHIFT = of("redshift")
+
+                    @JvmStatic fun of(value: String) = BackendType(JsonField.of(value))
+                }
+
+                /** An enum containing [BackendType]'s known values. */
+                enum class Known {
+                    REDSHIFT
+                }
+
+                /**
+                 * An enum containing [BackendType]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [BackendType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    REDSHIFT,
+                    /**
+                     * An enum member indicating that [BackendType] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        REDSHIFT -> Value.REDSHIFT
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        REDSHIFT -> Known.REDSHIFT
+                        else -> throw OpenlayerInvalidDataException("Unknown BackendType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): BackendType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is BackendType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            class Config
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val groundTruthColumnName: JsonField<String>,
+                private val humanFeedbackColumnName: JsonField<String>,
+                private val inferenceIdColumnName: JsonField<String>,
+                private val latencyColumnName: JsonField<String>,
+                private val timestampColumnName: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("groundTruthColumnName")
+                    @ExcludeMissing
+                    groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("humanFeedbackColumnName")
+                    @ExcludeMissing
+                    humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("inferenceIdColumnName")
+                    @ExcludeMissing
+                    inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("latencyColumnName")
+                    @ExcludeMissing
+                    latencyColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("timestampColumnName")
+                    @ExcludeMissing
+                    timestampColumnName: JsonField<String> = JsonMissing.of(),
+                ) : this(
+                    groundTruthColumnName,
+                    humanFeedbackColumnName,
+                    inferenceIdColumnName,
+                    latencyColumnName,
+                    timestampColumnName,
+                    mutableMapOf(),
+                )
+
+                /**
+                 * Name of the column with the ground truths.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun groundTruthColumnName(): Optional<String> =
+                    groundTruthColumnName.getOptional("groundTruthColumnName")
+
+                /**
+                 * Name of the column with human feedback.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun humanFeedbackColumnName(): Optional<String> =
+                    humanFeedbackColumnName.getOptional("humanFeedbackColumnName")
+
+                /**
+                 * Name of the column with the inference ids. This is useful if you want to update
+                 * rows at a later point in time. If not provided, a unique id is generated by
+                 * Openlayer.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun inferenceIdColumnName(): Optional<String> =
+                    inferenceIdColumnName.getOptional("inferenceIdColumnName")
+
+                /**
+                 * Name of the column with the latencies.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun latencyColumnName(): Optional<String> =
+                    latencyColumnName.getOptional("latencyColumnName")
+
+                /**
+                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
+                 * not provided, the upload timestamp is used.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun timestampColumnName(): Optional<String> =
+                    timestampColumnName.getOptional("timestampColumnName")
+
+                /**
+                 * Returns the raw JSON value of [groundTruthColumnName].
+                 *
+                 * Unlike [groundTruthColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("groundTruthColumnName")
+                @ExcludeMissing
+                fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
+
+                /**
+                 * Returns the raw JSON value of [humanFeedbackColumnName].
+                 *
+                 * Unlike [humanFeedbackColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("humanFeedbackColumnName")
+                @ExcludeMissing
+                fun _humanFeedbackColumnName(): JsonField<String> = humanFeedbackColumnName
+
+                /**
+                 * Returns the raw JSON value of [inferenceIdColumnName].
+                 *
+                 * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
+
+                /**
+                 * Returns the raw JSON value of [latencyColumnName].
+                 *
+                 * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                fun _latencyColumnName(): JsonField<String> = latencyColumnName
+
+                /**
+                 * Returns the raw JSON value of [timestampColumnName].
+                 *
+                 * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                fun _timestampColumnName(): JsonField<String> = timestampColumnName
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /** Returns a mutable builder for constructing an instance of [Config]. */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [Config]. */
+                class Builder internal constructor() {
+
+                    private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
+                    private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()
+                    private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
+                    private var latencyColumnName: JsonField<String> = JsonMissing.of()
+                    private var timestampColumnName: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(config: Config) = apply {
+                        groundTruthColumnName = config.groundTruthColumnName
+                        humanFeedbackColumnName = config.humanFeedbackColumnName
+                        inferenceIdColumnName = config.inferenceIdColumnName
+                        latencyColumnName = config.latencyColumnName
+                        timestampColumnName = config.timestampColumnName
+                        additionalProperties = config.additionalProperties.toMutableMap()
+                    }
+
+                    /** Name of the column with the ground truths. */
+                    fun groundTruthColumnName(groundTruthColumnName: String?) =
+                        groundTruthColumnName(JsonField.ofNullable(groundTruthColumnName))
+
+                    /**
+                     * Alias for calling [Builder.groundTruthColumnName] with
+                     * `groundTruthColumnName.orElse(null)`.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: Optional<String>) =
+                        groundTruthColumnName(groundTruthColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.groundTruthColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.groundTruthColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
+                        this.groundTruthColumnName = groundTruthColumnName
+                    }
+
+                    /** Name of the column with human feedback. */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: String?) =
+                        humanFeedbackColumnName(JsonField.ofNullable(humanFeedbackColumnName))
+
+                    /**
+                     * Alias for calling [Builder.humanFeedbackColumnName] with
+                     * `humanFeedbackColumnName.orElse(null)`.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: Optional<String>) =
+                        humanFeedbackColumnName(humanFeedbackColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.humanFeedbackColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.humanFeedbackColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: JsonField<String>) =
+                        apply {
+                            this.humanFeedbackColumnName = humanFeedbackColumnName
+                        }
+
+                    /**
+                     * Name of the column with the inference ids. This is useful if you want to
+                     * update rows at a later point in time. If not provided, a unique id is
+                     * generated by Openlayer.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: String?) =
+                        inferenceIdColumnName(JsonField.ofNullable(inferenceIdColumnName))
+
+                    /**
+                     * Alias for calling [Builder.inferenceIdColumnName] with
+                     * `inferenceIdColumnName.orElse(null)`.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: Optional<String>) =
+                        inferenceIdColumnName(inferenceIdColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
+                        this.inferenceIdColumnName = inferenceIdColumnName
+                    }
+
+                    /** Name of the column with the latencies. */
+                    fun latencyColumnName(latencyColumnName: String?) =
+                        latencyColumnName(JsonField.ofNullable(latencyColumnName))
+
+                    /**
+                     * Alias for calling [Builder.latencyColumnName] with
+                     * `latencyColumnName.orElse(null)`.
+                     */
+                    fun latencyColumnName(latencyColumnName: Optional<String>) =
+                        latencyColumnName(latencyColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.latencyColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
+                        this.latencyColumnName = latencyColumnName
+                    }
+
+                    /**
+                     * Name of the column with the timestamps. Timestamps must be in UNIX sec
+                     * format. If not provided, the upload timestamp is used.
+                     */
+                    fun timestampColumnName(timestampColumnName: String?) =
+                        timestampColumnName(JsonField.ofNullable(timestampColumnName))
+
+                    /**
+                     * Alias for calling [Builder.timestampColumnName] with
+                     * `timestampColumnName.orElse(null)`.
+                     */
+                    fun timestampColumnName(timestampColumnName: Optional<String>) =
+                        timestampColumnName(timestampColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.timestampColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
+                        this.timestampColumnName = timestampColumnName
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [Config].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): Config =
+                        Config(
+                            groundTruthColumnName,
+                            humanFeedbackColumnName,
+                            inferenceIdColumnName,
+                            latencyColumnName,
+                            timestampColumnName,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Config = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    groundTruthColumnName()
+                    humanFeedbackColumnName()
+                    inferenceIdColumnName()
+                    latencyColumnName()
+                    timestampColumnName()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (humanFeedbackColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Config &&
+                        groundTruthColumnName == other.groundTruthColumnName &&
+                        humanFeedbackColumnName == other.humanFeedbackColumnName &&
+                        inferenceIdColumnName == other.inferenceIdColumnName &&
+                        latencyColumnName == other.latencyColumnName &&
+                        timestampColumnName == other.timestampColumnName &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(
+                        groundTruthColumnName,
+                        humanFeedbackColumnName,
+                        inferenceIdColumnName,
+                        latencyColumnName,
+                        timestampColumnName,
+                        additionalProperties,
+                    )
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "Config{groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember4 &&
+                    backendType == other.backendType &&
+                    config == other.config &&
+                    redshiftConnectionId == other.redshiftConnectionId &&
+                    schemaName == other.schemaName &&
+                    tableName == other.tableName &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    backendType,
+                    config,
+                    redshiftConnectionId,
+                    schemaName,
+                    tableName,
+                    additionalProperties,
+                )
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "UnionMember4{backendType=$backendType, config=$config, redshiftConnectionId=$redshiftConnectionId, schemaName=$schemaName, tableName=$tableName, additionalProperties=$additionalProperties}"
+        }
+
+        class UnionMember5
+        @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+        private constructor(
+            private val backendType: JsonField<BackendType>,
+            private val config: JsonField<Config>,
+            private val database: JsonField<String>,
+            private val postgresConnectionId: JsonField<String>,
+            private val schema: JsonField<String>,
+            private val table: JsonField<String>,
+            private val additionalProperties: MutableMap<String, JsonValue>,
+        ) {
+
+            @JsonCreator
+            private constructor(
+                @JsonProperty("backendType")
+                @ExcludeMissing
+                backendType: JsonField<BackendType> = JsonMissing.of(),
+                @JsonProperty("config")
+                @ExcludeMissing
+                config: JsonField<Config> = JsonMissing.of(),
+                @JsonProperty("database")
+                @ExcludeMissing
+                database: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("postgresConnectionId")
+                @ExcludeMissing
+                postgresConnectionId: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("schema")
+                @ExcludeMissing
+                schema: JsonField<String> = JsonMissing.of(),
+                @JsonProperty("table") @ExcludeMissing table: JsonField<String> = JsonMissing.of(),
+            ) : this(
+                backendType,
+                config,
+                database,
+                postgresConnectionId,
+                schema,
+                table,
+                mutableMapOf(),
+            )
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun backendType(): BackendType = backendType.getRequired("backendType")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun config(): Config = config.getRequired("config")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun database(): String = database.getRequired("database")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun postgresConnectionId(): Optional<String> =
+                postgresConnectionId.getOptional("postgresConnectionId")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+             *   unexpectedly missing or null (e.g. if the server responded with an unexpected
+             *   value).
+             */
+            fun schema(): String = schema.getRequired("schema")
+
+            /**
+             * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
+             *   if the server responded with an unexpected value).
+             */
+            fun table(): Optional<String> = table.getOptional("table")
+
+            /**
+             * Returns the raw JSON value of [backendType].
+             *
+             * Unlike [backendType], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("backendType")
+            @ExcludeMissing
+            fun _backendType(): JsonField<BackendType> = backendType
+
+            /**
+             * Returns the raw JSON value of [config].
+             *
+             * Unlike [config], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("config") @ExcludeMissing fun _config(): JsonField<Config> = config
+
+            /**
+             * Returns the raw JSON value of [database].
+             *
+             * Unlike [database], this method doesn't throw if the JSON field has an unexpected
+             * type.
+             */
+            @JsonProperty("database") @ExcludeMissing fun _database(): JsonField<String> = database
+
+            /**
+             * Returns the raw JSON value of [postgresConnectionId].
+             *
+             * Unlike [postgresConnectionId], this method doesn't throw if the JSON field has an
+             * unexpected type.
+             */
+            @JsonProperty("postgresConnectionId")
+            @ExcludeMissing
+            fun _postgresConnectionId(): JsonField<String> = postgresConnectionId
+
+            /**
+             * Returns the raw JSON value of [schema].
+             *
+             * Unlike [schema], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("schema") @ExcludeMissing fun _schema(): JsonField<String> = schema
+
+            /**
+             * Returns the raw JSON value of [table].
+             *
+             * Unlike [table], this method doesn't throw if the JSON field has an unexpected type.
+             */
+            @JsonProperty("table") @ExcludeMissing fun _table(): JsonField<String> = table
+
+            @JsonAnySetter
+            private fun putAdditionalProperty(key: String, value: JsonValue) {
+                additionalProperties.put(key, value)
+            }
+
+            @JsonAnyGetter
+            @ExcludeMissing
+            fun _additionalProperties(): Map<String, JsonValue> =
+                Collections.unmodifiableMap(additionalProperties)
+
+            fun toBuilder() = Builder().from(this)
+
+            companion object {
+
+                /**
+                 * Returns a mutable builder for constructing an instance of [UnionMember5].
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .database()
+                 * .postgresConnectionId()
+                 * .schema()
+                 * .table()
+                 * ```
+                 */
+                @JvmStatic fun builder() = Builder()
+            }
+
+            /** A builder for [UnionMember5]. */
+            class Builder internal constructor() {
+
+                private var backendType: JsonField<BackendType>? = null
+                private var config: JsonField<Config>? = null
+                private var database: JsonField<String>? = null
+                private var postgresConnectionId: JsonField<String>? = null
+                private var schema: JsonField<String>? = null
+                private var table: JsonField<String>? = null
+                private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                @JvmSynthetic
+                internal fun from(unionMember5: UnionMember5) = apply {
+                    backendType = unionMember5.backendType
+                    config = unionMember5.config
+                    database = unionMember5.database
+                    postgresConnectionId = unionMember5.postgresConnectionId
+                    schema = unionMember5.schema
+                    table = unionMember5.table
+                    additionalProperties = unionMember5.additionalProperties.toMutableMap()
+                }
+
+                fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
+
+                /**
+                 * Sets [Builder.backendType] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.backendType] with a well-typed [BackendType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun backendType(backendType: JsonField<BackendType>) = apply {
+                    this.backendType = backendType
+                }
+
+                fun config(config: Config) = config(JsonField.of(config))
+
+                /**
+                 * Sets [Builder.config] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.config] with a well-typed [Config] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun config(config: JsonField<Config>) = apply { this.config = config }
+
+                fun database(database: String) = database(JsonField.of(database))
+
+                /**
+                 * Sets [Builder.database] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.database] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun database(database: JsonField<String>) = apply { this.database = database }
+
+                fun postgresConnectionId(postgresConnectionId: String?) =
+                    postgresConnectionId(JsonField.ofNullable(postgresConnectionId))
+
+                /**
+                 * Alias for calling [Builder.postgresConnectionId] with
+                 * `postgresConnectionId.orElse(null)`.
+                 */
+                fun postgresConnectionId(postgresConnectionId: Optional<String>) =
+                    postgresConnectionId(postgresConnectionId.getOrNull())
+
+                /**
+                 * Sets [Builder.postgresConnectionId] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.postgresConnectionId] with a well-typed [String]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
+                 */
+                fun postgresConnectionId(postgresConnectionId: JsonField<String>) = apply {
+                    this.postgresConnectionId = postgresConnectionId
+                }
+
+                fun schema(schema: String) = schema(JsonField.of(schema))
+
+                /**
+                 * Sets [Builder.schema] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.schema] with a well-typed [String] value
+                 * instead. This method is primarily for setting the field to an undocumented or not
+                 * yet supported value.
+                 */
+                fun schema(schema: JsonField<String>) = apply { this.schema = schema }
+
+                fun table(table: String?) = table(JsonField.ofNullable(table))
+
+                /** Alias for calling [Builder.table] with `table.orElse(null)`. */
+                fun table(table: Optional<String>) = table(table.getOrNull())
+
+                /**
+                 * Sets [Builder.table] to an arbitrary JSON value.
+                 *
+                 * You should usually call [Builder.table] with a well-typed [String] value instead.
+                 * This method is primarily for setting the field to an undocumented or not yet
+                 * supported value.
+                 */
+                fun table(table: JsonField<String>) = apply { this.table = table }
+
+                fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                    this.additionalProperties.clear()
+                    putAllAdditionalProperties(additionalProperties)
+                }
+
+                fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                    additionalProperties.put(key, value)
+                }
+
+                fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                    apply {
+                        this.additionalProperties.putAll(additionalProperties)
+                    }
+
+                fun removeAdditionalProperty(key: String) = apply {
+                    additionalProperties.remove(key)
+                }
+
+                fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                    keys.forEach(::removeAdditionalProperty)
+                }
+
+                /**
+                 * Returns an immutable instance of [UnionMember5].
+                 *
+                 * Further updates to this [Builder] will not mutate the returned instance.
+                 *
+                 * The following fields are required:
+                 * ```java
+                 * .backendType()
+                 * .config()
+                 * .database()
+                 * .postgresConnectionId()
+                 * .schema()
+                 * .table()
+                 * ```
+                 *
+                 * @throws IllegalStateException if any required field is unset.
+                 */
+                fun build(): UnionMember5 =
+                    UnionMember5(
+                        checkRequired("backendType", backendType),
+                        checkRequired("config", config),
+                        checkRequired("database", database),
+                        checkRequired("postgresConnectionId", postgresConnectionId),
+                        checkRequired("schema", schema),
+                        checkRequired("table", table),
+                        additionalProperties.toMutableMap(),
+                    )
+            }
+
+            private var validated: Boolean = false
+
+            fun validate(): UnionMember5 = apply {
+                if (validated) {
+                    return@apply
+                }
+
+                backendType().validate()
+                config().validate()
+                database()
+                postgresConnectionId()
+                schema()
+                table()
+                validated = true
+            }
+
+            fun isValid(): Boolean =
+                try {
+                    validate()
+                    true
+                } catch (e: OpenlayerInvalidDataException) {
+                    false
+                }
+
+            /**
+             * Returns a score indicating how many valid values are contained in this object
+             * recursively.
+             *
+             * Used for best match union deserialization.
+             */
+            @JvmSynthetic
+            internal fun validity(): Int =
+                (backendType.asKnown().getOrNull()?.validity() ?: 0) +
+                    (config.asKnown().getOrNull()?.validity() ?: 0) +
+                    (if (database.asKnown().isPresent) 1 else 0) +
+                    (if (postgresConnectionId.asKnown().isPresent) 1 else 0) +
+                    (if (schema.asKnown().isPresent) 1 else 0) +
+                    (if (table.asKnown().isPresent) 1 else 0)
+
+            class BackendType
+            @JsonCreator
+            private constructor(private val value: JsonField<String>) : Enum {
+
+                /**
+                 * Returns this class instance's raw value.
+                 *
+                 * This is usually only useful if this instance was deserialized from data that
+                 * doesn't match any known member, and you want to know that value. For example, if
+                 * the SDK is on an older version than the API, then the API may respond with new
+                 * members that the SDK is unaware of.
+                 */
+                @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+                companion object {
+
+                    @JvmField val POSTGRES = of("postgres")
+
+                    @JvmStatic fun of(value: String) = BackendType(JsonField.of(value))
+                }
+
+                /** An enum containing [BackendType]'s known values. */
+                enum class Known {
+                    POSTGRES
+                }
+
+                /**
+                 * An enum containing [BackendType]'s known values, as well as an [_UNKNOWN] member.
+                 *
+                 * An instance of [BackendType] can contain an unknown value in a couple of cases:
+                 * - It was deserialized from data that doesn't match any known member. For example,
+                 *   if the SDK is on an older version than the API, then the API may respond with
+                 *   new members that the SDK is unaware of.
+                 * - It was constructed with an arbitrary value using the [of] method.
+                 */
+                enum class Value {
+                    POSTGRES,
+                    /**
+                     * An enum member indicating that [BackendType] was instantiated with an unknown
+                     * value.
+                     */
+                    _UNKNOWN,
+                }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value, or
+                 * [Value._UNKNOWN] if the class was instantiated with an unknown value.
+                 *
+                 * Use the [known] method instead if you're certain the value is always known or if
+                 * you want to throw for the unknown case.
+                 */
+                fun value(): Value =
+                    when (this) {
+                        POSTGRES -> Value.POSTGRES
+                        else -> Value._UNKNOWN
+                    }
+
+                /**
+                 * Returns an enum member corresponding to this class instance's value.
+                 *
+                 * Use the [value] method instead if you're uncertain the value is always known and
+                 * don't want to throw for the unknown case.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value is a not a
+                 *   known member.
+                 */
+                fun known(): Known =
+                    when (this) {
+                        POSTGRES -> Known.POSTGRES
+                        else -> throw OpenlayerInvalidDataException("Unknown BackendType: $value")
+                    }
+
+                /**
+                 * Returns this class instance's primitive wire representation.
+                 *
+                 * This differs from the [toString] method because that method is primarily for
+                 * debugging and generally doesn't throw.
+                 *
+                 * @throws OpenlayerInvalidDataException if this class instance's value does not
+                 *   have the expected primitive type.
+                 */
+                fun asString(): String =
+                    _value().asString().orElseThrow {
+                        OpenlayerInvalidDataException("Value is not a String")
+                    }
+
+                private var validated: Boolean = false
+
+                fun validate(): BackendType = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    known()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is BackendType && value == other.value
+                }
+
+                override fun hashCode() = value.hashCode()
+
+                override fun toString() = value.toString()
+            }
+
+            class Config
+            @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+            private constructor(
+                private val groundTruthColumnName: JsonField<String>,
+                private val humanFeedbackColumnName: JsonField<String>,
+                private val inferenceIdColumnName: JsonField<String>,
+                private val latencyColumnName: JsonField<String>,
+                private val timestampColumnName: JsonField<String>,
+                private val additionalProperties: MutableMap<String, JsonValue>,
+            ) {
+
+                @JsonCreator
+                private constructor(
+                    @JsonProperty("groundTruthColumnName")
+                    @ExcludeMissing
+                    groundTruthColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("humanFeedbackColumnName")
+                    @ExcludeMissing
+                    humanFeedbackColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("inferenceIdColumnName")
+                    @ExcludeMissing
+                    inferenceIdColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("latencyColumnName")
+                    @ExcludeMissing
+                    latencyColumnName: JsonField<String> = JsonMissing.of(),
+                    @JsonProperty("timestampColumnName")
+                    @ExcludeMissing
+                    timestampColumnName: JsonField<String> = JsonMissing.of(),
+                ) : this(
+                    groundTruthColumnName,
+                    humanFeedbackColumnName,
+                    inferenceIdColumnName,
+                    latencyColumnName,
+                    timestampColumnName,
+                    mutableMapOf(),
+                )
+
+                /**
+                 * Name of the column with the ground truths.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun groundTruthColumnName(): Optional<String> =
+                    groundTruthColumnName.getOptional("groundTruthColumnName")
+
+                /**
+                 * Name of the column with human feedback.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun humanFeedbackColumnName(): Optional<String> =
+                    humanFeedbackColumnName.getOptional("humanFeedbackColumnName")
+
+                /**
+                 * Name of the column with the inference ids. This is useful if you want to update
+                 * rows at a later point in time. If not provided, a unique id is generated by
+                 * Openlayer.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun inferenceIdColumnName(): Optional<String> =
+                    inferenceIdColumnName.getOptional("inferenceIdColumnName")
+
+                /**
+                 * Name of the column with the latencies.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun latencyColumnName(): Optional<String> =
+                    latencyColumnName.getOptional("latencyColumnName")
+
+                /**
+                 * Name of the column with the timestamps. Timestamps must be in UNIX sec format. If
+                 * not provided, the upload timestamp is used.
+                 *
+                 * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
+                 *   (e.g. if the server responded with an unexpected value).
+                 */
+                fun timestampColumnName(): Optional<String> =
+                    timestampColumnName.getOptional("timestampColumnName")
+
+                /**
+                 * Returns the raw JSON value of [groundTruthColumnName].
+                 *
+                 * Unlike [groundTruthColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("groundTruthColumnName")
+                @ExcludeMissing
+                fun _groundTruthColumnName(): JsonField<String> = groundTruthColumnName
+
+                /**
+                 * Returns the raw JSON value of [humanFeedbackColumnName].
+                 *
+                 * Unlike [humanFeedbackColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("humanFeedbackColumnName")
+                @ExcludeMissing
+                fun _humanFeedbackColumnName(): JsonField<String> = humanFeedbackColumnName
+
+                /**
+                 * Returns the raw JSON value of [inferenceIdColumnName].
+                 *
+                 * Unlike [inferenceIdColumnName], this method doesn't throw if the JSON field has
+                 * an unexpected type.
+                 */
+                @JsonProperty("inferenceIdColumnName")
+                @ExcludeMissing
+                fun _inferenceIdColumnName(): JsonField<String> = inferenceIdColumnName
+
+                /**
+                 * Returns the raw JSON value of [latencyColumnName].
+                 *
+                 * Unlike [latencyColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("latencyColumnName")
+                @ExcludeMissing
+                fun _latencyColumnName(): JsonField<String> = latencyColumnName
+
+                /**
+                 * Returns the raw JSON value of [timestampColumnName].
+                 *
+                 * Unlike [timestampColumnName], this method doesn't throw if the JSON field has an
+                 * unexpected type.
+                 */
+                @JsonProperty("timestampColumnName")
+                @ExcludeMissing
+                fun _timestampColumnName(): JsonField<String> = timestampColumnName
+
+                @JsonAnySetter
+                private fun putAdditionalProperty(key: String, value: JsonValue) {
+                    additionalProperties.put(key, value)
+                }
+
+                @JsonAnyGetter
+                @ExcludeMissing
+                fun _additionalProperties(): Map<String, JsonValue> =
+                    Collections.unmodifiableMap(additionalProperties)
+
+                fun toBuilder() = Builder().from(this)
+
+                companion object {
+
+                    /** Returns a mutable builder for constructing an instance of [Config]. */
+                    @JvmStatic fun builder() = Builder()
+                }
+
+                /** A builder for [Config]. */
+                class Builder internal constructor() {
+
+                    private var groundTruthColumnName: JsonField<String> = JsonMissing.of()
+                    private var humanFeedbackColumnName: JsonField<String> = JsonMissing.of()
+                    private var inferenceIdColumnName: JsonField<String> = JsonMissing.of()
+                    private var latencyColumnName: JsonField<String> = JsonMissing.of()
+                    private var timestampColumnName: JsonField<String> = JsonMissing.of()
+                    private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+                    @JvmSynthetic
+                    internal fun from(config: Config) = apply {
+                        groundTruthColumnName = config.groundTruthColumnName
+                        humanFeedbackColumnName = config.humanFeedbackColumnName
+                        inferenceIdColumnName = config.inferenceIdColumnName
+                        latencyColumnName = config.latencyColumnName
+                        timestampColumnName = config.timestampColumnName
+                        additionalProperties = config.additionalProperties.toMutableMap()
+                    }
+
+                    /** Name of the column with the ground truths. */
+                    fun groundTruthColumnName(groundTruthColumnName: String?) =
+                        groundTruthColumnName(JsonField.ofNullable(groundTruthColumnName))
+
+                    /**
+                     * Alias for calling [Builder.groundTruthColumnName] with
+                     * `groundTruthColumnName.orElse(null)`.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: Optional<String>) =
+                        groundTruthColumnName(groundTruthColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.groundTruthColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.groundTruthColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun groundTruthColumnName(groundTruthColumnName: JsonField<String>) = apply {
+                        this.groundTruthColumnName = groundTruthColumnName
+                    }
+
+                    /** Name of the column with human feedback. */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: String?) =
+                        humanFeedbackColumnName(JsonField.ofNullable(humanFeedbackColumnName))
+
+                    /**
+                     * Alias for calling [Builder.humanFeedbackColumnName] with
+                     * `humanFeedbackColumnName.orElse(null)`.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: Optional<String>) =
+                        humanFeedbackColumnName(humanFeedbackColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.humanFeedbackColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.humanFeedbackColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun humanFeedbackColumnName(humanFeedbackColumnName: JsonField<String>) =
+                        apply {
+                            this.humanFeedbackColumnName = humanFeedbackColumnName
+                        }
+
+                    /**
+                     * Name of the column with the inference ids. This is useful if you want to
+                     * update rows at a later point in time. If not provided, a unique id is
+                     * generated by Openlayer.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: String?) =
+                        inferenceIdColumnName(JsonField.ofNullable(inferenceIdColumnName))
+
+                    /**
+                     * Alias for calling [Builder.inferenceIdColumnName] with
+                     * `inferenceIdColumnName.orElse(null)`.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: Optional<String>) =
+                        inferenceIdColumnName(inferenceIdColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.inferenceIdColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.inferenceIdColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun inferenceIdColumnName(inferenceIdColumnName: JsonField<String>) = apply {
+                        this.inferenceIdColumnName = inferenceIdColumnName
+                    }
+
+                    /** Name of the column with the latencies. */
+                    fun latencyColumnName(latencyColumnName: String?) =
+                        latencyColumnName(JsonField.ofNullable(latencyColumnName))
+
+                    /**
+                     * Alias for calling [Builder.latencyColumnName] with
+                     * `latencyColumnName.orElse(null)`.
+                     */
+                    fun latencyColumnName(latencyColumnName: Optional<String>) =
+                        latencyColumnName(latencyColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.latencyColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.latencyColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun latencyColumnName(latencyColumnName: JsonField<String>) = apply {
+                        this.latencyColumnName = latencyColumnName
+                    }
+
+                    /**
+                     * Name of the column with the timestamps. Timestamps must be in UNIX sec
+                     * format. If not provided, the upload timestamp is used.
+                     */
+                    fun timestampColumnName(timestampColumnName: String?) =
+                        timestampColumnName(JsonField.ofNullable(timestampColumnName))
+
+                    /**
+                     * Alias for calling [Builder.timestampColumnName] with
+                     * `timestampColumnName.orElse(null)`.
+                     */
+                    fun timestampColumnName(timestampColumnName: Optional<String>) =
+                        timestampColumnName(timestampColumnName.getOrNull())
+
+                    /**
+                     * Sets [Builder.timestampColumnName] to an arbitrary JSON value.
+                     *
+                     * You should usually call [Builder.timestampColumnName] with a well-typed
+                     * [String] value instead. This method is primarily for setting the field to an
+                     * undocumented or not yet supported value.
+                     */
+                    fun timestampColumnName(timestampColumnName: JsonField<String>) = apply {
+                        this.timestampColumnName = timestampColumnName
+                    }
+
+                    fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                        this.additionalProperties.clear()
+                        putAllAdditionalProperties(additionalProperties)
+                    }
+
+                    fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                        additionalProperties.put(key, value)
+                    }
+
+                    fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) =
+                        apply {
+                            this.additionalProperties.putAll(additionalProperties)
+                        }
+
+                    fun removeAdditionalProperty(key: String) = apply {
+                        additionalProperties.remove(key)
+                    }
+
+                    fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                        keys.forEach(::removeAdditionalProperty)
+                    }
+
+                    /**
+                     * Returns an immutable instance of [Config].
+                     *
+                     * Further updates to this [Builder] will not mutate the returned instance.
+                     */
+                    fun build(): Config =
+                        Config(
+                            groundTruthColumnName,
+                            humanFeedbackColumnName,
+                            inferenceIdColumnName,
+                            latencyColumnName,
+                            timestampColumnName,
+                            additionalProperties.toMutableMap(),
+                        )
+                }
+
+                private var validated: Boolean = false
+
+                fun validate(): Config = apply {
+                    if (validated) {
+                        return@apply
+                    }
+
+                    groundTruthColumnName()
+                    humanFeedbackColumnName()
+                    inferenceIdColumnName()
+                    latencyColumnName()
+                    timestampColumnName()
+                    validated = true
+                }
+
+                fun isValid(): Boolean =
+                    try {
+                        validate()
+                        true
+                    } catch (e: OpenlayerInvalidDataException) {
+                        false
+                    }
+
+                /**
+                 * Returns a score indicating how many valid values are contained in this object
+                 * recursively.
+                 *
+                 * Used for best match union deserialization.
+                 */
+                @JvmSynthetic
+                internal fun validity(): Int =
+                    (if (groundTruthColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (humanFeedbackColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (inferenceIdColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (latencyColumnName.asKnown().isPresent) 1 else 0) +
+                        (if (timestampColumnName.asKnown().isPresent) 1 else 0)
+
+                override fun equals(other: Any?): Boolean {
+                    if (this === other) {
+                        return true
+                    }
+
+                    return other is Config &&
+                        groundTruthColumnName == other.groundTruthColumnName &&
+                        humanFeedbackColumnName == other.humanFeedbackColumnName &&
+                        inferenceIdColumnName == other.inferenceIdColumnName &&
+                        latencyColumnName == other.latencyColumnName &&
+                        timestampColumnName == other.timestampColumnName &&
+                        additionalProperties == other.additionalProperties
+                }
+
+                private val hashCode: Int by lazy {
+                    Objects.hash(
+                        groundTruthColumnName,
+                        humanFeedbackColumnName,
+                        inferenceIdColumnName,
+                        latencyColumnName,
+                        timestampColumnName,
+                        additionalProperties,
+                    )
+                }
+
+                override fun hashCode(): Int = hashCode
+
+                override fun toString() =
+                    "Config{groundTruthColumnName=$groundTruthColumnName, humanFeedbackColumnName=$humanFeedbackColumnName, inferenceIdColumnName=$inferenceIdColumnName, latencyColumnName=$latencyColumnName, timestampColumnName=$timestampColumnName, additionalProperties=$additionalProperties}"
+            }
+
+            override fun equals(other: Any?): Boolean {
+                if (this === other) {
+                    return true
+                }
+
+                return other is UnionMember5 &&
+                    backendType == other.backendType &&
+                    config == other.config &&
+                    database == other.database &&
+                    postgresConnectionId == other.postgresConnectionId &&
+                    schema == other.schema &&
+                    table == other.table &&
+                    additionalProperties == other.additionalProperties
+            }
+
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    backendType,
+                    config,
+                    database,
+                    postgresConnectionId,
+                    schema,
+                    table,
+                    additionalProperties,
+                )
+            }
+
+            override fun hashCode(): Int = hashCode
+
+            override fun toString() =
+                "UnionMember5{backendType=$backendType, config=$config, database=$database, postgresConnectionId=$postgresConnectionId, schema=$schema, table=$table, additionalProperties=$additionalProperties}"
+        }
     }
 
     class Project
@@ -4337,7 +9732,10 @@ private constructor(
             status == other.status &&
             statusMessage == other.statusMessage &&
             totalGoalCount == other.totalGoalCount &&
+            dataBackend == other.dataBackend &&
+            dateLastPolled == other.dateLastPolled &&
             project == other.project &&
+            totalRecordsCount == other.totalRecordsCount &&
             workspace == other.workspace &&
             workspaceId == other.workspaceId &&
             additionalProperties == other.additionalProperties
@@ -4360,7 +9758,10 @@ private constructor(
             status,
             statusMessage,
             totalGoalCount,
+            dataBackend,
+            dateLastPolled,
             project,
+            totalRecordsCount,
             workspace,
             workspaceId,
             additionalProperties,
@@ -4370,5 +9771,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "InferencePipelineUpdateResponse{id=$id, dateCreated=$dateCreated, dateLastEvaluated=$dateLastEvaluated, dateLastSampleReceived=$dateLastSampleReceived, dateOfNextEvaluation=$dateOfNextEvaluation, dateUpdated=$dateUpdated, description=$description, failingGoalCount=$failingGoalCount, links=$links, name=$name, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, totalGoalCount=$totalGoalCount, project=$project, workspace=$workspace, workspaceId=$workspaceId, additionalProperties=$additionalProperties}"
+        "InferencePipelineUpdateResponse{id=$id, dateCreated=$dateCreated, dateLastEvaluated=$dateLastEvaluated, dateLastSampleReceived=$dateLastSampleReceived, dateOfNextEvaluation=$dateOfNextEvaluation, dateUpdated=$dateUpdated, description=$description, failingGoalCount=$failingGoalCount, links=$links, name=$name, passingGoalCount=$passingGoalCount, projectId=$projectId, status=$status, statusMessage=$statusMessage, totalGoalCount=$totalGoalCount, dataBackend=$dataBackend, dateLastPolled=$dateLastPolled, project=$project, totalRecordsCount=$totalRecordsCount, workspace=$workspace, workspaceId=$workspaceId, additionalProperties=$additionalProperties}"
 }
