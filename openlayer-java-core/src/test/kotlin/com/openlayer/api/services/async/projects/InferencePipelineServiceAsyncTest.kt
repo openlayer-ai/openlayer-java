@@ -48,6 +48,23 @@ internal class InferencePipelineServiceAsyncTest {
                     .status(InferencePipelineCreateParams.Status.COMPLETED)
                     .statusMessage("Tests successfully evaluated")
                     .totalGoalCount(6L)
+                    .dataBackend(
+                        InferencePipelineCreateParams.DataBackend.UnionMember0.builder()
+                            .backendType(
+                                InferencePipelineCreateParams.DataBackend.UnionMember0.BackendType
+                                    .BIGQUERY
+                            )
+                            .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .datasetId("my-dataset")
+                            .bodyProjectId("my-project")
+                            .tableId("my-table")
+                            .partitionType(
+                                InferencePipelineCreateParams.DataBackend.UnionMember0.PartitionType
+                                    .DAY
+                            )
+                            .build()
+                    )
+                    .dateLastPolled(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .project(
                         InferencePipelineCreateParams.Project.builder()
                             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -89,6 +106,7 @@ internal class InferencePipelineServiceAsyncTest {
                             )
                             .build()
                     )
+                    .totalRecordsCount(1000L)
                     .workspace(
                         InferencePipelineCreateParams.Workspace.builder()
                             .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
