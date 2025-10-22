@@ -36,6 +36,23 @@ internal class InferencePipelineRetrieveResponseTest {
                 .status(InferencePipelineRetrieveResponse.Status.COMPLETED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
+                .dataBackend(
+                    InferencePipelineRetrieveResponse.DataBackend.UnionMember0.builder()
+                        .backendType(
+                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.BackendType
+                                .BIGQUERY
+                        )
+                        .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .datasetId("my-dataset")
+                        .projectId("my-project")
+                        .tableId("my-table")
+                        .partitionType(
+                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.PartitionType
+                                .DAY
+                        )
+                        .build()
+                )
+                .dateLastPolled(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .project(
                     InferencePipelineRetrieveResponse.Project.builder()
                         .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -77,6 +94,7 @@ internal class InferencePipelineRetrieveResponseTest {
                         )
                         .build()
                 )
+                .totalRecordsCount(1000L)
                 .workspace(
                     InferencePipelineRetrieveResponse.Workspace.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -137,6 +155,27 @@ internal class InferencePipelineRetrieveResponseTest {
         assertThat(inferencePipelineRetrieveResponse.statusMessage())
             .contains("Tests successfully evaluated")
         assertThat(inferencePipelineRetrieveResponse.totalGoalCount()).isEqualTo(6L)
+        assertThat(inferencePipelineRetrieveResponse.dataBackend())
+            .contains(
+                InferencePipelineRetrieveResponse.DataBackend.ofUnionMember0(
+                    InferencePipelineRetrieveResponse.DataBackend.UnionMember0.builder()
+                        .backendType(
+                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.BackendType
+                                .BIGQUERY
+                        )
+                        .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .datasetId("my-dataset")
+                        .projectId("my-project")
+                        .tableId("my-table")
+                        .partitionType(
+                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.PartitionType
+                                .DAY
+                        )
+                        .build()
+                )
+            )
+        assertThat(inferencePipelineRetrieveResponse.dateLastPolled())
+            .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
         assertThat(inferencePipelineRetrieveResponse.project())
             .contains(
                 InferencePipelineRetrieveResponse.Project.builder()
@@ -179,6 +218,7 @@ internal class InferencePipelineRetrieveResponseTest {
                     )
                     .build()
             )
+        assertThat(inferencePipelineRetrieveResponse.totalRecordsCount()).contains(1000L)
         assertThat(inferencePipelineRetrieveResponse.workspace())
             .contains(
                 InferencePipelineRetrieveResponse.Workspace.builder()
@@ -235,6 +275,23 @@ internal class InferencePipelineRetrieveResponseTest {
                 .status(InferencePipelineRetrieveResponse.Status.COMPLETED)
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
+                .dataBackend(
+                    InferencePipelineRetrieveResponse.DataBackend.UnionMember0.builder()
+                        .backendType(
+                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.BackendType
+                                .BIGQUERY
+                        )
+                        .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .datasetId("my-dataset")
+                        .projectId("my-project")
+                        .tableId("my-table")
+                        .partitionType(
+                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.PartitionType
+                                .DAY
+                        )
+                        .build()
+                )
+                .dateLastPolled(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .project(
                     InferencePipelineRetrieveResponse.Project.builder()
                         .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -276,6 +333,7 @@ internal class InferencePipelineRetrieveResponseTest {
                         )
                         .build()
                 )
+                .totalRecordsCount(1000L)
                 .workspace(
                     InferencePipelineRetrieveResponse.Workspace.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
