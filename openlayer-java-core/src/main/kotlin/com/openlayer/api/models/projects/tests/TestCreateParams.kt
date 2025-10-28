@@ -160,6 +160,15 @@ private constructor(
     fun archived(): Optional<Boolean> = body.archived()
 
     /**
+     * Whether to apply the test to all pipelines (data sources) or to a specific set of pipelines.
+     * Only applies to tests that use production data.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun defaultToAllPipelines(): Optional<Boolean> = body.defaultToAllPipelines()
+
+    /**
      * The delay window in seconds. Only applies to tests that use production data.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -174,6 +183,33 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun evaluationWindow(): Optional<Double> = body.evaluationWindow()
+
+    /**
+     * Array of pipelines (data sources) to which the test should not be applied. Only applies to
+     * tests that use production data.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun excludePipelines(): Optional<List<String>> = body.excludePipelines()
+
+    /**
+     * Whether to include historical data in the test result. Only applies to tests that use
+     * production data.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun includeHistoricalData(): Optional<Boolean> = body.includeHistoricalData()
+
+    /**
+     * Array of pipelines (data sources) to which the test should be applied. Only applies to tests
+     * that use production data.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun includePipelines(): Optional<List<String>> = body.includePipelines()
 
     /**
      * Whether the test uses an ML model.
@@ -315,6 +351,14 @@ private constructor(
     fun _archived(): JsonField<Boolean> = body._archived()
 
     /**
+     * Returns the raw JSON value of [defaultToAllPipelines].
+     *
+     * Unlike [defaultToAllPipelines], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _defaultToAllPipelines(): JsonField<Boolean> = body._defaultToAllPipelines()
+
+    /**
      * Returns the raw JSON value of [delayWindow].
      *
      * Unlike [delayWindow], this method doesn't throw if the JSON field has an unexpected type.
@@ -328,6 +372,30 @@ private constructor(
      * type.
      */
     fun _evaluationWindow(): JsonField<Double> = body._evaluationWindow()
+
+    /**
+     * Returns the raw JSON value of [excludePipelines].
+     *
+     * Unlike [excludePipelines], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _excludePipelines(): JsonField<List<String>> = body._excludePipelines()
+
+    /**
+     * Returns the raw JSON value of [includeHistoricalData].
+     *
+     * Unlike [includeHistoricalData], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _includeHistoricalData(): JsonField<Boolean> = body._includeHistoricalData()
+
+    /**
+     * Returns the raw JSON value of [includePipelines].
+     *
+     * Unlike [includePipelines], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _includePipelines(): JsonField<List<String>> = body._includePipelines()
 
     /**
      * Returns the raw JSON value of [usesMlModel].
@@ -637,6 +705,40 @@ private constructor(
          */
         fun archived(archived: JsonField<Boolean>) = apply { body.archived(archived) }
 
+        /**
+         * Whether to apply the test to all pipelines (data sources) or to a specific set of
+         * pipelines. Only applies to tests that use production data.
+         */
+        fun defaultToAllPipelines(defaultToAllPipelines: Boolean?) = apply {
+            body.defaultToAllPipelines(defaultToAllPipelines)
+        }
+
+        /**
+         * Alias for [Builder.defaultToAllPipelines].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun defaultToAllPipelines(defaultToAllPipelines: Boolean) =
+            defaultToAllPipelines(defaultToAllPipelines as Boolean?)
+
+        /**
+         * Alias for calling [Builder.defaultToAllPipelines] with
+         * `defaultToAllPipelines.orElse(null)`.
+         */
+        fun defaultToAllPipelines(defaultToAllPipelines: Optional<Boolean>) =
+            defaultToAllPipelines(defaultToAllPipelines.getOrNull())
+
+        /**
+         * Sets [Builder.defaultToAllPipelines] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.defaultToAllPipelines] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun defaultToAllPipelines(defaultToAllPipelines: JsonField<Boolean>) = apply {
+            body.defaultToAllPipelines(defaultToAllPipelines)
+        }
+
         /** The delay window in seconds. Only applies to tests that use production data. */
         fun delayWindow(delayWindow: Double?) = apply { body.delayWindow(delayWindow) }
 
@@ -685,6 +787,104 @@ private constructor(
          */
         fun evaluationWindow(evaluationWindow: JsonField<Double>) = apply {
             body.evaluationWindow(evaluationWindow)
+        }
+
+        /**
+         * Array of pipelines (data sources) to which the test should not be applied. Only applies
+         * to tests that use production data.
+         */
+        fun excludePipelines(excludePipelines: List<String>?) = apply {
+            body.excludePipelines(excludePipelines)
+        }
+
+        /** Alias for calling [Builder.excludePipelines] with `excludePipelines.orElse(null)`. */
+        fun excludePipelines(excludePipelines: Optional<List<String>>) =
+            excludePipelines(excludePipelines.getOrNull())
+
+        /**
+         * Sets [Builder.excludePipelines] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.excludePipelines] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun excludePipelines(excludePipelines: JsonField<List<String>>) = apply {
+            body.excludePipelines(excludePipelines)
+        }
+
+        /**
+         * Adds a single [String] to [excludePipelines].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addExcludePipeline(excludePipeline: String) = apply {
+            body.addExcludePipeline(excludePipeline)
+        }
+
+        /**
+         * Whether to include historical data in the test result. Only applies to tests that use
+         * production data.
+         */
+        fun includeHistoricalData(includeHistoricalData: Boolean?) = apply {
+            body.includeHistoricalData(includeHistoricalData)
+        }
+
+        /**
+         * Alias for [Builder.includeHistoricalData].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun includeHistoricalData(includeHistoricalData: Boolean) =
+            includeHistoricalData(includeHistoricalData as Boolean?)
+
+        /**
+         * Alias for calling [Builder.includeHistoricalData] with
+         * `includeHistoricalData.orElse(null)`.
+         */
+        fun includeHistoricalData(includeHistoricalData: Optional<Boolean>) =
+            includeHistoricalData(includeHistoricalData.getOrNull())
+
+        /**
+         * Sets [Builder.includeHistoricalData] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.includeHistoricalData] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun includeHistoricalData(includeHistoricalData: JsonField<Boolean>) = apply {
+            body.includeHistoricalData(includeHistoricalData)
+        }
+
+        /**
+         * Array of pipelines (data sources) to which the test should be applied. Only applies to
+         * tests that use production data.
+         */
+        fun includePipelines(includePipelines: List<String>?) = apply {
+            body.includePipelines(includePipelines)
+        }
+
+        /** Alias for calling [Builder.includePipelines] with `includePipelines.orElse(null)`. */
+        fun includePipelines(includePipelines: Optional<List<String>>) =
+            includePipelines(includePipelines.getOrNull())
+
+        /**
+         * Sets [Builder.includePipelines] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.includePipelines] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun includePipelines(includePipelines: JsonField<List<String>>) = apply {
+            body.includePipelines(includePipelines)
+        }
+
+        /**
+         * Adds a single [String] to [includePipelines].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addIncludePipeline(includePipeline: String) = apply {
+            body.addIncludePipeline(includePipeline)
         }
 
         /** Whether the test uses an ML model. */
@@ -944,8 +1144,12 @@ private constructor(
         private val thresholds: JsonField<List<Threshold>>,
         private val type: JsonField<Type>,
         private val archived: JsonField<Boolean>,
+        private val defaultToAllPipelines: JsonField<Boolean>,
         private val delayWindow: JsonField<Double>,
         private val evaluationWindow: JsonField<Double>,
+        private val excludePipelines: JsonField<List<String>>,
+        private val includeHistoricalData: JsonField<Boolean>,
+        private val includePipelines: JsonField<List<String>>,
         private val usesMlModel: JsonField<Boolean>,
         private val usesProductionData: JsonField<Boolean>,
         private val usesReferenceDataset: JsonField<Boolean>,
@@ -989,12 +1193,24 @@ private constructor(
             @JsonProperty("archived")
             @ExcludeMissing
             archived: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("defaultToAllPipelines")
+            @ExcludeMissing
+            defaultToAllPipelines: JsonField<Boolean> = JsonMissing.of(),
             @JsonProperty("delayWindow")
             @ExcludeMissing
             delayWindow: JsonField<Double> = JsonMissing.of(),
             @JsonProperty("evaluationWindow")
             @ExcludeMissing
             evaluationWindow: JsonField<Double> = JsonMissing.of(),
+            @JsonProperty("excludePipelines")
+            @ExcludeMissing
+            excludePipelines: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("includeHistoricalData")
+            @ExcludeMissing
+            includeHistoricalData: JsonField<Boolean> = JsonMissing.of(),
+            @JsonProperty("includePipelines")
+            @ExcludeMissing
+            includePipelines: JsonField<List<String>> = JsonMissing.of(),
             @JsonProperty("usesMlModel")
             @ExcludeMissing
             usesMlModel: JsonField<Boolean> = JsonMissing.of(),
@@ -1026,8 +1242,12 @@ private constructor(
             thresholds,
             type,
             archived,
+            defaultToAllPipelines,
             delayWindow,
             evaluationWindow,
+            excludePipelines,
+            includeHistoricalData,
+            includePipelines,
             usesMlModel,
             usesProductionData,
             usesReferenceDataset,
@@ -1151,6 +1371,16 @@ private constructor(
         fun archived(): Optional<Boolean> = archived.getOptional("archived")
 
         /**
+         * Whether to apply the test to all pipelines (data sources) or to a specific set of
+         * pipelines. Only applies to tests that use production data.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun defaultToAllPipelines(): Optional<Boolean> =
+            defaultToAllPipelines.getOptional("defaultToAllPipelines")
+
+        /**
          * The delay window in seconds. Only applies to tests that use production data.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -1165,6 +1395,36 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun evaluationWindow(): Optional<Double> = evaluationWindow.getOptional("evaluationWindow")
+
+        /**
+         * Array of pipelines (data sources) to which the test should not be applied. Only applies
+         * to tests that use production data.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun excludePipelines(): Optional<List<String>> =
+            excludePipelines.getOptional("excludePipelines")
+
+        /**
+         * Whether to include historical data in the test result. Only applies to tests that use
+         * production data.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun includeHistoricalData(): Optional<Boolean> =
+            includeHistoricalData.getOptional("includeHistoricalData")
+
+        /**
+         * Array of pipelines (data sources) to which the test should be applied. Only applies to
+         * tests that use production data.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun includePipelines(): Optional<List<String>> =
+            includePipelines.getOptional("includePipelines")
 
         /**
          * Whether the test uses an ML model.
@@ -1324,6 +1584,16 @@ private constructor(
         @JsonProperty("archived") @ExcludeMissing fun _archived(): JsonField<Boolean> = archived
 
         /**
+         * Returns the raw JSON value of [defaultToAllPipelines].
+         *
+         * Unlike [defaultToAllPipelines], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("defaultToAllPipelines")
+        @ExcludeMissing
+        fun _defaultToAllPipelines(): JsonField<Boolean> = defaultToAllPipelines
+
+        /**
          * Returns the raw JSON value of [delayWindow].
          *
          * Unlike [delayWindow], this method doesn't throw if the JSON field has an unexpected type.
@@ -1341,6 +1611,36 @@ private constructor(
         @JsonProperty("evaluationWindow")
         @ExcludeMissing
         fun _evaluationWindow(): JsonField<Double> = evaluationWindow
+
+        /**
+         * Returns the raw JSON value of [excludePipelines].
+         *
+         * Unlike [excludePipelines], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("excludePipelines")
+        @ExcludeMissing
+        fun _excludePipelines(): JsonField<List<String>> = excludePipelines
+
+        /**
+         * Returns the raw JSON value of [includeHistoricalData].
+         *
+         * Unlike [includeHistoricalData], this method doesn't throw if the JSON field has an
+         * unexpected type.
+         */
+        @JsonProperty("includeHistoricalData")
+        @ExcludeMissing
+        fun _includeHistoricalData(): JsonField<Boolean> = includeHistoricalData
+
+        /**
+         * Returns the raw JSON value of [includePipelines].
+         *
+         * Unlike [includePipelines], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("includePipelines")
+        @ExcludeMissing
+        fun _includePipelines(): JsonField<List<String>> = includePipelines
 
         /**
          * Returns the raw JSON value of [usesMlModel].
@@ -1447,8 +1747,12 @@ private constructor(
             private var thresholds: JsonField<MutableList<Threshold>>? = null
             private var type: JsonField<Type>? = null
             private var archived: JsonField<Boolean> = JsonMissing.of()
+            private var defaultToAllPipelines: JsonField<Boolean> = JsonMissing.of()
             private var delayWindow: JsonField<Double> = JsonMissing.of()
             private var evaluationWindow: JsonField<Double> = JsonMissing.of()
+            private var excludePipelines: JsonField<MutableList<String>>? = null
+            private var includeHistoricalData: JsonField<Boolean> = JsonMissing.of()
+            private var includePipelines: JsonField<MutableList<String>>? = null
             private var usesMlModel: JsonField<Boolean> = JsonMissing.of()
             private var usesProductionData: JsonField<Boolean> = JsonMissing.of()
             private var usesReferenceDataset: JsonField<Boolean> = JsonMissing.of()
@@ -1473,8 +1777,12 @@ private constructor(
                 thresholds = body.thresholds.map { it.toMutableList() }
                 type = body.type
                 archived = body.archived
+                defaultToAllPipelines = body.defaultToAllPipelines
                 delayWindow = body.delayWindow
                 evaluationWindow = body.evaluationWindow
+                excludePipelines = body.excludePipelines.map { it.toMutableList() }
+                includeHistoricalData = body.includeHistoricalData
+                includePipelines = body.includePipelines.map { it.toMutableList() }
                 usesMlModel = body.usesMlModel
                 usesProductionData = body.usesProductionData
                 usesReferenceDataset = body.usesReferenceDataset
@@ -1693,6 +2001,39 @@ private constructor(
              */
             fun archived(archived: JsonField<Boolean>) = apply { this.archived = archived }
 
+            /**
+             * Whether to apply the test to all pipelines (data sources) or to a specific set of
+             * pipelines. Only applies to tests that use production data.
+             */
+            fun defaultToAllPipelines(defaultToAllPipelines: Boolean?) =
+                defaultToAllPipelines(JsonField.ofNullable(defaultToAllPipelines))
+
+            /**
+             * Alias for [Builder.defaultToAllPipelines].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun defaultToAllPipelines(defaultToAllPipelines: Boolean) =
+                defaultToAllPipelines(defaultToAllPipelines as Boolean?)
+
+            /**
+             * Alias for calling [Builder.defaultToAllPipelines] with
+             * `defaultToAllPipelines.orElse(null)`.
+             */
+            fun defaultToAllPipelines(defaultToAllPipelines: Optional<Boolean>) =
+                defaultToAllPipelines(defaultToAllPipelines.getOrNull())
+
+            /**
+             * Sets [Builder.defaultToAllPipelines] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.defaultToAllPipelines] with a well-typed [Boolean]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun defaultToAllPipelines(defaultToAllPipelines: JsonField<Boolean>) = apply {
+                this.defaultToAllPipelines = defaultToAllPipelines
+            }
+
             /** The delay window in seconds. Only applies to tests that use production data. */
             fun delayWindow(delayWindow: Double?) = delayWindow(JsonField.ofNullable(delayWindow))
 
@@ -1744,6 +2085,111 @@ private constructor(
              */
             fun evaluationWindow(evaluationWindow: JsonField<Double>) = apply {
                 this.evaluationWindow = evaluationWindow
+            }
+
+            /**
+             * Array of pipelines (data sources) to which the test should not be applied. Only
+             * applies to tests that use production data.
+             */
+            fun excludePipelines(excludePipelines: List<String>?) =
+                excludePipelines(JsonField.ofNullable(excludePipelines))
+
+            /**
+             * Alias for calling [Builder.excludePipelines] with `excludePipelines.orElse(null)`.
+             */
+            fun excludePipelines(excludePipelines: Optional<List<String>>) =
+                excludePipelines(excludePipelines.getOrNull())
+
+            /**
+             * Sets [Builder.excludePipelines] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.excludePipelines] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun excludePipelines(excludePipelines: JsonField<List<String>>) = apply {
+                this.excludePipelines = excludePipelines.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [excludePipelines].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addExcludePipeline(excludePipeline: String) = apply {
+                excludePipelines =
+                    (excludePipelines ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("excludePipelines", it).add(excludePipeline)
+                    }
+            }
+
+            /**
+             * Whether to include historical data in the test result. Only applies to tests that use
+             * production data.
+             */
+            fun includeHistoricalData(includeHistoricalData: Boolean?) =
+                includeHistoricalData(JsonField.ofNullable(includeHistoricalData))
+
+            /**
+             * Alias for [Builder.includeHistoricalData].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun includeHistoricalData(includeHistoricalData: Boolean) =
+                includeHistoricalData(includeHistoricalData as Boolean?)
+
+            /**
+             * Alias for calling [Builder.includeHistoricalData] with
+             * `includeHistoricalData.orElse(null)`.
+             */
+            fun includeHistoricalData(includeHistoricalData: Optional<Boolean>) =
+                includeHistoricalData(includeHistoricalData.getOrNull())
+
+            /**
+             * Sets [Builder.includeHistoricalData] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.includeHistoricalData] with a well-typed [Boolean]
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun includeHistoricalData(includeHistoricalData: JsonField<Boolean>) = apply {
+                this.includeHistoricalData = includeHistoricalData
+            }
+
+            /**
+             * Array of pipelines (data sources) to which the test should be applied. Only applies
+             * to tests that use production data.
+             */
+            fun includePipelines(includePipelines: List<String>?) =
+                includePipelines(JsonField.ofNullable(includePipelines))
+
+            /**
+             * Alias for calling [Builder.includePipelines] with `includePipelines.orElse(null)`.
+             */
+            fun includePipelines(includePipelines: Optional<List<String>>) =
+                includePipelines(includePipelines.getOrNull())
+
+            /**
+             * Sets [Builder.includePipelines] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.includePipelines] with a well-typed `List<String>`
+             * value instead. This method is primarily for setting the field to an undocumented or
+             * not yet supported value.
+             */
+            fun includePipelines(includePipelines: JsonField<List<String>>) = apply {
+                this.includePipelines = includePipelines.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [includePipelines].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addIncludePipeline(includePipeline: String) = apply {
+                includePipelines =
+                    (includePipelines ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("includePipelines", it).add(includePipeline)
+                    }
             }
 
             /** Whether the test uses an ML model. */
@@ -1881,8 +2327,12 @@ private constructor(
                     checkRequired("thresholds", thresholds).map { it.toImmutable() },
                     checkRequired("type", type),
                     archived,
+                    defaultToAllPipelines,
                     delayWindow,
                     evaluationWindow,
+                    (excludePipelines ?: JsonMissing.of()).map { it.toImmutable() },
+                    includeHistoricalData,
+                    (includePipelines ?: JsonMissing.of()).map { it.toImmutable() },
                     usesMlModel,
                     usesProductionData,
                     usesReferenceDataset,
@@ -1913,8 +2363,12 @@ private constructor(
             thresholds().forEach { it.validate() }
             type().validate()
             archived()
+            defaultToAllPipelines()
             delayWindow()
             evaluationWindow()
+            excludePipelines()
+            includeHistoricalData()
+            includePipelines()
             usesMlModel()
             usesProductionData()
             usesReferenceDataset()
@@ -1953,8 +2407,12 @@ private constructor(
                 (thresholds.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
                 (type.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (archived.asKnown().isPresent) 1 else 0) +
+                (if (defaultToAllPipelines.asKnown().isPresent) 1 else 0) +
                 (if (delayWindow.asKnown().isPresent) 1 else 0) +
                 (if (evaluationWindow.asKnown().isPresent) 1 else 0) +
+                (excludePipelines.asKnown().getOrNull()?.size ?: 0) +
+                (if (includeHistoricalData.asKnown().isPresent) 1 else 0) +
+                (includePipelines.asKnown().getOrNull()?.size ?: 0) +
                 (if (usesMlModel.asKnown().isPresent) 1 else 0) +
                 (if (usesProductionData.asKnown().isPresent) 1 else 0) +
                 (if (usesReferenceDataset.asKnown().isPresent) 1 else 0) +
@@ -1982,8 +2440,12 @@ private constructor(
                 thresholds == other.thresholds &&
                 type == other.type &&
                 archived == other.archived &&
+                defaultToAllPipelines == other.defaultToAllPipelines &&
                 delayWindow == other.delayWindow &&
                 evaluationWindow == other.evaluationWindow &&
+                excludePipelines == other.excludePipelines &&
+                includeHistoricalData == other.includeHistoricalData &&
+                includePipelines == other.includePipelines &&
                 usesMlModel == other.usesMlModel &&
                 usesProductionData == other.usesProductionData &&
                 usesReferenceDataset == other.usesReferenceDataset &&
@@ -2009,8 +2471,12 @@ private constructor(
                 thresholds,
                 type,
                 archived,
+                defaultToAllPipelines,
                 delayWindow,
                 evaluationWindow,
+                excludePipelines,
+                includeHistoricalData,
+                includePipelines,
                 usesMlModel,
                 usesProductionData,
                 usesReferenceDataset,
@@ -2023,7 +2489,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{id=$id, commentCount=$commentCount, creatorId=$creatorId, dateArchived=$dateArchived, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, name=$name, number=$number, originProjectVersionId=$originProjectVersionId, subtype=$subtype, suggested=$suggested, thresholds=$thresholds, type=$type, archived=$archived, delayWindow=$delayWindow, evaluationWindow=$evaluationWindow, usesMlModel=$usesMlModel, usesProductionData=$usesProductionData, usesReferenceDataset=$usesReferenceDataset, usesTrainingDataset=$usesTrainingDataset, usesValidationDataset=$usesValidationDataset, additionalProperties=$additionalProperties}"
+            "Body{id=$id, commentCount=$commentCount, creatorId=$creatorId, dateArchived=$dateArchived, dateCreated=$dateCreated, dateUpdated=$dateUpdated, description=$description, name=$name, number=$number, originProjectVersionId=$originProjectVersionId, subtype=$subtype, suggested=$suggested, thresholds=$thresholds, type=$type, archived=$archived, defaultToAllPipelines=$defaultToAllPipelines, delayWindow=$delayWindow, evaluationWindow=$evaluationWindow, excludePipelines=$excludePipelines, includeHistoricalData=$includeHistoricalData, includePipelines=$includePipelines, usesMlModel=$usesMlModel, usesProductionData=$usesProductionData, usesReferenceDataset=$usesReferenceDataset, usesTrainingDataset=$usesTrainingDataset, usesValidationDataset=$usesValidationDataset, additionalProperties=$additionalProperties}"
     }
 
     /** The test subtype. */
