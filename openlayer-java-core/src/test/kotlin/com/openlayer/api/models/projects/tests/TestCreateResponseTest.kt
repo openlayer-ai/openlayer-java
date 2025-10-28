@@ -6,6 +6,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonTypeRef
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.jsonMapper
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -44,8 +45,12 @@ internal class TestCreateResponseTest {
                 )
                 .type(TestCreateResponse.Type.INTEGRITY)
                 .archived(false)
+                .defaultToAllPipelines(true)
                 .delayWindow(0.0)
                 .evaluationWindow(3600.0)
+                .addExcludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .includeHistoricalData(true)
+                .addIncludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .usesMlModel(false)
                 .usesProductionData(false)
                 .usesReferenceDataset(false)
@@ -89,8 +94,14 @@ internal class TestCreateResponseTest {
             )
         assertThat(testCreateResponse.type()).isEqualTo(TestCreateResponse.Type.INTEGRITY)
         assertThat(testCreateResponse.archived()).contains(false)
+        assertThat(testCreateResponse.defaultToAllPipelines()).contains(true)
         assertThat(testCreateResponse.delayWindow()).contains(0.0)
         assertThat(testCreateResponse.evaluationWindow()).contains(3600.0)
+        assertThat(testCreateResponse.excludePipelines().getOrNull())
+            .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(testCreateResponse.includeHistoricalData()).contains(true)
+        assertThat(testCreateResponse.includePipelines().getOrNull())
+            .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(testCreateResponse.usesMlModel()).contains(false)
         assertThat(testCreateResponse.usesProductionData()).contains(false)
         assertThat(testCreateResponse.usesReferenceDataset()).contains(false)
@@ -132,8 +143,12 @@ internal class TestCreateResponseTest {
                 )
                 .type(TestCreateResponse.Type.INTEGRITY)
                 .archived(false)
+                .defaultToAllPipelines(true)
                 .delayWindow(0.0)
                 .evaluationWindow(3600.0)
+                .addExcludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .includeHistoricalData(true)
+                .addIncludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .usesMlModel(false)
                 .usesProductionData(false)
                 .usesReferenceDataset(false)

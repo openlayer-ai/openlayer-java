@@ -4,6 +4,7 @@ package com.openlayer.api.models.projects.tests
 
 import com.openlayer.api.core.JsonValue
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -42,8 +43,12 @@ internal class TestCreateParamsTest {
             )
             .type(TestCreateParams.Type.INTEGRITY)
             .archived(false)
+            .defaultToAllPipelines(true)
             .delayWindow(0.0)
             .evaluationWindow(3600.0)
+            .addExcludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+            .includeHistoricalData(true)
+            .addIncludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .usesMlModel(false)
             .usesProductionData(false)
             .usesReferenceDataset(false)
@@ -112,8 +117,12 @@ internal class TestCreateParamsTest {
                 )
                 .type(TestCreateParams.Type.INTEGRITY)
                 .archived(false)
+                .defaultToAllPipelines(true)
                 .delayWindow(0.0)
                 .evaluationWindow(3600.0)
+                .addExcludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .includeHistoricalData(true)
+                .addIncludePipeline("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .usesMlModel(false)
                 .usesProductionData(false)
                 .usesReferenceDataset(false)
@@ -154,8 +163,14 @@ internal class TestCreateParamsTest {
             )
         assertThat(body.type()).isEqualTo(TestCreateParams.Type.INTEGRITY)
         assertThat(body.archived()).contains(false)
+        assertThat(body.defaultToAllPipelines()).contains(true)
         assertThat(body.delayWindow()).contains(0.0)
         assertThat(body.evaluationWindow()).contains(3600.0)
+        assertThat(body.excludePipelines().getOrNull())
+            .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(body.includeHistoricalData()).contains(true)
+        assertThat(body.includePipelines().getOrNull())
+            .containsExactly("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
         assertThat(body.usesMlModel()).contains(false)
         assertThat(body.usesProductionData()).contains(false)
         assertThat(body.usesReferenceDataset()).contains(false)
