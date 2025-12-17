@@ -7,6 +7,7 @@ import com.openlayer.api.services.async.CommitServiceAsync
 import com.openlayer.api.services.async.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.ProjectServiceAsync
 import com.openlayer.api.services.async.StorageServiceAsync
+import com.openlayer.api.services.async.TestServiceAsync
 import java.util.function.Consumer
 
 /**
@@ -53,6 +54,8 @@ interface OpenlayerClientAsync {
 
     fun storage(): StorageServiceAsync
 
+    fun tests(): TestServiceAsync
+
     /**
      * Closes this client, relinquishing any underlying resources.
      *
@@ -87,5 +90,7 @@ interface OpenlayerClientAsync {
         fun inferencePipelines(): InferencePipelineServiceAsync.WithRawResponse
 
         fun storage(): StorageServiceAsync.WithRawResponse
+
+        fun tests(): TestServiceAsync.WithRawResponse
     }
 }
