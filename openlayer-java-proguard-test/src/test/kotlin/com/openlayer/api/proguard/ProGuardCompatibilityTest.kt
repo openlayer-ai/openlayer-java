@@ -51,6 +51,7 @@ internal class ProGuardCompatibilityTest {
         assertThat(client.commits()).isNotNull()
         assertThat(client.inferencePipelines()).isNotNull()
         assertThat(client.storage()).isNotNull()
+        assertThat(client.tests()).isNotNull()
     }
 
     @Test
