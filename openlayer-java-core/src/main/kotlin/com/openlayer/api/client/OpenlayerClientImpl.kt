@@ -12,6 +12,8 @@ import com.openlayer.api.services.blocking.ProjectService
 import com.openlayer.api.services.blocking.ProjectServiceImpl
 import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.StorageServiceImpl
+import com.openlayer.api.services.blocking.TestService
+import com.openlayer.api.services.blocking.TestServiceImpl
 import java.util.function.Consumer
 
 class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerClient {
@@ -41,6 +43,8 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
 
     private val storage: StorageService by lazy { StorageServiceImpl(clientOptionsWithUserAgent) }
 
+    private val tests: TestService by lazy { TestServiceImpl(clientOptionsWithUserAgent) }
+
     override fun async(): OpenlayerClientAsync = async
 
     override fun withRawResponse(): OpenlayerClient.WithRawResponse = withRawResponse
@@ -55,6 +59,8 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
     override fun inferencePipelines(): InferencePipelineService = inferencePipelines
 
     override fun storage(): StorageService = storage
+
+    override fun tests(): TestService = tests
 
     override fun close() = clientOptions.close()
 
@@ -77,6 +83,10 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
             StorageServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val tests: TestService.WithRawResponse by lazy {
+            TestServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): OpenlayerClient.WithRawResponse =
@@ -92,5 +102,7 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
             inferencePipelines
 
         override fun storage(): StorageService.WithRawResponse = storage
+
+        override fun tests(): TestService.WithRawResponse = tests
     }
 }

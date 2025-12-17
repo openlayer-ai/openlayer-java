@@ -12,6 +12,8 @@ import com.openlayer.api.services.async.ProjectServiceAsync
 import com.openlayer.api.services.async.ProjectServiceAsyncImpl
 import com.openlayer.api.services.async.StorageServiceAsync
 import com.openlayer.api.services.async.StorageServiceAsyncImpl
+import com.openlayer.api.services.async.TestServiceAsync
+import com.openlayer.api.services.async.TestServiceAsyncImpl
 import java.util.function.Consumer
 
 class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : OpenlayerClientAsync {
@@ -47,6 +49,8 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
         StorageServiceAsyncImpl(clientOptionsWithUserAgent)
     }
 
+    private val tests: TestServiceAsync by lazy { TestServiceAsyncImpl(clientOptionsWithUserAgent) }
+
     override fun sync(): OpenlayerClient = sync
 
     override fun withRawResponse(): OpenlayerClientAsync.WithRawResponse = withRawResponse
@@ -61,6 +65,8 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
     override fun inferencePipelines(): InferencePipelineServiceAsync = inferencePipelines
 
     override fun storage(): StorageServiceAsync = storage
+
+    override fun tests(): TestServiceAsync = tests
 
     override fun close() = clientOptions.close()
 
@@ -83,6 +89,10 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
             StorageServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val tests: TestServiceAsync.WithRawResponse by lazy {
+            TestServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): OpenlayerClientAsync.WithRawResponse =
@@ -98,5 +108,7 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
             inferencePipelines
 
         override fun storage(): StorageServiceAsync.WithRawResponse = storage
+
+        override fun tests(): TestServiceAsync.WithRawResponse = tests
     }
 }
