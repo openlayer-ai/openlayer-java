@@ -43,7 +43,9 @@ internal class DataServiceAsyncTest {
                                     .build()
                             )
                             .questionColumnName("question")
+                            .sessionIdColumnName("session_id")
                             .timestampColumnName("timestamp")
+                            .userIdColumnName("user_id")
                             .build()
                     )
                     .addRow(

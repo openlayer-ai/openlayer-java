@@ -3,14 +3,14 @@
 package com.openlayer.api.services.blocking.commits
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.parseable
@@ -42,7 +42,8 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TestResultService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -53,7 +54,6 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
 
         private val listHandler: Handler<TestResultListResponse> =
             jsonHandler<TestResultListResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: TestResultListParams,
@@ -71,7 +71,7 @@ class TestResultServiceImpl internal constructor(private val clientOptions: Clie
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {

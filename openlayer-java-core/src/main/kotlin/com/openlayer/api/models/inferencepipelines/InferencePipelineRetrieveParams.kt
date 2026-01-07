@@ -28,8 +28,10 @@ private constructor(
     /** Expand specific nested objects. */
     fun expand(): Optional<List<Expand>> = Optional.ofNullable(expand)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -335,7 +337,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Expand && value == other.value /* spotless:on */
+            return other is Expand && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -348,10 +350,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineRetrieveParams && inferencePipelineId == other.inferencePipelineId && expand == other.expand && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is InferencePipelineRetrieveParams &&
+            inferencePipelineId == other.inferencePipelineId &&
+            expand == other.expand &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, expand, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(inferencePipelineId, expand, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "InferencePipelineRetrieveParams{inferencePipelineId=$inferencePipelineId, expand=$expand, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

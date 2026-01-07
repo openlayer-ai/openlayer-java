@@ -41,7 +41,7 @@ interface InferencePipelineService {
     fun retrieve(inferencePipelineId: String): InferencePipelineRetrieveResponse =
         retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         inferencePipelineId: String,
         params: InferencePipelineRetrieveParams = InferencePipelineRetrieveParams.none(),
@@ -52,24 +52,24 @@ interface InferencePipelineService {
             requestOptions,
         )
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         inferencePipelineId: String,
         params: InferencePipelineRetrieveParams = InferencePipelineRetrieveParams.none(),
     ): InferencePipelineRetrieveResponse =
         retrieve(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         params: InferencePipelineRetrieveParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineRetrieveResponse
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(params: InferencePipelineRetrieveParams): InferencePipelineRetrieveResponse =
         retrieve(params, RequestOptions.none())
 
-    /** @see [retrieve] */
+    /** @see retrieve */
     fun retrieve(
         inferencePipelineId: String,
         requestOptions: RequestOptions,
@@ -80,7 +80,7 @@ interface InferencePipelineService {
     fun update(inferencePipelineId: String): InferencePipelineUpdateResponse =
         update(inferencePipelineId, InferencePipelineUpdateParams.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         inferencePipelineId: String,
         params: InferencePipelineUpdateParams = InferencePipelineUpdateParams.none(),
@@ -88,23 +88,23 @@ interface InferencePipelineService {
     ): InferencePipelineUpdateResponse =
         update(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         inferencePipelineId: String,
         params: InferencePipelineUpdateParams = InferencePipelineUpdateParams.none(),
     ): InferencePipelineUpdateResponse = update(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: InferencePipelineUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineUpdateResponse
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: InferencePipelineUpdateParams): InferencePipelineUpdateResponse =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         inferencePipelineId: String,
         requestOptions: RequestOptions,
@@ -115,29 +115,29 @@ interface InferencePipelineService {
     fun delete(inferencePipelineId: String) =
         delete(inferencePipelineId, InferencePipelineDeleteParams.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         inferencePipelineId: String,
         params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ) = delete(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         inferencePipelineId: String,
         params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
     ) = delete(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(
         params: InferencePipelineDeleteParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     )
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(params: InferencePipelineDeleteParams) = delete(params, RequestOptions.none())
 
-    /** @see [delete] */
+    /** @see delete */
     fun delete(inferencePipelineId: String, requestOptions: RequestOptions) =
         delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)
 
@@ -172,7 +172,7 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineRetrieveResponse> =
             retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             inferencePipelineId: String,
@@ -184,7 +184,7 @@ interface InferencePipelineService {
                 requestOptions,
             )
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             inferencePipelineId: String,
@@ -192,21 +192,21 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineRetrieveResponse> =
             retrieve(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: InferencePipelineRetrieveParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<InferencePipelineRetrieveResponse>
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             params: InferencePipelineRetrieveParams
         ): HttpResponseFor<InferencePipelineRetrieveResponse> =
             retrieve(params, RequestOptions.none())
 
-        /** @see [retrieve] */
+        /** @see retrieve */
         @MustBeClosed
         fun retrieve(
             inferencePipelineId: String,
@@ -222,7 +222,7 @@ interface InferencePipelineService {
         fun update(inferencePipelineId: String): HttpResponseFor<InferencePipelineUpdateResponse> =
             update(inferencePipelineId, InferencePipelineUpdateParams.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             inferencePipelineId: String,
@@ -234,7 +234,7 @@ interface InferencePipelineService {
                 requestOptions,
             )
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             inferencePipelineId: String,
@@ -242,20 +242,20 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineUpdateResponse> =
             update(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: InferencePipelineUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<InferencePipelineUpdateResponse>
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: InferencePipelineUpdateParams
         ): HttpResponseFor<InferencePipelineUpdateResponse> = update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             inferencePipelineId: String,
@@ -271,7 +271,7 @@ interface InferencePipelineService {
         fun delete(inferencePipelineId: String): HttpResponse =
             delete(inferencePipelineId, InferencePipelineDeleteParams.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             inferencePipelineId: String,
@@ -283,26 +283,26 @@ interface InferencePipelineService {
                 requestOptions,
             )
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             inferencePipelineId: String,
             params: InferencePipelineDeleteParams = InferencePipelineDeleteParams.none(),
         ): HttpResponse = delete(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(
             params: InferencePipelineDeleteParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponse
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(params: InferencePipelineDeleteParams): HttpResponse =
             delete(params, RequestOptions.none())
 
-        /** @see [delete] */
+        /** @see delete */
         @MustBeClosed
         fun delete(inferencePipelineId: String, requestOptions: RequestOptions): HttpResponse =
             delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)

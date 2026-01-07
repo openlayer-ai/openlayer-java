@@ -3,13 +3,13 @@
 package com.openlayer.api.services.async.storage
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
@@ -42,7 +42,8 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PresignedUrlServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -53,7 +54,6 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
 
         private val createHandler: Handler<PresignedUrlCreateResponse> =
             jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun create(
             params: PresignedUrlCreateParams,
@@ -71,7 +71,7 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {

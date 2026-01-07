@@ -3,13 +3,13 @@
 package com.openlayer.api.services.blocking.storage
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
@@ -41,7 +41,8 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PresignedUrlService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -52,7 +53,6 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
 
         private val createHandler: Handler<PresignedUrlCreateResponse> =
             jsonHandler<PresignedUrlCreateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun create(
             params: PresignedUrlCreateParams,
@@ -68,7 +68,7 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {

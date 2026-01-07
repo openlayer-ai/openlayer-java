@@ -1196,12 +1196,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Links &&
+                    app == other.app &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -1354,7 +1354,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+                return other is Status && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2312,12 +2312,12 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
+                    return other is Links &&
+                        app == other.app &&
+                        additionalProperties == other.additionalProperties
                 }
 
-                /* spotless:off */
                 private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
-                /* spotless:on */
 
                 override fun hashCode(): Int = hashCode
 
@@ -2455,7 +2455,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Source && value == other.value /* spotless:on */
+                    return other is Source && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -2599,7 +2599,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
+                    return other is TaskType && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -3188,12 +3188,39 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is GitRepo && id == other.id && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && gitAccountId == other.gitAccountId && gitId == other.gitId && name == other.name && private_ == other.private_ && projectId == other.projectId && slug == other.slug && url == other.url && branch == other.branch && rootDir == other.rootDir && additionalProperties == other.additionalProperties /* spotless:on */
+                    return other is GitRepo &&
+                        id == other.id &&
+                        dateConnected == other.dateConnected &&
+                        dateUpdated == other.dateUpdated &&
+                        gitAccountId == other.gitAccountId &&
+                        gitId == other.gitId &&
+                        name == other.name &&
+                        private_ == other.private_ &&
+                        projectId == other.projectId &&
+                        slug == other.slug &&
+                        url == other.url &&
+                        branch == other.branch &&
+                        rootDir == other.rootDir &&
+                        additionalProperties == other.additionalProperties
                 }
 
-                /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(id, dateConnected, dateUpdated, gitAccountId, gitId, name, private_, projectId, slug, url, branch, rootDir, additionalProperties) }
-                /* spotless:on */
+                private val hashCode: Int by lazy {
+                    Objects.hash(
+                        id,
+                        dateConnected,
+                        dateUpdated,
+                        gitAccountId,
+                        gitId,
+                        name,
+                        private_,
+                        projectId,
+                        slug,
+                        url,
+                        branch,
+                        rootDir,
+                        additionalProperties,
+                    )
+                }
 
                 override fun hashCode(): Int = hashCode
 
@@ -3206,12 +3233,47 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Project && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && developmentGoalCount == other.developmentGoalCount && goalCount == other.goalCount && inferencePipelineCount == other.inferencePipelineCount && links == other.links && monitoringGoalCount == other.monitoringGoalCount && name == other.name && source == other.source && taskType == other.taskType && versionCount == other.versionCount && workspaceId == other.workspaceId && description == other.description && gitRepo == other.gitRepo && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Project &&
+                    id == other.id &&
+                    creatorId == other.creatorId &&
+                    dateCreated == other.dateCreated &&
+                    dateUpdated == other.dateUpdated &&
+                    developmentGoalCount == other.developmentGoalCount &&
+                    goalCount == other.goalCount &&
+                    inferencePipelineCount == other.inferencePipelineCount &&
+                    links == other.links &&
+                    monitoringGoalCount == other.monitoringGoalCount &&
+                    name == other.name &&
+                    source == other.source &&
+                    taskType == other.taskType &&
+                    versionCount == other.versionCount &&
+                    workspaceId == other.workspaceId &&
+                    description == other.description &&
+                    gitRepo == other.gitRepo &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, developmentGoalCount, goalCount, inferencePipelineCount, links, monitoringGoalCount, name, source, taskType, versionCount, workspaceId, description, gitRepo, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    id,
+                    creatorId,
+                    dateCreated,
+                    dateUpdated,
+                    developmentGoalCount,
+                    goalCount,
+                    inferencePipelineCount,
+                    links,
+                    monitoringGoalCount,
+                    name,
+                    source,
+                    taskType,
+                    versionCount,
+                    workspaceId,
+                    description,
+                    gitRepo,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4205,7 +4267,7 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+                    return other is Status && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -4448,12 +4510,16 @@ private constructor(
                         return true
                     }
 
-                    return /* spotless:off */ other is MonthlyUsage && executionTimeMs == other.executionTimeMs && monthYear == other.monthYear && predictionCount == other.predictionCount && additionalProperties == other.additionalProperties /* spotless:on */
+                    return other is MonthlyUsage &&
+                        executionTimeMs == other.executionTimeMs &&
+                        monthYear == other.monthYear &&
+                        predictionCount == other.predictionCount &&
+                        additionalProperties == other.additionalProperties
                 }
 
-                /* spotless:off */
-                private val hashCode: Int by lazy { Objects.hash(executionTimeMs, monthYear, predictionCount, additionalProperties) }
-                /* spotless:on */
+                private val hashCode: Int by lazy {
+                    Objects.hash(executionTimeMs, monthYear, predictionCount, additionalProperties)
+                }
 
                 override fun hashCode(): Int = hashCode
 
@@ -4466,12 +4532,47 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Workspace && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && inviteCount == other.inviteCount && memberCount == other.memberCount && name == other.name && periodEndDate == other.periodEndDate && periodStartDate == other.periodStartDate && projectCount == other.projectCount && slug == other.slug && status == other.status && inviteCode == other.inviteCode && monthlyUsage == other.monthlyUsage && samlOnlyAccess == other.samlOnlyAccess && wildcardDomains == other.wildcardDomains && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Workspace &&
+                    id == other.id &&
+                    creatorId == other.creatorId &&
+                    dateCreated == other.dateCreated &&
+                    dateUpdated == other.dateUpdated &&
+                    inviteCount == other.inviteCount &&
+                    memberCount == other.memberCount &&
+                    name == other.name &&
+                    periodEndDate == other.periodEndDate &&
+                    periodStartDate == other.periodStartDate &&
+                    projectCount == other.projectCount &&
+                    slug == other.slug &&
+                    status == other.status &&
+                    inviteCode == other.inviteCode &&
+                    monthlyUsage == other.monthlyUsage &&
+                    samlOnlyAccess == other.samlOnlyAccess &&
+                    wildcardDomains == other.wildcardDomains &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, inviteCount, memberCount, name, periodEndDate, periodStartDate, projectCount, slug, status, inviteCode, monthlyUsage, samlOnlyAccess, wildcardDomains, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    id,
+                    creatorId,
+                    dateCreated,
+                    dateUpdated,
+                    inviteCount,
+                    memberCount,
+                    name,
+                    periodEndDate,
+                    periodStartDate,
+                    projectCount,
+                    slug,
+                    status,
+                    inviteCode,
+                    monthlyUsage,
+                    samlOnlyAccess,
+                    wildcardDomains,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -4484,12 +4585,51 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Item && id == other.id && dateCreated == other.dateCreated && dateLastEvaluated == other.dateLastEvaluated && dateLastSampleReceived == other.dateLastSampleReceived && dateOfNextEvaluation == other.dateOfNextEvaluation && dateUpdated == other.dateUpdated && description == other.description && failingGoalCount == other.failingGoalCount && links == other.links && name == other.name && passingGoalCount == other.passingGoalCount && projectId == other.projectId && status == other.status && statusMessage == other.statusMessage && totalGoalCount == other.totalGoalCount && project == other.project && workspace == other.workspace && workspaceId == other.workspaceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Item &&
+                id == other.id &&
+                dateCreated == other.dateCreated &&
+                dateLastEvaluated == other.dateLastEvaluated &&
+                dateLastSampleReceived == other.dateLastSampleReceived &&
+                dateOfNextEvaluation == other.dateOfNextEvaluation &&
+                dateUpdated == other.dateUpdated &&
+                description == other.description &&
+                failingGoalCount == other.failingGoalCount &&
+                links == other.links &&
+                name == other.name &&
+                passingGoalCount == other.passingGoalCount &&
+                projectId == other.projectId &&
+                status == other.status &&
+                statusMessage == other.statusMessage &&
+                totalGoalCount == other.totalGoalCount &&
+                project == other.project &&
+                workspace == other.workspace &&
+                workspaceId == other.workspaceId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateLastEvaluated, dateLastSampleReceived, dateOfNextEvaluation, dateUpdated, description, failingGoalCount, links, name, passingGoalCount, projectId, status, statusMessage, totalGoalCount, project, workspace, workspaceId, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                id,
+                dateCreated,
+                dateLastEvaluated,
+                dateLastSampleReceived,
+                dateOfNextEvaluation,
+                dateUpdated,
+                description,
+                failingGoalCount,
+                links,
+                name,
+                passingGoalCount,
+                projectId,
+                status,
+                statusMessage,
+                totalGoalCount,
+                project,
+                workspace,
+                workspaceId,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -4502,12 +4642,12 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineListResponse && items == other.items && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is InferencePipelineListResponse &&
+            items == other.items &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
     private val hashCode: Int by lazy { Objects.hash(items, additionalProperties) }
-    /* spotless:on */
 
     override fun hashCode(): Int = hashCode
 

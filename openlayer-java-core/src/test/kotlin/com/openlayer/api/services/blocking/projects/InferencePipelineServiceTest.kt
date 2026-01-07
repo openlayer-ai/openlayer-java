@@ -80,7 +80,7 @@ internal class InferencePipelineServiceTest {
                                     .gitId(0L)
                                     .name("name")
                                     .private_(true)
-                                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                    .bodyProjectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                                     .slug("slug")
                                     .url("url")
                                     .branch("branch")

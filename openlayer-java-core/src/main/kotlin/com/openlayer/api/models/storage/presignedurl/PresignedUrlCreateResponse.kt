@@ -208,12 +208,16 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is PresignedUrlCreateResponse && storageUri == other.storageUri && url == other.url && fields == other.fields && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is PresignedUrlCreateResponse &&
+            storageUri == other.storageUri &&
+            url == other.url &&
+            fields == other.fields &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(storageUri, url, fields, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(storageUri, url, fields, additionalProperties)
+    }
 
     override fun hashCode(): Int = hashCode
 

@@ -32,7 +32,7 @@ interface InferencePipelineService {
         params: InferencePipelineCreateParams,
     ): InferencePipelineCreateResponse = create(pathProjectId, params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         pathProjectId: String,
         params: InferencePipelineCreateParams,
@@ -40,11 +40,11 @@ interface InferencePipelineService {
     ): InferencePipelineCreateResponse =
         create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
-    /** @see [create] */
+    /** @see create */
     fun create(params: InferencePipelineCreateParams): InferencePipelineCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: InferencePipelineCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -54,7 +54,7 @@ interface InferencePipelineService {
     fun list(projectId: String): InferencePipelineListResponse =
         list(projectId, InferencePipelineListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: InferencePipelineListParams = InferencePipelineListParams.none(),
@@ -62,23 +62,23 @@ interface InferencePipelineService {
     ): InferencePipelineListResponse =
         list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: InferencePipelineListParams = InferencePipelineListParams.none(),
     ): InferencePipelineListResponse = list(projectId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: InferencePipelineListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): InferencePipelineListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: InferencePipelineListParams): InferencePipelineListResponse =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(projectId: String, requestOptions: RequestOptions): InferencePipelineListResponse =
         list(projectId, InferencePipelineListParams.none(), requestOptions)
 
@@ -108,7 +108,7 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineCreateResponse> =
             create(pathProjectId, params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             pathProjectId: String,
@@ -117,13 +117,13 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineCreateResponse> =
             create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: InferencePipelineCreateParams
         ): HttpResponseFor<InferencePipelineCreateResponse> = create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: InferencePipelineCreateParams,
@@ -138,7 +138,7 @@ interface InferencePipelineService {
         fun list(projectId: String): HttpResponseFor<InferencePipelineListResponse> =
             list(projectId, InferencePipelineListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,
@@ -147,7 +147,7 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineListResponse> =
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,
@@ -155,20 +155,20 @@ interface InferencePipelineService {
         ): HttpResponseFor<InferencePipelineListResponse> =
             list(projectId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: InferencePipelineListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<InferencePipelineListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: InferencePipelineListParams
         ): HttpResponseFor<InferencePipelineListResponse> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,

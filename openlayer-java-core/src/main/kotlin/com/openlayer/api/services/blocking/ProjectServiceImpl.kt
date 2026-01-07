@@ -3,13 +3,13 @@
 package com.openlayer.api.services.blocking
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
@@ -70,7 +70,8 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProjectService.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val commits: CommitService.WithRawResponse by lazy {
             CommitServiceImpl.WithRawResponseImpl(clientOptions)
@@ -100,7 +101,6 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val createHandler: Handler<ProjectCreateResponse> =
             jsonHandler<ProjectCreateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun create(
             params: ProjectCreateParams,
@@ -116,7 +116,7 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
                     .also {
@@ -129,7 +129,6 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
 
         private val listHandler: Handler<ProjectListResponse> =
             jsonHandler<ProjectListResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun list(
             params: ProjectListParams,
@@ -144,7 +143,7 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
             val response = clientOptions.httpClient.execute(request, requestOptions)
-            return response.parseable {
+            return errorHandler.handle(response).parseable {
                 response
                     .use { listHandler.handle(it) }
                     .also {

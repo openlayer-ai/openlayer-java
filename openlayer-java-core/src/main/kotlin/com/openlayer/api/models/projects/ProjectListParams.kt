@@ -36,8 +36,10 @@ private constructor(
     /** Filter list of items by task type. */
     fun taskType(): Optional<TaskType> = Optional.ofNullable(taskType)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -367,7 +369,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
+            return other is TaskType && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -380,10 +382,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is ProjectListParams && name == other.name && page == other.page && perPage == other.perPage && taskType == other.taskType && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is ProjectListParams &&
+            name == other.name &&
+            page == other.page &&
+            perPage == other.perPage &&
+            taskType == other.taskType &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(name, page, perPage, taskType, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(name, page, perPage, taskType, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "ProjectListParams{name=$name, page=$page, perPage=$perPage, taskType=$taskType, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

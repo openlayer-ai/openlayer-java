@@ -39,7 +39,7 @@ interface ProjectService {
     fun create(params: ProjectCreateParams): ProjectCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,17 +48,17 @@ interface ProjectService {
     /** List your workspace's projects. */
     fun list(): ProjectListResponse = list(ProjectListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectListParams = ProjectListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ProjectListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: ProjectListParams = ProjectListParams.none()): ProjectListResponse =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): ProjectListResponse =
         list(ProjectListParams.none(), requestOptions)
 
@@ -86,7 +86,7 @@ interface ProjectService {
         fun create(params: ProjectCreateParams): HttpResponseFor<ProjectCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: ProjectCreateParams,
@@ -100,20 +100,20 @@ interface ProjectService {
         @MustBeClosed
         fun list(): HttpResponseFor<ProjectListResponse> = list(ProjectListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<ProjectListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: ProjectListParams = ProjectListParams.none()
         ): HttpResponseFor<ProjectListResponse> = list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(requestOptions: RequestOptions): HttpResponseFor<ProjectListResponse> =
             list(ProjectListParams.none(), requestOptions)

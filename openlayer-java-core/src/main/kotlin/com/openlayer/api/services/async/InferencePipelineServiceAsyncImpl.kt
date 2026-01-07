@@ -3,13 +3,12 @@
 package com.openlayer.api.services.async
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.handlers.emptyHandler
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
 import com.openlayer.api.core.http.HttpResponse
@@ -85,7 +84,8 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         InferencePipelineServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         private val data: DataServiceAsync.WithRawResponse by lazy {
             DataServiceAsyncImpl.WithRawResponseImpl(clientOptions)
@@ -114,7 +114,6 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
 
         private val retrieveHandler: Handler<InferencePipelineRetrieveResponse> =
             jsonHandler<InferencePipelineRetrieveResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun retrieve(
             params: InferencePipelineRetrieveParams,
@@ -134,7 +133,7 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { retrieveHandler.handle(it) }
                             .also {
@@ -148,7 +147,6 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
 
         private val updateHandler: Handler<InferencePipelineUpdateResponse> =
             jsonHandler<InferencePipelineUpdateResponse>(clientOptions.jsonMapper)
-                .withErrorHandler(errorHandler)
 
         override fun update(
             params: InferencePipelineUpdateParams,
@@ -169,7 +167,7 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -181,7 +179,7 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
                 }
         }
 
-        private val deleteHandler: Handler<Void?> = emptyHandler().withErrorHandler(errorHandler)
+        private val deleteHandler: Handler<Void?> = emptyHandler()
 
         override fun delete(
             params: InferencePipelineDeleteParams,
@@ -202,7 +200,9 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable { response.use { deleteHandler.handle(it) } }
+                    errorHandler.handle(response).parseable {
+                        response.use { deleteHandler.handle(it) }
+                    }
                 }
         }
     }

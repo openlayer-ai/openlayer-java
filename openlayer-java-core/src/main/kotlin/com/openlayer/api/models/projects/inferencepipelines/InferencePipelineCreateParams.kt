@@ -307,8 +307,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -1700,12 +1702,51 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && id == other.id && dateCreated == other.dateCreated && dateLastEvaluated == other.dateLastEvaluated && dateLastSampleReceived == other.dateLastSampleReceived && dateOfNextEvaluation == other.dateOfNextEvaluation && dateUpdated == other.dateUpdated && description == other.description && failingGoalCount == other.failingGoalCount && links == other.links && name == other.name && passingGoalCount == other.passingGoalCount && bodyProjectId == other.bodyProjectId && status == other.status && statusMessage == other.statusMessage && totalGoalCount == other.totalGoalCount && project == other.project && workspace == other.workspace && workspaceId == other.workspaceId && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                id == other.id &&
+                dateCreated == other.dateCreated &&
+                dateLastEvaluated == other.dateLastEvaluated &&
+                dateLastSampleReceived == other.dateLastSampleReceived &&
+                dateOfNextEvaluation == other.dateOfNextEvaluation &&
+                dateUpdated == other.dateUpdated &&
+                description == other.description &&
+                failingGoalCount == other.failingGoalCount &&
+                links == other.links &&
+                name == other.name &&
+                passingGoalCount == other.passingGoalCount &&
+                bodyProjectId == other.bodyProjectId &&
+                status == other.status &&
+                statusMessage == other.statusMessage &&
+                totalGoalCount == other.totalGoalCount &&
+                project == other.project &&
+                workspace == other.workspace &&
+                workspaceId == other.workspaceId &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, dateCreated, dateLastEvaluated, dateLastSampleReceived, dateOfNextEvaluation, dateUpdated, description, failingGoalCount, links, name, passingGoalCount, bodyProjectId, status, statusMessage, totalGoalCount, project, workspace, workspaceId, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                id,
+                dateCreated,
+                dateLastEvaluated,
+                dateLastSampleReceived,
+                dateOfNextEvaluation,
+                dateUpdated,
+                description,
+                failingGoalCount,
+                links,
+                name,
+                passingGoalCount,
+                bodyProjectId,
+                status,
+                statusMessage,
+                totalGoalCount,
+                project,
+                workspace,
+                workspaceId,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -1852,12 +1893,12 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Links &&
+                app == other.app &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -2008,7 +2049,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -2930,12 +2971,12 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Links && app == other.app && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is Links &&
+                    app == other.app &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(app, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -3070,7 +3111,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Source && value == other.value /* spotless:on */
+                return other is Source && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -3213,7 +3254,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is TaskType && value == other.value /* spotless:on */
+                return other is TaskType && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -3230,7 +3271,7 @@ private constructor(
             private val gitId: JsonField<Long>,
             private val name: JsonField<String>,
             private val private_: JsonField<Boolean>,
-            private val projectId: JsonField<String>,
+            private val bodyProjectId: JsonField<String>,
             private val slug: JsonField<String>,
             private val url: JsonField<String>,
             private val branch: JsonField<String>,
@@ -3257,7 +3298,7 @@ private constructor(
                 private_: JsonField<Boolean> = JsonMissing.of(),
                 @JsonProperty("projectId")
                 @ExcludeMissing
-                projectId: JsonField<String> = JsonMissing.of(),
+                bodyProjectId: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("url") @ExcludeMissing url: JsonField<String> = JsonMissing.of(),
                 @JsonProperty("branch")
@@ -3274,7 +3315,7 @@ private constructor(
                 gitId,
                 name,
                 private_,
-                projectId,
+                bodyProjectId,
                 slug,
                 url,
                 branch,
@@ -3336,7 +3377,7 @@ private constructor(
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
              */
-            fun projectId(): String = projectId.getRequired("projectId")
+            fun bodyProjectId(): String = bodyProjectId.getRequired("projectId")
 
             /**
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
@@ -3424,14 +3465,14 @@ private constructor(
             @JsonProperty("private") @ExcludeMissing fun _private_(): JsonField<Boolean> = private_
 
             /**
-             * Returns the raw JSON value of [projectId].
+             * Returns the raw JSON value of [bodyProjectId].
              *
-             * Unlike [projectId], this method doesn't throw if the JSON field has an unexpected
+             * Unlike [bodyProjectId], this method doesn't throw if the JSON field has an unexpected
              * type.
              */
             @JsonProperty("projectId")
             @ExcludeMissing
-            fun _projectId(): JsonField<String> = projectId
+            fun _bodyProjectId(): JsonField<String> = bodyProjectId
 
             /**
              * Returns the raw JSON value of [slug].
@@ -3487,7 +3528,7 @@ private constructor(
                  * .gitId()
                  * .name()
                  * .private_()
-                 * .projectId()
+                 * .bodyProjectId()
                  * .slug()
                  * .url()
                  * ```
@@ -3505,7 +3546,7 @@ private constructor(
                 private var gitId: JsonField<Long>? = null
                 private var name: JsonField<String>? = null
                 private var private_: JsonField<Boolean>? = null
-                private var projectId: JsonField<String>? = null
+                private var bodyProjectId: JsonField<String>? = null
                 private var slug: JsonField<String>? = null
                 private var url: JsonField<String>? = null
                 private var branch: JsonField<String> = JsonMissing.of()
@@ -3521,7 +3562,7 @@ private constructor(
                     gitId = gitRepo.gitId
                     name = gitRepo.name
                     private_ = gitRepo.private_
-                    projectId = gitRepo.projectId
+                    bodyProjectId = gitRepo.bodyProjectId
                     slug = gitRepo.slug
                     url = gitRepo.url
                     branch = gitRepo.branch
@@ -3614,16 +3655,19 @@ private constructor(
                  */
                 fun private_(private_: JsonField<Boolean>) = apply { this.private_ = private_ }
 
-                fun projectId(projectId: String) = projectId(JsonField.of(projectId))
+                fun bodyProjectId(bodyProjectId: String) =
+                    bodyProjectId(JsonField.of(bodyProjectId))
 
                 /**
-                 * Sets [Builder.projectId] to an arbitrary JSON value.
+                 * Sets [Builder.bodyProjectId] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.projectId] with a well-typed [String] value
+                 * You should usually call [Builder.bodyProjectId] with a well-typed [String] value
                  * instead. This method is primarily for setting the field to an undocumented or not
                  * yet supported value.
                  */
-                fun projectId(projectId: JsonField<String>) = apply { this.projectId = projectId }
+                fun bodyProjectId(bodyProjectId: JsonField<String>) = apply {
+                    this.bodyProjectId = bodyProjectId
+                }
 
                 fun slug(slug: String) = slug(JsonField.of(slug))
 
@@ -3705,7 +3749,7 @@ private constructor(
                  * .gitId()
                  * .name()
                  * .private_()
-                 * .projectId()
+                 * .bodyProjectId()
                  * .slug()
                  * .url()
                  * ```
@@ -3721,7 +3765,7 @@ private constructor(
                         checkRequired("gitId", gitId),
                         checkRequired("name", name),
                         checkRequired("private_", private_),
-                        checkRequired("projectId", projectId),
+                        checkRequired("bodyProjectId", bodyProjectId),
                         checkRequired("slug", slug),
                         checkRequired("url", url),
                         branch,
@@ -3744,7 +3788,7 @@ private constructor(
                 gitId()
                 name()
                 private_()
-                projectId()
+                bodyProjectId()
                 slug()
                 url()
                 branch()
@@ -3775,7 +3819,7 @@ private constructor(
                     (if (gitId.asKnown().isPresent) 1 else 0) +
                     (if (name.asKnown().isPresent) 1 else 0) +
                     (if (private_.asKnown().isPresent) 1 else 0) +
-                    (if (projectId.asKnown().isPresent) 1 else 0) +
+                    (if (bodyProjectId.asKnown().isPresent) 1 else 0) +
                     (if (slug.asKnown().isPresent) 1 else 0) +
                     (if (url.asKnown().isPresent) 1 else 0) +
                     (if (branch.asKnown().isPresent) 1 else 0) +
@@ -3786,17 +3830,44 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is GitRepo && id == other.id && dateConnected == other.dateConnected && dateUpdated == other.dateUpdated && gitAccountId == other.gitAccountId && gitId == other.gitId && name == other.name && private_ == other.private_ && projectId == other.projectId && slug == other.slug && url == other.url && branch == other.branch && rootDir == other.rootDir && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is GitRepo &&
+                    id == other.id &&
+                    dateConnected == other.dateConnected &&
+                    dateUpdated == other.dateUpdated &&
+                    gitAccountId == other.gitAccountId &&
+                    gitId == other.gitId &&
+                    name == other.name &&
+                    private_ == other.private_ &&
+                    bodyProjectId == other.bodyProjectId &&
+                    slug == other.slug &&
+                    url == other.url &&
+                    branch == other.branch &&
+                    rootDir == other.rootDir &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(id, dateConnected, dateUpdated, gitAccountId, gitId, name, private_, projectId, slug, url, branch, rootDir, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(
+                    id,
+                    dateConnected,
+                    dateUpdated,
+                    gitAccountId,
+                    gitId,
+                    name,
+                    private_,
+                    bodyProjectId,
+                    slug,
+                    url,
+                    branch,
+                    rootDir,
+                    additionalProperties,
+                )
+            }
 
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "GitRepo{id=$id, dateConnected=$dateConnected, dateUpdated=$dateUpdated, gitAccountId=$gitAccountId, gitId=$gitId, name=$name, private_=$private_, projectId=$projectId, slug=$slug, url=$url, branch=$branch, rootDir=$rootDir, additionalProperties=$additionalProperties}"
+                "GitRepo{id=$id, dateConnected=$dateConnected, dateUpdated=$dateUpdated, gitAccountId=$gitAccountId, gitId=$gitId, name=$name, private_=$private_, bodyProjectId=$bodyProjectId, slug=$slug, url=$url, branch=$branch, rootDir=$rootDir, additionalProperties=$additionalProperties}"
         }
 
         override fun equals(other: Any?): Boolean {
@@ -3804,12 +3875,47 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Project && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && developmentGoalCount == other.developmentGoalCount && goalCount == other.goalCount && inferencePipelineCount == other.inferencePipelineCount && links == other.links && monitoringGoalCount == other.monitoringGoalCount && name == other.name && source == other.source && taskType == other.taskType && versionCount == other.versionCount && workspaceId == other.workspaceId && description == other.description && gitRepo == other.gitRepo && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Project &&
+                id == other.id &&
+                creatorId == other.creatorId &&
+                dateCreated == other.dateCreated &&
+                dateUpdated == other.dateUpdated &&
+                developmentGoalCount == other.developmentGoalCount &&
+                goalCount == other.goalCount &&
+                inferencePipelineCount == other.inferencePipelineCount &&
+                links == other.links &&
+                monitoringGoalCount == other.monitoringGoalCount &&
+                name == other.name &&
+                source == other.source &&
+                taskType == other.taskType &&
+                versionCount == other.versionCount &&
+                workspaceId == other.workspaceId &&
+                description == other.description &&
+                gitRepo == other.gitRepo &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, developmentGoalCount, goalCount, inferencePipelineCount, links, monitoringGoalCount, name, source, taskType, versionCount, workspaceId, description, gitRepo, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                id,
+                creatorId,
+                dateCreated,
+                dateUpdated,
+                developmentGoalCount,
+                goalCount,
+                inferencePipelineCount,
+                links,
+                monitoringGoalCount,
+                name,
+                source,
+                taskType,
+                versionCount,
+                workspaceId,
+                description,
+                gitRepo,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -4767,7 +4873,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+                return other is Status && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -5007,12 +5113,16 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is MonthlyUsage && executionTimeMs == other.executionTimeMs && monthYear == other.monthYear && predictionCount == other.predictionCount && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is MonthlyUsage &&
+                    executionTimeMs == other.executionTimeMs &&
+                    monthYear == other.monthYear &&
+                    predictionCount == other.predictionCount &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
-            private val hashCode: Int by lazy { Objects.hash(executionTimeMs, monthYear, predictionCount, additionalProperties) }
-            /* spotless:on */
+            private val hashCode: Int by lazy {
+                Objects.hash(executionTimeMs, monthYear, predictionCount, additionalProperties)
+            }
 
             override fun hashCode(): Int = hashCode
 
@@ -5025,12 +5135,47 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Workspace && id == other.id && creatorId == other.creatorId && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && inviteCount == other.inviteCount && memberCount == other.memberCount && name == other.name && periodEndDate == other.periodEndDate && periodStartDate == other.periodStartDate && projectCount == other.projectCount && slug == other.slug && status == other.status && inviteCode == other.inviteCode && monthlyUsage == other.monthlyUsage && samlOnlyAccess == other.samlOnlyAccess && wildcardDomains == other.wildcardDomains && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Workspace &&
+                id == other.id &&
+                creatorId == other.creatorId &&
+                dateCreated == other.dateCreated &&
+                dateUpdated == other.dateUpdated &&
+                inviteCount == other.inviteCount &&
+                memberCount == other.memberCount &&
+                name == other.name &&
+                periodEndDate == other.periodEndDate &&
+                periodStartDate == other.periodStartDate &&
+                projectCount == other.projectCount &&
+                slug == other.slug &&
+                status == other.status &&
+                inviteCode == other.inviteCode &&
+                monthlyUsage == other.monthlyUsage &&
+                samlOnlyAccess == other.samlOnlyAccess &&
+                wildcardDomains == other.wildcardDomains &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(id, creatorId, dateCreated, dateUpdated, inviteCount, memberCount, name, periodEndDate, periodStartDate, projectCount, slug, status, inviteCode, monthlyUsage, samlOnlyAccess, wildcardDomains, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                id,
+                creatorId,
+                dateCreated,
+                dateUpdated,
+                inviteCount,
+                memberCount,
+                name,
+                periodEndDate,
+                periodStartDate,
+                projectCount,
+                slug,
+                status,
+                inviteCode,
+                monthlyUsage,
+                samlOnlyAccess,
+                wildcardDomains,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -5043,10 +5188,15 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineCreateParams && pathProjectId == other.pathProjectId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is InferencePipelineCreateParams &&
+            pathProjectId == other.pathProjectId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(pathProjectId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(pathProjectId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "InferencePipelineCreateParams{pathProjectId=$pathProjectId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -33,7 +33,7 @@ interface InferencePipelineServiceAsync {
     ): CompletableFuture<InferencePipelineCreateResponse> =
         create(pathProjectId, params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         pathProjectId: String,
         params: InferencePipelineCreateParams,
@@ -41,12 +41,12 @@ interface InferencePipelineServiceAsync {
     ): CompletableFuture<InferencePipelineCreateResponse> =
         create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: InferencePipelineCreateParams
     ): CompletableFuture<InferencePipelineCreateResponse> = create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: InferencePipelineCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,7 +56,7 @@ interface InferencePipelineServiceAsync {
     fun list(projectId: String): CompletableFuture<InferencePipelineListResponse> =
         list(projectId, InferencePipelineListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: InferencePipelineListParams = InferencePipelineListParams.none(),
@@ -64,25 +64,25 @@ interface InferencePipelineServiceAsync {
     ): CompletableFuture<InferencePipelineListResponse> =
         list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: InferencePipelineListParams = InferencePipelineListParams.none(),
     ): CompletableFuture<InferencePipelineListResponse> =
         list(projectId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: InferencePipelineListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<InferencePipelineListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: InferencePipelineListParams
     ): CompletableFuture<InferencePipelineListResponse> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         requestOptions: RequestOptions,
@@ -114,7 +114,7 @@ interface InferencePipelineServiceAsync {
         ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>> =
             create(pathProjectId, params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             pathProjectId: String,
             params: InferencePipelineCreateParams,
@@ -122,13 +122,13 @@ interface InferencePipelineServiceAsync {
         ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>> =
             create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: InferencePipelineCreateParams
         ): CompletableFuture<HttpResponseFor<InferencePipelineCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: InferencePipelineCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -143,7 +143,7 @@ interface InferencePipelineServiceAsync {
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(projectId, InferencePipelineListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             projectId: String,
             params: InferencePipelineListParams = InferencePipelineListParams.none(),
@@ -151,26 +151,26 @@ interface InferencePipelineServiceAsync {
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             projectId: String,
             params: InferencePipelineListParams = InferencePipelineListParams.none(),
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(projectId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: InferencePipelineListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: InferencePipelineListParams
         ): CompletableFuture<HttpResponseFor<InferencePipelineListResponse>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             projectId: String,
             requestOptions: RequestOptions,
