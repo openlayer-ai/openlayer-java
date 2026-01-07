@@ -1396,7 +1396,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Subtype && value == other.value /* spotless:on */
+            return other is Subtype && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -2093,7 +2093,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InsightName && value == other.value /* spotless:on */
+                return other is InsightName && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2261,12 +2261,13 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is InsightParameter && name == other.name && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+                return other is InsightParameter &&
+                    name == other.name &&
+                    value == other.value &&
+                    additionalProperties == other.additionalProperties
             }
 
-            /* spotless:off */
             private val hashCode: Int by lazy { Objects.hash(name, value, additionalProperties) }
-            /* spotless:on */
 
             override fun hashCode(): Int = hashCode
 
@@ -2421,7 +2422,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Operator && value == other.value /* spotless:on */
+                return other is Operator && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2553,7 +2554,7 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is ThresholdMode && value == other.value /* spotless:on */
+                return other is ThresholdMode && value == other.value
             }
 
             override fun hashCode() = value.hashCode()
@@ -2664,10 +2665,14 @@ private constructor(
                     return true
                 }
 
-                return /* spotless:off */ other is Value && number == other.number && bool == other.bool && string == other.string && strings == other.strings /* spotless:on */
+                return other is Value &&
+                    number == other.number &&
+                    bool == other.bool &&
+                    string == other.string &&
+                    strings == other.strings
             }
 
-            override fun hashCode(): Int = /* spotless:off */ Objects.hash(number, bool, string, strings) /* spotless:on */
+            override fun hashCode(): Int = Objects.hash(number, bool, string, strings)
 
             override fun toString(): String =
                 when {
@@ -2687,7 +2692,8 @@ private constructor(
 
                 @JvmStatic fun ofString(string: String) = Value(string = string)
 
-                @JvmStatic fun ofStrings(strings: List<String>) = Value(strings = strings)
+                @JvmStatic
+                fun ofStrings(strings: List<String>) = Value(strings = strings.toImmutable())
             }
 
             /**
@@ -2778,12 +2784,27 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Threshold && insightName == other.insightName && insightParameters == other.insightParameters && measurement == other.measurement && operator == other.operator && thresholdMode == other.thresholdMode && value == other.value && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Threshold &&
+                insightName == other.insightName &&
+                insightParameters == other.insightParameters &&
+                measurement == other.measurement &&
+                operator == other.operator &&
+                thresholdMode == other.thresholdMode &&
+                value == other.value &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(insightName, insightParameters, measurement, operator, thresholdMode, value, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                insightName,
+                insightParameters,
+                measurement,
+                operator,
+                thresholdMode,
+                value,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -2917,7 +2938,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -2930,12 +2951,59 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TestCreateResponse && id == other.id && commentCount == other.commentCount && creatorId == other.creatorId && dateArchived == other.dateArchived && dateCreated == other.dateCreated && dateUpdated == other.dateUpdated && description == other.description && name == other.name && number == other.number && originProjectVersionId == other.originProjectVersionId && subtype == other.subtype && suggested == other.suggested && thresholds == other.thresholds && type == other.type && archived == other.archived && delayWindow == other.delayWindow && evaluationWindow == other.evaluationWindow && usesMlModel == other.usesMlModel && usesProductionData == other.usesProductionData && usesReferenceDataset == other.usesReferenceDataset && usesTrainingDataset == other.usesTrainingDataset && usesValidationDataset == other.usesValidationDataset && additionalProperties == other.additionalProperties /* spotless:on */
+        return other is TestCreateResponse &&
+            id == other.id &&
+            commentCount == other.commentCount &&
+            creatorId == other.creatorId &&
+            dateArchived == other.dateArchived &&
+            dateCreated == other.dateCreated &&
+            dateUpdated == other.dateUpdated &&
+            description == other.description &&
+            name == other.name &&
+            number == other.number &&
+            originProjectVersionId == other.originProjectVersionId &&
+            subtype == other.subtype &&
+            suggested == other.suggested &&
+            thresholds == other.thresholds &&
+            type == other.type &&
+            archived == other.archived &&
+            delayWindow == other.delayWindow &&
+            evaluationWindow == other.evaluationWindow &&
+            usesMlModel == other.usesMlModel &&
+            usesProductionData == other.usesProductionData &&
+            usesReferenceDataset == other.usesReferenceDataset &&
+            usesTrainingDataset == other.usesTrainingDataset &&
+            usesValidationDataset == other.usesValidationDataset &&
+            additionalProperties == other.additionalProperties
     }
 
-    /* spotless:off */
-    private val hashCode: Int by lazy { Objects.hash(id, commentCount, creatorId, dateArchived, dateCreated, dateUpdated, description, name, number, originProjectVersionId, subtype, suggested, thresholds, type, archived, delayWindow, evaluationWindow, usesMlModel, usesProductionData, usesReferenceDataset, usesTrainingDataset, usesValidationDataset, additionalProperties) }
-    /* spotless:on */
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            commentCount,
+            creatorId,
+            dateArchived,
+            dateCreated,
+            dateUpdated,
+            description,
+            name,
+            number,
+            originProjectVersionId,
+            subtype,
+            suggested,
+            thresholds,
+            type,
+            archived,
+            delayWindow,
+            evaluationWindow,
+            usesMlModel,
+            usesProductionData,
+            usesReferenceDataset,
+            usesTrainingDataset,
+            usesValidationDataset,
+            additionalProperties,
+        )
+    }
 
     override fun hashCode(): Int = hashCode
 

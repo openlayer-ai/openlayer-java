@@ -31,8 +31,10 @@ private constructor(
     /** Maximum number of items to return per page. */
     fun perPage(): Optional<Long> = Optional.ofNullable(perPage)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -241,10 +243,17 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is InferencePipelineListParams && projectId == other.projectId && name == other.name && page == other.page && perPage == other.perPage && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is InferencePipelineListParams &&
+            projectId == other.projectId &&
+            name == other.name &&
+            page == other.page &&
+            perPage == other.perPage &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, name, page, perPage, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(projectId, name, page, perPage, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
         "InferencePipelineListParams{projectId=$projectId, name=$name, page=$page, perPage=$perPage, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

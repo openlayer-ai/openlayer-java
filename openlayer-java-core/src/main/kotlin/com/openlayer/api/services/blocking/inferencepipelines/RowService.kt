@@ -28,7 +28,7 @@ interface RowService {
     fun update(inferencePipelineId: String, params: RowUpdateParams): RowUpdateResponse =
         update(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         inferencePipelineId: String,
         params: RowUpdateParams,
@@ -36,10 +36,10 @@ interface RowService {
     ): RowUpdateResponse =
         update(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: RowUpdateParams): RowUpdateResponse = update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: RowUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -66,7 +66,7 @@ interface RowService {
         ): HttpResponseFor<RowUpdateResponse> =
             update(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             inferencePipelineId: String,
@@ -78,12 +78,12 @@ interface RowService {
                 requestOptions,
             )
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(params: RowUpdateParams): HttpResponseFor<RowUpdateResponse> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         @MustBeClosed
         fun update(
             params: RowUpdateParams,

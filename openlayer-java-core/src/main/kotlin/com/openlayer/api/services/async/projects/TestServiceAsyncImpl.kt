@@ -3,14 +3,14 @@
 package com.openlayer.api.services.async.projects
 
 import com.openlayer.api.core.ClientOptions
-import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
-import com.openlayer.api.core.handlers.withErrorHandler
 import com.openlayer.api.core.http.HttpMethod
 import com.openlayer.api.core.http.HttpRequest
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponse.Handler
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
@@ -62,7 +62,8 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TestServiceAsync.WithRawResponse {
 
-        private val errorHandler: Handler<JsonValue> = errorHandler(clientOptions.jsonMapper)
+        private val errorHandler: Handler<HttpResponse> =
+            errorHandler(errorBodyHandler(clientOptions.jsonMapper))
 
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
@@ -72,7 +73,7 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             )
 
         private val createHandler: Handler<TestCreateResponse> =
-            jsonHandler<TestCreateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<TestCreateResponse>(clientOptions.jsonMapper)
 
         override fun create(
             params: TestCreateParams,
@@ -93,7 +94,7 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
                             .also {
@@ -106,7 +107,7 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
         }
 
         private val updateHandler: Handler<TestUpdateResponse> =
-            jsonHandler<TestUpdateResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<TestUpdateResponse>(clientOptions.jsonMapper)
 
         override fun update(
             params: TestUpdateParams,
@@ -127,7 +128,7 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { updateHandler.handle(it) }
                             .also {
@@ -140,7 +141,7 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
         }
 
         private val listHandler: Handler<TestListResponse> =
-            jsonHandler<TestListResponse>(clientOptions.jsonMapper).withErrorHandler(errorHandler)
+            jsonHandler<TestListResponse>(clientOptions.jsonMapper)
 
         override fun list(
             params: TestListParams,
@@ -160,7 +161,7 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
             return request
                 .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
                 .thenApply { response ->
-                    response.parseable {
+                    errorHandler.handle(response).parseable {
                         response
                             .use { listHandler.handle(it) }
                             .also {

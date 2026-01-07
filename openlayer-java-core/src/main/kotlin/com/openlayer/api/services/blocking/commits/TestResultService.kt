@@ -28,7 +28,7 @@ interface TestResultService {
     fun list(projectVersionId: String): TestResultListResponse =
         list(projectVersionId, TestResultListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectVersionId: String,
         params: TestResultListParams = TestResultListParams.none(),
@@ -36,23 +36,23 @@ interface TestResultService {
     ): TestResultListResponse =
         list(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectVersionId: String,
         params: TestResultListParams = TestResultListParams.none(),
     ): TestResultListResponse = list(projectVersionId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestResultListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: TestResultListParams): TestResultListResponse =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(projectVersionId: String, requestOptions: RequestOptions): TestResultListResponse =
         list(projectVersionId, TestResultListParams.none(), requestOptions)
 
@@ -76,7 +76,7 @@ interface TestResultService {
         fun list(projectVersionId: String): HttpResponseFor<TestResultListResponse> =
             list(projectVersionId, TestResultListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectVersionId: String,
@@ -85,7 +85,7 @@ interface TestResultService {
         ): HttpResponseFor<TestResultListResponse> =
             list(params.toBuilder().projectVersionId(projectVersionId).build(), requestOptions)
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectVersionId: String,
@@ -93,19 +93,19 @@ interface TestResultService {
         ): HttpResponseFor<TestResultListResponse> =
             list(projectVersionId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<TestResultListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: TestResultListParams): HttpResponseFor<TestResultListResponse> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectVersionId: String,

@@ -45,8 +45,10 @@ private constructor(
      */
     fun type(): Optional<Type> = Optional.ofNullable(type)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -410,7 +412,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Status && value == other.value /* spotless:on */
+            return other is Status && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -559,7 +561,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -572,10 +574,26 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TestResultListParams && inferencePipelineId == other.inferencePipelineId && page == other.page && perPage == other.perPage && status == other.status && type == other.type && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is TestResultListParams &&
+            inferencePipelineId == other.inferencePipelineId &&
+            page == other.page &&
+            perPage == other.perPage &&
+            status == other.status &&
+            type == other.type &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, page, perPage, status, type, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            inferencePipelineId,
+            page,
+            perPage,
+            status,
+            type,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "TestResultListParams{inferencePipelineId=$inferencePipelineId, page=$page, perPage=$perPage, status=$status, type=$type, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

@@ -28,7 +28,7 @@ interface PresignedUrlService {
     fun create(params: PresignedUrlCreateParams): PresignedUrlCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: PresignedUrlCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -56,7 +56,7 @@ interface PresignedUrlService {
         fun create(params: PresignedUrlCreateParams): HttpResponseFor<PresignedUrlCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: PresignedUrlCreateParams,

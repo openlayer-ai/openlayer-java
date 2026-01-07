@@ -28,7 +28,7 @@ interface DataService {
     fun stream(inferencePipelineId: String, params: DataStreamParams): DataStreamResponse =
         stream(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [stream] */
+    /** @see stream */
     fun stream(
         inferencePipelineId: String,
         params: DataStreamParams,
@@ -36,10 +36,10 @@ interface DataService {
     ): DataStreamResponse =
         stream(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [stream] */
+    /** @see stream */
     fun stream(params: DataStreamParams): DataStreamResponse = stream(params, RequestOptions.none())
 
-    /** @see [stream] */
+    /** @see stream */
     fun stream(
         params: DataStreamParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -67,7 +67,7 @@ interface DataService {
         ): HttpResponseFor<DataStreamResponse> =
             stream(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [stream] */
+        /** @see stream */
         @MustBeClosed
         fun stream(
             inferencePipelineId: String,
@@ -79,12 +79,12 @@ interface DataService {
                 requestOptions,
             )
 
-        /** @see [stream] */
+        /** @see stream */
         @MustBeClosed
         fun stream(params: DataStreamParams): HttpResponseFor<DataStreamResponse> =
             stream(params, RequestOptions.none())
 
-        /** @see [stream] */
+        /** @see stream */
         @MustBeClosed
         fun stream(
             params: DataStreamParams,

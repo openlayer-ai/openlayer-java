@@ -39,7 +39,7 @@ interface ProjectServiceAsync {
     fun create(params: ProjectCreateParams): CompletableFuture<ProjectCreateResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -48,18 +48,18 @@ interface ProjectServiceAsync {
     /** List your workspace's projects. */
     fun list(): CompletableFuture<ProjectListResponse> = list(ProjectListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectListParams = ProjectListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectListResponse>
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: ProjectListParams = ProjectListParams.none()
     ): CompletableFuture<ProjectListResponse> = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProjectListResponse> =
         list(ProjectListParams.none(), requestOptions)
 
@@ -92,7 +92,7 @@ interface ProjectServiceAsync {
         ): CompletableFuture<HttpResponseFor<ProjectCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: ProjectCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
@@ -105,19 +105,19 @@ interface ProjectServiceAsync {
         fun list(): CompletableFuture<HttpResponseFor<ProjectListResponse>> =
             list(ProjectListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProjectListParams = ProjectListParams.none(),
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>>
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             params: ProjectListParams = ProjectListParams.none()
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         fun list(
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>> =

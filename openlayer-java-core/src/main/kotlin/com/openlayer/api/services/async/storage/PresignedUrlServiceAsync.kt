@@ -28,7 +28,7 @@ interface PresignedUrlServiceAsync {
     fun create(params: PresignedUrlCreateParams): CompletableFuture<PresignedUrlCreateResponse> =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: PresignedUrlCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -58,7 +58,7 @@ interface PresignedUrlServiceAsync {
         ): CompletableFuture<HttpResponseFor<PresignedUrlCreateResponse>> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         fun create(
             params: PresignedUrlCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

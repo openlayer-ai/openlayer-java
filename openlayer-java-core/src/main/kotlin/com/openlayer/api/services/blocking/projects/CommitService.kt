@@ -30,7 +30,7 @@ interface CommitService {
     fun create(pathProjectId: String, params: CommitCreateParams): CommitCreateResponse =
         create(pathProjectId, params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         pathProjectId: String,
         params: CommitCreateParams,
@@ -38,11 +38,11 @@ interface CommitService {
     ): CommitCreateResponse =
         create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
-    /** @see [create] */
+    /** @see create */
     fun create(params: CommitCreateParams): CommitCreateResponse =
         create(params, RequestOptions.none())
 
-    /** @see [create] */
+    /** @see create */
     fun create(
         params: CommitCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -51,29 +51,29 @@ interface CommitService {
     /** List the commits (project versions) in a project. */
     fun list(projectId: String): CommitListResponse = list(projectId, CommitListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: CommitListParams = CommitListParams.none(),
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CommitListResponse = list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         projectId: String,
         params: CommitListParams = CommitListParams.none(),
     ): CommitListResponse = list(projectId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: CommitListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CommitListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: CommitListParams): CommitListResponse = list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(projectId: String, requestOptions: RequestOptions): CommitListResponse =
         list(projectId, CommitListParams.none(), requestOptions)
 
@@ -98,7 +98,7 @@ interface CommitService {
         ): HttpResponseFor<CommitCreateResponse> =
             create(pathProjectId, params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             pathProjectId: String,
@@ -107,12 +107,12 @@ interface CommitService {
         ): HttpResponseFor<CommitCreateResponse> =
             create(params.toBuilder().pathProjectId(pathProjectId).build(), requestOptions)
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(params: CommitCreateParams): HttpResponseFor<CommitCreateResponse> =
             create(params, RequestOptions.none())
 
-        /** @see [create] */
+        /** @see create */
         @MustBeClosed
         fun create(
             params: CommitCreateParams,
@@ -127,7 +127,7 @@ interface CommitService {
         fun list(projectId: String): HttpResponseFor<CommitListResponse> =
             list(projectId, CommitListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,
@@ -136,26 +136,26 @@ interface CommitService {
         ): HttpResponseFor<CommitListResponse> =
             list(params.toBuilder().projectId(projectId).build(), requestOptions)
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,
             params: CommitListParams = CommitListParams.none(),
         ): HttpResponseFor<CommitListResponse> = list(projectId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: CommitListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<CommitListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: CommitListParams): HttpResponseFor<CommitListResponse> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             projectId: String,

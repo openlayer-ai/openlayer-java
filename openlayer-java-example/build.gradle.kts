@@ -17,5 +17,12 @@ tasks.withType<JavaCompile>().configureEach {
 }
 
 application {
-    mainClass = "com.openlayer.api.example.Main"
+    // Use `./gradlew :openlayer-java-example:run` to run `Main`
+    // Use `./gradlew :openlayer-java-example:run -Pexample=Something` to run `SomethingExample`
+    mainClass = "com.openlayer.api.example.${
+        if (project.hasProperty("example"))
+            "${project.property("example")}Example"
+        else
+            "Main"
+    }"
 }

@@ -31,7 +31,7 @@ interface RowServiceAsync {
     ): CompletableFuture<RowUpdateResponse> =
         update(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         inferencePipelineId: String,
         params: RowUpdateParams,
@@ -39,11 +39,11 @@ interface RowServiceAsync {
     ): CompletableFuture<RowUpdateResponse> =
         update(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [update] */
+    /** @see update */
     fun update(params: RowUpdateParams): CompletableFuture<RowUpdateResponse> =
         update(params, RequestOptions.none())
 
-    /** @see [update] */
+    /** @see update */
     fun update(
         params: RowUpdateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
@@ -69,7 +69,7 @@ interface RowServiceAsync {
         ): CompletableFuture<HttpResponseFor<RowUpdateResponse>> =
             update(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             inferencePipelineId: String,
             params: RowUpdateParams,
@@ -80,11 +80,11 @@ interface RowServiceAsync {
                 requestOptions,
             )
 
-        /** @see [update] */
+        /** @see update */
         fun update(params: RowUpdateParams): CompletableFuture<HttpResponseFor<RowUpdateResponse>> =
             update(params, RequestOptions.none())
 
-        /** @see [update] */
+        /** @see update */
         fun update(
             params: RowUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),

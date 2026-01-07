@@ -52,8 +52,10 @@ private constructor(
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -436,12 +438,13 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Body && row == other.row && config == other.config && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Body &&
+                row == other.row &&
+                config == other.config &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
         private val hashCode: Int by lazy { Objects.hash(row, config, additionalProperties) }
-        /* spotless:on */
 
         override fun hashCode(): Int = hashCode
 
@@ -812,12 +815,25 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Config && groundTruthColumnName == other.groundTruthColumnName && humanFeedbackColumnName == other.humanFeedbackColumnName && inferenceIdColumnName == other.inferenceIdColumnName && latencyColumnName == other.latencyColumnName && timestampColumnName == other.timestampColumnName && additionalProperties == other.additionalProperties /* spotless:on */
+            return other is Config &&
+                groundTruthColumnName == other.groundTruthColumnName &&
+                humanFeedbackColumnName == other.humanFeedbackColumnName &&
+                inferenceIdColumnName == other.inferenceIdColumnName &&
+                latencyColumnName == other.latencyColumnName &&
+                timestampColumnName == other.timestampColumnName &&
+                additionalProperties == other.additionalProperties
         }
 
-        /* spotless:off */
-        private val hashCode: Int by lazy { Objects.hash(groundTruthColumnName, humanFeedbackColumnName, inferenceIdColumnName, latencyColumnName, timestampColumnName, additionalProperties) }
-        /* spotless:on */
+        private val hashCode: Int by lazy {
+            Objects.hash(
+                groundTruthColumnName,
+                humanFeedbackColumnName,
+                inferenceIdColumnName,
+                latencyColumnName,
+                timestampColumnName,
+                additionalProperties,
+            )
+        }
 
         override fun hashCode(): Int = hashCode
 
@@ -830,10 +846,22 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is RowUpdateParams && inferencePipelineId == other.inferencePipelineId && inferenceId == other.inferenceId && body == other.body && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is RowUpdateParams &&
+            inferencePipelineId == other.inferencePipelineId &&
+            inferenceId == other.inferenceId &&
+            body == other.body &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(inferencePipelineId, inferenceId, body, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            inferencePipelineId,
+            inferenceId,
+            body,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "RowUpdateParams{inferencePipelineId=$inferencePipelineId, inferenceId=$inferenceId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

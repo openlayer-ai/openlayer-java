@@ -1,6 +1,14 @@
 rootProject.name = "openlayer-java-root"
 
-include("openlayer-java")
-include("openlayer-java-client-okhttp")
-include("openlayer-java-core")
-include("examples")
+val projectNames = rootDir.listFiles()
+    ?.asSequence()
+    .orEmpty()
+    .filter { file ->
+        file.isDirectory &&
+        file.name.startsWith("openlayer-java") &&
+        file.listFiles()?.asSequence().orEmpty().any { it.name == "build.gradle.kts" }
+    }
+    .map { it.name }
+    .toList()
+println("projects: $projectNames")
+projectNames.forEach { include(it) }

@@ -54,8 +54,10 @@ private constructor(
     /** Retrive tests with usesProductionData (monitoring). */
     fun usesProductionData(): Optional<Boolean> = Optional.ofNullable(usesProductionData)
 
+    /** Additional headers to send with the request. */
     fun _additionalHeaders(): Headers = additionalHeaders
 
+    /** Additional query param to send with the request. */
     fun _additionalQueryParams(): QueryParams = additionalQueryParams
 
     fun toBuilder() = Builder().from(this)
@@ -474,7 +476,7 @@ private constructor(
                 return true
             }
 
-            return /* spotless:off */ other is Type && value == other.value /* spotless:on */
+            return other is Type && value == other.value
         }
 
         override fun hashCode() = value.hashCode()
@@ -487,10 +489,32 @@ private constructor(
             return true
         }
 
-        return /* spotless:off */ other is TestListParams && projectId == other.projectId && includeArchived == other.includeArchived && originVersionId == other.originVersionId && page == other.page && perPage == other.perPage && suggested == other.suggested && type == other.type && usesProductionData == other.usesProductionData && additionalHeaders == other.additionalHeaders && additionalQueryParams == other.additionalQueryParams /* spotless:on */
+        return other is TestListParams &&
+            projectId == other.projectId &&
+            includeArchived == other.includeArchived &&
+            originVersionId == other.originVersionId &&
+            page == other.page &&
+            perPage == other.perPage &&
+            suggested == other.suggested &&
+            type == other.type &&
+            usesProductionData == other.usesProductionData &&
+            additionalHeaders == other.additionalHeaders &&
+            additionalQueryParams == other.additionalQueryParams
     }
 
-    override fun hashCode(): Int = /* spotless:off */ Objects.hash(projectId, includeArchived, originVersionId, page, perPage, suggested, type, usesProductionData, additionalHeaders, additionalQueryParams) /* spotless:on */
+    override fun hashCode(): Int =
+        Objects.hash(
+            projectId,
+            includeArchived,
+            originVersionId,
+            page,
+            perPage,
+            suggested,
+            type,
+            usesProductionData,
+            additionalHeaders,
+            additionalQueryParams,
+        )
 
     override fun toString() =
         "TestListParams{projectId=$projectId, includeArchived=$includeArchived, originVersionId=$originVersionId, page=$page, perPage=$perPage, suggested=$suggested, type=$type, usesProductionData=$usesProductionData, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"

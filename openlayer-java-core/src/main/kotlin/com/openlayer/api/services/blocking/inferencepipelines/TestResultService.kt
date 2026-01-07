@@ -28,7 +28,7 @@ interface TestResultService {
     fun list(inferencePipelineId: String): TestResultListResponse =
         list(inferencePipelineId, TestResultListParams.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         inferencePipelineId: String,
         params: TestResultListParams = TestResultListParams.none(),
@@ -36,23 +36,23 @@ interface TestResultService {
     ): TestResultListResponse =
         list(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         inferencePipelineId: String,
         params: TestResultListParams = TestResultListParams.none(),
     ): TestResultListResponse = list(inferencePipelineId, params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(
         params: TestResultListParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestResultListResponse
 
-    /** @see [list] */
+    /** @see list */
     fun list(params: TestResultListParams): TestResultListResponse =
         list(params, RequestOptions.none())
 
-    /** @see [list] */
+    /** @see list */
     fun list(inferencePipelineId: String, requestOptions: RequestOptions): TestResultListResponse =
         list(inferencePipelineId, TestResultListParams.none(), requestOptions)
 
@@ -76,7 +76,7 @@ interface TestResultService {
         fun list(inferencePipelineId: String): HttpResponseFor<TestResultListResponse> =
             list(inferencePipelineId, TestResultListParams.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             inferencePipelineId: String,
@@ -88,7 +88,7 @@ interface TestResultService {
                 requestOptions,
             )
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             inferencePipelineId: String,
@@ -96,19 +96,19 @@ interface TestResultService {
         ): HttpResponseFor<TestResultListResponse> =
             list(inferencePipelineId, params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             params: TestResultListParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<TestResultListResponse>
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(params: TestResultListParams): HttpResponseFor<TestResultListResponse> =
             list(params, RequestOptions.none())
 
-        /** @see [list] */
+        /** @see list */
         @MustBeClosed
         fun list(
             inferencePipelineId: String,

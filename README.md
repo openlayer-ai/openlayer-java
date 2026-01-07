@@ -52,7 +52,8 @@ import com.openlayer.api.core.JsonValue;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 
-// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
+// Configures using the `openlayer.apiKey` and `openlayer.baseUrl` system properties
+// Or configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
 DataStreamParams params = DataStreamParams.builder()
@@ -77,13 +78,14 @@ DataStreamResponse response = client.inferencePipelines().data().stream(params);
 
 ## Client configuration
 
-Configure the client using environment variables:
+Configure the client using system properties or environment variables:
 
 ```java
 import com.openlayer.api.client.OpenlayerClient;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
 
-// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
+// Configures using the `openlayer.apiKey` and `openlayer.baseUrl` system properties
+// Or configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 ```
 
@@ -105,7 +107,8 @@ import com.openlayer.api.client.OpenlayerClient;
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
 
 OpenlayerClient client = OpenlayerOkHttpClient.builder()
-    // Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
+    // Configures using the `openlayer.apiKey` and `openlayer.baseUrl` system properties
+    // Or configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
     .fromEnv()
     .apiKey("My API Key")
     .build();
@@ -113,10 +116,12 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
 
 See this table for the available options:
 
-| Setter    | Environment variable | Required | Default value                    |
-| --------- | -------------------- | -------- | -------------------------------- |
-| `apiKey`  | `OPENLAYER_API_KEY`  | false    | -                                |
-| `baseUrl` | `OPENLAYER_BASE_URL` | true     | `"https://api.openlayer.com/v1"` |
+| Setter    | System property     | Environment variable | Required | Default value                    |
+| --------- | ------------------- | -------------------- | -------- | -------------------------------- |
+| `apiKey`  | `openlayer.apiKey`  | `OPENLAYER_API_KEY`  | false    | -                                |
+| `baseUrl` | `openlayer.baseUrl` | `OPENLAYER_BASE_URL` | true     | `"https://api.openlayer.com/v1"` |
+
+System properties take precedence over environment variables.
 
 > [!TIP]
 > Don't create more than one client in the same application. Each client has a connection pool and
@@ -163,7 +168,8 @@ import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
+// Configures using the `openlayer.apiKey` and `openlayer.baseUrl` system properties
+// Or configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClient client = OpenlayerOkHttpClient.fromEnv();
 
 DataStreamParams params = DataStreamParams.builder()
@@ -196,7 +202,8 @@ import com.openlayer.api.models.inferencepipelines.data.DataStreamParams;
 import com.openlayer.api.models.inferencepipelines.data.DataStreamResponse;
 import java.util.concurrent.CompletableFuture;
 
-// Configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
+// Configures using the `openlayer.apiKey` and `openlayer.baseUrl` system properties
+// Or configures using the `OPENLAYER_API_KEY` and `OPENLAYER_BASE_URL` environment variables
 OpenlayerClientAsync client = OpenlayerOkHttpClientAsync.fromEnv();
 
 DataStreamParams params = DataStreamParams.builder()
@@ -284,6 +291,8 @@ The SDK throws custom unchecked exception types:
 
 - [`OpenlayerIoException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/OpenlayerIoException.kt): I/O networking errors.
 
+- [`OpenlayerRetryableException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/OpenlayerRetryableException.kt): Generic error indicating a failure that could be retried by the client.
+
 - [`OpenlayerInvalidDataException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/OpenlayerInvalidDataException.kt): Failure to interpret successfully parsed data. For example, when accessing a property that's supposed to be required, but the API unexpectedly omitted it from the response.
 
 - [`OpenlayerException`](openlayer-java-core/src/main/kotlin/com/openlayer/api/errors/OpenlayerException.kt): Base class for all exceptions. Most errors will result in one of the previously mentioned ones, but completely generic errors may be thrown using the base class.
@@ -304,6 +313,12 @@ Or to `debug` for more verbose logging:
 $ export OPENLAYER_LOG=debug
 ```
 
+## ProGuard and R8
+
+Although the SDK uses reflection, it is still usable with [ProGuard](https://github.com/Guardsquare/proguard) and [R8](https://developer.android.com/topic/performance/app-optimization/enable-app-optimization) because `openlayer-java-core` is published with a [configuration file](openlayer-java-core/src/main/resources/META-INF/proguard/openlayer-java-core.pro) containing [keep rules](https://www.guardsquare.com/manual/configuration/usage).
+
+ProGuard and R8 should automatically detect and use the published rules, but you can also manually copy the keep rules if necessary.
+
 ## Jackson
 
 The SDK depends on [Jackson](https://github.com/FasterXML/jackson) for JSON serialization/deserialization. It is compatible with version 2.13.4 or higher, but depends on version 2.18.2 by default.
@@ -319,7 +334,7 @@ If the SDK threw an exception, but you're _certain_ the version is compatible, t
 
 ### Retries
 
-The SDK automatically retries 2 times by default, with a short exponential backoff.
+The SDK automatically retries 2 times by default, with a short exponential backoff between requests.
 
 Only the following error types are retried:
 
@@ -329,7 +344,7 @@ Only the following error types are retried:
 - 429 Rate Limit
 - 5xx Internal
 
-The API may also explicitly instruct the SDK to retry or not retry a response.
+The API may also explicitly instruct the SDK to retry or not retry a request.
 
 To set a custom number of retries, configure the client using the `maxRetries` method:
 
@@ -387,6 +402,27 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
         "https://example.com", 8080
       )
     ))
+    .build();
+```
+
+### HTTPS
+
+> [!NOTE]
+> Most applications should not call these methods, and instead use the system defaults. The defaults include
+> special optimizations that can be lost if the implementations are modified.
+
+To configure how HTTPS connections are secured, configure the client using the `sslSocketFactory`, `trustManager`, and `hostnameVerifier` methods:
+
+```java
+import com.openlayer.api.client.OpenlayerClient;
+import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
+
+OpenlayerClient client = OpenlayerOkHttpClient.builder()
+    .fromEnv()
+    // If `sslSocketFactory` is set, then `trustManager` must be set, and vice versa.
+    .sslSocketFactory(yourSSLSocketFactory)
+    .trustManager(yourTrustManager)
+    .hostnameVerifier(yourHostnameVerifier)
     .build();
 ```
 
