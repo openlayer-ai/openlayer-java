@@ -1,5 +1,63 @@
 # Changelog
 
+## 0.1.0-alpha.12 (2026-01-07)
+
+Full Changelog: [v0.1.0-alpha.11...v0.1.0-alpha.12](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.11...v0.1.0-alpha.12)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - `AutoPagerAsync` now has different usage. You can call `.subscribe(...)` on the returned object instead to get called back each page item. You can also call `onCompleteFuture()` to get a future that completes when all items have been processed. Finally, you can call `.close()` on the returned object to stop auto-paginating early
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-optional types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* **api:** add test evaluation method ([e8d8121](https://github.com/openlayer-ai/openlayer-java/commit/e8d8121e473aa3cb7df501bf09332e86f199d55b))
+* **api:** api update ([225da0c](https://github.com/openlayer-ai/openlayer-java/commit/225da0cd73e1262833789a6c63e9cd9a44cc4cea))
+* **api:** api update ([a089f7f](https://github.com/openlayer-ai/openlayer-java/commit/a089f7f9714aa315e489b0fc6083c5ce8944e074))
+* **api:** api update ([e48acb3](https://github.com/openlayer-ai/openlayer-java/commit/e48acb317d5b7786c78c593dca0c0e035dde211c))
+* **api:** manual updates ([fd5752e](https://github.com/openlayer-ai/openlayer-java/commit/fd5752e3b7d9fb9c64ad3d39877dedbe71a397f2))
+* **client:** add a `withOptions` method ([9ebe803](https://github.com/openlayer-ai/openlayer-java/commit/9ebe803f62861554fbd7ca411e05642b69efb6df))
+* **client:** allow providing some params positionally ([134e615](https://github.com/openlayer-ai/openlayer-java/commit/134e61553124243d105b41cfc2cfbd886dce4e63))
+* **client:** extract auto pagination to shared classes ([d2fa723](https://github.com/openlayer-ai/openlayer-java/commit/d2fa72386ce83cb182c3d710ef25cd9b4b84bd99))
+* **client:** implement per-endpoint base URL support ([710b626](https://github.com/openlayer-ai/openlayer-java/commit/710b6268e378ea59f4d0f06f3610e674f9c26073))
+
+
+### Bug Fixes
+
+* **ci:** release-doctor — report correct token name ([6e8b2be](https://github.com/openlayer-ai/openlayer-java/commit/6e8b2beecbc54b1b42e8b4e5c5fa1057f9f590af))
+* **client:** bump max requests per host to max requests (5 -&gt; 64) ([21777c4](https://github.com/openlayer-ai/openlayer-java/commit/21777c4bfcec0adcd1b413f200c6fd1f45034c02))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([2595481](https://github.com/openlayer-ai/openlayer-java/commit/2595481dda4cc0ed639196deeed2683cb6a39e75))
+* **client:** remove `@MustBeClosed` for future returning methods ([0e78fa9](https://github.com/openlayer-ai/openlayer-java/commit/0e78fa9dad3bc45d3aa173a446b1a07cd418bfc1))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([5d83cd2](https://github.com/openlayer-ai/openlayer-java/commit/5d83cd2b8cb48f8459c495cc4385a6966ffde4ed))
+* **ci:** only run for pushes and fork pull requests ([69737c8](https://github.com/openlayer-ai/openlayer-java/commit/69737c8645e346ded3bad84344e93fe75ac38396))
+* **docs:** grammar improvements ([d1cacea](https://github.com/openlayer-ai/openlayer-java/commit/d1cacea72d2b3f2de5d20028b2c5227ad2138534))
+* **internal:** codegen related update ([9c97d6d](https://github.com/openlayer-ai/openlayer-java/commit/9c97d6d9cbbd1c93d7354747f0f8d9633f15e4e2))
+* **internal:** codegen related update ([d2c9111](https://github.com/openlayer-ai/openlayer-java/commit/d2c9111482081d8b90ba4ad014edf5703a7be94f))
+* **internal:** codegen related update ([942316f](https://github.com/openlayer-ai/openlayer-java/commit/942316fdb69201bb3236e73ad7103cf177dea070))
+* **internal:** codegen related update ([9b5aa41](https://github.com/openlayer-ai/openlayer-java/commit/9b5aa4181f42a112860eaa69ba7057ca20894283))
+* **internal:** codegen related update ([4881e6f](https://github.com/openlayer-ai/openlayer-java/commit/4881e6fb70e8d6d5f6d990a662647a9861165eb3))
+* **internal:** codegen related update ([ce52e15](https://github.com/openlayer-ai/openlayer-java/commit/ce52e159a41280088862b8be8b5dd41194051ed9))
+* sync repo ([390e75d](https://github.com/openlayer-ai/openlayer-java/commit/390e75d8719363b5395eed54c1ce3c9d8d0412fb))
+
+
+### Documentation
+
+* add Spring AI sample application ([4cc1fb8](https://github.com/openlayer-ai/openlayer-java/commit/4cc1fb87584f47679b4e1be12be9f1d1e796481b))
+* remove or fix invalid readme examples ([9372b90](https://github.com/openlayer-ai/openlayer-java/commit/9372b9032b7e05eb6055a5e71acc6570422146a5))
+
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([7d83620](https://github.com/openlayer-ai/openlayer-java/commit/7d83620f3a8595e17002b9f070187a61bd4e28f0))
+
 ## 0.1.0-alpha.11 (2024-12-20)
 
 Full Changelog: [v0.1.0-alpha.10...v0.1.0-alpha.11](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.10...v0.1.0-alpha.11)
