@@ -35,16 +35,18 @@ internal class InferencePipelineCreateParamsTest {
             .statusMessage("Tests successfully evaluated")
             .totalGoalCount(6L)
             .dataBackend(
-                InferencePipelineCreateParams.DataBackend.UnionMember0.builder()
+                InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.builder()
                     .backendType(
-                        InferencePipelineCreateParams.DataBackend.UnionMember0.BackendType.BIGQUERY
+                        InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.BackendType
+                            .BIGQUERY
                     )
                     .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .datasetId("my-dataset")
                     .bodyProjectId("my-project")
                     .tableId("my-table")
                     .partitionType(
-                        InferencePipelineCreateParams.DataBackend.UnionMember0.PartitionType.DAY
+                        InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.PartitionType
+                            .DAY
                     )
                     .build()
             )
@@ -180,9 +182,10 @@ internal class InferencePipelineCreateParamsTest {
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
                 .dataBackend(
-                    InferencePipelineCreateParams.DataBackend.UnionMember0.builder()
+                    InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.builder()
                         .backendType(
-                            InferencePipelineCreateParams.DataBackend.UnionMember0.BackendType
+                            InferencePipelineCreateParams.DataBackend.BigQueryDataBackend
+                                .BackendType
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -190,7 +193,9 @@ internal class InferencePipelineCreateParamsTest {
                         .bodyProjectId("my-project")
                         .tableId("my-table")
                         .partitionType(
-                            InferencePipelineCreateParams.DataBackend.UnionMember0.PartitionType.DAY
+                            InferencePipelineCreateParams.DataBackend.BigQueryDataBackend
+                                .PartitionType
+                                .DAY
                         )
                         .build()
                 )
@@ -294,10 +299,11 @@ internal class InferencePipelineCreateParamsTest {
         assertThat(body.totalGoalCount()).isEqualTo(6L)
         assertThat(body.dataBackend())
             .contains(
-                InferencePipelineCreateParams.DataBackend.ofUnionMember0(
-                    InferencePipelineCreateParams.DataBackend.UnionMember0.builder()
+                InferencePipelineCreateParams.DataBackend.ofBigQuery(
+                    InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.builder()
                         .backendType(
-                            InferencePipelineCreateParams.DataBackend.UnionMember0.BackendType
+                            InferencePipelineCreateParams.DataBackend.BigQueryDataBackend
+                                .BackendType
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -305,7 +311,9 @@ internal class InferencePipelineCreateParamsTest {
                         .bodyProjectId("my-project")
                         .tableId("my-table")
                         .partitionType(
-                            InferencePipelineCreateParams.DataBackend.UnionMember0.PartitionType.DAY
+                            InferencePipelineCreateParams.DataBackend.BigQueryDataBackend
+                                .PartitionType
+                                .DAY
                         )
                         .build()
                 )

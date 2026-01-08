@@ -680,34 +680,37 @@ private constructor(
             body.dataBackend(dataBackend)
         }
 
-        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember0(unionMember0)`. */
-        fun dataBackend(unionMember0: DataBackend.UnionMember0) = apply {
-            body.dataBackend(unionMember0)
+        /** Alias for calling [dataBackend] with `DataBackend.ofBigQuery(bigQuery)`. */
+        fun dataBackend(bigQuery: DataBackend.BigQueryDataBackend) = apply {
+            body.dataBackend(bigQuery)
         }
 
-        /** Alias for calling [dataBackend] with `DataBackend.ofBackendType(backendType)`. */
-        fun dataBackend(backendType: DataBackend.BackendType) = apply {
-            body.dataBackend(backendType)
+        /**
+         * Alias for calling [dataBackend] with
+         * `DataBackend.ofDefaultDataBackend(defaultDataBackend)`.
+         */
+        fun dataBackend(defaultDataBackend: DataBackend.DefaultDataBackend) = apply {
+            body.dataBackend(defaultDataBackend)
         }
 
-        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember2(unionMember2)`. */
-        fun dataBackend(unionMember2: DataBackend.UnionMember2) = apply {
-            body.dataBackend(unionMember2)
+        /** Alias for calling [dataBackend] with `DataBackend.ofSnowflake(snowflake)`. */
+        fun dataBackend(snowflake: DataBackend.SnowflakeDataBackend) = apply {
+            body.dataBackend(snowflake)
         }
 
-        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember3(unionMember3)`. */
-        fun dataBackend(unionMember3: DataBackend.UnionMember3) = apply {
-            body.dataBackend(unionMember3)
+        /** Alias for calling [dataBackend] with `DataBackend.ofDatabricksDtl(databricksDtl)`. */
+        fun dataBackend(databricksDtl: DataBackend.DatabricksDtlDataBackend) = apply {
+            body.dataBackend(databricksDtl)
         }
 
-        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember4(unionMember4)`. */
-        fun dataBackend(unionMember4: DataBackend.UnionMember4) = apply {
-            body.dataBackend(unionMember4)
+        /** Alias for calling [dataBackend] with `DataBackend.ofRedshift(redshift)`. */
+        fun dataBackend(redshift: DataBackend.RedshiftDataBackend) = apply {
+            body.dataBackend(redshift)
         }
 
-        /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember5(unionMember5)`. */
-        fun dataBackend(unionMember5: DataBackend.UnionMember5) = apply {
-            body.dataBackend(unionMember5)
+        /** Alias for calling [dataBackend] with `DataBackend.ofPostgres(postgres)`. */
+        fun dataBackend(postgres: DataBackend.PostgresDataBackend) = apply {
+            body.dataBackend(postgres)
         }
 
         /** The last time the data was polled. */
@@ -1764,29 +1767,34 @@ private constructor(
                 this.dataBackend = dataBackend
             }
 
-            /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember0(unionMember0)`. */
-            fun dataBackend(unionMember0: DataBackend.UnionMember0) =
-                dataBackend(DataBackend.ofUnionMember0(unionMember0))
+            /** Alias for calling [dataBackend] with `DataBackend.ofBigQuery(bigQuery)`. */
+            fun dataBackend(bigQuery: DataBackend.BigQueryDataBackend) =
+                dataBackend(DataBackend.ofBigQuery(bigQuery))
 
-            /** Alias for calling [dataBackend] with `DataBackend.ofBackendType(backendType)`. */
-            fun dataBackend(backendType: DataBackend.BackendType) =
-                dataBackend(DataBackend.ofBackendType(backendType))
+            /**
+             * Alias for calling [dataBackend] with
+             * `DataBackend.ofDefaultDataBackend(defaultDataBackend)`.
+             */
+            fun dataBackend(defaultDataBackend: DataBackend.DefaultDataBackend) =
+                dataBackend(DataBackend.ofDefaultDataBackend(defaultDataBackend))
 
-            /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember2(unionMember2)`. */
-            fun dataBackend(unionMember2: DataBackend.UnionMember2) =
-                dataBackend(DataBackend.ofUnionMember2(unionMember2))
+            /** Alias for calling [dataBackend] with `DataBackend.ofSnowflake(snowflake)`. */
+            fun dataBackend(snowflake: DataBackend.SnowflakeDataBackend) =
+                dataBackend(DataBackend.ofSnowflake(snowflake))
 
-            /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember3(unionMember3)`. */
-            fun dataBackend(unionMember3: DataBackend.UnionMember3) =
-                dataBackend(DataBackend.ofUnionMember3(unionMember3))
+            /**
+             * Alias for calling [dataBackend] with `DataBackend.ofDatabricksDtl(databricksDtl)`.
+             */
+            fun dataBackend(databricksDtl: DataBackend.DatabricksDtlDataBackend) =
+                dataBackend(DataBackend.ofDatabricksDtl(databricksDtl))
 
-            /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember4(unionMember4)`. */
-            fun dataBackend(unionMember4: DataBackend.UnionMember4) =
-                dataBackend(DataBackend.ofUnionMember4(unionMember4))
+            /** Alias for calling [dataBackend] with `DataBackend.ofRedshift(redshift)`. */
+            fun dataBackend(redshift: DataBackend.RedshiftDataBackend) =
+                dataBackend(DataBackend.ofRedshift(redshift))
 
-            /** Alias for calling [dataBackend] with `DataBackend.ofUnionMember5(unionMember5)`. */
-            fun dataBackend(unionMember5: DataBackend.UnionMember5) =
-                dataBackend(DataBackend.ofUnionMember5(unionMember5))
+            /** Alias for calling [dataBackend] with `DataBackend.ofPostgres(postgres)`. */
+            fun dataBackend(postgres: DataBackend.PostgresDataBackend) =
+                dataBackend(DataBackend.ofPostgres(postgres))
 
             /** The last time the data was polled. */
             fun dateLastPolled(dateLastPolled: OffsetDateTime?) =
@@ -2390,61 +2398,63 @@ private constructor(
     @JsonSerialize(using = DataBackend.Serializer::class)
     class DataBackend
     private constructor(
-        private val unionMember0: UnionMember0? = null,
-        private val backendType: BackendType? = null,
-        private val unionMember2: UnionMember2? = null,
-        private val unionMember3: UnionMember3? = null,
-        private val unionMember4: UnionMember4? = null,
-        private val unionMember5: UnionMember5? = null,
+        private val bigQuery: BigQueryDataBackend? = null,
+        private val defaultDataBackend: DefaultDataBackend? = null,
+        private val snowflake: SnowflakeDataBackend? = null,
+        private val databricksDtl: DatabricksDtlDataBackend? = null,
+        private val redshift: RedshiftDataBackend? = null,
+        private val postgres: PostgresDataBackend? = null,
         private val _json: JsonValue? = null,
     ) {
 
-        fun unionMember0(): Optional<UnionMember0> = Optional.ofNullable(unionMember0)
+        fun bigQuery(): Optional<BigQueryDataBackend> = Optional.ofNullable(bigQuery)
 
-        fun backendType(): Optional<BackendType> = Optional.ofNullable(backendType)
+        fun defaultDataBackend(): Optional<DefaultDataBackend> =
+            Optional.ofNullable(defaultDataBackend)
 
-        fun unionMember2(): Optional<UnionMember2> = Optional.ofNullable(unionMember2)
+        fun snowflake(): Optional<SnowflakeDataBackend> = Optional.ofNullable(snowflake)
 
-        fun unionMember3(): Optional<UnionMember3> = Optional.ofNullable(unionMember3)
+        fun databricksDtl(): Optional<DatabricksDtlDataBackend> = Optional.ofNullable(databricksDtl)
 
-        fun unionMember4(): Optional<UnionMember4> = Optional.ofNullable(unionMember4)
+        fun redshift(): Optional<RedshiftDataBackend> = Optional.ofNullable(redshift)
 
-        fun unionMember5(): Optional<UnionMember5> = Optional.ofNullable(unionMember5)
+        fun postgres(): Optional<PostgresDataBackend> = Optional.ofNullable(postgres)
 
-        fun isUnionMember0(): Boolean = unionMember0 != null
+        fun isBigQuery(): Boolean = bigQuery != null
 
-        fun isBackendType(): Boolean = backendType != null
+        fun isDefaultDataBackend(): Boolean = defaultDataBackend != null
 
-        fun isUnionMember2(): Boolean = unionMember2 != null
+        fun isSnowflake(): Boolean = snowflake != null
 
-        fun isUnionMember3(): Boolean = unionMember3 != null
+        fun isDatabricksDtl(): Boolean = databricksDtl != null
 
-        fun isUnionMember4(): Boolean = unionMember4 != null
+        fun isRedshift(): Boolean = redshift != null
 
-        fun isUnionMember5(): Boolean = unionMember5 != null
+        fun isPostgres(): Boolean = postgres != null
 
-        fun asUnionMember0(): UnionMember0 = unionMember0.getOrThrow("unionMember0")
+        fun asBigQuery(): BigQueryDataBackend = bigQuery.getOrThrow("bigQuery")
 
-        fun asBackendType(): BackendType = backendType.getOrThrow("backendType")
+        fun asDefaultDataBackend(): DefaultDataBackend =
+            defaultDataBackend.getOrThrow("defaultDataBackend")
 
-        fun asUnionMember2(): UnionMember2 = unionMember2.getOrThrow("unionMember2")
+        fun asSnowflake(): SnowflakeDataBackend = snowflake.getOrThrow("snowflake")
 
-        fun asUnionMember3(): UnionMember3 = unionMember3.getOrThrow("unionMember3")
+        fun asDatabricksDtl(): DatabricksDtlDataBackend = databricksDtl.getOrThrow("databricksDtl")
 
-        fun asUnionMember4(): UnionMember4 = unionMember4.getOrThrow("unionMember4")
+        fun asRedshift(): RedshiftDataBackend = redshift.getOrThrow("redshift")
 
-        fun asUnionMember5(): UnionMember5 = unionMember5.getOrThrow("unionMember5")
+        fun asPostgres(): PostgresDataBackend = postgres.getOrThrow("postgres")
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
         fun <T> accept(visitor: Visitor<T>): T =
             when {
-                unionMember0 != null -> visitor.visitUnionMember0(unionMember0)
-                backendType != null -> visitor.visitBackendType(backendType)
-                unionMember2 != null -> visitor.visitUnionMember2(unionMember2)
-                unionMember3 != null -> visitor.visitUnionMember3(unionMember3)
-                unionMember4 != null -> visitor.visitUnionMember4(unionMember4)
-                unionMember5 != null -> visitor.visitUnionMember5(unionMember5)
+                bigQuery != null -> visitor.visitBigQuery(bigQuery)
+                defaultDataBackend != null -> visitor.visitDefaultDataBackend(defaultDataBackend)
+                snowflake != null -> visitor.visitSnowflake(snowflake)
+                databricksDtl != null -> visitor.visitDatabricksDtl(databricksDtl)
+                redshift != null -> visitor.visitRedshift(redshift)
+                postgres != null -> visitor.visitPostgres(postgres)
                 else -> visitor.unknown(_json)
             }
 
@@ -2457,28 +2467,28 @@ private constructor(
 
             accept(
                 object : Visitor<Unit> {
-                    override fun visitUnionMember0(unionMember0: UnionMember0) {
-                        unionMember0.validate()
+                    override fun visitBigQuery(bigQuery: BigQueryDataBackend) {
+                        bigQuery.validate()
                     }
 
-                    override fun visitBackendType(backendType: BackendType) {
-                        backendType.validate()
+                    override fun visitDefaultDataBackend(defaultDataBackend: DefaultDataBackend) {
+                        defaultDataBackend.validate()
                     }
 
-                    override fun visitUnionMember2(unionMember2: UnionMember2) {
-                        unionMember2.validate()
+                    override fun visitSnowflake(snowflake: SnowflakeDataBackend) {
+                        snowflake.validate()
                     }
 
-                    override fun visitUnionMember3(unionMember3: UnionMember3) {
-                        unionMember3.validate()
+                    override fun visitDatabricksDtl(databricksDtl: DatabricksDtlDataBackend) {
+                        databricksDtl.validate()
                     }
 
-                    override fun visitUnionMember4(unionMember4: UnionMember4) {
-                        unionMember4.validate()
+                    override fun visitRedshift(redshift: RedshiftDataBackend) {
+                        redshift.validate()
                     }
 
-                    override fun visitUnionMember5(unionMember5: UnionMember5) {
-                        unionMember5.validate()
+                    override fun visitPostgres(postgres: PostgresDataBackend) {
+                        postgres.validate()
                     }
                 }
             )
@@ -2503,22 +2513,20 @@ private constructor(
         internal fun validity(): Int =
             accept(
                 object : Visitor<Int> {
-                    override fun visitUnionMember0(unionMember0: UnionMember0) =
-                        unionMember0.validity()
+                    override fun visitBigQuery(bigQuery: BigQueryDataBackend) = bigQuery.validity()
 
-                    override fun visitBackendType(backendType: BackendType) = backendType.validity()
+                    override fun visitDefaultDataBackend(defaultDataBackend: DefaultDataBackend) =
+                        defaultDataBackend.validity()
 
-                    override fun visitUnionMember2(unionMember2: UnionMember2) =
-                        unionMember2.validity()
+                    override fun visitSnowflake(snowflake: SnowflakeDataBackend) =
+                        snowflake.validity()
 
-                    override fun visitUnionMember3(unionMember3: UnionMember3) =
-                        unionMember3.validity()
+                    override fun visitDatabricksDtl(databricksDtl: DatabricksDtlDataBackend) =
+                        databricksDtl.validity()
 
-                    override fun visitUnionMember4(unionMember4: UnionMember4) =
-                        unionMember4.validity()
+                    override fun visitRedshift(redshift: RedshiftDataBackend) = redshift.validity()
 
-                    override fun visitUnionMember5(unionMember5: UnionMember5) =
-                        unionMember5.validity()
+                    override fun visitPostgres(postgres: PostgresDataBackend) = postgres.validity()
 
                     override fun unknown(json: JsonValue?) = 0
                 }
@@ -2530,32 +2538,25 @@ private constructor(
             }
 
             return other is DataBackend &&
-                unionMember0 == other.unionMember0 &&
-                backendType == other.backendType &&
-                unionMember2 == other.unionMember2 &&
-                unionMember3 == other.unionMember3 &&
-                unionMember4 == other.unionMember4 &&
-                unionMember5 == other.unionMember5
+                bigQuery == other.bigQuery &&
+                defaultDataBackend == other.defaultDataBackend &&
+                snowflake == other.snowflake &&
+                databricksDtl == other.databricksDtl &&
+                redshift == other.redshift &&
+                postgres == other.postgres
         }
 
         override fun hashCode(): Int =
-            Objects.hash(
-                unionMember0,
-                backendType,
-                unionMember2,
-                unionMember3,
-                unionMember4,
-                unionMember5,
-            )
+            Objects.hash(bigQuery, defaultDataBackend, snowflake, databricksDtl, redshift, postgres)
 
         override fun toString(): String =
             when {
-                unionMember0 != null -> "DataBackend{unionMember0=$unionMember0}"
-                backendType != null -> "DataBackend{backendType=$backendType}"
-                unionMember2 != null -> "DataBackend{unionMember2=$unionMember2}"
-                unionMember3 != null -> "DataBackend{unionMember3=$unionMember3}"
-                unionMember4 != null -> "DataBackend{unionMember4=$unionMember4}"
-                unionMember5 != null -> "DataBackend{unionMember5=$unionMember5}"
+                bigQuery != null -> "DataBackend{bigQuery=$bigQuery}"
+                defaultDataBackend != null -> "DataBackend{defaultDataBackend=$defaultDataBackend}"
+                snowflake != null -> "DataBackend{snowflake=$snowflake}"
+                databricksDtl != null -> "DataBackend{databricksDtl=$databricksDtl}"
+                redshift != null -> "DataBackend{redshift=$redshift}"
+                postgres != null -> "DataBackend{postgres=$postgres}"
                 _json != null -> "DataBackend{_unknown=$_json}"
                 else -> throw IllegalStateException("Invalid DataBackend")
             }
@@ -2563,27 +2564,24 @@ private constructor(
         companion object {
 
             @JvmStatic
-            fun ofUnionMember0(unionMember0: UnionMember0) =
-                DataBackend(unionMember0 = unionMember0)
+            fun ofBigQuery(bigQuery: BigQueryDataBackend) = DataBackend(bigQuery = bigQuery)
 
             @JvmStatic
-            fun ofBackendType(backendType: BackendType) = DataBackend(backendType = backendType)
+            fun ofDefaultDataBackend(defaultDataBackend: DefaultDataBackend) =
+                DataBackend(defaultDataBackend = defaultDataBackend)
 
             @JvmStatic
-            fun ofUnionMember2(unionMember2: UnionMember2) =
-                DataBackend(unionMember2 = unionMember2)
+            fun ofSnowflake(snowflake: SnowflakeDataBackend) = DataBackend(snowflake = snowflake)
 
             @JvmStatic
-            fun ofUnionMember3(unionMember3: UnionMember3) =
-                DataBackend(unionMember3 = unionMember3)
+            fun ofDatabricksDtl(databricksDtl: DatabricksDtlDataBackend) =
+                DataBackend(databricksDtl = databricksDtl)
 
             @JvmStatic
-            fun ofUnionMember4(unionMember4: UnionMember4) =
-                DataBackend(unionMember4 = unionMember4)
+            fun ofRedshift(redshift: RedshiftDataBackend) = DataBackend(redshift = redshift)
 
             @JvmStatic
-            fun ofUnionMember5(unionMember5: UnionMember5) =
-                DataBackend(unionMember5 = unionMember5)
+            fun ofPostgres(postgres: PostgresDataBackend) = DataBackend(postgres = postgres)
         }
 
         /**
@@ -2592,17 +2590,17 @@ private constructor(
          */
         interface Visitor<out T> {
 
-            fun visitUnionMember0(unionMember0: UnionMember0): T
+            fun visitBigQuery(bigQuery: BigQueryDataBackend): T
 
-            fun visitBackendType(backendType: BackendType): T
+            fun visitDefaultDataBackend(defaultDataBackend: DefaultDataBackend): T
 
-            fun visitUnionMember2(unionMember2: UnionMember2): T
+            fun visitSnowflake(snowflake: SnowflakeDataBackend): T
 
-            fun visitUnionMember3(unionMember3: UnionMember3): T
+            fun visitDatabricksDtl(databricksDtl: DatabricksDtlDataBackend): T
 
-            fun visitUnionMember4(unionMember4: UnionMember4): T
+            fun visitRedshift(redshift: RedshiftDataBackend): T
 
-            fun visitUnionMember5(unionMember5: UnionMember5): T
+            fun visitPostgres(postgres: PostgresDataBackend): T
 
             /**
              * Maps an unknown variant of [DataBackend] to a value of type [T].
@@ -2626,23 +2624,23 @@ private constructor(
 
                 val bestMatches =
                     sequenceOf(
-                            tryDeserialize(node, jacksonTypeRef<UnionMember0>())?.let {
-                                DataBackend(unionMember0 = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<BigQueryDataBackend>())?.let {
+                                DataBackend(bigQuery = it, _json = json)
                             },
-                            tryDeserialize(node, jacksonTypeRef<BackendType>())?.let {
-                                DataBackend(backendType = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<DefaultDataBackend>())?.let {
+                                DataBackend(defaultDataBackend = it, _json = json)
                             },
-                            tryDeserialize(node, jacksonTypeRef<UnionMember2>())?.let {
-                                DataBackend(unionMember2 = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<SnowflakeDataBackend>())?.let {
+                                DataBackend(snowflake = it, _json = json)
                             },
-                            tryDeserialize(node, jacksonTypeRef<UnionMember3>())?.let {
-                                DataBackend(unionMember3 = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<DatabricksDtlDataBackend>())?.let {
+                                DataBackend(databricksDtl = it, _json = json)
                             },
-                            tryDeserialize(node, jacksonTypeRef<UnionMember4>())?.let {
-                                DataBackend(unionMember4 = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<RedshiftDataBackend>())?.let {
+                                DataBackend(redshift = it, _json = json)
                             },
-                            tryDeserialize(node, jacksonTypeRef<UnionMember5>())?.let {
-                                DataBackend(unionMember5 = it, _json = json)
+                            tryDeserialize(node, jacksonTypeRef<PostgresDataBackend>())?.let {
+                                DataBackend(postgres = it, _json = json)
                             },
                         )
                         .filterNotNull()
@@ -2669,19 +2667,20 @@ private constructor(
                 provider: SerializerProvider,
             ) {
                 when {
-                    value.unionMember0 != null -> generator.writeObject(value.unionMember0)
-                    value.backendType != null -> generator.writeObject(value.backendType)
-                    value.unionMember2 != null -> generator.writeObject(value.unionMember2)
-                    value.unionMember3 != null -> generator.writeObject(value.unionMember3)
-                    value.unionMember4 != null -> generator.writeObject(value.unionMember4)
-                    value.unionMember5 != null -> generator.writeObject(value.unionMember5)
+                    value.bigQuery != null -> generator.writeObject(value.bigQuery)
+                    value.defaultDataBackend != null ->
+                        generator.writeObject(value.defaultDataBackend)
+                    value.snowflake != null -> generator.writeObject(value.snowflake)
+                    value.databricksDtl != null -> generator.writeObject(value.databricksDtl)
+                    value.redshift != null -> generator.writeObject(value.redshift)
+                    value.postgres != null -> generator.writeObject(value.postgres)
                     value._json != null -> generator.writeObject(value._json)
                     else -> throw IllegalStateException("Invalid DataBackend")
                 }
             }
         }
 
-        class UnionMember0
+        class BigQueryDataBackend
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val backendType: JsonField<BackendType>,
@@ -2855,7 +2854,7 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [UnionMember0].
+                 * Returns a mutable builder for constructing an instance of [BigQueryDataBackend].
                  *
                  * The following fields are required:
                  * ```java
@@ -2870,7 +2869,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [UnionMember0]. */
+            /** A builder for [BigQueryDataBackend]. */
             class Builder internal constructor() {
 
                 private var backendType: JsonField<BackendType>? = null
@@ -2883,15 +2882,15 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(unionMember0: UnionMember0) = apply {
-                    backendType = unionMember0.backendType
-                    bigqueryConnectionId = unionMember0.bigqueryConnectionId
-                    config = unionMember0.config
-                    datasetId = unionMember0.datasetId
-                    bodyProjectId = unionMember0.bodyProjectId
-                    tableId = unionMember0.tableId
-                    partitionType = unionMember0.partitionType
-                    additionalProperties = unionMember0.additionalProperties.toMutableMap()
+                internal fun from(bigQueryDataBackend: BigQueryDataBackend) = apply {
+                    backendType = bigQueryDataBackend.backendType
+                    bigqueryConnectionId = bigQueryDataBackend.bigqueryConnectionId
+                    config = bigQueryDataBackend.config
+                    datasetId = bigQueryDataBackend.datasetId
+                    bodyProjectId = bigQueryDataBackend.bodyProjectId
+                    tableId = bigQueryDataBackend.tableId
+                    partitionType = bigQueryDataBackend.partitionType
+                    additionalProperties = bigQueryDataBackend.additionalProperties.toMutableMap()
                 }
 
                 fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
@@ -3019,7 +3018,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [UnionMember0].
+                 * Returns an immutable instance of [BigQueryDataBackend].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -3035,8 +3034,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): UnionMember0 =
-                    UnionMember0(
+                fun build(): BigQueryDataBackend =
+                    BigQueryDataBackend(
                         checkRequired("backendType", backendType),
                         checkRequired("bigqueryConnectionId", bigqueryConnectionId),
                         checkRequired("config", config),
@@ -3050,7 +3049,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): UnionMember0 = apply {
+            fun validate(): BigQueryDataBackend = apply {
                 if (validated) {
                     return@apply
                 }
@@ -3756,7 +3755,7 @@ private constructor(
                     return true
                 }
 
-                return other is UnionMember0 &&
+                return other is BigQueryDataBackend &&
                     backendType == other.backendType &&
                     bigqueryConnectionId == other.bigqueryConnectionId &&
                     config == other.config &&
@@ -3783,13 +3782,13 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "UnionMember0{backendType=$backendType, bigqueryConnectionId=$bigqueryConnectionId, config=$config, datasetId=$datasetId, bodyProjectId=$bodyProjectId, tableId=$tableId, partitionType=$partitionType, additionalProperties=$additionalProperties}"
+                "BigQueryDataBackend{backendType=$backendType, bigqueryConnectionId=$bigqueryConnectionId, config=$config, datasetId=$datasetId, bodyProjectId=$bodyProjectId, tableId=$tableId, partitionType=$partitionType, additionalProperties=$additionalProperties}"
         }
 
-        class BackendType
+        class DefaultDataBackend
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
-            private val backendType: JsonField<InnerBackendType>,
+            private val backendType: JsonField<BackendType>,
             private val additionalProperties: MutableMap<String, JsonValue>,
         ) {
 
@@ -3797,7 +3796,7 @@ private constructor(
             private constructor(
                 @JsonProperty("backendType")
                 @ExcludeMissing
-                backendType: JsonField<InnerBackendType> = JsonMissing.of()
+                backendType: JsonField<BackendType> = JsonMissing.of()
             ) : this(backendType, mutableMapOf())
 
             /**
@@ -3805,7 +3804,7 @@ private constructor(
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
              *   value).
              */
-            fun backendType(): InnerBackendType = backendType.getRequired("backendType")
+            fun backendType(): BackendType = backendType.getRequired("backendType")
 
             /**
              * Returns the raw JSON value of [backendType].
@@ -3815,7 +3814,7 @@ private constructor(
              */
             @JsonProperty("backendType")
             @ExcludeMissing
-            fun _backendType(): JsonField<InnerBackendType> = backendType
+            fun _backendType(): JsonField<BackendType> = backendType
 
             @JsonAnySetter
             private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -3832,7 +3831,7 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [BackendType].
+                 * Returns a mutable builder for constructing an instance of [DefaultDataBackend].
                  *
                  * The following fields are required:
                  * ```java
@@ -3842,29 +3841,28 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [BackendType]. */
+            /** A builder for [DefaultDataBackend]. */
             class Builder internal constructor() {
 
-                private var backendType: JsonField<InnerBackendType>? = null
+                private var backendType: JsonField<BackendType>? = null
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(backendType: BackendType) = apply {
-                    this.backendType = backendType.backendType
-                    additionalProperties = backendType.additionalProperties.toMutableMap()
+                internal fun from(defaultDataBackend: DefaultDataBackend) = apply {
+                    backendType = defaultDataBackend.backendType
+                    additionalProperties = defaultDataBackend.additionalProperties.toMutableMap()
                 }
 
-                fun backendType(backendType: InnerBackendType) =
-                    backendType(JsonField.of(backendType))
+                fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
 
                 /**
                  * Sets [Builder.backendType] to an arbitrary JSON value.
                  *
-                 * You should usually call [Builder.backendType] with a well-typed
-                 * [InnerBackendType] value instead. This method is primarily for setting the field
-                 * to an undocumented or not yet supported value.
+                 * You should usually call [Builder.backendType] with a well-typed [BackendType]
+                 * value instead. This method is primarily for setting the field to an undocumented
+                 * or not yet supported value.
                  */
-                fun backendType(backendType: JsonField<InnerBackendType>) = apply {
+                fun backendType(backendType: JsonField<BackendType>) = apply {
                     this.backendType = backendType
                 }
 
@@ -3891,7 +3889,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [BackendType].
+                 * Returns an immutable instance of [DefaultDataBackend].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -3902,8 +3900,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): BackendType =
-                    BackendType(
+                fun build(): DefaultDataBackend =
+                    DefaultDataBackend(
                         checkRequired("backendType", backendType),
                         additionalProperties.toMutableMap(),
                     )
@@ -3911,7 +3909,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): BackendType = apply {
+            fun validate(): DefaultDataBackend = apply {
                 if (validated) {
                     return@apply
                 }
@@ -3937,7 +3935,7 @@ private constructor(
             @JvmSynthetic
             internal fun validity(): Int = (backendType.asKnown().getOrNull()?.validity() ?: 0)
 
-            class InnerBackendType
+            class BackendType
             @JsonCreator
             private constructor(private val value: JsonField<String>) : Enum {
 
@@ -3955,20 +3953,18 @@ private constructor(
 
                     @JvmField val DEFAULT = of("default")
 
-                    @JvmStatic fun of(value: String) = InnerBackendType(JsonField.of(value))
+                    @JvmStatic fun of(value: String) = BackendType(JsonField.of(value))
                 }
 
-                /** An enum containing [InnerBackendType]'s known values. */
+                /** An enum containing [BackendType]'s known values. */
                 enum class Known {
                     DEFAULT
                 }
 
                 /**
-                 * An enum containing [InnerBackendType]'s known values, as well as an [_UNKNOWN]
-                 * member.
+                 * An enum containing [BackendType]'s known values, as well as an [_UNKNOWN] member.
                  *
-                 * An instance of [InnerBackendType] can contain an unknown value in a couple of
-                 * cases:
+                 * An instance of [BackendType] can contain an unknown value in a couple of cases:
                  * - It was deserialized from data that doesn't match any known member. For example,
                  *   if the SDK is on an older version than the API, then the API may respond with
                  *   new members that the SDK is unaware of.
@@ -3977,8 +3973,8 @@ private constructor(
                 enum class Value {
                     DEFAULT,
                     /**
-                     * An enum member indicating that [InnerBackendType] was instantiated with an
-                     * unknown value.
+                     * An enum member indicating that [BackendType] was instantiated with an unknown
+                     * value.
                      */
                     _UNKNOWN,
                 }
@@ -4008,8 +4004,7 @@ private constructor(
                 fun known(): Known =
                     when (this) {
                         DEFAULT -> Known.DEFAULT
-                        else ->
-                            throw OpenlayerInvalidDataException("Unknown InnerBackendType: $value")
+                        else -> throw OpenlayerInvalidDataException("Unknown BackendType: $value")
                     }
 
                 /**
@@ -4028,7 +4023,7 @@ private constructor(
 
                 private var validated: Boolean = false
 
-                fun validate(): InnerBackendType = apply {
+                fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
                     }
@@ -4058,7 +4053,7 @@ private constructor(
                         return true
                     }
 
-                    return other is InnerBackendType && value == other.value
+                    return other is BackendType && value == other.value
                 }
 
                 override fun hashCode() = value.hashCode()
@@ -4071,7 +4066,7 @@ private constructor(
                     return true
                 }
 
-                return other is BackendType &&
+                return other is DefaultDataBackend &&
                     backendType == other.backendType &&
                     additionalProperties == other.additionalProperties
             }
@@ -4081,10 +4076,10 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "BackendType{backendType=$backendType, additionalProperties=$additionalProperties}"
+                "DefaultDataBackend{backendType=$backendType, additionalProperties=$additionalProperties}"
         }
 
-        class UnionMember2
+        class SnowflakeDataBackend
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val backendType: JsonField<BackendType>,
@@ -4229,7 +4224,7 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [UnionMember2].
+                 * Returns a mutable builder for constructing an instance of [SnowflakeDataBackend].
                  *
                  * The following fields are required:
                  * ```java
@@ -4244,7 +4239,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [UnionMember2]. */
+            /** A builder for [SnowflakeDataBackend]. */
             class Builder internal constructor() {
 
                 private var backendType: JsonField<BackendType>? = null
@@ -4256,14 +4251,14 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(unionMember2: UnionMember2) = apply {
-                    backendType = unionMember2.backendType
-                    config = unionMember2.config
-                    database = unionMember2.database
-                    schema = unionMember2.schema
-                    snowflakeConnectionId = unionMember2.snowflakeConnectionId
-                    table = unionMember2.table
-                    additionalProperties = unionMember2.additionalProperties.toMutableMap()
+                internal fun from(snowflakeDataBackend: SnowflakeDataBackend) = apply {
+                    backendType = snowflakeDataBackend.backendType
+                    config = snowflakeDataBackend.config
+                    database = snowflakeDataBackend.database
+                    schema = snowflakeDataBackend.schema
+                    snowflakeConnectionId = snowflakeDataBackend.snowflakeConnectionId
+                    table = snowflakeDataBackend.table
+                    additionalProperties = snowflakeDataBackend.additionalProperties.toMutableMap()
                 }
 
                 fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
@@ -4370,7 +4365,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [UnionMember2].
+                 * Returns an immutable instance of [SnowflakeDataBackend].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -4386,8 +4381,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): UnionMember2 =
-                    UnionMember2(
+                fun build(): SnowflakeDataBackend =
+                    SnowflakeDataBackend(
                         checkRequired("backendType", backendType),
                         checkRequired("config", config),
                         checkRequired("database", database),
@@ -4400,7 +4395,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): UnionMember2 = apply {
+            fun validate(): SnowflakeDataBackend = apply {
                 if (validated) {
                     return@apply
                 }
@@ -4965,7 +4960,7 @@ private constructor(
                     return true
                 }
 
-                return other is UnionMember2 &&
+                return other is SnowflakeDataBackend &&
                     backendType == other.backendType &&
                     config == other.config &&
                     database == other.database &&
@@ -4990,10 +4985,10 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "UnionMember2{backendType=$backendType, config=$config, database=$database, schema=$schema, snowflakeConnectionId=$snowflakeConnectionId, table=$table, additionalProperties=$additionalProperties}"
+                "SnowflakeDataBackend{backendType=$backendType, config=$config, database=$database, schema=$schema, snowflakeConnectionId=$snowflakeConnectionId, table=$table, additionalProperties=$additionalProperties}"
         }
 
-        class UnionMember3
+        class DatabricksDtlDataBackend
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val backendType: JsonField<BackendType>,
@@ -5095,7 +5090,8 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [UnionMember3].
+                 * Returns a mutable builder for constructing an instance of
+                 * [DatabricksDtlDataBackend].
                  *
                  * The following fields are required:
                  * ```java
@@ -5108,7 +5104,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [UnionMember3]. */
+            /** A builder for [DatabricksDtlDataBackend]. */
             class Builder internal constructor() {
 
                 private var backendType: JsonField<BackendType>? = null
@@ -5118,12 +5114,13 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(unionMember3: UnionMember3) = apply {
-                    backendType = unionMember3.backendType
-                    config = unionMember3.config
-                    databricksDtlConnectionId = unionMember3.databricksDtlConnectionId
-                    tableId = unionMember3.tableId
-                    additionalProperties = unionMember3.additionalProperties.toMutableMap()
+                internal fun from(databricksDtlDataBackend: DatabricksDtlDataBackend) = apply {
+                    backendType = databricksDtlDataBackend.backendType
+                    config = databricksDtlDataBackend.config
+                    databricksDtlConnectionId = databricksDtlDataBackend.databricksDtlConnectionId
+                    tableId = databricksDtlDataBackend.tableId
+                    additionalProperties =
+                        databricksDtlDataBackend.additionalProperties.toMutableMap()
                 }
 
                 fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
@@ -5209,7 +5206,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [UnionMember3].
+                 * Returns an immutable instance of [DatabricksDtlDataBackend].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -5223,8 +5220,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): UnionMember3 =
-                    UnionMember3(
+                fun build(): DatabricksDtlDataBackend =
+                    DatabricksDtlDataBackend(
                         checkRequired("backendType", backendType),
                         checkRequired("config", config),
                         checkRequired("databricksDtlConnectionId", databricksDtlConnectionId),
@@ -5235,7 +5232,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): UnionMember3 = apply {
+            fun validate(): DatabricksDtlDataBackend = apply {
                 if (validated) {
                     return@apply
                 }
@@ -5796,7 +5793,7 @@ private constructor(
                     return true
                 }
 
-                return other is UnionMember3 &&
+                return other is DatabricksDtlDataBackend &&
                     backendType == other.backendType &&
                     config == other.config &&
                     databricksDtlConnectionId == other.databricksDtlConnectionId &&
@@ -5817,10 +5814,10 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "UnionMember3{backendType=$backendType, config=$config, databricksDtlConnectionId=$databricksDtlConnectionId, tableId=$tableId, additionalProperties=$additionalProperties}"
+                "DatabricksDtlDataBackend{backendType=$backendType, config=$config, databricksDtlConnectionId=$databricksDtlConnectionId, tableId=$tableId, additionalProperties=$additionalProperties}"
         }
 
-        class UnionMember4
+        class RedshiftDataBackend
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val backendType: JsonField<BackendType>,
@@ -5954,7 +5951,7 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [UnionMember4].
+                 * Returns a mutable builder for constructing an instance of [RedshiftDataBackend].
                  *
                  * The following fields are required:
                  * ```java
@@ -5968,7 +5965,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [UnionMember4]. */
+            /** A builder for [RedshiftDataBackend]. */
             class Builder internal constructor() {
 
                 private var backendType: JsonField<BackendType>? = null
@@ -5979,13 +5976,13 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(unionMember4: UnionMember4) = apply {
-                    backendType = unionMember4.backendType
-                    config = unionMember4.config
-                    redshiftConnectionId = unionMember4.redshiftConnectionId
-                    schemaName = unionMember4.schemaName
-                    tableName = unionMember4.tableName
-                    additionalProperties = unionMember4.additionalProperties.toMutableMap()
+                internal fun from(redshiftDataBackend: RedshiftDataBackend) = apply {
+                    backendType = redshiftDataBackend.backendType
+                    config = redshiftDataBackend.config
+                    redshiftConnectionId = redshiftDataBackend.redshiftConnectionId
+                    schemaName = redshiftDataBackend.schemaName
+                    tableName = redshiftDataBackend.tableName
+                    additionalProperties = redshiftDataBackend.additionalProperties.toMutableMap()
                 }
 
                 fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
@@ -6080,7 +6077,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [UnionMember4].
+                 * Returns an immutable instance of [RedshiftDataBackend].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -6095,8 +6092,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): UnionMember4 =
-                    UnionMember4(
+                fun build(): RedshiftDataBackend =
+                    RedshiftDataBackend(
                         checkRequired("backendType", backendType),
                         checkRequired("config", config),
                         checkRequired("redshiftConnectionId", redshiftConnectionId),
@@ -6108,7 +6105,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): UnionMember4 = apply {
+            fun validate(): RedshiftDataBackend = apply {
                 if (validated) {
                     return@apply
                 }
@@ -6671,7 +6668,7 @@ private constructor(
                     return true
                 }
 
-                return other is UnionMember4 &&
+                return other is RedshiftDataBackend &&
                     backendType == other.backendType &&
                     config == other.config &&
                     redshiftConnectionId == other.redshiftConnectionId &&
@@ -6694,10 +6691,10 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "UnionMember4{backendType=$backendType, config=$config, redshiftConnectionId=$redshiftConnectionId, schemaName=$schemaName, tableName=$tableName, additionalProperties=$additionalProperties}"
+                "RedshiftDataBackend{backendType=$backendType, config=$config, redshiftConnectionId=$redshiftConnectionId, schemaName=$schemaName, tableName=$tableName, additionalProperties=$additionalProperties}"
         }
 
-        class UnionMember5
+        class PostgresDataBackend
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
             private val backendType: JsonField<BackendType>,
@@ -6842,7 +6839,7 @@ private constructor(
             companion object {
 
                 /**
-                 * Returns a mutable builder for constructing an instance of [UnionMember5].
+                 * Returns a mutable builder for constructing an instance of [PostgresDataBackend].
                  *
                  * The following fields are required:
                  * ```java
@@ -6857,7 +6854,7 @@ private constructor(
                 @JvmStatic fun builder() = Builder()
             }
 
-            /** A builder for [UnionMember5]. */
+            /** A builder for [PostgresDataBackend]. */
             class Builder internal constructor() {
 
                 private var backendType: JsonField<BackendType>? = null
@@ -6869,14 +6866,14 @@ private constructor(
                 private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
                 @JvmSynthetic
-                internal fun from(unionMember5: UnionMember5) = apply {
-                    backendType = unionMember5.backendType
-                    config = unionMember5.config
-                    database = unionMember5.database
-                    postgresConnectionId = unionMember5.postgresConnectionId
-                    schema = unionMember5.schema
-                    table = unionMember5.table
-                    additionalProperties = unionMember5.additionalProperties.toMutableMap()
+                internal fun from(postgresDataBackend: PostgresDataBackend) = apply {
+                    backendType = postgresDataBackend.backendType
+                    config = postgresDataBackend.config
+                    database = postgresDataBackend.database
+                    postgresConnectionId = postgresDataBackend.postgresConnectionId
+                    schema = postgresDataBackend.schema
+                    table = postgresDataBackend.table
+                    additionalProperties = postgresDataBackend.additionalProperties.toMutableMap()
                 }
 
                 fun backendType(backendType: BackendType) = backendType(JsonField.of(backendType))
@@ -6983,7 +6980,7 @@ private constructor(
                 }
 
                 /**
-                 * Returns an immutable instance of [UnionMember5].
+                 * Returns an immutable instance of [PostgresDataBackend].
                  *
                  * Further updates to this [Builder] will not mutate the returned instance.
                  *
@@ -6999,8 +6996,8 @@ private constructor(
                  *
                  * @throws IllegalStateException if any required field is unset.
                  */
-                fun build(): UnionMember5 =
-                    UnionMember5(
+                fun build(): PostgresDataBackend =
+                    PostgresDataBackend(
                         checkRequired("backendType", backendType),
                         checkRequired("config", config),
                         checkRequired("database", database),
@@ -7013,7 +7010,7 @@ private constructor(
 
             private var validated: Boolean = false
 
-            fun validate(): UnionMember5 = apply {
+            fun validate(): PostgresDataBackend = apply {
                 if (validated) {
                     return@apply
                 }
@@ -7578,7 +7575,7 @@ private constructor(
                     return true
                 }
 
-                return other is UnionMember5 &&
+                return other is PostgresDataBackend &&
                     backendType == other.backendType &&
                     config == other.config &&
                     database == other.database &&
@@ -7603,7 +7600,7 @@ private constructor(
             override fun hashCode(): Int = hashCode
 
             override fun toString() =
-                "UnionMember5{backendType=$backendType, config=$config, database=$database, postgresConnectionId=$postgresConnectionId, schema=$schema, table=$table, additionalProperties=$additionalProperties}"
+                "PostgresDataBackend{backendType=$backendType, config=$config, database=$database, postgresConnectionId=$postgresConnectionId, schema=$schema, table=$table, additionalProperties=$additionalProperties}"
         }
     }
 

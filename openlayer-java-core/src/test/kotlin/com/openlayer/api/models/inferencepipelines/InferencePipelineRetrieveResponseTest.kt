@@ -37,9 +37,10 @@ internal class InferencePipelineRetrieveResponseTest {
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
                 .dataBackend(
-                    InferencePipelineRetrieveResponse.DataBackend.UnionMember0.builder()
+                    InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend.builder()
                         .backendType(
-                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.BackendType
+                            InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend
+                                .BackendType
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -47,7 +48,8 @@ internal class InferencePipelineRetrieveResponseTest {
                         .projectId("my-project")
                         .tableId("my-table")
                         .partitionType(
-                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.PartitionType
+                            InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend
+                                .PartitionType
                                 .DAY
                         )
                         .build()
@@ -157,10 +159,11 @@ internal class InferencePipelineRetrieveResponseTest {
         assertThat(inferencePipelineRetrieveResponse.totalGoalCount()).isEqualTo(6L)
         assertThat(inferencePipelineRetrieveResponse.dataBackend())
             .contains(
-                InferencePipelineRetrieveResponse.DataBackend.ofUnionMember0(
-                    InferencePipelineRetrieveResponse.DataBackend.UnionMember0.builder()
+                InferencePipelineRetrieveResponse.DataBackend.ofBigQuery(
+                    InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend.builder()
                         .backendType(
-                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.BackendType
+                            InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend
+                                .BackendType
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -168,7 +171,8 @@ internal class InferencePipelineRetrieveResponseTest {
                         .projectId("my-project")
                         .tableId("my-table")
                         .partitionType(
-                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.PartitionType
+                            InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend
+                                .PartitionType
                                 .DAY
                         )
                         .build()
@@ -276,9 +280,10 @@ internal class InferencePipelineRetrieveResponseTest {
                 .statusMessage("Tests successfully evaluated")
                 .totalGoalCount(6L)
                 .dataBackend(
-                    InferencePipelineRetrieveResponse.DataBackend.UnionMember0.builder()
+                    InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend.builder()
                         .backendType(
-                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.BackendType
+                            InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend
+                                .BackendType
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -286,7 +291,8 @@ internal class InferencePipelineRetrieveResponseTest {
                         .projectId("my-project")
                         .tableId("my-table")
                         .partitionType(
-                            InferencePipelineRetrieveResponse.DataBackend.UnionMember0.PartitionType
+                            InferencePipelineRetrieveResponse.DataBackend.BigQueryDataBackend
+                                .PartitionType
                                 .DAY
                         )
                         .build()
