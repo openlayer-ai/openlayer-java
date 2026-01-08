@@ -39,9 +39,11 @@ internal class InferencePipelineListResponseTest {
                         .statusMessage("Tests successfully evaluated")
                         .totalGoalCount(6L)
                         .dataBackend(
-                            InferencePipelineListResponse.Item.DataBackend.UnionMember0.builder()
+                            InferencePipelineListResponse.Item.DataBackend.BigQueryDataBackend
+                                .builder()
                                 .backendType(
-                                    InferencePipelineListResponse.Item.DataBackend.UnionMember0
+                                    InferencePipelineListResponse.Item.DataBackend
+                                        .BigQueryDataBackend
                                         .BackendType
                                         .BIGQUERY
                                 )
@@ -50,7 +52,8 @@ internal class InferencePipelineListResponseTest {
                                 .projectId("my-project")
                                 .tableId("my-table")
                                 .partitionType(
-                                    InferencePipelineListResponse.Item.DataBackend.UnionMember0
+                                    InferencePipelineListResponse.Item.DataBackend
+                                        .BigQueryDataBackend
                                         .PartitionType
                                         .DAY
                                 )
@@ -161,9 +164,9 @@ internal class InferencePipelineListResponseTest {
                     .statusMessage("Tests successfully evaluated")
                     .totalGoalCount(6L)
                     .dataBackend(
-                        InferencePipelineListResponse.Item.DataBackend.UnionMember0.builder()
+                        InferencePipelineListResponse.Item.DataBackend.BigQueryDataBackend.builder()
                             .backendType(
-                                InferencePipelineListResponse.Item.DataBackend.UnionMember0
+                                InferencePipelineListResponse.Item.DataBackend.BigQueryDataBackend
                                     .BackendType
                                     .BIGQUERY
                             )
@@ -172,7 +175,7 @@ internal class InferencePipelineListResponseTest {
                             .projectId("my-project")
                             .tableId("my-table")
                             .partitionType(
-                                InferencePipelineListResponse.Item.DataBackend.UnionMember0
+                                InferencePipelineListResponse.Item.DataBackend.BigQueryDataBackend
                                     .PartitionType
                                     .DAY
                             )
@@ -280,9 +283,11 @@ internal class InferencePipelineListResponseTest {
                         .statusMessage("Tests successfully evaluated")
                         .totalGoalCount(6L)
                         .dataBackend(
-                            InferencePipelineListResponse.Item.DataBackend.UnionMember0.builder()
+                            InferencePipelineListResponse.Item.DataBackend.BigQueryDataBackend
+                                .builder()
                                 .backendType(
-                                    InferencePipelineListResponse.Item.DataBackend.UnionMember0
+                                    InferencePipelineListResponse.Item.DataBackend
+                                        .BigQueryDataBackend
                                         .BackendType
                                         .BIGQUERY
                                 )
@@ -291,7 +296,8 @@ internal class InferencePipelineListResponseTest {
                                 .projectId("my-project")
                                 .tableId("my-table")
                                 .partitionType(
-                                    InferencePipelineListResponse.Item.DataBackend.UnionMember0
+                                    InferencePipelineListResponse.Item.DataBackend
+                                        .BigQueryDataBackend
                                         .PartitionType
                                         .DAY
                                 )
