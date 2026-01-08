@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.0 (2026-01-08)
+
+Full Changelog: [v0.1.0-alpha.12...v0.1.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.12...v0.1.0)
+
+### Features
+
+* **api:** add missing endpoints ([db4b1fb](https://github.com/openlayer-ai/openlayer-java/commit/db4b1fbc7bd03820c3292f5e25bba78d606abb1f))
+
 ## 0.1.0-alpha.12 (2026-01-07)
 
 Full Changelog: [v0.1.0-alpha.11...v0.1.0-alpha.12](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.11...v0.1.0-alpha.12)
