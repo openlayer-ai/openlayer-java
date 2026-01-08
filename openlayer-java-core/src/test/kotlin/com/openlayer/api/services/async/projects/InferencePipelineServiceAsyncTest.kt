@@ -49,9 +49,10 @@ internal class InferencePipelineServiceAsyncTest {
                     .statusMessage("Tests successfully evaluated")
                     .totalGoalCount(6L)
                     .dataBackend(
-                        InferencePipelineCreateParams.DataBackend.UnionMember0.builder()
+                        InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.builder()
                             .backendType(
-                                InferencePipelineCreateParams.DataBackend.UnionMember0.BackendType
+                                InferencePipelineCreateParams.DataBackend.BigQueryDataBackend
+                                    .BackendType
                                     .BIGQUERY
                             )
                             .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -59,7 +60,8 @@ internal class InferencePipelineServiceAsyncTest {
                             .bodyProjectId("my-project")
                             .tableId("my-table")
                             .partitionType(
-                                InferencePipelineCreateParams.DataBackend.UnionMember0.PartitionType
+                                InferencePipelineCreateParams.DataBackend.BigQueryDataBackend
+                                    .PartitionType
                                     .DAY
                             )
                             .build()
