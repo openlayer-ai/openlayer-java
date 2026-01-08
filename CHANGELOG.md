@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.1 (2026-01-08)
+
+Full Changelog: [v0.1.0...v0.1.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0...v0.1.1)
+
+### Chores
+
+* **closes OPEN-8644:** address warnings on Stainless studio ([353710c](https://github.com/openlayer-ai/openlayer-java/commit/353710c46fbc8cdb7ef50e40cea0fa89a82709b2))
+* remove _meta ([93ad3a1](https://github.com/openlayer-ai/openlayer-java/commit/93ad3a1cf05146fed643f6852080e24a62729cdc))
+
 ## 0.1.0 (2026-01-08)
 
 Full Changelog: [v0.1.0-alpha.12...v0.1.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0-alpha.12...v0.1.0)
