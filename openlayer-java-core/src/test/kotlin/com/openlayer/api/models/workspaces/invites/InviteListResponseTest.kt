@@ -14,15 +14,6 @@ internal class InviteListResponseTest {
     fun create() {
         val inviteListResponse =
             InviteListResponse.builder()
-                ._meta(
-                    InviteListResponse._Meta
-                        .builder()
-                        .page(1L)
-                        .perPage(1L)
-                        .totalItems(0L)
-                        .totalPages(0L)
-                        .build()
-                )
                 .addItem(
                     InviteListResponse.Item.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
@@ -50,16 +41,6 @@ internal class InviteListResponseTest {
                 )
                 .build()
 
-        assertThat(inviteListResponse._meta())
-            .isEqualTo(
-                InviteListResponse._Meta
-                    .builder()
-                    .page(1L)
-                    .perPage(1L)
-                    .totalItems(0L)
-                    .totalPages(0L)
-                    .build()
-            )
         assertThat(inviteListResponse.items())
             .containsExactly(
                 InviteListResponse.Item.builder()
@@ -93,15 +74,6 @@ internal class InviteListResponseTest {
         val jsonMapper = jsonMapper()
         val inviteListResponse =
             InviteListResponse.builder()
-                ._meta(
-                    InviteListResponse._Meta
-                        .builder()
-                        .page(1L)
-                        .perPage(1L)
-                        .totalItems(0L)
-                        .totalPages(0L)
-                        .build()
-                )
                 .addItem(
                     InviteListResponse.Item.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
