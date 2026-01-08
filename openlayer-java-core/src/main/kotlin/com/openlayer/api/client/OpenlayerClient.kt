@@ -8,6 +8,7 @@ import com.openlayer.api.services.blocking.InferencePipelineService
 import com.openlayer.api.services.blocking.ProjectService
 import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.TestService
+import com.openlayer.api.services.blocking.WorkspaceService
 import java.util.function.Consumer
 
 /**
@@ -48,6 +49,8 @@ interface OpenlayerClient {
 
     fun projects(): ProjectService
 
+    fun workspaces(): WorkspaceService
+
     fun commits(): CommitService
 
     fun inferencePipelines(): InferencePipelineService
@@ -80,6 +83,8 @@ interface OpenlayerClient {
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): OpenlayerClient.WithRawResponse
 
         fun projects(): ProjectService.WithRawResponse
+
+        fun workspaces(): WorkspaceService.WithRawResponse
 
         fun commits(): CommitService.WithRawResponse
 
