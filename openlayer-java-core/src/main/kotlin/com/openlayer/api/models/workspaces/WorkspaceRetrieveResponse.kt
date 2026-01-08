@@ -1,0 +1,1250 @@
+// File generated from our OpenAPI spec by Stainless.
+
+package com.openlayer.api.models.workspaces
+
+import com.fasterxml.jackson.annotation.JsonAnyGetter
+import com.fasterxml.jackson.annotation.JsonAnySetter
+import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.openlayer.api.core.Enum
+import com.openlayer.api.core.ExcludeMissing
+import com.openlayer.api.core.JsonField
+import com.openlayer.api.core.JsonMissing
+import com.openlayer.api.core.JsonValue
+import com.openlayer.api.core.checkKnown
+import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.toImmutable
+import com.openlayer.api.errors.OpenlayerInvalidDataException
+import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.util.Collections
+import java.util.Objects
+import java.util.Optional
+import kotlin.jvm.optionals.getOrNull
+
+class WorkspaceRetrieveResponse
+@JsonCreator(mode = JsonCreator.Mode.DISABLED)
+private constructor(
+    private val id: JsonField<String>,
+    private val creatorId: JsonField<String>,
+    private val dateCreated: JsonField<OffsetDateTime>,
+    private val dateUpdated: JsonField<OffsetDateTime>,
+    private val inviteCount: JsonField<Long>,
+    private val memberCount: JsonField<Long>,
+    private val name: JsonField<String>,
+    private val periodEndDate: JsonField<OffsetDateTime>,
+    private val periodStartDate: JsonField<OffsetDateTime>,
+    private val projectCount: JsonField<Long>,
+    private val slug: JsonField<String>,
+    private val status: JsonField<Status>,
+    private val inviteCode: JsonField<String>,
+    private val monthlyUsage: JsonField<List<MonthlyUsage>>,
+    private val samlOnlyAccess: JsonField<Boolean>,
+    private val wildcardDomains: JsonField<List<String>>,
+    private val additionalProperties: MutableMap<String, JsonValue>,
+) {
+
+    @JsonCreator
+    private constructor(
+        @JsonProperty("id") @ExcludeMissing id: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("creatorId") @ExcludeMissing creatorId: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("dateCreated")
+        @ExcludeMissing
+        dateCreated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("dateUpdated")
+        @ExcludeMissing
+        dateUpdated: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("inviteCount")
+        @ExcludeMissing
+        inviteCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("memberCount")
+        @ExcludeMissing
+        memberCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("periodEndDate")
+        @ExcludeMissing
+        periodEndDate: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("periodStartDate")
+        @ExcludeMissing
+        periodStartDate: JsonField<OffsetDateTime> = JsonMissing.of(),
+        @JsonProperty("projectCount")
+        @ExcludeMissing
+        projectCount: JsonField<Long> = JsonMissing.of(),
+        @JsonProperty("slug") @ExcludeMissing slug: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("status") @ExcludeMissing status: JsonField<Status> = JsonMissing.of(),
+        @JsonProperty("inviteCode")
+        @ExcludeMissing
+        inviteCode: JsonField<String> = JsonMissing.of(),
+        @JsonProperty("monthlyUsage")
+        @ExcludeMissing
+        monthlyUsage: JsonField<List<MonthlyUsage>> = JsonMissing.of(),
+        @JsonProperty("samlOnlyAccess")
+        @ExcludeMissing
+        samlOnlyAccess: JsonField<Boolean> = JsonMissing.of(),
+        @JsonProperty("wildcardDomains")
+        @ExcludeMissing
+        wildcardDomains: JsonField<List<String>> = JsonMissing.of(),
+    ) : this(
+        id,
+        creatorId,
+        dateCreated,
+        dateUpdated,
+        inviteCount,
+        memberCount,
+        name,
+        periodEndDate,
+        periodStartDate,
+        projectCount,
+        slug,
+        status,
+        inviteCode,
+        monthlyUsage,
+        samlOnlyAccess,
+        wildcardDomains,
+        mutableMapOf(),
+    )
+
+    /**
+     * The workspace id.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun id(): String = id.getRequired("id")
+
+    /**
+     * The workspace creator id.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun creatorId(): Optional<String> = creatorId.getOptional("creatorId")
+
+    /**
+     * The workspace creation date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun dateCreated(): OffsetDateTime = dateCreated.getRequired("dateCreated")
+
+    /**
+     * The workspace last updated date.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
+
+    /**
+     * The number of invites in the workspace.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun inviteCount(): Long = inviteCount.getRequired("inviteCount")
+
+    /**
+     * The number of members in the workspace.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun memberCount(): Long = memberCount.getRequired("memberCount")
+
+    /**
+     * The workspace name.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun name(): String = name.getRequired("name")
+
+    /**
+     * The end date of the current billing period.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun periodEndDate(): Optional<OffsetDateTime> = periodEndDate.getOptional("periodEndDate")
+
+    /**
+     * The start date of the current billing period.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun periodStartDate(): Optional<OffsetDateTime> = periodStartDate.getOptional("periodStartDate")
+
+    /**
+     * The number of projects in the workspace.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun projectCount(): Long = projectCount.getRequired("projectCount")
+
+    /**
+     * The workspace slug.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun slug(): String = slug.getRequired("slug")
+
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
+     *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
+     */
+    fun status(): Status = status.getRequired("status")
+
+    /**
+     * The workspace invite code.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun inviteCode(): Optional<String> = inviteCode.getOptional("inviteCode")
+
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun monthlyUsage(): Optional<List<MonthlyUsage>> = monthlyUsage.getOptional("monthlyUsage")
+
+    /**
+     * Whether the workspace only allows SAML authentication.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun samlOnlyAccess(): Optional<Boolean> = samlOnlyAccess.getOptional("samlOnlyAccess")
+
+    /**
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun wildcardDomains(): Optional<List<String>> = wildcardDomains.getOptional("wildcardDomains")
+
+    /**
+     * Returns the raw JSON value of [id].
+     *
+     * Unlike [id], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("id") @ExcludeMissing fun _id(): JsonField<String> = id
+
+    /**
+     * Returns the raw JSON value of [creatorId].
+     *
+     * Unlike [creatorId], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("creatorId") @ExcludeMissing fun _creatorId(): JsonField<String> = creatorId
+
+    /**
+     * Returns the raw JSON value of [dateCreated].
+     *
+     * Unlike [dateCreated], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("dateCreated")
+    @ExcludeMissing
+    fun _dateCreated(): JsonField<OffsetDateTime> = dateCreated
+
+    /**
+     * Returns the raw JSON value of [dateUpdated].
+     *
+     * Unlike [dateUpdated], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("dateUpdated")
+    @ExcludeMissing
+    fun _dateUpdated(): JsonField<OffsetDateTime> = dateUpdated
+
+    /**
+     * Returns the raw JSON value of [inviteCount].
+     *
+     * Unlike [inviteCount], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("inviteCount") @ExcludeMissing fun _inviteCount(): JsonField<Long> = inviteCount
+
+    /**
+     * Returns the raw JSON value of [memberCount].
+     *
+     * Unlike [memberCount], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("memberCount") @ExcludeMissing fun _memberCount(): JsonField<Long> = memberCount
+
+    /**
+     * Returns the raw JSON value of [name].
+     *
+     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+
+    /**
+     * Returns the raw JSON value of [periodEndDate].
+     *
+     * Unlike [periodEndDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("periodEndDate")
+    @ExcludeMissing
+    fun _periodEndDate(): JsonField<OffsetDateTime> = periodEndDate
+
+    /**
+     * Returns the raw JSON value of [periodStartDate].
+     *
+     * Unlike [periodStartDate], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("periodStartDate")
+    @ExcludeMissing
+    fun _periodStartDate(): JsonField<OffsetDateTime> = periodStartDate
+
+    /**
+     * Returns the raw JSON value of [projectCount].
+     *
+     * Unlike [projectCount], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("projectCount")
+    @ExcludeMissing
+    fun _projectCount(): JsonField<Long> = projectCount
+
+    /**
+     * Returns the raw JSON value of [slug].
+     *
+     * Unlike [slug], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("slug") @ExcludeMissing fun _slug(): JsonField<String> = slug
+
+    /**
+     * Returns the raw JSON value of [status].
+     *
+     * Unlike [status], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("status") @ExcludeMissing fun _status(): JsonField<Status> = status
+
+    /**
+     * Returns the raw JSON value of [inviteCode].
+     *
+     * Unlike [inviteCode], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("inviteCode") @ExcludeMissing fun _inviteCode(): JsonField<String> = inviteCode
+
+    /**
+     * Returns the raw JSON value of [monthlyUsage].
+     *
+     * Unlike [monthlyUsage], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("monthlyUsage")
+    @ExcludeMissing
+    fun _monthlyUsage(): JsonField<List<MonthlyUsage>> = monthlyUsage
+
+    /**
+     * Returns the raw JSON value of [samlOnlyAccess].
+     *
+     * Unlike [samlOnlyAccess], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("samlOnlyAccess")
+    @ExcludeMissing
+    fun _samlOnlyAccess(): JsonField<Boolean> = samlOnlyAccess
+
+    /**
+     * Returns the raw JSON value of [wildcardDomains].
+     *
+     * Unlike [wildcardDomains], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    @JsonProperty("wildcardDomains")
+    @ExcludeMissing
+    fun _wildcardDomains(): JsonField<List<String>> = wildcardDomains
+
+    @JsonAnySetter
+    private fun putAdditionalProperty(key: String, value: JsonValue) {
+        additionalProperties.put(key, value)
+    }
+
+    @JsonAnyGetter
+    @ExcludeMissing
+    fun _additionalProperties(): Map<String, JsonValue> =
+        Collections.unmodifiableMap(additionalProperties)
+
+    fun toBuilder() = Builder().from(this)
+
+    companion object {
+
+        /**
+         * Returns a mutable builder for constructing an instance of [WorkspaceRetrieveResponse].
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .creatorId()
+         * .dateCreated()
+         * .dateUpdated()
+         * .inviteCount()
+         * .memberCount()
+         * .name()
+         * .periodEndDate()
+         * .periodStartDate()
+         * .projectCount()
+         * .slug()
+         * .status()
+         * ```
+         */
+        @JvmStatic fun builder() = Builder()
+    }
+
+    /** A builder for [WorkspaceRetrieveResponse]. */
+    class Builder internal constructor() {
+
+        private var id: JsonField<String>? = null
+        private var creatorId: JsonField<String>? = null
+        private var dateCreated: JsonField<OffsetDateTime>? = null
+        private var dateUpdated: JsonField<OffsetDateTime>? = null
+        private var inviteCount: JsonField<Long>? = null
+        private var memberCount: JsonField<Long>? = null
+        private var name: JsonField<String>? = null
+        private var periodEndDate: JsonField<OffsetDateTime>? = null
+        private var periodStartDate: JsonField<OffsetDateTime>? = null
+        private var projectCount: JsonField<Long>? = null
+        private var slug: JsonField<String>? = null
+        private var status: JsonField<Status>? = null
+        private var inviteCode: JsonField<String> = JsonMissing.of()
+        private var monthlyUsage: JsonField<MutableList<MonthlyUsage>>? = null
+        private var samlOnlyAccess: JsonField<Boolean> = JsonMissing.of()
+        private var wildcardDomains: JsonField<MutableList<String>>? = null
+        private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+        @JvmSynthetic
+        internal fun from(workspaceRetrieveResponse: WorkspaceRetrieveResponse) = apply {
+            id = workspaceRetrieveResponse.id
+            creatorId = workspaceRetrieveResponse.creatorId
+            dateCreated = workspaceRetrieveResponse.dateCreated
+            dateUpdated = workspaceRetrieveResponse.dateUpdated
+            inviteCount = workspaceRetrieveResponse.inviteCount
+            memberCount = workspaceRetrieveResponse.memberCount
+            name = workspaceRetrieveResponse.name
+            periodEndDate = workspaceRetrieveResponse.periodEndDate
+            periodStartDate = workspaceRetrieveResponse.periodStartDate
+            projectCount = workspaceRetrieveResponse.projectCount
+            slug = workspaceRetrieveResponse.slug
+            status = workspaceRetrieveResponse.status
+            inviteCode = workspaceRetrieveResponse.inviteCode
+            monthlyUsage = workspaceRetrieveResponse.monthlyUsage.map { it.toMutableList() }
+            samlOnlyAccess = workspaceRetrieveResponse.samlOnlyAccess
+            wildcardDomains = workspaceRetrieveResponse.wildcardDomains.map { it.toMutableList() }
+            additionalProperties = workspaceRetrieveResponse.additionalProperties.toMutableMap()
+        }
+
+        /** The workspace id. */
+        fun id(id: String) = id(JsonField.of(id))
+
+        /**
+         * Sets [Builder.id] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.id] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun id(id: JsonField<String>) = apply { this.id = id }
+
+        /** The workspace creator id. */
+        fun creatorId(creatorId: String?) = creatorId(JsonField.ofNullable(creatorId))
+
+        /** Alias for calling [Builder.creatorId] with `creatorId.orElse(null)`. */
+        fun creatorId(creatorId: Optional<String>) = creatorId(creatorId.getOrNull())
+
+        /**
+         * Sets [Builder.creatorId] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.creatorId] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun creatorId(creatorId: JsonField<String>) = apply { this.creatorId = creatorId }
+
+        /** The workspace creation date. */
+        fun dateCreated(dateCreated: OffsetDateTime) = dateCreated(JsonField.of(dateCreated))
+
+        /**
+         * Sets [Builder.dateCreated] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateCreated] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun dateCreated(dateCreated: JsonField<OffsetDateTime>) = apply {
+            this.dateCreated = dateCreated
+        }
+
+        /** The workspace last updated date. */
+        fun dateUpdated(dateUpdated: OffsetDateTime) = dateUpdated(JsonField.of(dateUpdated))
+
+        /**
+         * Sets [Builder.dateUpdated] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dateUpdated] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun dateUpdated(dateUpdated: JsonField<OffsetDateTime>) = apply {
+            this.dateUpdated = dateUpdated
+        }
+
+        /** The number of invites in the workspace. */
+        fun inviteCount(inviteCount: Long) = inviteCount(JsonField.of(inviteCount))
+
+        /**
+         * Sets [Builder.inviteCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.inviteCount] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun inviteCount(inviteCount: JsonField<Long>) = apply { this.inviteCount = inviteCount }
+
+        /** The number of members in the workspace. */
+        fun memberCount(memberCount: Long) = memberCount(JsonField.of(memberCount))
+
+        /**
+         * Sets [Builder.memberCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.memberCount] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun memberCount(memberCount: JsonField<Long>) = apply { this.memberCount = memberCount }
+
+        /** The workspace name. */
+        fun name(name: String) = name(JsonField.of(name))
+
+        /**
+         * Sets [Builder.name] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.name] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun name(name: JsonField<String>) = apply { this.name = name }
+
+        /** The end date of the current billing period. */
+        fun periodEndDate(periodEndDate: OffsetDateTime?) =
+            periodEndDate(JsonField.ofNullable(periodEndDate))
+
+        /** Alias for calling [Builder.periodEndDate] with `periodEndDate.orElse(null)`. */
+        fun periodEndDate(periodEndDate: Optional<OffsetDateTime>) =
+            periodEndDate(periodEndDate.getOrNull())
+
+        /**
+         * Sets [Builder.periodEndDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.periodEndDate] with a well-typed [OffsetDateTime] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun periodEndDate(periodEndDate: JsonField<OffsetDateTime>) = apply {
+            this.periodEndDate = periodEndDate
+        }
+
+        /** The start date of the current billing period. */
+        fun periodStartDate(periodStartDate: OffsetDateTime?) =
+            periodStartDate(JsonField.ofNullable(periodStartDate))
+
+        /** Alias for calling [Builder.periodStartDate] with `periodStartDate.orElse(null)`. */
+        fun periodStartDate(periodStartDate: Optional<OffsetDateTime>) =
+            periodStartDate(periodStartDate.getOrNull())
+
+        /**
+         * Sets [Builder.periodStartDate] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.periodStartDate] with a well-typed [OffsetDateTime]
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun periodStartDate(periodStartDate: JsonField<OffsetDateTime>) = apply {
+            this.periodStartDate = periodStartDate
+        }
+
+        /** The number of projects in the workspace. */
+        fun projectCount(projectCount: Long) = projectCount(JsonField.of(projectCount))
+
+        /**
+         * Sets [Builder.projectCount] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.projectCount] with a well-typed [Long] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun projectCount(projectCount: JsonField<Long>) = apply { this.projectCount = projectCount }
+
+        /** The workspace slug. */
+        fun slug(slug: String) = slug(JsonField.of(slug))
+
+        /**
+         * Sets [Builder.slug] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.slug] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun slug(slug: JsonField<String>) = apply { this.slug = slug }
+
+        fun status(status: Status) = status(JsonField.of(status))
+
+        /**
+         * Sets [Builder.status] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.status] with a well-typed [Status] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun status(status: JsonField<Status>) = apply { this.status = status }
+
+        /** The workspace invite code. */
+        fun inviteCode(inviteCode: String) = inviteCode(JsonField.of(inviteCode))
+
+        /**
+         * Sets [Builder.inviteCode] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.inviteCode] with a well-typed [String] value instead.
+         * This method is primarily for setting the field to an undocumented or not yet supported
+         * value.
+         */
+        fun inviteCode(inviteCode: JsonField<String>) = apply { this.inviteCode = inviteCode }
+
+        fun monthlyUsage(monthlyUsage: List<MonthlyUsage>) =
+            monthlyUsage(JsonField.of(monthlyUsage))
+
+        /**
+         * Sets [Builder.monthlyUsage] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.monthlyUsage] with a well-typed `List<MonthlyUsage>`
+         * value instead. This method is primarily for setting the field to an undocumented or not
+         * yet supported value.
+         */
+        fun monthlyUsage(monthlyUsage: JsonField<List<MonthlyUsage>>) = apply {
+            this.monthlyUsage = monthlyUsage.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [MonthlyUsage] to [Builder.monthlyUsage].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addMonthlyUsage(monthlyUsage: MonthlyUsage) = apply {
+            this.monthlyUsage =
+                (this.monthlyUsage ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("monthlyUsage", it).add(monthlyUsage)
+                }
+        }
+
+        /** Whether the workspace only allows SAML authentication. */
+        fun samlOnlyAccess(samlOnlyAccess: Boolean) = samlOnlyAccess(JsonField.of(samlOnlyAccess))
+
+        /**
+         * Sets [Builder.samlOnlyAccess] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.samlOnlyAccess] with a well-typed [Boolean] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun samlOnlyAccess(samlOnlyAccess: JsonField<Boolean>) = apply {
+            this.samlOnlyAccess = samlOnlyAccess
+        }
+
+        fun wildcardDomains(wildcardDomains: List<String>) =
+            wildcardDomains(JsonField.of(wildcardDomains))
+
+        /**
+         * Sets [Builder.wildcardDomains] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.wildcardDomains] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun wildcardDomains(wildcardDomains: JsonField<List<String>>) = apply {
+            this.wildcardDomains = wildcardDomains.map { it.toMutableList() }
+        }
+
+        /**
+         * Adds a single [String] to [wildcardDomains].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addWildcardDomain(wildcardDomain: String) = apply {
+            wildcardDomains =
+                (wildcardDomains ?: JsonField.of(mutableListOf())).also {
+                    checkKnown("wildcardDomains", it).add(wildcardDomain)
+                }
+        }
+
+        fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.clear()
+            putAllAdditionalProperties(additionalProperties)
+        }
+
+        fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+            additionalProperties.put(key, value)
+        }
+
+        fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+            this.additionalProperties.putAll(additionalProperties)
+        }
+
+        fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+        fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+            keys.forEach(::removeAdditionalProperty)
+        }
+
+        /**
+         * Returns an immutable instance of [WorkspaceRetrieveResponse].
+         *
+         * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .id()
+         * .creatorId()
+         * .dateCreated()
+         * .dateUpdated()
+         * .inviteCount()
+         * .memberCount()
+         * .name()
+         * .periodEndDate()
+         * .periodStartDate()
+         * .projectCount()
+         * .slug()
+         * .status()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
+         */
+        fun build(): WorkspaceRetrieveResponse =
+            WorkspaceRetrieveResponse(
+                checkRequired("id", id),
+                checkRequired("creatorId", creatorId),
+                checkRequired("dateCreated", dateCreated),
+                checkRequired("dateUpdated", dateUpdated),
+                checkRequired("inviteCount", inviteCount),
+                checkRequired("memberCount", memberCount),
+                checkRequired("name", name),
+                checkRequired("periodEndDate", periodEndDate),
+                checkRequired("periodStartDate", periodStartDate),
+                checkRequired("projectCount", projectCount),
+                checkRequired("slug", slug),
+                checkRequired("status", status),
+                inviteCode,
+                (monthlyUsage ?: JsonMissing.of()).map { it.toImmutable() },
+                samlOnlyAccess,
+                (wildcardDomains ?: JsonMissing.of()).map { it.toImmutable() },
+                additionalProperties.toMutableMap(),
+            )
+    }
+
+    private var validated: Boolean = false
+
+    fun validate(): WorkspaceRetrieveResponse = apply {
+        if (validated) {
+            return@apply
+        }
+
+        id()
+        creatorId()
+        dateCreated()
+        dateUpdated()
+        inviteCount()
+        memberCount()
+        name()
+        periodEndDate()
+        periodStartDate()
+        projectCount()
+        slug()
+        status().validate()
+        inviteCode()
+        monthlyUsage().ifPresent { it.forEach { it.validate() } }
+        samlOnlyAccess()
+        wildcardDomains()
+        validated = true
+    }
+
+    fun isValid(): Boolean =
+        try {
+            validate()
+            true
+        } catch (e: OpenlayerInvalidDataException) {
+            false
+        }
+
+    /**
+     * Returns a score indicating how many valid values are contained in this object recursively.
+     *
+     * Used for best match union deserialization.
+     */
+    @JvmSynthetic
+    internal fun validity(): Int =
+        (if (id.asKnown().isPresent) 1 else 0) +
+            (if (creatorId.asKnown().isPresent) 1 else 0) +
+            (if (dateCreated.asKnown().isPresent) 1 else 0) +
+            (if (dateUpdated.asKnown().isPresent) 1 else 0) +
+            (if (inviteCount.asKnown().isPresent) 1 else 0) +
+            (if (memberCount.asKnown().isPresent) 1 else 0) +
+            (if (name.asKnown().isPresent) 1 else 0) +
+            (if (periodEndDate.asKnown().isPresent) 1 else 0) +
+            (if (periodStartDate.asKnown().isPresent) 1 else 0) +
+            (if (projectCount.asKnown().isPresent) 1 else 0) +
+            (if (slug.asKnown().isPresent) 1 else 0) +
+            (status.asKnown().getOrNull()?.validity() ?: 0) +
+            (if (inviteCode.asKnown().isPresent) 1 else 0) +
+            (monthlyUsage.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0) +
+            (if (samlOnlyAccess.asKnown().isPresent) 1 else 0) +
+            (wildcardDomains.asKnown().getOrNull()?.size ?: 0)
+
+    class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
+
+        /**
+         * Returns this class instance's raw value.
+         *
+         * This is usually only useful if this instance was deserialized from data that doesn't
+         * match any known member, and you want to know that value. For example, if the SDK is on an
+         * older version than the API, then the API may respond with new members that the SDK is
+         * unaware of.
+         */
+        @com.fasterxml.jackson.annotation.JsonValue fun _value(): JsonField<String> = value
+
+        companion object {
+
+            @JvmField val ACTIVE = of("active")
+
+            @JvmField val PAST_DUE = of("past_due")
+
+            @JvmField val UNPAID = of("unpaid")
+
+            @JvmField val CANCELED = of("canceled")
+
+            @JvmField val INCOMPLETE = of("incomplete")
+
+            @JvmField val INCOMPLETE_EXPIRED = of("incomplete_expired")
+
+            @JvmField val TRIALING = of("trialing")
+
+            @JvmField val PAUSED = of("paused")
+
+            @JvmStatic fun of(value: String) = Status(JsonField.of(value))
+        }
+
+        /** An enum containing [Status]'s known values. */
+        enum class Known {
+            ACTIVE,
+            PAST_DUE,
+            UNPAID,
+            CANCELED,
+            INCOMPLETE,
+            INCOMPLETE_EXPIRED,
+            TRIALING,
+            PAUSED,
+        }
+
+        /**
+         * An enum containing [Status]'s known values, as well as an [_UNKNOWN] member.
+         *
+         * An instance of [Status] can contain an unknown value in a couple of cases:
+         * - It was deserialized from data that doesn't match any known member. For example, if the
+         *   SDK is on an older version than the API, then the API may respond with new members that
+         *   the SDK is unaware of.
+         * - It was constructed with an arbitrary value using the [of] method.
+         */
+        enum class Value {
+            ACTIVE,
+            PAST_DUE,
+            UNPAID,
+            CANCELED,
+            INCOMPLETE,
+            INCOMPLETE_EXPIRED,
+            TRIALING,
+            PAUSED,
+            /** An enum member indicating that [Status] was instantiated with an unknown value. */
+            _UNKNOWN,
+        }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value, or [Value._UNKNOWN]
+         * if the class was instantiated with an unknown value.
+         *
+         * Use the [known] method instead if you're certain the value is always known or if you want
+         * to throw for the unknown case.
+         */
+        fun value(): Value =
+            when (this) {
+                ACTIVE -> Value.ACTIVE
+                PAST_DUE -> Value.PAST_DUE
+                UNPAID -> Value.UNPAID
+                CANCELED -> Value.CANCELED
+                INCOMPLETE -> Value.INCOMPLETE
+                INCOMPLETE_EXPIRED -> Value.INCOMPLETE_EXPIRED
+                TRIALING -> Value.TRIALING
+                PAUSED -> Value.PAUSED
+                else -> Value._UNKNOWN
+            }
+
+        /**
+         * Returns an enum member corresponding to this class instance's value.
+         *
+         * Use the [value] method instead if you're uncertain the value is always known and don't
+         * want to throw for the unknown case.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value is a not a known
+         *   member.
+         */
+        fun known(): Known =
+            when (this) {
+                ACTIVE -> Known.ACTIVE
+                PAST_DUE -> Known.PAST_DUE
+                UNPAID -> Known.UNPAID
+                CANCELED -> Known.CANCELED
+                INCOMPLETE -> Known.INCOMPLETE
+                INCOMPLETE_EXPIRED -> Known.INCOMPLETE_EXPIRED
+                TRIALING -> Known.TRIALING
+                PAUSED -> Known.PAUSED
+                else -> throw OpenlayerInvalidDataException("Unknown Status: $value")
+            }
+
+        /**
+         * Returns this class instance's primitive wire representation.
+         *
+         * This differs from the [toString] method because that method is primarily for debugging
+         * and generally doesn't throw.
+         *
+         * @throws OpenlayerInvalidDataException if this class instance's value does not have the
+         *   expected primitive type.
+         */
+        fun asString(): String =
+            _value().asString().orElseThrow {
+                OpenlayerInvalidDataException("Value is not a String")
+            }
+
+        private var validated: Boolean = false
+
+        fun validate(): Status = apply {
+            if (validated) {
+                return@apply
+            }
+
+            known()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic internal fun validity(): Int = if (value() == Value._UNKNOWN) 0 else 1
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is Status && value == other.value
+        }
+
+        override fun hashCode() = value.hashCode()
+
+        override fun toString() = value.toString()
+    }
+
+    class MonthlyUsage
+    @JsonCreator(mode = JsonCreator.Mode.DISABLED)
+    private constructor(
+        private val executionTimeMs: JsonField<Long>,
+        private val monthYear: JsonField<LocalDate>,
+        private val predictionCount: JsonField<Long>,
+        private val additionalProperties: MutableMap<String, JsonValue>,
+    ) {
+
+        @JsonCreator
+        private constructor(
+            @JsonProperty("executionTimeMs")
+            @ExcludeMissing
+            executionTimeMs: JsonField<Long> = JsonMissing.of(),
+            @JsonProperty("monthYear")
+            @ExcludeMissing
+            monthYear: JsonField<LocalDate> = JsonMissing.of(),
+            @JsonProperty("predictionCount")
+            @ExcludeMissing
+            predictionCount: JsonField<Long> = JsonMissing.of(),
+        ) : this(executionTimeMs, monthYear, predictionCount, mutableMapOf())
+
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun executionTimeMs(): Optional<Long> = executionTimeMs.getOptional("executionTimeMs")
+
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun monthYear(): Optional<LocalDate> = monthYear.getOptional("monthYear")
+
+        /**
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun predictionCount(): Optional<Long> = predictionCount.getOptional("predictionCount")
+
+        /**
+         * Returns the raw JSON value of [executionTimeMs].
+         *
+         * Unlike [executionTimeMs], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("executionTimeMs")
+        @ExcludeMissing
+        fun _executionTimeMs(): JsonField<Long> = executionTimeMs
+
+        /**
+         * Returns the raw JSON value of [monthYear].
+         *
+         * Unlike [monthYear], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("monthYear")
+        @ExcludeMissing
+        fun _monthYear(): JsonField<LocalDate> = monthYear
+
+        /**
+         * Returns the raw JSON value of [predictionCount].
+         *
+         * Unlike [predictionCount], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("predictionCount")
+        @ExcludeMissing
+        fun _predictionCount(): JsonField<Long> = predictionCount
+
+        @JsonAnySetter
+        private fun putAdditionalProperty(key: String, value: JsonValue) {
+            additionalProperties.put(key, value)
+        }
+
+        @JsonAnyGetter
+        @ExcludeMissing
+        fun _additionalProperties(): Map<String, JsonValue> =
+            Collections.unmodifiableMap(additionalProperties)
+
+        fun toBuilder() = Builder().from(this)
+
+        companion object {
+
+            /** Returns a mutable builder for constructing an instance of [MonthlyUsage]. */
+            @JvmStatic fun builder() = Builder()
+        }
+
+        /** A builder for [MonthlyUsage]. */
+        class Builder internal constructor() {
+
+            private var executionTimeMs: JsonField<Long> = JsonMissing.of()
+            private var monthYear: JsonField<LocalDate> = JsonMissing.of()
+            private var predictionCount: JsonField<Long> = JsonMissing.of()
+            private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
+
+            @JvmSynthetic
+            internal fun from(monthlyUsage: MonthlyUsage) = apply {
+                executionTimeMs = monthlyUsage.executionTimeMs
+                monthYear = monthlyUsage.monthYear
+                predictionCount = monthlyUsage.predictionCount
+                additionalProperties = monthlyUsage.additionalProperties.toMutableMap()
+            }
+
+            fun executionTimeMs(executionTimeMs: Long?) =
+                executionTimeMs(JsonField.ofNullable(executionTimeMs))
+
+            /**
+             * Alias for [Builder.executionTimeMs].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun executionTimeMs(executionTimeMs: Long) = executionTimeMs(executionTimeMs as Long?)
+
+            /** Alias for calling [Builder.executionTimeMs] with `executionTimeMs.orElse(null)`. */
+            fun executionTimeMs(executionTimeMs: Optional<Long>) =
+                executionTimeMs(executionTimeMs.getOrNull())
+
+            /**
+             * Sets [Builder.executionTimeMs] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.executionTimeMs] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun executionTimeMs(executionTimeMs: JsonField<Long>) = apply {
+                this.executionTimeMs = executionTimeMs
+            }
+
+            fun monthYear(monthYear: LocalDate) = monthYear(JsonField.of(monthYear))
+
+            /**
+             * Sets [Builder.monthYear] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.monthYear] with a well-typed [LocalDate] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun monthYear(monthYear: JsonField<LocalDate>) = apply { this.monthYear = monthYear }
+
+            fun predictionCount(predictionCount: Long) =
+                predictionCount(JsonField.of(predictionCount))
+
+            /**
+             * Sets [Builder.predictionCount] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.predictionCount] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun predictionCount(predictionCount: JsonField<Long>) = apply {
+                this.predictionCount = predictionCount
+            }
+
+            fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.clear()
+                putAllAdditionalProperties(additionalProperties)
+            }
+
+            fun putAdditionalProperty(key: String, value: JsonValue) = apply {
+                additionalProperties.put(key, value)
+            }
+
+            fun putAllAdditionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
+                this.additionalProperties.putAll(additionalProperties)
+            }
+
+            fun removeAdditionalProperty(key: String) = apply { additionalProperties.remove(key) }
+
+            fun removeAllAdditionalProperties(keys: Set<String>) = apply {
+                keys.forEach(::removeAdditionalProperty)
+            }
+
+            /**
+             * Returns an immutable instance of [MonthlyUsage].
+             *
+             * Further updates to this [Builder] will not mutate the returned instance.
+             */
+            fun build(): MonthlyUsage =
+                MonthlyUsage(
+                    executionTimeMs,
+                    monthYear,
+                    predictionCount,
+                    additionalProperties.toMutableMap(),
+                )
+        }
+
+        private var validated: Boolean = false
+
+        fun validate(): MonthlyUsage = apply {
+            if (validated) {
+                return@apply
+            }
+
+            executionTimeMs()
+            monthYear()
+            predictionCount()
+            validated = true
+        }
+
+        fun isValid(): Boolean =
+            try {
+                validate()
+                true
+            } catch (e: OpenlayerInvalidDataException) {
+                false
+            }
+
+        /**
+         * Returns a score indicating how many valid values are contained in this object
+         * recursively.
+         *
+         * Used for best match union deserialization.
+         */
+        @JvmSynthetic
+        internal fun validity(): Int =
+            (if (executionTimeMs.asKnown().isPresent) 1 else 0) +
+                (if (monthYear.asKnown().isPresent) 1 else 0) +
+                (if (predictionCount.asKnown().isPresent) 1 else 0)
+
+        override fun equals(other: Any?): Boolean {
+            if (this === other) {
+                return true
+            }
+
+            return other is MonthlyUsage &&
+                executionTimeMs == other.executionTimeMs &&
+                monthYear == other.monthYear &&
+                predictionCount == other.predictionCount &&
+                additionalProperties == other.additionalProperties
+        }
+
+        private val hashCode: Int by lazy {
+            Objects.hash(executionTimeMs, monthYear, predictionCount, additionalProperties)
+        }
+
+        override fun hashCode(): Int = hashCode
+
+        override fun toString() =
+            "MonthlyUsage{executionTimeMs=$executionTimeMs, monthYear=$monthYear, predictionCount=$predictionCount, additionalProperties=$additionalProperties}"
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) {
+            return true
+        }
+
+        return other is WorkspaceRetrieveResponse &&
+            id == other.id &&
+            creatorId == other.creatorId &&
+            dateCreated == other.dateCreated &&
+            dateUpdated == other.dateUpdated &&
+            inviteCount == other.inviteCount &&
+            memberCount == other.memberCount &&
+            name == other.name &&
+            periodEndDate == other.periodEndDate &&
+            periodStartDate == other.periodStartDate &&
+            projectCount == other.projectCount &&
+            slug == other.slug &&
+            status == other.status &&
+            inviteCode == other.inviteCode &&
+            monthlyUsage == other.monthlyUsage &&
+            samlOnlyAccess == other.samlOnlyAccess &&
+            wildcardDomains == other.wildcardDomains &&
+            additionalProperties == other.additionalProperties
+    }
+
+    private val hashCode: Int by lazy {
+        Objects.hash(
+            id,
+            creatorId,
+            dateCreated,
+            dateUpdated,
+            inviteCount,
+            memberCount,
+            name,
+            periodEndDate,
+            periodStartDate,
+            projectCount,
+            slug,
+            status,
+            inviteCode,
+            monthlyUsage,
+            samlOnlyAccess,
+            wildcardDomains,
+            additionalProperties,
+        )
+    }
+
+    override fun hashCode(): Int = hashCode
+
+    override fun toString() =
+        "WorkspaceRetrieveResponse{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, inviteCount=$inviteCount, memberCount=$memberCount, name=$name, periodEndDate=$periodEndDate, periodStartDate=$periodStartDate, projectCount=$projectCount, slug=$slug, status=$status, inviteCode=$inviteCode, monthlyUsage=$monthlyUsage, samlOnlyAccess=$samlOnlyAccess, wildcardDomains=$wildcardDomains, additionalProperties=$additionalProperties}"
+}

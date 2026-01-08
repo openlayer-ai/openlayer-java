@@ -8,6 +8,7 @@ import com.openlayer.api.services.async.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.ProjectServiceAsync
 import com.openlayer.api.services.async.StorageServiceAsync
 import com.openlayer.api.services.async.TestServiceAsync
+import com.openlayer.api.services.async.WorkspaceServiceAsync
 import java.util.function.Consumer
 
 /**
@@ -48,6 +49,8 @@ interface OpenlayerClientAsync {
 
     fun projects(): ProjectServiceAsync
 
+    fun workspaces(): WorkspaceServiceAsync
+
     fun commits(): CommitServiceAsync
 
     fun inferencePipelines(): InferencePipelineServiceAsync
@@ -84,6 +87,8 @@ interface OpenlayerClientAsync {
         ): OpenlayerClientAsync.WithRawResponse
 
         fun projects(): ProjectServiceAsync.WithRawResponse
+
+        fun workspaces(): WorkspaceServiceAsync.WithRawResponse
 
         fun commits(): CommitServiceAsync.WithRawResponse
 
