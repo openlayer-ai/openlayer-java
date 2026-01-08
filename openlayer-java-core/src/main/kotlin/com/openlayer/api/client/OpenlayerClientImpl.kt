@@ -14,6 +14,8 @@ import com.openlayer.api.services.blocking.StorageService
 import com.openlayer.api.services.blocking.StorageServiceImpl
 import com.openlayer.api.services.blocking.TestService
 import com.openlayer.api.services.blocking.TestServiceImpl
+import com.openlayer.api.services.blocking.WorkspaceService
+import com.openlayer.api.services.blocking.WorkspaceServiceImpl
 import java.util.function.Consumer
 
 class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerClient {
@@ -35,6 +37,10 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
 
     private val projects: ProjectService by lazy { ProjectServiceImpl(clientOptionsWithUserAgent) }
 
+    private val workspaces: WorkspaceService by lazy {
+        WorkspaceServiceImpl(clientOptionsWithUserAgent)
+    }
+
     private val commits: CommitService by lazy { CommitServiceImpl(clientOptionsWithUserAgent) }
 
     private val inferencePipelines: InferencePipelineService by lazy {
@@ -54,6 +60,8 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
 
     override fun projects(): ProjectService = projects
 
+    override fun workspaces(): WorkspaceService = workspaces
+
     override fun commits(): CommitService = commits
 
     override fun inferencePipelines(): InferencePipelineService = inferencePipelines
@@ -69,6 +77,10 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
 
         private val projects: ProjectService.WithRawResponse by lazy {
             ProjectServiceImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val workspaces: WorkspaceService.WithRawResponse by lazy {
+            WorkspaceServiceImpl.WithRawResponseImpl(clientOptions)
         }
 
         private val commits: CommitService.WithRawResponse by lazy {
@@ -95,6 +107,8 @@ class OpenlayerClientImpl(private val clientOptions: ClientOptions) : OpenlayerC
             )
 
         override fun projects(): ProjectService.WithRawResponse = projects
+
+        override fun workspaces(): WorkspaceService.WithRawResponse = workspaces
 
         override fun commits(): CommitService.WithRawResponse = commits
 
