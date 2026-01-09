@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.2.0 (2026-01-09)
+
+Full Changelog: [v0.1.1...v0.2.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.1...v0.2.0)
+
+### Features
+
+* **client:** allow configuring dispatcher executor service ([abbc6d6](https://github.com/openlayer-ai/openlayer-java/commit/abbc6d68fd00e83237f28aa0916f6d4b58fecaae))
+
 ## 0.1.1 (2026-01-08)
 
 Full Changelog: [v0.1.0...v0.1.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.1.0...v0.1.1)
