@@ -7,6 +7,8 @@ import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.tests.TestEvaluateParams
 import com.openlayer.api.models.tests.TestEvaluateResponse
+import com.openlayer.api.models.tests.TestListResultsParams
+import com.openlayer.api.models.tests.TestListResultsResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -52,6 +54,42 @@ interface TestServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestEvaluateResponse>
 
+    /** List the test results for a test. */
+    fun listResults(testId: String): CompletableFuture<TestListResultsResponse> =
+        listResults(testId, TestListResultsParams.none())
+
+    /** @see listResults */
+    fun listResults(
+        testId: String,
+        params: TestListResultsParams = TestListResultsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TestListResultsResponse> =
+        listResults(params.toBuilder().testId(testId).build(), requestOptions)
+
+    /** @see listResults */
+    fun listResults(
+        testId: String,
+        params: TestListResultsParams = TestListResultsParams.none(),
+    ): CompletableFuture<TestListResultsResponse> =
+        listResults(testId, params, RequestOptions.none())
+
+    /** @see listResults */
+    fun listResults(
+        params: TestListResultsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<TestListResultsResponse>
+
+    /** @see listResults */
+    fun listResults(params: TestListResultsParams): CompletableFuture<TestListResultsResponse> =
+        listResults(params, RequestOptions.none())
+
+    /** @see listResults */
+    fun listResults(
+        testId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<TestListResultsResponse> =
+        listResults(testId, TestListResultsParams.none(), requestOptions)
+
     /** A view of [TestServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -91,5 +129,48 @@ interface TestServiceAsync {
             params: TestEvaluateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<TestEvaluateResponse>>
+
+        /**
+         * Returns a raw HTTP response for `get /tests/{testId}/results`, but is otherwise the same
+         * as [TestServiceAsync.listResults].
+         */
+        fun listResults(
+            testId: String
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>> =
+            listResults(testId, TestListResultsParams.none())
+
+        /** @see listResults */
+        fun listResults(
+            testId: String,
+            params: TestListResultsParams = TestListResultsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>> =
+            listResults(params.toBuilder().testId(testId).build(), requestOptions)
+
+        /** @see listResults */
+        fun listResults(
+            testId: String,
+            params: TestListResultsParams = TestListResultsParams.none(),
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>> =
+            listResults(testId, params, RequestOptions.none())
+
+        /** @see listResults */
+        fun listResults(
+            params: TestListResultsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>>
+
+        /** @see listResults */
+        fun listResults(
+            params: TestListResultsParams
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>> =
+            listResults(params, RequestOptions.none())
+
+        /** @see listResults */
+        fun listResults(
+            testId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>> =
+            listResults(testId, TestListResultsParams.none(), requestOptions)
     }
 }

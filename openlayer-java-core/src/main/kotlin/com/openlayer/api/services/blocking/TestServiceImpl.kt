@@ -18,6 +18,8 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.tests.TestEvaluateParams
 import com.openlayer.api.models.tests.TestEvaluateResponse
+import com.openlayer.api.models.tests.TestListResultsParams
+import com.openlayer.api.models.tests.TestListResultsResponse
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
 
@@ -38,6 +40,13 @@ class TestServiceImpl internal constructor(private val clientOptions: ClientOpti
     ): TestEvaluateResponse =
         // post /tests/{testId}/evaluate
         withRawResponse().evaluate(params, requestOptions).parse()
+
+    override fun listResults(
+        params: TestListResultsParams,
+        requestOptions: RequestOptions,
+    ): TestListResultsResponse =
+        // get /tests/{testId}/results
+        withRawResponse().listResults(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TestService.WithRawResponse {
@@ -75,6 +84,36 @@ class TestServiceImpl internal constructor(private val clientOptions: ClientOpti
             return errorHandler.handle(response).parseable {
                 response
                     .use { evaluateHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val listResultsHandler: Handler<TestListResultsResponse> =
+            jsonHandler<TestListResultsResponse>(clientOptions.jsonMapper)
+
+        override fun listResults(
+            params: TestListResultsParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<TestListResultsResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("testId", params.testId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("tests", params._pathParam(0), "results")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { listResultsHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()
