@@ -26,6 +26,13 @@ internal class TestResultListResponseTest {
                         .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .status(TestResultListResponse.Item.Status.PASSING)
                         .statusMessage("Test successfully processed.")
+                        .addExpectedValue(
+                            TestResultListResponse.Item.ExpectedValue.builder()
+                                .lowerThreshold(0.0f)
+                                .measurement("measurement")
+                                .upperThreshold(0.0f)
+                                .build()
+                        )
                         .goal(
                             TestResultListResponse.Item.Goal.builder()
                                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -84,6 +91,33 @@ internal class TestResultListResponseTest {
                                 .build()
                         )
                         .goalId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .rows(
+                            "https://api.openlayer.com/v1/versions/3fa85f64-5717-4562-b3fc-2c963f66afa6/rows?label=validation"
+                        )
+                        .rowsBody(
+                            TestResultListResponse.Item.RowsBody.builder()
+                                .addColumnFilter(
+                                    TestResultListResponse.Item.RowsBody.ColumnFilter
+                                        .SetColumnFilter
+                                        .builder()
+                                        .measurement("openlayer_token_set")
+                                        .operator(
+                                            TestResultListResponse.Item.RowsBody.ColumnFilter
+                                                .SetColumnFilter
+                                                .Operator
+                                                .CONTAINS_NONE
+                                        )
+                                        .addValue("cat")
+                                        .build()
+                                )
+                                .addExcludeRowIdList(0L)
+                                .addNotSearchQueryAnd("string")
+                                .addNotSearchQueryOr("string")
+                                .addRowIdList(0L)
+                                .addSearchQueryAnd("string")
+                                .addSearchQueryOr("string")
+                                .build()
+                        )
                         .build()
                 )
                 .build()
@@ -100,6 +134,13 @@ internal class TestResultListResponseTest {
                     .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                     .status(TestResultListResponse.Item.Status.PASSING)
                     .statusMessage("Test successfully processed.")
+                    .addExpectedValue(
+                        TestResultListResponse.Item.ExpectedValue.builder()
+                            .lowerThreshold(0.0f)
+                            .measurement("measurement")
+                            .upperThreshold(0.0f)
+                            .build()
+                    )
                     .goal(
                         TestResultListResponse.Item.Goal.builder()
                             .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -155,6 +196,32 @@ internal class TestResultListResponseTest {
                             .build()
                     )
                     .goalId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                    .rows(
+                        "https://api.openlayer.com/v1/versions/3fa85f64-5717-4562-b3fc-2c963f66afa6/rows?label=validation"
+                    )
+                    .rowsBody(
+                        TestResultListResponse.Item.RowsBody.builder()
+                            .addColumnFilter(
+                                TestResultListResponse.Item.RowsBody.ColumnFilter.SetColumnFilter
+                                    .builder()
+                                    .measurement("openlayer_token_set")
+                                    .operator(
+                                        TestResultListResponse.Item.RowsBody.ColumnFilter
+                                            .SetColumnFilter
+                                            .Operator
+                                            .CONTAINS_NONE
+                                    )
+                                    .addValue("cat")
+                                    .build()
+                            )
+                            .addExcludeRowIdList(0L)
+                            .addNotSearchQueryAnd("string")
+                            .addNotSearchQueryOr("string")
+                            .addRowIdList(0L)
+                            .addSearchQueryAnd("string")
+                            .addSearchQueryOr("string")
+                            .build()
+                    )
                     .build()
             )
     }
@@ -175,6 +242,13 @@ internal class TestResultListResponseTest {
                         .projectVersionId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                         .status(TestResultListResponse.Item.Status.PASSING)
                         .statusMessage("Test successfully processed.")
+                        .addExpectedValue(
+                            TestResultListResponse.Item.ExpectedValue.builder()
+                                .lowerThreshold(0.0f)
+                                .measurement("measurement")
+                                .upperThreshold(0.0f)
+                                .build()
+                        )
                         .goal(
                             TestResultListResponse.Item.Goal.builder()
                                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
@@ -233,6 +307,33 @@ internal class TestResultListResponseTest {
                                 .build()
                         )
                         .goalId("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+                        .rows(
+                            "https://api.openlayer.com/v1/versions/3fa85f64-5717-4562-b3fc-2c963f66afa6/rows?label=validation"
+                        )
+                        .rowsBody(
+                            TestResultListResponse.Item.RowsBody.builder()
+                                .addColumnFilter(
+                                    TestResultListResponse.Item.RowsBody.ColumnFilter
+                                        .SetColumnFilter
+                                        .builder()
+                                        .measurement("openlayer_token_set")
+                                        .operator(
+                                            TestResultListResponse.Item.RowsBody.ColumnFilter
+                                                .SetColumnFilter
+                                                .Operator
+                                                .CONTAINS_NONE
+                                        )
+                                        .addValue("cat")
+                                        .build()
+                                )
+                                .addExcludeRowIdList(0L)
+                                .addNotSearchQueryAnd("string")
+                                .addNotSearchQueryOr("string")
+                                .addRowIdList(0L)
+                                .addSearchQueryAnd("string")
+                                .addSearchQueryOr("string")
+                                .build()
+                        )
                         .build()
                 )
                 .build()

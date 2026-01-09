@@ -8,6 +8,8 @@ import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.tests.TestEvaluateParams
 import com.openlayer.api.models.tests.TestEvaluateResponse
+import com.openlayer.api.models.tests.TestListResultsParams
+import com.openlayer.api.models.tests.TestListResultsResponse
 import java.util.function.Consumer
 
 interface TestService {
@@ -49,6 +51,38 @@ interface TestService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestEvaluateResponse
 
+    /** List the test results for a test. */
+    fun listResults(testId: String): TestListResultsResponse =
+        listResults(testId, TestListResultsParams.none())
+
+    /** @see listResults */
+    fun listResults(
+        testId: String,
+        params: TestListResultsParams = TestListResultsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): TestListResultsResponse =
+        listResults(params.toBuilder().testId(testId).build(), requestOptions)
+
+    /** @see listResults */
+    fun listResults(
+        testId: String,
+        params: TestListResultsParams = TestListResultsParams.none(),
+    ): TestListResultsResponse = listResults(testId, params, RequestOptions.none())
+
+    /** @see listResults */
+    fun listResults(
+        params: TestListResultsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): TestListResultsResponse
+
+    /** @see listResults */
+    fun listResults(params: TestListResultsParams): TestListResultsResponse =
+        listResults(params, RequestOptions.none())
+
+    /** @see listResults */
+    fun listResults(testId: String, requestOptions: RequestOptions): TestListResultsResponse =
+        listResults(testId, TestListResultsParams.none(), requestOptions)
+
     /** A view of [TestService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -89,5 +123,50 @@ interface TestService {
             params: TestEvaluateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<TestEvaluateResponse>
+
+        /**
+         * Returns a raw HTTP response for `get /tests/{testId}/results`, but is otherwise the same
+         * as [TestService.listResults].
+         */
+        @MustBeClosed
+        fun listResults(testId: String): HttpResponseFor<TestListResultsResponse> =
+            listResults(testId, TestListResultsParams.none())
+
+        /** @see listResults */
+        @MustBeClosed
+        fun listResults(
+            testId: String,
+            params: TestListResultsParams = TestListResultsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<TestListResultsResponse> =
+            listResults(params.toBuilder().testId(testId).build(), requestOptions)
+
+        /** @see listResults */
+        @MustBeClosed
+        fun listResults(
+            testId: String,
+            params: TestListResultsParams = TestListResultsParams.none(),
+        ): HttpResponseFor<TestListResultsResponse> =
+            listResults(testId, params, RequestOptions.none())
+
+        /** @see listResults */
+        @MustBeClosed
+        fun listResults(
+            params: TestListResultsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<TestListResultsResponse>
+
+        /** @see listResults */
+        @MustBeClosed
+        fun listResults(params: TestListResultsParams): HttpResponseFor<TestListResultsResponse> =
+            listResults(params, RequestOptions.none())
+
+        /** @see listResults */
+        @MustBeClosed
+        fun listResults(
+            testId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<TestListResultsResponse> =
+            listResults(testId, TestListResultsParams.none(), requestOptions)
     }
 }
