@@ -18,6 +18,8 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.models.tests.TestEvaluateParams
 import com.openlayer.api.models.tests.TestEvaluateResponse
+import com.openlayer.api.models.tests.TestListResultsParams
+import com.openlayer.api.models.tests.TestListResultsResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 import kotlin.jvm.optionals.getOrNull
@@ -40,6 +42,13 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
     ): CompletableFuture<TestEvaluateResponse> =
         // post /tests/{testId}/evaluate
         withRawResponse().evaluate(params, requestOptions).thenApply { it.parse() }
+
+    override fun listResults(
+        params: TestListResultsParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<TestListResultsResponse> =
+        // get /tests/{testId}/results
+        withRawResponse().listResults(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         TestServiceAsync.WithRawResponse {
@@ -79,6 +88,39 @@ class TestServiceAsyncImpl internal constructor(private val clientOptions: Clien
                     errorHandler.handle(response).parseable {
                         response
                             .use { evaluateHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val listResultsHandler: Handler<TestListResultsResponse> =
+            jsonHandler<TestListResultsResponse>(clientOptions.jsonMapper)
+
+        override fun listResults(
+            params: TestListResultsParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<TestListResultsResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("testId", params.testId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("tests", params._pathParam(0), "results")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { listResultsHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()
