@@ -91,4 +91,18 @@ internal class ProjectServiceAsyncTest {
         val projects = projectsFuture.get()
         projects.validate()
     }
+
+    @Test
+    fun delete() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val projectServiceAsync = client.projects()
+
+        val future = projectServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+
+        val response = future.get()
+    }
 }
