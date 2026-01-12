@@ -89,4 +89,16 @@ internal class ProjectServiceTest {
 
         projects.validate()
     }
+
+    @Test
+    fun delete() {
+        val client =
+            OpenlayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val projectService = client.projects()
+
+        projectService.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+    }
 }

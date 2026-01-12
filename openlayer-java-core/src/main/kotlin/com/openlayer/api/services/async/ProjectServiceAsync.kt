@@ -4,9 +4,11 @@ package com.openlayer.api.services.async
 
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.http.HttpResponse
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.projects.ProjectCreateParams
 import com.openlayer.api.models.projects.ProjectCreateResponse
+import com.openlayer.api.models.projects.ProjectDeleteParams
 import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
 import com.openlayer.api.services.async.projects.CommitServiceAsync
@@ -62,6 +64,38 @@ interface ProjectServiceAsync {
     /** @see list */
     fun list(requestOptions: RequestOptions): CompletableFuture<ProjectListResponse> =
         list(ProjectListParams.none(), requestOptions)
+
+    /** Delete a project by its ID. */
+    fun delete(projectId: String): CompletableFuture<Void?> =
+        delete(projectId, ProjectDeleteParams.none())
+
+    /** @see delete */
+    fun delete(
+        projectId: String,
+        params: ProjectDeleteParams = ProjectDeleteParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Void?> =
+        delete(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+    /** @see delete */
+    fun delete(
+        projectId: String,
+        params: ProjectDeleteParams = ProjectDeleteParams.none(),
+    ): CompletableFuture<Void?> = delete(projectId, params, RequestOptions.none())
+
+    /** @see delete */
+    fun delete(
+        params: ProjectDeleteParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<Void?>
+
+    /** @see delete */
+    fun delete(params: ProjectDeleteParams): CompletableFuture<Void?> =
+        delete(params, RequestOptions.none())
+
+    /** @see delete */
+    fun delete(projectId: String, requestOptions: RequestOptions): CompletableFuture<Void?> =
+        delete(projectId, ProjectDeleteParams.none(), requestOptions)
 
     /**
      * A view of [ProjectServiceAsync] that provides access to raw HTTP responses for each method.
@@ -122,5 +156,43 @@ interface ProjectServiceAsync {
             requestOptions: RequestOptions
         ): CompletableFuture<HttpResponseFor<ProjectListResponse>> =
             list(ProjectListParams.none(), requestOptions)
+
+        /**
+         * Returns a raw HTTP response for `delete /projects/{projectId}`, but is otherwise the same
+         * as [ProjectServiceAsync.delete].
+         */
+        fun delete(projectId: String): CompletableFuture<HttpResponse> =
+            delete(projectId, ProjectDeleteParams.none())
+
+        /** @see delete */
+        fun delete(
+            projectId: String,
+            params: ProjectDeleteParams = ProjectDeleteParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponse> =
+            delete(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+        /** @see delete */
+        fun delete(
+            projectId: String,
+            params: ProjectDeleteParams = ProjectDeleteParams.none(),
+        ): CompletableFuture<HttpResponse> = delete(projectId, params, RequestOptions.none())
+
+        /** @see delete */
+        fun delete(
+            params: ProjectDeleteParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponse>
+
+        /** @see delete */
+        fun delete(params: ProjectDeleteParams): CompletableFuture<HttpResponse> =
+            delete(params, RequestOptions.none())
+
+        /** @see delete */
+        fun delete(
+            projectId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponse> =
+            delete(projectId, ProjectDeleteParams.none(), requestOptions)
     }
 }

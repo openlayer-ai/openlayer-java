@@ -4,6 +4,8 @@ package com.openlayer.api.services.blocking
 
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
+import com.openlayer.api.core.checkRequired
+import com.openlayer.api.core.handlers.emptyHandler
 import com.openlayer.api.core.handlers.errorBodyHandler
 import com.openlayer.api.core.handlers.errorHandler
 import com.openlayer.api.core.handlers.jsonHandler
@@ -17,6 +19,7 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.projects.ProjectCreateParams
 import com.openlayer.api.models.projects.ProjectCreateResponse
+import com.openlayer.api.models.projects.ProjectDeleteParams
 import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
 import com.openlayer.api.services.blocking.projects.CommitService
@@ -26,6 +29,7 @@ import com.openlayer.api.services.blocking.projects.InferencePipelineServiceImpl
 import com.openlayer.api.services.blocking.projects.TestService
 import com.openlayer.api.services.blocking.projects.TestServiceImpl
 import java.util.function.Consumer
+import kotlin.jvm.optionals.getOrNull
 
 class ProjectServiceImpl internal constructor(private val clientOptions: ClientOptions) :
     ProjectService {
@@ -66,6 +70,11 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
     ): ProjectListResponse =
         // get /projects
         withRawResponse().list(params, requestOptions).parse()
+
+    override fun delete(params: ProjectDeleteParams, requestOptions: RequestOptions) {
+        // delete /projects/{projectId}
+        withRawResponse().delete(params, requestOptions)
+    }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         ProjectService.WithRawResponse {
@@ -151,6 +160,30 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
                             it.validate()
                         }
                     }
+            }
+        }
+
+        private val deleteHandler: Handler<Void?> = emptyHandler()
+
+        override fun delete(
+            params: ProjectDeleteParams,
+            requestOptions: RequestOptions,
+        ): HttpResponse {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.DELETE)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("projects", params._pathParam(0))
+                    .apply { params._body().ifPresent { body(json(clientOptions.jsonMapper, it)) } }
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response.use { deleteHandler.handle(it) }
             }
         }
     }
