@@ -40,6 +40,9 @@ jobs:
   build:
     timeout-minutes: 15
     name: build
+    permissions:
+      contents: read
+      id-token: write
     runs-on: ${{ github.repository == 'stainless-sdks/openlayer-java' && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
     if: github.event_name == 'push' || github.event.pull_request.head.repo.fork
 
@@ -61,3 +64,18 @@ jobs:
       - name: Build SDK
         run: ./scripts/build
 
+      - name: Get GitHub OIDC Token
+        if: github.repository == 'stainless-sdks/openlayer-java'
+        id: github-oidc
+        uses: actions/github-script@v6
+        with:
+          script: core.setOutput('github_token', await core.getIDToken());
+
+      - name: Build and upload Maven artifacts
+        if: github.repository == 'stainless-sdks/openlayer-java'
+        env:
+          URL: https://pkg.stainless.com/s
+          AUTH: ${{ steps.github-oidc.outputs.github_token }}
+          SHA: ${{ github.sha }}
+          PROJECT: openlayer-java
+        run: ./scripts/upload-artifacts
