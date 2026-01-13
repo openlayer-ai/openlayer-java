@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.2 (2026-01-13)
+
+Full Changelog: [v0.3.1...v0.3.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.1...v0.3.2)
+
+### Chores
+
+* **internal:** support uploading Maven repo artifacts to stainless package server ([a494a36](https://github.com/openlayer-ai/openlayer-java/commit/a494a360f411a7e6bab6b32099349166abee3612))
+
 ## 0.3.1 (2026-01-12)
 
 Full Changelog: [v0.3.0...v0.3.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.0...v0.3.1)
