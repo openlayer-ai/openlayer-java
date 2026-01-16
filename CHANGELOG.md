@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.3.3 (2026-01-16)
+
+Full Changelog: [v0.3.2...v0.3.3](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.2...v0.3.3)
+
+### Chores
+
+* **internal:** clean up maven repo artifact script and add html documentation to repo root ([9ea4d75](https://github.com/openlayer-ai/openlayer-java/commit/9ea4d75f3d2eeb073573f8ba009db50116697acb))
+
 ## 0.3.2 (2026-01-13)
 
 Full Changelog: [v0.3.1...v0.3.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.1...v0.3.2)
