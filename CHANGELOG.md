@@ -1,5 +1,26 @@
 # Changelog
 
+## 0.3.4 (2026-01-17)
+
+Full Changelog: [v0.3.3...v0.3.4](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.3...v0.3.4)
+
+### Bug Fixes
+
+* **client:** disallow coercion from float to int ([f3ef0fa](https://github.com/openlayer-ai/openlayer-java/commit/f3ef0fa08d2ce3af8cd4d9175463be44fb5d569b))
+* **client:** fully respect max retries ([9dff5d8](https://github.com/openlayer-ai/openlayer-java/commit/9dff5d85da39bc072265e67fe2e3d9bd6d3be034))
+* **client:** send retry count header for max retries 0 ([9dff5d8](https://github.com/openlayer-ai/openlayer-java/commit/9dff5d85da39bc072265e67fe2e3d9bd6d3be034))
+* date time deserialization leniency ([9ac59d5](https://github.com/openlayer-ai/openlayer-java/commit/9ac59d53743d03f08395cc28f72c41e35e0e30f4))
+* deserialization order ([ad92dd8](https://github.com/openlayer-ai/openlayer-java/commit/ad92dd885d76973378d5699da83cfa7a0104995d))
+
+
+### Chores
+
+* **ci:** upgrade `actions/setup-java` ([c16fb63](https://github.com/openlayer-ai/openlayer-java/commit/c16fb634cf2f59527439d272ea7252511e70ebcc))
+* **internal:** depend on packages directly in example ([9dff5d8](https://github.com/openlayer-ai/openlayer-java/commit/9dff5d85da39bc072265e67fe2e3d9bd6d3be034))
+* **internal:** improve maven repo docs ([160861a](https://github.com/openlayer-ai/openlayer-java/commit/160861a234015702311b250f857e5cacd3bf688b))
+* **internal:** update `actions/checkout` version ([3524395](https://github.com/openlayer-ai/openlayer-java/commit/3524395582278a21e85344f679cd25047cd29491))
+* test on Jackson 2.14.0 to avoid encountering FasterXML/jackson-databind[#3240](https://github.com/openlayer-ai/openlayer-java/issues/3240) in tests ([9ac59d5](https://github.com/openlayer-ai/openlayer-java/commit/9ac59d53743d03f08395cc28f72c41e35e0e30f4))
+
 ## 0.3.3 (2026-01-16)
 
 Full Changelog: [v0.3.2...v0.3.3](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.2...v0.3.3)

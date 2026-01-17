@@ -4136,14 +4136,14 @@ private constructor(
 
                             val bestMatches =
                                 sequenceOf(
+                                        tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                            Value(string = it, _json = json)
+                                        },
                                         tryDeserialize(node, jacksonTypeRef<Double>())?.let {
                                             Value(number = it, _json = json)
                                         },
                                         tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
                                             Value(bool = it, _json = json)
-                                        },
-                                        tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                                            Value(string = it, _json = json)
                                         },
                                         tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
                                             Value(strings = it, _json = json)
@@ -5700,7 +5700,7 @@ private constructor(
                                 return when (bestMatches.size) {
                                     // This can happen if what we're deserializing is completely
                                     // incompatible with all the possible variants (e.g.
-                                    // deserializing from object).
+                                    // deserializing from boolean).
                                     0 -> Value(_json = json)
                                     1 -> bestMatches.single()
                                     // If there's more than one match with the highest validity,
@@ -6702,7 +6702,7 @@ private constructor(
                                 return when (bestMatches.size) {
                                     // This can happen if what we're deserializing is completely
                                     // incompatible with all the possible variants (e.g.
-                                    // deserializing from object).
+                                    // deserializing from integer).
                                     0 -> Value(_json = json)
                                     1 -> bestMatches.single()
                                     // If there's more than one match with the highest validity,
