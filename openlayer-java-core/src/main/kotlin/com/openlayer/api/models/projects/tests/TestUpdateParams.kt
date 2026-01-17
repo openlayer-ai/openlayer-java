@@ -2235,14 +2235,14 @@ private constructor(
 
                         val bestMatches =
                             sequenceOf(
+                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
+                                        Value(string = it, _json = json)
+                                    },
                                     tryDeserialize(node, jacksonTypeRef<Double>())?.let {
                                         Value(number = it, _json = json)
                                     },
                                     tryDeserialize(node, jacksonTypeRef<Boolean>())?.let {
                                         Value(bool = it, _json = json)
-                                    },
-                                    tryDeserialize(node, jacksonTypeRef<String>())?.let {
-                                        Value(string = it, _json = json)
                                     },
                                     tryDeserialize(node, jacksonTypeRef<List<String>>())?.let {
                                         Value(strings = it, _json = json)
