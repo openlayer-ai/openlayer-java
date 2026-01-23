@@ -35,6 +35,12 @@ private constructor(
     /** Specify the inference id as a query param. */
     fun inferenceId(): String = inferenceId
 
+    /**
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```java
+     * MyClass myObject = rowUpdateParams.row().convert(MyClass.class);
+     * ```
+     */
     fun _row(): JsonValue = body._row()
 
     /**
@@ -302,6 +308,12 @@ private constructor(
             @JsonProperty("config") @ExcludeMissing config: JsonField<Config> = JsonMissing.of(),
         ) : this(row, config, mutableMapOf())
 
+        /**
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```java
+         * MyClass myObject = body.row().convert(MyClass.class);
+         * ```
+         */
         @JsonProperty("row") @ExcludeMissing fun _row(): JsonValue = row
 
         /**

@@ -982,7 +982,15 @@ private constructor(
             fun latencyColumnName(): Optional<String> =
                 latencyColumnName.getOptional("latencyColumnName")
 
-            /** Object with metadata. */
+            /**
+             * Object with metadata.
+             *
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = llmData.metadata().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
             /**
@@ -1945,7 +1953,15 @@ private constructor(
             fun latencyColumnName(): Optional<String> =
                 latencyColumnName.getOptional("latencyColumnName")
 
-            /** Object with metadata. */
+            /**
+             * Object with metadata.
+             *
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = tabularClassificationData.metadata().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
             /**
@@ -2543,7 +2559,15 @@ private constructor(
             fun latencyColumnName(): Optional<String> =
                 latencyColumnName.getOptional("latencyColumnName")
 
-            /** Object with metadata. */
+            /**
+             * Object with metadata.
+             *
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = tabularRegressionData.metadata().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
             /**
@@ -3048,7 +3072,15 @@ private constructor(
             fun latencyColumnName(): Optional<String> =
                 latencyColumnName.getOptional("latencyColumnName")
 
-            /** Object with metadata. */
+            /**
+             * Object with metadata.
+             *
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = textClassificationData.metadata().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("metadata") @ExcludeMissing fun _metadata(): JsonValue = metadata
 
             /**
