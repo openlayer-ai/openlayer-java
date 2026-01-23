@@ -497,7 +497,14 @@ private constructor(
          */
         fun archived(): Optional<Boolean> = archived.getOptional("archived")
 
-        /** The test description. */
+        /**
+         * The test description.
+         *
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```java
+         * MyClass myObject = payload.description().convert(MyClass.class);
+         * ```
+         */
         @JsonProperty("description") @ExcludeMissing fun _description(): JsonValue = description
 
         /**
@@ -1619,6 +1626,13 @@ private constructor(
                  */
                 fun name(): String = name.getRequired("name")
 
+                /**
+                 * This arbitrary value can be deserialized into a custom type using the `convert`
+                 * method:
+                 * ```java
+                 * MyClass myObject = insightParameter.value().convert(MyClass.class);
+                 * ```
+                 */
                 @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
                 /**
