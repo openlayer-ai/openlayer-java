@@ -49,7 +49,14 @@ private constructor(
      */
     fun url(): String = url.getRequired("url")
 
-    /** Fields to include in the body of the upload. Only needed by s3 */
+    /**
+     * Fields to include in the body of the upload. Only needed by s3
+     *
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```java
+     * MyClass myObject = presignedUrlCreateResponse.fields().convert(MyClass.class);
+     * ```
+     */
     @JsonProperty("fields") @ExcludeMissing fun _fields(): JsonValue = fields
 
     /**

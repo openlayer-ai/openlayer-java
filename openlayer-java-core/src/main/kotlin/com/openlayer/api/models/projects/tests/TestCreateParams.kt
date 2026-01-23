@@ -94,7 +94,14 @@ private constructor(
      */
     fun dateUpdated(): OffsetDateTime = body.dateUpdated()
 
-    /** The test description. */
+    /**
+     * The test description.
+     *
+     * This arbitrary value can be deserialized into a custom type using the `convert` method:
+     * ```java
+     * MyClass myObject = testCreateParams.description().convert(MyClass.class);
+     * ```
+     */
     fun _description(): JsonValue = body._description()
 
     /**
@@ -1304,7 +1311,14 @@ private constructor(
          */
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
-        /** The test description. */
+        /**
+         * The test description.
+         *
+         * This arbitrary value can be deserialized into a custom type using the `convert` method:
+         * ```java
+         * MyClass myObject = body.description().convert(MyClass.class);
+         * ```
+         */
         @JsonProperty("description") @ExcludeMissing fun _description(): JsonValue = description
 
         /**
@@ -3575,6 +3589,13 @@ private constructor(
              */
             fun name(): String = name.getRequired("name")
 
+            /**
+             * This arbitrary value can be deserialized into a custom type using the `convert`
+             * method:
+             * ```java
+             * MyClass myObject = insightParameter.value().convert(MyClass.class);
+             * ```
+             */
             @JsonProperty("value") @ExcludeMissing fun _value(): JsonValue = value
 
             /**
