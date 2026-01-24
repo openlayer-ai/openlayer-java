@@ -1,5 +1,30 @@
 # Changelog
 
+## 0.4.0 (2026-01-24)
+
+Full Changelog: [v0.3.4...v0.4.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.4...v0.4.0)
+
+### Features
+
+* **client:** send `X-Stainless-Kotlin-Version` header ([77f36ca](https://github.com/openlayer-ai/openlayer-java/commit/77f36cac8bcdf064272a371f2538b065df5427eb))
+
+
+### Bug Fixes
+
+* **client:** preserve time zone in lenient date-time parsing ([5a2de35](https://github.com/openlayer-ai/openlayer-java/commit/5a2de356e6c859ba449dcfe286b357f27521fbd9))
+
+
+### Chores
+
+* **ci:** upgrade `actions/github-script` ([70b357f](https://github.com/openlayer-ai/openlayer-java/commit/70b357fd2d1743f7f6e34ae03fa8cba898c65a3b))
+* **internal:** correct cache invalidation for `SKIP_MOCK_TESTS` ([e688c85](https://github.com/openlayer-ai/openlayer-java/commit/e688c8544109eec067139f1473d0d9ff487cc59b))
+* **internal:** update maven repo doc to include authentication ([a3c15df](https://github.com/openlayer-ai/openlayer-java/commit/a3c15dfddb29743be7d5b02f3a455c93da07cd47))
+
+
+### Documentation
+
+* add comment for arbitrary value fields ([acdb1fc](https://github.com/openlayer-ai/openlayer-java/commit/acdb1fcb6659e10e763133180b96dd9a9250b4c0))
+
 ## 0.3.4 (2026-01-17)
 
 Full Changelog: [v0.3.3...v0.3.4](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.3...v0.3.4)
