@@ -44,6 +44,16 @@ internal class InferencePipelineUpdateResponseTest {
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            InferencePipelineUpdateResponse.DataBackend.BigQueryDataBackend.Config
+                                .builder()
+                                .groundTruthColumnName("ground_truth")
+                                .humanFeedbackColumnName("human_feedback")
+                                .inferenceIdColumnName("id")
+                                .latencyColumnName("latency")
+                                .timestampColumnName("timestamp")
+                                .build()
+                        )
                         .datasetId("my-dataset")
                         .projectId("my-project")
                         .tableId("my-table")
@@ -111,6 +121,7 @@ internal class InferencePipelineUpdateResponseTest {
                         .projectCount(0L)
                         .slug("openlayer")
                         .status(InferencePipelineUpdateResponse.Workspace.Status.ACTIVE)
+                        .inviteCode("inviteCode")
                         .addMonthlyUsage(
                             InferencePipelineUpdateResponse.Workspace.MonthlyUsage.builder()
                                 .executionTimeMs(0L)
@@ -167,6 +178,16 @@ internal class InferencePipelineUpdateResponseTest {
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            InferencePipelineUpdateResponse.DataBackend.BigQueryDataBackend.Config
+                                .builder()
+                                .groundTruthColumnName("ground_truth")
+                                .humanFeedbackColumnName("human_feedback")
+                                .inferenceIdColumnName("id")
+                                .latencyColumnName("latency")
+                                .timestampColumnName("timestamp")
+                                .build()
+                        )
                         .datasetId("my-dataset")
                         .projectId("my-project")
                         .tableId("my-table")
@@ -238,6 +259,7 @@ internal class InferencePipelineUpdateResponseTest {
                     .projectCount(0L)
                     .slug("openlayer")
                     .status(InferencePipelineUpdateResponse.Workspace.Status.ACTIVE)
+                    .inviteCode("inviteCode")
                     .addMonthlyUsage(
                         InferencePipelineUpdateResponse.Workspace.MonthlyUsage.builder()
                             .executionTimeMs(0L)
@@ -287,6 +309,16 @@ internal class InferencePipelineUpdateResponseTest {
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            InferencePipelineUpdateResponse.DataBackend.BigQueryDataBackend.Config
+                                .builder()
+                                .groundTruthColumnName("ground_truth")
+                                .humanFeedbackColumnName("human_feedback")
+                                .inferenceIdColumnName("id")
+                                .latencyColumnName("latency")
+                                .timestampColumnName("timestamp")
+                                .build()
+                        )
                         .datasetId("my-dataset")
                         .projectId("my-project")
                         .tableId("my-table")
@@ -354,6 +386,7 @@ internal class InferencePipelineUpdateResponseTest {
                         .projectCount(0L)
                         .slug("openlayer")
                         .status(InferencePipelineUpdateResponse.Workspace.Status.ACTIVE)
+                        .inviteCode("inviteCode")
                         .addMonthlyUsage(
                             InferencePipelineUpdateResponse.Workspace.MonthlyUsage.builder()
                                 .executionTimeMs(0L)

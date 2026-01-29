@@ -31,6 +31,7 @@ internal class RowServiceTest {
                         RowUpdateParams.Config.builder()
                             .groundTruthColumnName("ground_truth")
                             .humanFeedbackColumnName("human_feedback")
+                            .inferenceIdColumnName("id")
                             .latencyColumnName("latency")
                             .timestampColumnName("timestamp")
                             .build()
