@@ -28,6 +28,7 @@ internal class WorkspaceUpdateResponseTest {
                 .projectCount(0L)
                 .slug("openlayer")
                 .status(WorkspaceUpdateResponse.Status.ACTIVE)
+                .inviteCode("inviteCode")
                 .addMonthlyUsage(
                     WorkspaceUpdateResponse.MonthlyUsage.builder()
                         .executionTimeMs(0L)
@@ -57,6 +58,7 @@ internal class WorkspaceUpdateResponseTest {
         assertThat(workspaceUpdateResponse.slug()).isEqualTo("openlayer")
         assertThat(workspaceUpdateResponse.status())
             .isEqualTo(WorkspaceUpdateResponse.Status.ACTIVE)
+        assertThat(workspaceUpdateResponse.inviteCode()).contains("inviteCode")
         assertThat(workspaceUpdateResponse.monthlyUsage().getOrNull())
             .containsExactly(
                 WorkspaceUpdateResponse.MonthlyUsage.builder()
@@ -86,6 +88,7 @@ internal class WorkspaceUpdateResponseTest {
                 .projectCount(0L)
                 .slug("openlayer")
                 .status(WorkspaceUpdateResponse.Status.ACTIVE)
+                .inviteCode("inviteCode")
                 .addMonthlyUsage(
                     WorkspaceUpdateResponse.MonthlyUsage.builder()
                         .executionTimeMs(0L)
