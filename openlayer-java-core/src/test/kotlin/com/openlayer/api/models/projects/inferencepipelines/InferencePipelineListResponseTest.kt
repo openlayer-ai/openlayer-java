@@ -48,6 +48,18 @@ internal class InferencePipelineListResponseTest {
                                         .BIGQUERY
                                 )
                                 .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .config(
+                                    InferencePipelineListResponse.Item.DataBackend
+                                        .BigQueryDataBackend
+                                        .Config
+                                        .builder()
+                                        .groundTruthColumnName("ground_truth")
+                                        .humanFeedbackColumnName("human_feedback")
+                                        .inferenceIdColumnName("id")
+                                        .latencyColumnName("latency")
+                                        .timestampColumnName("timestamp")
+                                        .build()
+                                )
                                 .datasetId("my-dataset")
                                 .projectId("my-project")
                                 .tableId("my-table")
@@ -122,6 +134,7 @@ internal class InferencePipelineListResponseTest {
                                 .projectCount(0L)
                                 .slug("openlayer")
                                 .status(InferencePipelineListResponse.Item.Workspace.Status.ACTIVE)
+                                .inviteCode("inviteCode")
                                 .addMonthlyUsage(
                                     InferencePipelineListResponse.Item.Workspace.MonthlyUsage
                                         .builder()
@@ -171,6 +184,17 @@ internal class InferencePipelineListResponseTest {
                                     .BIGQUERY
                             )
                             .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                            .config(
+                                InferencePipelineListResponse.Item.DataBackend.BigQueryDataBackend
+                                    .Config
+                                    .builder()
+                                    .groundTruthColumnName("ground_truth")
+                                    .humanFeedbackColumnName("human_feedback")
+                                    .inferenceIdColumnName("id")
+                                    .latencyColumnName("latency")
+                                    .timestampColumnName("timestamp")
+                                    .build()
+                            )
                             .datasetId("my-dataset")
                             .projectId("my-project")
                             .tableId("my-table")
@@ -238,6 +262,7 @@ internal class InferencePipelineListResponseTest {
                             .projectCount(0L)
                             .slug("openlayer")
                             .status(InferencePipelineListResponse.Item.Workspace.Status.ACTIVE)
+                            .inviteCode("inviteCode")
                             .addMonthlyUsage(
                                 InferencePipelineListResponse.Item.Workspace.MonthlyUsage.builder()
                                     .executionTimeMs(0L)
@@ -292,6 +317,18 @@ internal class InferencePipelineListResponseTest {
                                         .BIGQUERY
                                 )
                                 .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                                .config(
+                                    InferencePipelineListResponse.Item.DataBackend
+                                        .BigQueryDataBackend
+                                        .Config
+                                        .builder()
+                                        .groundTruthColumnName("ground_truth")
+                                        .humanFeedbackColumnName("human_feedback")
+                                        .inferenceIdColumnName("id")
+                                        .latencyColumnName("latency")
+                                        .timestampColumnName("timestamp")
+                                        .build()
+                                )
                                 .datasetId("my-dataset")
                                 .projectId("my-project")
                                 .tableId("my-table")
@@ -366,6 +403,7 @@ internal class InferencePipelineListResponseTest {
                                 .projectCount(0L)
                                 .slug("openlayer")
                                 .status(InferencePipelineListResponse.Item.Workspace.Status.ACTIVE)
+                                .inviteCode("inviteCode")
                                 .addMonthlyUsage(
                                     InferencePipelineListResponse.Item.Workspace.MonthlyUsage
                                         .builder()

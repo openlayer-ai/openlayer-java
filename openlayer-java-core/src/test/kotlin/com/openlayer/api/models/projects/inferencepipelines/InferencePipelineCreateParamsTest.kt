@@ -41,6 +41,16 @@ internal class InferencePipelineCreateParamsTest {
                             .BIGQUERY
                     )
                     .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .config(
+                        InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.Config
+                            .builder()
+                            .groundTruthColumnName("ground_truth")
+                            .humanFeedbackColumnName("human_feedback")
+                            .inferenceIdColumnName("id")
+                            .latencyColumnName("latency")
+                            .timestampColumnName("timestamp")
+                            .build()
+                    )
                     .datasetId("my-dataset")
                     .bodyProjectId("my-project")
                     .tableId("my-table")
@@ -107,6 +117,7 @@ internal class InferencePipelineCreateParamsTest {
                     .projectCount(0L)
                     .slug("openlayer")
                     .status(InferencePipelineCreateParams.Workspace.Status.ACTIVE)
+                    .inviteCode("inviteCode")
                     .addMonthlyUsage(
                         InferencePipelineCreateParams.Workspace.MonthlyUsage.builder()
                             .executionTimeMs(0L)
@@ -189,6 +200,16 @@ internal class InferencePipelineCreateParamsTest {
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.Config
+                                .builder()
+                                .groundTruthColumnName("ground_truth")
+                                .humanFeedbackColumnName("human_feedback")
+                                .inferenceIdColumnName("id")
+                                .latencyColumnName("latency")
+                                .timestampColumnName("timestamp")
+                                .build()
+                        )
                         .datasetId("my-dataset")
                         .bodyProjectId("my-project")
                         .tableId("my-table")
@@ -256,6 +277,7 @@ internal class InferencePipelineCreateParamsTest {
                         .projectCount(0L)
                         .slug("openlayer")
                         .status(InferencePipelineCreateParams.Workspace.Status.ACTIVE)
+                        .inviteCode("inviteCode")
                         .addMonthlyUsage(
                             InferencePipelineCreateParams.Workspace.MonthlyUsage.builder()
                                 .executionTimeMs(0L)
@@ -307,6 +329,16 @@ internal class InferencePipelineCreateParamsTest {
                                 .BIGQUERY
                         )
                         .bigqueryConnectionId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                        .config(
+                            InferencePipelineCreateParams.DataBackend.BigQueryDataBackend.Config
+                                .builder()
+                                .groundTruthColumnName("ground_truth")
+                                .humanFeedbackColumnName("human_feedback")
+                                .inferenceIdColumnName("id")
+                                .latencyColumnName("latency")
+                                .timestampColumnName("timestamp")
+                                .build()
+                        )
                         .datasetId("my-dataset")
                         .bodyProjectId("my-project")
                         .tableId("my-table")
@@ -377,6 +409,7 @@ internal class InferencePipelineCreateParamsTest {
                     .projectCount(0L)
                     .slug("openlayer")
                     .status(InferencePipelineCreateParams.Workspace.Status.ACTIVE)
+                    .inviteCode("inviteCode")
                     .addMonthlyUsage(
                         InferencePipelineCreateParams.Workspace.MonthlyUsage.builder()
                             .executionTimeMs(0L)
