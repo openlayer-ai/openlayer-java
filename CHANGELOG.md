@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.1 (2026-01-29)
+
+Full Changelog: [v0.4.0...v0.4.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.0...v0.4.1)
+
+### Bug Fixes
+
+* add missing fields ([9aa09b1](https://github.com/openlayer-ai/openlayer-java/commit/9aa09b1a074fc0bcf7ce3956889ad660af91bfa0))
+
 ## 0.4.0 (2026-01-24)
 
 Full Changelog: [v0.3.4...v0.4.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.3.4...v0.4.0)
