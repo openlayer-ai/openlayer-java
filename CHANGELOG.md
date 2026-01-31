@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.2 (2026-01-31)
+
+Full Changelog: [v0.4.1...v0.4.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.1...v0.4.2)
+
+### Chores
+
+* **internal:** allow passing args to `./scripts/test` ([ab699d9](https://github.com/openlayer-ai/openlayer-java/commit/ab699d93f6e8090b74dfb8058cf00f3ed9408e79))
+
 ## 0.4.1 (2026-01-29)
 
 Full Changelog: [v0.4.0...v0.4.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.0...v0.4.1)
