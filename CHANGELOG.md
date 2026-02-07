@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.3 (2026-02-07)
+
+Full Changelog: [v0.4.2...v0.4.3](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.2...v0.4.3)
+
+### Chores
+
+* **internal:** upgrade AssertJ ([0b6e8bc](https://github.com/openlayer-ai/openlayer-java/commit/0b6e8bc73a46bf33531954d5cbe6ed03790cc302))
+
 ## 0.4.2 (2026-01-31)
 
 Full Changelog: [v0.4.1...v0.4.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.1...v0.4.2)
