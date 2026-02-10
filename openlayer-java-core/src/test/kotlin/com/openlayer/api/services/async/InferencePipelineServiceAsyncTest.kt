@@ -5,6 +5,7 @@ package com.openlayer.api.services.async
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -68,5 +69,27 @@ internal class InferencePipelineServiceAsyncTest {
         val future = inferencePipelineServiceAsync.delete("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 
         val response = future.get()
+    }
+
+    @Test
+    fun retrieveUsers() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val inferencePipelineServiceAsync = client.inferencePipelines()
+
+        val responseFuture =
+            inferencePipelineServiceAsync.retrieveUsers(
+                InferencePipelineRetrieveUsersParams.builder()
+                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .page(1L)
+                    .perPage(1L)
+                    .build()
+            )
+
+        val response = responseFuture.get()
+        response.validate()
     }
 }
