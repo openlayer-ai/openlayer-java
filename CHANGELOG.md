@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.4 (2026-02-10)
+
+Full Changelog: [v0.4.3...v0.4.4](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.3...v0.4.4)
+
+### Chores
+
+* **closes OPEN-8647:** add endpoint to retrieve aggregated user data for inference pipelines ([56ac536](https://github.com/openlayer-ai/openlayer-java/commit/56ac5369af85619049e4ca0a7e37a2411a643080))
+
 ## 0.4.3 (2026-02-07)
 
 Full Changelog: [v0.4.2...v0.4.3](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.2...v0.4.3)
