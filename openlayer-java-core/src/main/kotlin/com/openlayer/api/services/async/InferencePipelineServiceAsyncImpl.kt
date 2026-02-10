@@ -20,6 +20,8 @@ import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersResponse
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateResponse
 import com.openlayer.api.services.async.inferencepipelines.DataServiceAsync
@@ -80,6 +82,13 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
     ): CompletableFuture<Void?> =
         // delete /inference-pipelines/{inferencePipelineId}
         withRawResponse().delete(params, requestOptions).thenAccept {}
+
+    override fun retrieveUsers(
+        params: InferencePipelineRetrieveUsersParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<InferencePipelineRetrieveUsersResponse> =
+        // get /inference-pipelines/{inferencePipelineId}/users
+        withRawResponse().retrieveUsers(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         InferencePipelineServiceAsync.WithRawResponse {
@@ -202,6 +211,39 @@ internal constructor(private val clientOptions: ClientOptions) : InferencePipeli
                 .thenApply { response ->
                     errorHandler.handle(response).parseable {
                         response.use { deleteHandler.handle(it) }
+                    }
+                }
+        }
+
+        private val retrieveUsersHandler: Handler<InferencePipelineRetrieveUsersResponse> =
+            jsonHandler<InferencePipelineRetrieveUsersResponse>(clientOptions.jsonMapper)
+
+        override fun retrieveUsers(
+            params: InferencePipelineRetrieveUsersParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveUsersResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("inference-pipelines", params._pathParam(0), "users")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { retrieveUsersHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
                     }
                 }
         }
