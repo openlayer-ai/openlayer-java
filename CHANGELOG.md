@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.5 (2026-02-18)
+
+Full Changelog: [v0.4.4...v0.4.5](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.4...v0.4.5)
+
+### Chores
+
+* **internal:** update `TestServerExtension` comment ([8497364](https://github.com/openlayer-ai/openlayer-java/commit/849736434c7bfdb34ea60af691a2ef9212bee9a4))
+
 ## 0.4.4 (2026-02-10)
 
 Full Changelog: [v0.4.3...v0.4.4](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.3...v0.4.4)
