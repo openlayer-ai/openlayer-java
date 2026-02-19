@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.5.0 (2026-02-19)
+
+Full Changelog: [v0.4.5...v0.5.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.5...v0.5.0)
+
+### Features
+
+* **client:** add connection pooling option ([b59994e](https://github.com/openlayer-ai/openlayer-java/commit/b59994e9c6c0e6f035d27138205e368b458450af))
+
+
+### Chores
+
+* **internal:** make `OkHttp` constructor internal ([bd14e2b](https://github.com/openlayer-ai/openlayer-java/commit/bd14e2b594e95b359c27cbdca104bdb6533e8420))
+
 ## 0.4.5 (2026-02-18)
 
 Full Changelog: [v0.4.4...v0.4.5](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.4...v0.4.5)

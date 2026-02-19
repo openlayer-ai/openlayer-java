@@ -2,8 +2,8 @@
 
 <!-- x-release-please-start-version -->
 
-[![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.4.5)
-[![javadoc](https://javadoc.io/badge2/com.openlayer.api/openlayer-java/0.4.5/javadoc.svg)](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.4.5)
+[![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.5.0)
+[![javadoc](https://javadoc.io/badge2/com.openlayer.api/openlayer-java/0.5.0/javadoc.svg)](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.5.0)
 
 <!-- x-release-please-end -->
 
@@ -13,7 +13,7 @@ It is generated with [Stainless](https://www.stainless.com/).
 
 <!-- x-release-please-start-version -->
 
-The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.4.5).
+The REST API documentation can be found on [openlayer.com](https://openlayer.com/docs/api-reference/rest/overview). Javadocs are available on [javadoc.io](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.5.0).
 
 <!-- x-release-please-end -->
 
@@ -24,7 +24,7 @@ The REST API documentation can be found on [openlayer.com](https://openlayer.com
 ### Gradle
 
 ```kotlin
-implementation("com.openlayer.api:openlayer-java:0.4.5")
+implementation("com.openlayer.api:openlayer-java:0.5.0")
 ```
 
 ### Maven
@@ -33,7 +33,7 @@ implementation("com.openlayer.api:openlayer-java:0.4.5")
 <dependency>
   <groupId>com.openlayer.api</groupId>
   <artifactId>openlayer-java</artifactId>
-  <version>0.4.5</version>
+  <version>0.5.0</version>
 </dependency>
 ```
 
