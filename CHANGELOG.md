@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.5.1 (2026-02-24)
+
+Full Changelog: [v0.5.0...v0.5.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.5.0...v0.5.1)
+
+### Chores
+
+* drop apache dependency ([c189130](https://github.com/openlayer-ai/openlayer-java/commit/c189130bcb7d4d925ab0ba5a6666760176ac4a27))
+* make `Properties` more resilient to `null` ([8c199df](https://github.com/openlayer-ai/openlayer-java/commit/8c199df8c9b0acd5d409c287f24bdd31fba7050b))
+
 ## 0.5.0 (2026-02-19)
 
 Full Changelog: [v0.4.5...v0.5.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.4.5...v0.5.0)
