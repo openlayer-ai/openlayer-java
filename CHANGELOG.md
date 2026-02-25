@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5.2 (2026-02-25)
+
+Full Changelog: [v0.5.1...v0.5.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.5.1...v0.5.2)
+
+### Chores
+
+* **internal:** expand imports ([da2516b](https://github.com/openlayer-ai/openlayer-java/commit/da2516b8cf516f4b04041676af331a1180fa2f3a))
+
 ## 0.5.1 (2026-02-24)
 
 Full Changelog: [v0.5.0...v0.5.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.5.0...v0.5.1)
