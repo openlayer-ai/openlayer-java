@@ -16,6 +16,8 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.core.http.json
 import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
+import com.openlayer.api.models.inferencepipelines.rows.RowCreateParams
+import com.openlayer.api.models.inferencepipelines.rows.RowCreateResponse
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateResponse
 import java.util.concurrent.CompletableFuture
@@ -33,6 +35,13 @@ class RowServiceAsyncImpl internal constructor(private val clientOptions: Client
 
     override fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowServiceAsync =
         RowServiceAsyncImpl(clientOptions.toBuilder().apply(modifier::accept).build())
+
+    override fun create(
+        params: RowCreateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<RowCreateResponse> =
+        // post /inference-pipelines/{inferencePipelineId}/rows
+        withRawResponse().create(params, requestOptions).thenApply { it.parse() }
 
     override fun update(
         params: RowUpdateParams,
@@ -53,6 +62,40 @@ class RowServiceAsyncImpl internal constructor(private val clientOptions: Client
             RowServiceAsyncImpl.WithRawResponseImpl(
                 clientOptions.toBuilder().apply(modifier::accept).build()
             )
+
+        private val createHandler: Handler<RowCreateResponse> =
+            jsonHandler<RowCreateResponse>(clientOptions.jsonMapper)
+
+        override fun create(
+            params: RowCreateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<RowCreateResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("inference-pipelines", params._pathParam(0), "rows")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
 
         private val updateHandler: Handler<RowUpdateResponse> =
             jsonHandler<RowUpdateResponse>(clientOptions.jsonMapper)
