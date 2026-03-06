@@ -18,7 +18,7 @@ import java.util.Collections
 import java.util.Objects
 import kotlin.jvm.optionals.getOrNull
 
-class RowCreateResponse
+class RowListResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val items: JsonField<List<Item>>,
@@ -58,7 +58,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [RowCreateResponse].
+         * Returns a mutable builder for constructing an instance of [RowListResponse].
          *
          * The following fields are required:
          * ```java
@@ -68,16 +68,16 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [RowCreateResponse]. */
+    /** A builder for [RowListResponse]. */
     class Builder internal constructor() {
 
         private var items: JsonField<MutableList<Item>>? = null
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(rowCreateResponse: RowCreateResponse) = apply {
-            items = rowCreateResponse.items.map { it.toMutableList() }
-            additionalProperties = rowCreateResponse.additionalProperties.toMutableMap()
+        internal fun from(rowListResponse: RowListResponse) = apply {
+            items = rowListResponse.items.map { it.toMutableList() }
+            additionalProperties = rowListResponse.additionalProperties.toMutableMap()
         }
 
         fun items(items: List<Item>) = items(JsonField.of(items))
@@ -123,7 +123,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [RowCreateResponse].
+         * Returns an immutable instance of [RowListResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -134,8 +134,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): RowCreateResponse =
-            RowCreateResponse(
+        fun build(): RowListResponse =
+            RowListResponse(
                 checkRequired("items", items).map { it.toImmutable() },
                 additionalProperties.toMutableMap(),
             )
@@ -143,7 +143,7 @@ private constructor(
 
     private var validated: Boolean = false
 
-    fun validate(): RowCreateResponse = apply {
+    fun validate(): RowListResponse = apply {
         if (validated) {
             return@apply
         }
@@ -338,7 +338,7 @@ private constructor(
             return true
         }
 
-        return other is RowCreateResponse &&
+        return other is RowListResponse &&
             items == other.items &&
             additionalProperties == other.additionalProperties
     }
@@ -348,5 +348,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "RowCreateResponse{items=$items, additionalProperties=$additionalProperties}"
+        "RowListResponse{items=$items, additionalProperties=$additionalProperties}"
 }
