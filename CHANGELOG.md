@@ -1,5 +1,21 @@
 # Changelog
 
+## 0.6.0 (2026-03-06)
+
+Full Changelog: [v0.5.2...v0.6.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.5.2...v0.6.0)
+
+### Features
+
+* **api:** update POST /rows to use list method name ([5fd64a9](https://github.com/openlayer-ai/openlayer-java/commit/5fd64a9fbe3c0218e9bd25d81d3341a9c92d37bc))
+* **closes OPEN-9425:** document /rows endpoint in API reference and … ([e9093d0](https://github.com/openlayer-ai/openlayer-java/commit/e9093d022dfd5a333252214f0a6a5f1eaf3049b7))
+
+
+### Chores
+
+* **internal:** bump palantir-java-format ([3b5458b](https://github.com/openlayer-ai/openlayer-java/commit/3b5458bd3c2dd9d7107e13834d39b69202a2199a))
+* **internal:** codegen related update ([d1f3122](https://github.com/openlayer-ai/openlayer-java/commit/d1f3122b9f64430fc58f5c6dc86c74aba371cd39))
+* **test:** do not count install time for mock server timeout ([e2cc9fd](https://github.com/openlayer-ai/openlayer-java/commit/e2cc9fd39b862bf6bf9eff79b205e078b16d9080))
+
 ## 0.5.2 (2026-02-25)
 
 Full Changelog: [v0.5.1...v0.5.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.5.1...v0.5.2)
