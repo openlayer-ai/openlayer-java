@@ -35,7 +35,7 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /** A list of rows for an inference pipeline. */
-class RowCreateParams
+class RowListParams
 private constructor(
     private val inferencePipelineId: String?,
     private val asc: Boolean?,
@@ -167,13 +167,13 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): RowCreateParams = builder().build()
+        @JvmStatic fun none(): RowListParams = builder().build()
 
-        /** Returns a mutable builder for constructing an instance of [RowCreateParams]. */
+        /** Returns a mutable builder for constructing an instance of [RowListParams]. */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [RowCreateParams]. */
+    /** A builder for [RowListParams]. */
     class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
@@ -186,15 +186,15 @@ private constructor(
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(rowCreateParams: RowCreateParams) = apply {
-            inferencePipelineId = rowCreateParams.inferencePipelineId
-            asc = rowCreateParams.asc
-            page = rowCreateParams.page
-            perPage = rowCreateParams.perPage
-            sortColumn = rowCreateParams.sortColumn
-            body = rowCreateParams.body.toBuilder()
-            additionalHeaders = rowCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = rowCreateParams.additionalQueryParams.toBuilder()
+        internal fun from(rowListParams: RowListParams) = apply {
+            inferencePipelineId = rowListParams.inferencePipelineId
+            asc = rowListParams.asc
+            page = rowListParams.page
+            perPage = rowListParams.perPage
+            sortColumn = rowListParams.sortColumn
+            body = rowListParams.body.toBuilder()
+            additionalHeaders = rowListParams.additionalHeaders.toBuilder()
+            additionalQueryParams = rowListParams.additionalQueryParams.toBuilder()
         }
 
         fun inferencePipelineId(inferencePipelineId: String?) = apply {
@@ -584,12 +584,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [RowCreateParams].
+         * Returns an immutable instance of [RowListParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): RowCreateParams =
-            RowCreateParams(
+        fun build(): RowListParams =
+            RowListParams(
                 inferencePipelineId,
                 asc,
                 page,
@@ -2931,7 +2931,7 @@ private constructor(
             return true
         }
 
-        return other is RowCreateParams &&
+        return other is RowListParams &&
             inferencePipelineId == other.inferencePipelineId &&
             asc == other.asc &&
             page == other.page &&
@@ -2955,5 +2955,5 @@ private constructor(
         )
 
     override fun toString() =
-        "RowCreateParams{inferencePipelineId=$inferencePipelineId, asc=$asc, page=$page, perPage=$perPage, sortColumn=$sortColumn, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "RowListParams{inferencePipelineId=$inferencePipelineId, asc=$asc, page=$page, perPage=$perPage, sortColumn=$sortColumn, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

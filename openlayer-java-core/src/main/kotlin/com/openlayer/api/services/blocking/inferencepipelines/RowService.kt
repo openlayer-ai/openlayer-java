@@ -6,8 +6,8 @@ import com.google.errorprone.annotations.MustBeClosed
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.inferencepipelines.rows.RowCreateParams
-import com.openlayer.api.models.inferencepipelines.rows.RowCreateResponse
+import com.openlayer.api.models.inferencepipelines.rows.RowListParams
+import com.openlayer.api.models.inferencepipelines.rows.RowListResponse
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateResponse
 import java.util.function.Consumer
@@ -25,37 +25,6 @@ interface RowService {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowService
-
-    /** A list of rows for an inference pipeline. */
-    fun create(inferencePipelineId: String): RowCreateResponse =
-        create(inferencePipelineId, RowCreateParams.none())
-
-    /** @see create */
-    fun create(
-        inferencePipelineId: String,
-        params: RowCreateParams = RowCreateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): RowCreateResponse =
-        create(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
-
-    /** @see create */
-    fun create(
-        inferencePipelineId: String,
-        params: RowCreateParams = RowCreateParams.none(),
-    ): RowCreateResponse = create(inferencePipelineId, params, RequestOptions.none())
-
-    /** @see create */
-    fun create(
-        params: RowCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): RowCreateResponse
-
-    /** @see create */
-    fun create(params: RowCreateParams): RowCreateResponse = create(params, RequestOptions.none())
-
-    /** @see create */
-    fun create(inferencePipelineId: String, requestOptions: RequestOptions): RowCreateResponse =
-        create(inferencePipelineId, RowCreateParams.none(), requestOptions)
 
     /** Update an inference data point in an inference pipeline. */
     fun update(inferencePipelineId: String, params: RowUpdateParams): RowUpdateResponse =
@@ -78,6 +47,37 @@ interface RowService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RowUpdateResponse
 
+    /** A list of rows for an inference pipeline. */
+    fun list(inferencePipelineId: String): RowListResponse =
+        list(inferencePipelineId, RowListParams.none())
+
+    /** @see list */
+    fun list(
+        inferencePipelineId: String,
+        params: RowListParams = RowListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RowListResponse =
+        list(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see list */
+    fun list(
+        inferencePipelineId: String,
+        params: RowListParams = RowListParams.none(),
+    ): RowListResponse = list(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see list */
+    fun list(
+        params: RowListParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): RowListResponse
+
+    /** @see list */
+    fun list(params: RowListParams): RowListResponse = list(params, RequestOptions.none())
+
+    /** @see list */
+    fun list(inferencePipelineId: String, requestOptions: RequestOptions): RowListResponse =
+        list(inferencePipelineId, RowListParams.none(), requestOptions)
+
     /** A view of [RowService] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -87,54 +87,6 @@ interface RowService {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowService.WithRawResponse
-
-        /**
-         * Returns a raw HTTP response for `post /inference-pipelines/{inferencePipelineId}/rows`,
-         * but is otherwise the same as [RowService.create].
-         */
-        @MustBeClosed
-        fun create(inferencePipelineId: String): HttpResponseFor<RowCreateResponse> =
-            create(inferencePipelineId, RowCreateParams.none())
-
-        /** @see create */
-        @MustBeClosed
-        fun create(
-            inferencePipelineId: String,
-            params: RowCreateParams = RowCreateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<RowCreateResponse> =
-            create(
-                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
-                requestOptions,
-            )
-
-        /** @see create */
-        @MustBeClosed
-        fun create(
-            inferencePipelineId: String,
-            params: RowCreateParams = RowCreateParams.none(),
-        ): HttpResponseFor<RowCreateResponse> =
-            create(inferencePipelineId, params, RequestOptions.none())
-
-        /** @see create */
-        @MustBeClosed
-        fun create(
-            params: RowCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): HttpResponseFor<RowCreateResponse>
-
-        /** @see create */
-        @MustBeClosed
-        fun create(params: RowCreateParams): HttpResponseFor<RowCreateResponse> =
-            create(params, RequestOptions.none())
-
-        /** @see create */
-        @MustBeClosed
-        fun create(
-            inferencePipelineId: String,
-            requestOptions: RequestOptions,
-        ): HttpResponseFor<RowCreateResponse> =
-            create(inferencePipelineId, RowCreateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /inference-pipelines/{inferencePipelineId}/rows`,
@@ -170,5 +122,53 @@ interface RowService {
             params: RowUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): HttpResponseFor<RowUpdateResponse>
+
+        /**
+         * Returns a raw HTTP response for `post /inference-pipelines/{inferencePipelineId}/rows`,
+         * but is otherwise the same as [RowService.list].
+         */
+        @MustBeClosed
+        fun list(inferencePipelineId: String): HttpResponseFor<RowListResponse> =
+            list(inferencePipelineId, RowListParams.none())
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            inferencePipelineId: String,
+            params: RowListParams = RowListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RowListResponse> =
+            list(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            inferencePipelineId: String,
+            params: RowListParams = RowListParams.none(),
+        ): HttpResponseFor<RowListResponse> =
+            list(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            params: RowListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): HttpResponseFor<RowListResponse>
+
+        /** @see list */
+        @MustBeClosed
+        fun list(params: RowListParams): HttpResponseFor<RowListResponse> =
+            list(params, RequestOptions.none())
+
+        /** @see list */
+        @MustBeClosed
+        fun list(
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<RowListResponse> =
+            list(inferencePipelineId, RowListParams.none(), requestOptions)
     }
 }
