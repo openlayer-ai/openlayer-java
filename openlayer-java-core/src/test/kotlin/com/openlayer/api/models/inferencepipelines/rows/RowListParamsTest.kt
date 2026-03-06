@@ -7,20 +7,20 @@ import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class RowCreateParamsTest {
+internal class RowListParamsTest {
 
     @Test
     fun create() {
-        RowCreateParams.builder()
+        RowListParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .asc(true)
             .page(1L)
             .perPage(1L)
             .sortColumn("sortColumn")
             .addColumnFilter(
-                RowCreateParams.ColumnFilter.SetColumnFilter.builder()
+                RowListParams.ColumnFilter.SetColumnFilter.builder()
                     .measurement("openlayer_token_set")
-                    .operator(RowCreateParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE)
+                    .operator(RowListParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE)
                     .addValue("cat")
                     .build()
             )
@@ -36,7 +36,7 @@ internal class RowCreateParamsTest {
     @Test
     fun pathParams() {
         val params =
-            RowCreateParams.builder()
+            RowListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
@@ -48,18 +48,16 @@ internal class RowCreateParamsTest {
     @Test
     fun queryParams() {
         val params =
-            RowCreateParams.builder()
+            RowListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .asc(true)
                 .page(1L)
                 .perPage(1L)
                 .sortColumn("sortColumn")
                 .addColumnFilter(
-                    RowCreateParams.ColumnFilter.SetColumnFilter.builder()
+                    RowListParams.ColumnFilter.SetColumnFilter.builder()
                         .measurement("openlayer_token_set")
-                        .operator(
-                            RowCreateParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE
-                        )
+                        .operator(RowListParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE)
                         .addValue("cat")
                         .build()
                 )
@@ -87,7 +85,7 @@ internal class RowCreateParamsTest {
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params =
-            RowCreateParams.builder()
+            RowListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
@@ -99,18 +97,16 @@ internal class RowCreateParamsTest {
     @Test
     fun body() {
         val params =
-            RowCreateParams.builder()
+            RowListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .asc(true)
                 .page(1L)
                 .perPage(1L)
                 .sortColumn("sortColumn")
                 .addColumnFilter(
-                    RowCreateParams.ColumnFilter.SetColumnFilter.builder()
+                    RowListParams.ColumnFilter.SetColumnFilter.builder()
                         .measurement("openlayer_token_set")
-                        .operator(
-                            RowCreateParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE
-                        )
+                        .operator(RowListParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE)
                         .addValue("cat")
                         .build()
                 )
@@ -126,12 +122,10 @@ internal class RowCreateParamsTest {
 
         assertThat(body.columnFilters().getOrNull())
             .containsExactly(
-                RowCreateParams.ColumnFilter.ofSet(
-                    RowCreateParams.ColumnFilter.SetColumnFilter.builder()
+                RowListParams.ColumnFilter.ofSet(
+                    RowListParams.ColumnFilter.SetColumnFilter.builder()
                         .measurement("openlayer_token_set")
-                        .operator(
-                            RowCreateParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE
-                        )
+                        .operator(RowListParams.ColumnFilter.SetColumnFilter.Operator.CONTAINS_NONE)
                         .addValue("cat")
                         .build()
                 )
@@ -147,7 +141,7 @@ internal class RowCreateParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            RowCreateParams.builder()
+            RowListParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 

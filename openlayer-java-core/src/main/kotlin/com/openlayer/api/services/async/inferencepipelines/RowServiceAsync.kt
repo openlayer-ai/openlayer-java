@@ -5,8 +5,8 @@ package com.openlayer.api.services.async.inferencepipelines
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
-import com.openlayer.api.models.inferencepipelines.rows.RowCreateParams
-import com.openlayer.api.models.inferencepipelines.rows.RowCreateResponse
+import com.openlayer.api.models.inferencepipelines.rows.RowListParams
+import com.openlayer.api.models.inferencepipelines.rows.RowListResponse
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateResponse
 import java.util.concurrent.CompletableFuture
@@ -25,42 +25,6 @@ interface RowServiceAsync {
      * The original service is not modified.
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowServiceAsync
-
-    /** A list of rows for an inference pipeline. */
-    fun create(inferencePipelineId: String): CompletableFuture<RowCreateResponse> =
-        create(inferencePipelineId, RowCreateParams.none())
-
-    /** @see create */
-    fun create(
-        inferencePipelineId: String,
-        params: RowCreateParams = RowCreateParams.none(),
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<RowCreateResponse> =
-        create(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
-
-    /** @see create */
-    fun create(
-        inferencePipelineId: String,
-        params: RowCreateParams = RowCreateParams.none(),
-    ): CompletableFuture<RowCreateResponse> =
-        create(inferencePipelineId, params, RequestOptions.none())
-
-    /** @see create */
-    fun create(
-        params: RowCreateParams,
-        requestOptions: RequestOptions = RequestOptions.none(),
-    ): CompletableFuture<RowCreateResponse>
-
-    /** @see create */
-    fun create(params: RowCreateParams): CompletableFuture<RowCreateResponse> =
-        create(params, RequestOptions.none())
-
-    /** @see create */
-    fun create(
-        inferencePipelineId: String,
-        requestOptions: RequestOptions,
-    ): CompletableFuture<RowCreateResponse> =
-        create(inferencePipelineId, RowCreateParams.none(), requestOptions)
 
     /** Update an inference data point in an inference pipeline. */
     fun update(
@@ -87,6 +51,41 @@ interface RowServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RowUpdateResponse>
 
+    /** A list of rows for an inference pipeline. */
+    fun list(inferencePipelineId: String): CompletableFuture<RowListResponse> =
+        list(inferencePipelineId, RowListParams.none())
+
+    /** @see list */
+    fun list(
+        inferencePipelineId: String,
+        params: RowListParams = RowListParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RowListResponse> =
+        list(params.toBuilder().inferencePipelineId(inferencePipelineId).build(), requestOptions)
+
+    /** @see list */
+    fun list(
+        inferencePipelineId: String,
+        params: RowListParams = RowListParams.none(),
+    ): CompletableFuture<RowListResponse> = list(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see list */
+    fun list(
+        params: RowListParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<RowListResponse>
+
+    /** @see list */
+    fun list(params: RowListParams): CompletableFuture<RowListResponse> =
+        list(params, RequestOptions.none())
+
+    /** @see list */
+    fun list(
+        inferencePipelineId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<RowListResponse> =
+        list(inferencePipelineId, RowListParams.none(), requestOptions)
+
     /** A view of [RowServiceAsync] that provides access to raw HTTP responses for each method. */
     interface WithRawResponse {
 
@@ -96,50 +95,6 @@ interface RowServiceAsync {
          * The original service is not modified.
          */
         fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowServiceAsync.WithRawResponse
-
-        /**
-         * Returns a raw HTTP response for `post /inference-pipelines/{inferencePipelineId}/rows`,
-         * but is otherwise the same as [RowServiceAsync.create].
-         */
-        fun create(
-            inferencePipelineId: String
-        ): CompletableFuture<HttpResponseFor<RowCreateResponse>> =
-            create(inferencePipelineId, RowCreateParams.none())
-
-        /** @see create */
-        fun create(
-            inferencePipelineId: String,
-            params: RowCreateParams = RowCreateParams.none(),
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<RowCreateResponse>> =
-            create(
-                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
-                requestOptions,
-            )
-
-        /** @see create */
-        fun create(
-            inferencePipelineId: String,
-            params: RowCreateParams = RowCreateParams.none(),
-        ): CompletableFuture<HttpResponseFor<RowCreateResponse>> =
-            create(inferencePipelineId, params, RequestOptions.none())
-
-        /** @see create */
-        fun create(
-            params: RowCreateParams,
-            requestOptions: RequestOptions = RequestOptions.none(),
-        ): CompletableFuture<HttpResponseFor<RowCreateResponse>>
-
-        /** @see create */
-        fun create(params: RowCreateParams): CompletableFuture<HttpResponseFor<RowCreateResponse>> =
-            create(params, RequestOptions.none())
-
-        /** @see create */
-        fun create(
-            inferencePipelineId: String,
-            requestOptions: RequestOptions,
-        ): CompletableFuture<HttpResponseFor<RowCreateResponse>> =
-            create(inferencePipelineId, RowCreateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `put /inference-pipelines/{inferencePipelineId}/rows`,
@@ -171,5 +126,47 @@ interface RowServiceAsync {
             params: RowUpdateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<RowUpdateResponse>>
+
+        /**
+         * Returns a raw HTTP response for `post /inference-pipelines/{inferencePipelineId}/rows`,
+         * but is otherwise the same as [RowServiceAsync.list].
+         */
+        fun list(inferencePipelineId: String): CompletableFuture<HttpResponseFor<RowListResponse>> =
+            list(inferencePipelineId, RowListParams.none())
+
+        /** @see list */
+        fun list(
+            inferencePipelineId: String,
+            params: RowListParams = RowListParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RowListResponse>> =
+            list(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see list */
+        fun list(
+            inferencePipelineId: String,
+            params: RowListParams = RowListParams.none(),
+        ): CompletableFuture<HttpResponseFor<RowListResponse>> =
+            list(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see list */
+        fun list(
+            params: RowListParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<RowListResponse>>
+
+        /** @see list */
+        fun list(params: RowListParams): CompletableFuture<HttpResponseFor<RowListResponse>> =
+            list(params, RequestOptions.none())
+
+        /** @see list */
+        fun list(
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<RowListResponse>> =
+            list(inferencePipelineId, RowListParams.none(), requestOptions)
     }
 }
