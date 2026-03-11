@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.6.1 (2026-03-11)
+
+Full Changelog: [v0.6.0...v0.6.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.6.0...v0.6.1)
+
+### Bug Fixes
+
+* **client:** incorrect `Retry-After` parsing ([434a822](https://github.com/openlayer-ai/openlayer-java/commit/434a82208f0b50705ac7ce7fe740650479c0fabb))
+
 ## 0.6.0 (2026-03-06)
 
 Full Changelog: [v0.5.2...v0.6.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.5.2...v0.6.0)
