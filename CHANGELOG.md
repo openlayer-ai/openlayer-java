@@ -1,5 +1,25 @@
 # Changelog
 
+## 0.6.2 (2026-03-20)
+
+Full Changelog: [v0.6.1...v0.6.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.6.1...v0.6.2)
+
+### Bug Fixes
+
+* **client:** allow updating header/query affecting fields in `toBuilder()` ([d8d7183](https://github.com/openlayer-ai/openlayer-java/commit/d8d71833a6e9c2558290671cc7eb09929a7052cc))
+
+
+### Chores
+
+* **internal:** bump ktfmt ([b5baeb0](https://github.com/openlayer-ai/openlayer-java/commit/b5baeb0a9a47e2b1bd713141c8ec1b0f89a42317))
+* **internal:** tweak CI branches ([213ce88](https://github.com/openlayer-ai/openlayer-java/commit/213ce883034978b2e18bae11630c5d32a627058a))
+* **internal:** update retry delay tests ([29c1ab3](https://github.com/openlayer-ai/openlayer-java/commit/29c1ab379fc3a5f5a2c90e6a46c93e9060309f1e))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([0c240d8](https://github.com/openlayer-ai/openlayer-java/commit/0c240d8156ac2385a97f39e8017efef69293edfe))
+
 ## 0.6.1 (2026-03-11)
 
 Full Changelog: [v0.6.0...v0.6.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.6.0...v0.6.1)
