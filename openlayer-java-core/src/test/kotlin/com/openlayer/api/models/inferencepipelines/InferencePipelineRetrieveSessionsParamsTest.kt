@@ -7,21 +7,22 @@ import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class InferencePipelineRetrieveUsersParamsTest {
+internal class InferencePipelineRetrieveSessionsParamsTest {
 
     @Test
     fun create() {
-        InferencePipelineRetrieveUsersParams.builder()
+        InferencePipelineRetrieveSessionsParams.builder()
             .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
             .asc(true)
             .page(1L)
             .perPage(1L)
             .sortColumn("sortColumn")
             .addColumnFilter(
-                InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter.builder()
+                InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter.builder()
                     .measurement("openlayer_token_set")
                     .operator(
-                        InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter.Operator
+                        InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter
+                            .Operator
                             .CONTAINS_NONE
                     )
                     .addValue("cat")
@@ -39,7 +40,7 @@ internal class InferencePipelineRetrieveUsersParamsTest {
     @Test
     fun pathParams() {
         val params =
-            InferencePipelineRetrieveUsersParams.builder()
+            InferencePipelineRetrieveSessionsParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
@@ -51,17 +52,17 @@ internal class InferencePipelineRetrieveUsersParamsTest {
     @Test
     fun queryParams() {
         val params =
-            InferencePipelineRetrieveUsersParams.builder()
+            InferencePipelineRetrieveSessionsParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .asc(true)
                 .page(1L)
                 .perPage(1L)
                 .sortColumn("sortColumn")
                 .addColumnFilter(
-                    InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter.builder()
+                    InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter.builder()
                         .measurement("openlayer_token_set")
                         .operator(
-                            InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter
+                            InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter
                                 .Operator
                                 .CONTAINS_NONE
                         )
@@ -92,7 +93,7 @@ internal class InferencePipelineRetrieveUsersParamsTest {
     @Test
     fun queryParamsWithoutOptionalFields() {
         val params =
-            InferencePipelineRetrieveUsersParams.builder()
+            InferencePipelineRetrieveSessionsParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 
@@ -104,17 +105,17 @@ internal class InferencePipelineRetrieveUsersParamsTest {
     @Test
     fun body() {
         val params =
-            InferencePipelineRetrieveUsersParams.builder()
+            InferencePipelineRetrieveSessionsParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .asc(true)
                 .page(1L)
                 .perPage(1L)
                 .sortColumn("sortColumn")
                 .addColumnFilter(
-                    InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter.builder()
+                    InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter.builder()
                         .measurement("openlayer_token_set")
                         .operator(
-                            InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter
+                            InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter
                                 .Operator
                                 .CONTAINS_NONE
                         )
@@ -133,11 +134,11 @@ internal class InferencePipelineRetrieveUsersParamsTest {
 
         assertThat(body.columnFilters().getOrNull())
             .containsExactly(
-                InferencePipelineRetrieveUsersParams.ColumnFilter.ofSet(
-                    InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter.builder()
+                InferencePipelineRetrieveSessionsParams.ColumnFilter.ofSet(
+                    InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter.builder()
                         .measurement("openlayer_token_set")
                         .operator(
-                            InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter
+                            InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter
                                 .Operator
                                 .CONTAINS_NONE
                         )
@@ -156,7 +157,7 @@ internal class InferencePipelineRetrieveUsersParamsTest {
     @Test
     fun bodyWithoutOptionalFields() {
         val params =
-            InferencePipelineRetrieveUsersParams.builder()
+            InferencePipelineRetrieveSessionsParams.builder()
                 .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .build()
 

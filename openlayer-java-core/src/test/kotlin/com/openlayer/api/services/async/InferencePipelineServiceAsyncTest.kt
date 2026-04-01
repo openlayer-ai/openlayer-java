@@ -5,6 +5,7 @@ package com.openlayer.api.services.async
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveSessionsParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
 import org.junit.jupiter.api.Test
@@ -72,6 +73,48 @@ internal class InferencePipelineServiceAsyncTest {
     }
 
     @Test
+    fun retrieveSessions() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val inferencePipelineServiceAsync = client.inferencePipelines()
+
+        val responseFuture =
+            inferencePipelineServiceAsync.retrieveSessions(
+                InferencePipelineRetrieveSessionsParams.builder()
+                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .asc(true)
+                    .page(1L)
+                    .perPage(1L)
+                    .sortColumn("sortColumn")
+                    .addColumnFilter(
+                        InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter
+                            .builder()
+                            .measurement("openlayer_token_set")
+                            .operator(
+                                InferencePipelineRetrieveSessionsParams.ColumnFilter.SetColumnFilter
+                                    .Operator
+                                    .CONTAINS_NONE
+                            )
+                            .addValue("cat")
+                            .build()
+                    )
+                    .addExcludeRowIdList(0L)
+                    .addNotSearchQueryAnd("string")
+                    .addNotSearchQueryOr("string")
+                    .addRowIdList(0L)
+                    .addSearchQueryAnd("string")
+                    .addSearchQueryOr("string")
+                    .build()
+            )
+
+        val response = responseFuture.get()
+        response.validate()
+    }
+
+    @Test
     fun retrieveUsers() {
         val client =
             OpenlayerOkHttpClientAsync.builder()
@@ -84,8 +127,27 @@ internal class InferencePipelineServiceAsyncTest {
             inferencePipelineServiceAsync.retrieveUsers(
                 InferencePipelineRetrieveUsersParams.builder()
                     .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .asc(true)
                     .page(1L)
                     .perPage(1L)
+                    .sortColumn("sortColumn")
+                    .addColumnFilter(
+                        InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter.builder()
+                            .measurement("openlayer_token_set")
+                            .operator(
+                                InferencePipelineRetrieveUsersParams.ColumnFilter.SetColumnFilter
+                                    .Operator
+                                    .CONTAINS_NONE
+                            )
+                            .addValue("cat")
+                            .build()
+                    )
+                    .addExcludeRowIdList(0L)
+                    .addNotSearchQueryAnd("string")
+                    .addNotSearchQueryOr("string")
+                    .addRowIdList(0L)
+                    .addSearchQueryAnd("string")
+                    .addSearchQueryOr("string")
                     .build()
             )
 
