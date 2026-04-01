@@ -20,6 +20,8 @@ import com.openlayer.api.core.prepare
 import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveSessionsParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveSessionsResponse
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersResponse
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
@@ -76,11 +78,18 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
         withRawResponse().delete(params, requestOptions)
     }
 
+    override fun retrieveSessions(
+        params: InferencePipelineRetrieveSessionsParams,
+        requestOptions: RequestOptions,
+    ): InferencePipelineRetrieveSessionsResponse =
+        // post /inference-pipelines/{inferencePipelineId}/sessions
+        withRawResponse().retrieveSessions(params, requestOptions).parse()
+
     override fun retrieveUsers(
         params: InferencePipelineRetrieveUsersParams,
         requestOptions: RequestOptions,
     ): InferencePipelineRetrieveUsersResponse =
-        // get /inference-pipelines/{inferencePipelineId}/users
+        // post /inference-pipelines/{inferencePipelineId}/users
         withRawResponse().retrieveUsers(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -199,6 +208,37 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             }
         }
 
+        private val retrieveSessionsHandler: Handler<InferencePipelineRetrieveSessionsResponse> =
+            jsonHandler<InferencePipelineRetrieveSessionsResponse>(clientOptions.jsonMapper)
+
+        override fun retrieveSessions(
+            params: InferencePipelineRetrieveSessionsParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<InferencePipelineRetrieveSessionsResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.POST)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("inference-pipelines", params._pathParam(0), "sessions")
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveSessionsHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
         private val retrieveUsersHandler: Handler<InferencePipelineRetrieveUsersResponse> =
             jsonHandler<InferencePipelineRetrieveUsersResponse>(clientOptions.jsonMapper)
 
@@ -211,9 +251,10 @@ class InferencePipelineServiceImpl internal constructor(private val clientOption
             checkRequired("inferencePipelineId", params.inferencePipelineId().getOrNull())
             val request =
                 HttpRequest.builder()
-                    .method(HttpMethod.GET)
+                    .method(HttpMethod.POST)
                     .baseUrl(clientOptions.baseUrl())
                     .addPathSegments("inference-pipelines", params._pathParam(0), "users")
+                    .body(json(clientOptions.jsonMapper, params._body()))
                     .build()
                     .prepare(clientOptions, params)
             val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
