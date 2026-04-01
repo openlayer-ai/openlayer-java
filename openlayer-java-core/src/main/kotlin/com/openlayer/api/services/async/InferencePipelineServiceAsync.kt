@@ -9,6 +9,8 @@ import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.inferencepipelines.InferencePipelineDeleteParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveResponse
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveSessionsParams
+import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveSessionsResponse
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersParams
 import com.openlayer.api.models.inferencepipelines.InferencePipelineRetrieveUsersResponse
 import com.openlayer.api.models.inferencepipelines.InferencePipelineUpdateParams
@@ -153,6 +155,60 @@ interface InferencePipelineServiceAsync {
         requestOptions: RequestOptions,
     ): CompletableFuture<Void?> =
         delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)
+
+    /**
+     * Get aggregated session data for an inference pipeline with pagination and metadata.
+     *
+     * Returns a list of sessions for the inference pipeline, including activity statistics such as
+     * record counts, token usage, cost, latency, and the first and last records.
+     */
+    fun retrieveSessions(
+        inferencePipelineId: String
+    ): CompletableFuture<InferencePipelineRetrieveSessionsResponse> =
+        retrieveSessions(inferencePipelineId, InferencePipelineRetrieveSessionsParams.none())
+
+    /** @see retrieveSessions */
+    fun retrieveSessions(
+        inferencePipelineId: String,
+        params: InferencePipelineRetrieveSessionsParams =
+            InferencePipelineRetrieveSessionsParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<InferencePipelineRetrieveSessionsResponse> =
+        retrieveSessions(
+            params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+            requestOptions,
+        )
+
+    /** @see retrieveSessions */
+    fun retrieveSessions(
+        inferencePipelineId: String,
+        params: InferencePipelineRetrieveSessionsParams =
+            InferencePipelineRetrieveSessionsParams.none(),
+    ): CompletableFuture<InferencePipelineRetrieveSessionsResponse> =
+        retrieveSessions(inferencePipelineId, params, RequestOptions.none())
+
+    /** @see retrieveSessions */
+    fun retrieveSessions(
+        params: InferencePipelineRetrieveSessionsParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<InferencePipelineRetrieveSessionsResponse>
+
+    /** @see retrieveSessions */
+    fun retrieveSessions(
+        params: InferencePipelineRetrieveSessionsParams
+    ): CompletableFuture<InferencePipelineRetrieveSessionsResponse> =
+        retrieveSessions(params, RequestOptions.none())
+
+    /** @see retrieveSessions */
+    fun retrieveSessions(
+        inferencePipelineId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<InferencePipelineRetrieveSessionsResponse> =
+        retrieveSessions(
+            inferencePipelineId,
+            InferencePipelineRetrieveSessionsParams.none(),
+            requestOptions,
+        )
 
     /**
      * Get aggregated user data for an inference pipeline with pagination and metadata.
@@ -362,7 +418,60 @@ interface InferencePipelineServiceAsync {
             delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)
 
         /**
-         * Returns a raw HTTP response for `get /inference-pipelines/{inferencePipelineId}/users`,
+         * Returns a raw HTTP response for `post
+         * /inference-pipelines/{inferencePipelineId}/sessions`, but is otherwise the same as
+         * [InferencePipelineServiceAsync.retrieveSessions].
+         */
+        fun retrieveSessions(
+            inferencePipelineId: String
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveSessionsResponse>> =
+            retrieveSessions(inferencePipelineId, InferencePipelineRetrieveSessionsParams.none())
+
+        /** @see retrieveSessions */
+        fun retrieveSessions(
+            inferencePipelineId: String,
+            params: InferencePipelineRetrieveSessionsParams =
+                InferencePipelineRetrieveSessionsParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveSessionsResponse>> =
+            retrieveSessions(
+                params.toBuilder().inferencePipelineId(inferencePipelineId).build(),
+                requestOptions,
+            )
+
+        /** @see retrieveSessions */
+        fun retrieveSessions(
+            inferencePipelineId: String,
+            params: InferencePipelineRetrieveSessionsParams =
+                InferencePipelineRetrieveSessionsParams.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveSessionsResponse>> =
+            retrieveSessions(inferencePipelineId, params, RequestOptions.none())
+
+        /** @see retrieveSessions */
+        fun retrieveSessions(
+            params: InferencePipelineRetrieveSessionsParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveSessionsResponse>>
+
+        /** @see retrieveSessions */
+        fun retrieveSessions(
+            params: InferencePipelineRetrieveSessionsParams
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveSessionsResponse>> =
+            retrieveSessions(params, RequestOptions.none())
+
+        /** @see retrieveSessions */
+        fun retrieveSessions(
+            inferencePipelineId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<InferencePipelineRetrieveSessionsResponse>> =
+            retrieveSessions(
+                inferencePipelineId,
+                InferencePipelineRetrieveSessionsParams.none(),
+                requestOptions,
+            )
+
+        /**
+         * Returns a raw HTTP response for `post /inference-pipelines/{inferencePipelineId}/users`,
          * but is otherwise the same as [InferencePipelineServiceAsync.retrieveUsers].
          */
         fun retrieveUsers(

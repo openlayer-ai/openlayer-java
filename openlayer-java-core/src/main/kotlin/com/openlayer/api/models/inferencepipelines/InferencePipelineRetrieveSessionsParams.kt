@@ -35,12 +35,12 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Get aggregated user data for an inference pipeline with pagination and metadata.
+ * Get aggregated session data for an inference pipeline with pagination and metadata.
  *
- * Returns a list of users who have interacted with the inference pipeline, including their activity
- * statistics such as session counts, record counts, token usage, and costs.
+ * Returns a list of sessions for the inference pipeline, including activity statistics such as
+ * record counts, token usage, cost, latency, and the first and last records.
  */
-class InferencePipelineRetrieveUsersParams
+class InferencePipelineRetrieveSessionsParams
 private constructor(
     private val inferencePipelineId: String?,
     private val asc: Boolean?,
@@ -172,16 +172,16 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): InferencePipelineRetrieveUsersParams = builder().build()
+        @JvmStatic fun none(): InferencePipelineRetrieveSessionsParams = builder().build()
 
         /**
          * Returns a mutable builder for constructing an instance of
-         * [InferencePipelineRetrieveUsersParams].
+         * [InferencePipelineRetrieveSessionsParams].
          */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [InferencePipelineRetrieveUsersParams]. */
+    /** A builder for [InferencePipelineRetrieveSessionsParams]. */
     class Builder internal constructor() {
 
         private var inferencePipelineId: String? = null
@@ -195,17 +195,18 @@ private constructor(
 
         @JvmSynthetic
         internal fun from(
-            inferencePipelineRetrieveUsersParams: InferencePipelineRetrieveUsersParams
+            inferencePipelineRetrieveSessionsParams: InferencePipelineRetrieveSessionsParams
         ) = apply {
-            inferencePipelineId = inferencePipelineRetrieveUsersParams.inferencePipelineId
-            asc = inferencePipelineRetrieveUsersParams.asc
-            page = inferencePipelineRetrieveUsersParams.page
-            perPage = inferencePipelineRetrieveUsersParams.perPage
-            sortColumn = inferencePipelineRetrieveUsersParams.sortColumn
-            body = inferencePipelineRetrieveUsersParams.body.toBuilder()
-            additionalHeaders = inferencePipelineRetrieveUsersParams.additionalHeaders.toBuilder()
+            inferencePipelineId = inferencePipelineRetrieveSessionsParams.inferencePipelineId
+            asc = inferencePipelineRetrieveSessionsParams.asc
+            page = inferencePipelineRetrieveSessionsParams.page
+            perPage = inferencePipelineRetrieveSessionsParams.perPage
+            sortColumn = inferencePipelineRetrieveSessionsParams.sortColumn
+            body = inferencePipelineRetrieveSessionsParams.body.toBuilder()
+            additionalHeaders =
+                inferencePipelineRetrieveSessionsParams.additionalHeaders.toBuilder()
             additionalQueryParams =
-                inferencePipelineRetrieveUsersParams.additionalQueryParams.toBuilder()
+                inferencePipelineRetrieveSessionsParams.additionalQueryParams.toBuilder()
         }
 
         fun inferencePipelineId(inferencePipelineId: String?) = apply {
@@ -595,12 +596,12 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [InferencePipelineRetrieveUsersParams].
+         * Returns an immutable instance of [InferencePipelineRetrieveSessionsParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          */
-        fun build(): InferencePipelineRetrieveUsersParams =
-            InferencePipelineRetrieveUsersParams(
+        fun build(): InferencePipelineRetrieveSessionsParams =
+            InferencePipelineRetrieveSessionsParams(
                 inferencePipelineId,
                 asc,
                 page,
@@ -2942,7 +2943,7 @@ private constructor(
             return true
         }
 
-        return other is InferencePipelineRetrieveUsersParams &&
+        return other is InferencePipelineRetrieveSessionsParams &&
             inferencePipelineId == other.inferencePipelineId &&
             asc == other.asc &&
             page == other.page &&
@@ -2966,5 +2967,5 @@ private constructor(
         )
 
     override fun toString() =
-        "InferencePipelineRetrieveUsersParams{inferencePipelineId=$inferencePipelineId, asc=$asc, page=$page, perPage=$perPage, sortColumn=$sortColumn, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "InferencePipelineRetrieveSessionsParams{inferencePipelineId=$inferencePipelineId, asc=$asc, page=$page, perPage=$perPage, sortColumn=$sortColumn, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
