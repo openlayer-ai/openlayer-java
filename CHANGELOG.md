@@ -1,5 +1,172 @@
 # Changelog
 
+## 0.7.0 (2026-04-01)
+
+Full Changelog: [v0.6.2...v0.7.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.6.2...v0.7.0)
+
+### ⚠ BREAKING CHANGES
+
+* **client:** extract auto pagination to shared classes
+* **client:** **Migration:** - If you were referencing the `AutoPager` class on a specific `*Page` or `*PageAsync` type, then you should instead reference the shared `AutoPager` and `AutoPagerAsync` types, under the `core` package
+    - `AutoPagerAsync` now has different usage. You can call `.subscribe(...)` on the returned object instead to get called back each page item. You can also call `onCompleteFuture()` to get a future that completes when all items have been processed. Finally, you can call `.close()` on the returned object to stop auto-paginating early
+    - If you were referencing `getNextPage` or `getNextPageParams`:
+       - Swap to `nextPage()` and `nextPageParams()`
+       - Note that these both now return non-optional types (use `hasNextPage()` before calling these, since they will throw if it's impossible to get another page)
+
+### Features
+
+* **api:** add missing endpoints ([0fd157b](https://github.com/openlayer-ai/openlayer-java/commit/0fd157bf086077ee3fc168af487149cd1c77402f))
+* **api:** add test evaluation method ([d0640a7](https://github.com/openlayer-ai/openlayer-java/commit/d0640a7d75355f4c98a7cc643dd0c5f3419b6db7))
+* **api:** api update ([db0bfe7](https://github.com/openlayer-ai/openlayer-java/commit/db0bfe7d62c4b28ea22bf7a4881a47c2700ce5cd))
+* **api:** api update ([553299c](https://github.com/openlayer-ai/openlayer-java/commit/553299c6fc5a77b8064ca6c7257cd48f6a6a3a62))
+* **api:** api update ([e8df0b8](https://github.com/openlayer-ai/openlayer-java/commit/e8df0b82ac5c40d9b22f5476def4063a1d963977))
+* **api:** api update ([#68](https://github.com/openlayer-ai/openlayer-java/issues/68)) ([f58ba60](https://github.com/openlayer-ai/openlayer-java/commit/f58ba60cd5587a6fc72cb3b7cb9da7740616fbd2))
+* **api:** manual updates ([243f364](https://github.com/openlayer-ai/openlayer-java/commit/243f364f4a06a3c3f501067d3b0c0b87eec1a202))
+* **api:** manual updates ([#42](https://github.com/openlayer-ai/openlayer-java/issues/42)) ([c783d0d](https://github.com/openlayer-ai/openlayer-java/commit/c783d0d04755b5f3e87011827c0a5e7f6d780f85))
+* **api:** manual updates ([#43](https://github.com/openlayer-ai/openlayer-java/issues/43)) ([307340d](https://github.com/openlayer-ai/openlayer-java/commit/307340dc6d484b1d283d3252a4c7b184cec3f1d1))
+* **api:** OpenAPI spec update via Stainless API ([da3f817](https://github.com/openlayer-ai/openlayer-java/commit/da3f8173e91a3f62c1a8ecf07198baff04afccda))
+* **api:** OpenAPI spec update via Stainless API ([#13](https://github.com/openlayer-ai/openlayer-java/issues/13)) ([d6ee032](https://github.com/openlayer-ai/openlayer-java/commit/d6ee0328a6db44cc66abf230fd192e52ff042332))
+* **api:** OpenAPI spec update via Stainless API ([#16](https://github.com/openlayer-ai/openlayer-java/issues/16)) ([5a5a5ba](https://github.com/openlayer-ai/openlayer-java/commit/5a5a5bad520a462631282438069d1e040056e3c3))
+* **api:** OpenAPI spec update via Stainless API ([#22](https://github.com/openlayer-ai/openlayer-java/issues/22)) ([90c35a9](https://github.com/openlayer-ai/openlayer-java/commit/90c35a9e48dbfd610de5e3dcc60c81a424d4a0df))
+* **api:** OpenAPI spec update via Stainless API ([#36](https://github.com/openlayer-ai/openlayer-java/issues/36)) ([7bc6a73](https://github.com/openlayer-ai/openlayer-java/commit/7bc6a73cacdc7317c088387d88955bdf141b4e21))
+* **api:** OpenAPI spec update via Stainless API ([#8](https://github.com/openlayer-ai/openlayer-java/issues/8)) ([9d50db9](https://github.com/openlayer-ai/openlayer-java/commit/9d50db9ff004f4720dc9d16dae1f4e7dceed0949))
+* **api:** OpenAPI spec update via Stainless API ([#9](https://github.com/openlayer-ai/openlayer-java/issues/9)) ([cfe4133](https://github.com/openlayer-ai/openlayer-java/commit/cfe41334149e1efba03bfe21f5c590957ba5620e))
+* **api:** update POST /rows to use list method name ([5917df4](https://github.com/openlayer-ai/openlayer-java/commit/5917df4eef5e978b6043ee381db930426336be2d))
+* **api:** update via SDK Studio ([#1](https://github.com/openlayer-ai/openlayer-java/issues/1)) ([0afa19f](https://github.com/openlayer-ai/openlayer-java/commit/0afa19fc779177296942529e4dbd497d2a529884))
+* **api:** update via SDK Studio ([#10](https://github.com/openlayer-ai/openlayer-java/issues/10)) ([2d1902c](https://github.com/openlayer-ai/openlayer-java/commit/2d1902c9261e736a94be3ba96956621f332c39d1))
+* **api:** update via SDK Studio ([#14](https://github.com/openlayer-ai/openlayer-java/issues/14)) ([28c2236](https://github.com/openlayer-ai/openlayer-java/commit/28c2236a34b4c4a465a96a7da5e50887a7f952d2))
+* **api:** update via SDK Studio ([#15](https://github.com/openlayer-ai/openlayer-java/issues/15)) ([f946ae8](https://github.com/openlayer-ai/openlayer-java/commit/f946ae8af67ca17778da18564f35888222489473))
+* **api:** update via SDK Studio ([#21](https://github.com/openlayer-ai/openlayer-java/issues/21)) ([1719e53](https://github.com/openlayer-ai/openlayer-java/commit/1719e537914f492c708f02fb2f1fe26d0b9ac68a))
+* **api:** update via SDK Studio ([#23](https://github.com/openlayer-ai/openlayer-java/issues/23)) ([f38382d](https://github.com/openlayer-ai/openlayer-java/commit/f38382dbb535aa2da00f474a44d7db2d83406be8))
+* **api:** update via SDK Studio ([#24](https://github.com/openlayer-ai/openlayer-java/issues/24)) ([5185670](https://github.com/openlayer-ai/openlayer-java/commit/5185670da64e566ff40f10e8a9084d639543f2f1))
+* **api:** update via SDK Studio ([#27](https://github.com/openlayer-ai/openlayer-java/issues/27)) ([fbdb579](https://github.com/openlayer-ai/openlayer-java/commit/fbdb579abc2b9958a852ac25b5f171a75446e249))
+* **api:** update via SDK Studio ([#32](https://github.com/openlayer-ai/openlayer-java/issues/32)) ([d81fedc](https://github.com/openlayer-ai/openlayer-java/commit/d81fedcc034776eaff3a58578e0ed78792b7ba9d))
+* **api:** update via SDK Studio ([#40](https://github.com/openlayer-ai/openlayer-java/issues/40)) ([79fb06d](https://github.com/openlayer-ai/openlayer-java/commit/79fb06d5f876b0239bb10df4ce8c4ccb56b6ddb7))
+* **api:** update via SDK Studio ([#41](https://github.com/openlayer-ai/openlayer-java/issues/41)) ([eefdf01](https://github.com/openlayer-ai/openlayer-java/commit/eefdf01a1cde39d0bb0a993c7b888b2791e5682d))
+* **api:** update via SDK Studio ([#5](https://github.com/openlayer-ai/openlayer-java/issues/5)) ([f01f468](https://github.com/openlayer-ai/openlayer-java/commit/f01f468c2b6a0521a5f67bf7715d9d1e68eab49c))
+* **api:** update via SDK Studio ([#7](https://github.com/openlayer-ai/openlayer-java/issues/7)) ([ee5c439](https://github.com/openlayer-ai/openlayer-java/commit/ee5c4390fa653422eedd2f26aace03ce6d028e0f))
+* **client:** add a `withOptions` method ([0ec9c48](https://github.com/openlayer-ai/openlayer-java/commit/0ec9c4807aef520b5e29079313970b990e1f0e17))
+* **client:** add connection pooling option ([ba03a66](https://github.com/openlayer-ai/openlayer-java/commit/ba03a664d64d15fac9943323b98067702a8e4420))
+* **client:** add logging when debug env is set ([#56](https://github.com/openlayer-ai/openlayer-java/issues/56)) ([dfc852f](https://github.com/openlayer-ai/openlayer-java/commit/dfc852ff4ab69ff78e12f5bb7571d39b76c2ee4d))
+* **client:** allow configuring dispatcher executor service ([2638be9](https://github.com/openlayer-ai/openlayer-java/commit/2638be9abf4a2df28bb5f4d0d0c9d870f6783bc5))
+* **client:** allow providing some params positionally ([12d07d2](https://github.com/openlayer-ai/openlayer-java/commit/12d07d2d7acbac98f449404d2ec46ec22317007b))
+* **client:** extract auto pagination to shared classes ([899dfb7](https://github.com/openlayer-ai/openlayer-java/commit/899dfb7218a0c1811896e97ca5408e75854f3929))
+* **client:** implement per-endpoint base URL support ([f2acdbc](https://github.com/openlayer-ai/openlayer-java/commit/f2acdbc285ae74999682585e4b2ab2c88b2a4795))
+* **client:** send `X-Stainless-Kotlin-Version` header ([9a8ed3e](https://github.com/openlayer-ai/openlayer-java/commit/9a8ed3e4f3def4ddd079f3cf9b7c91ba55bd643b))
+* **closes OPEN-8532:** expose 'tests/{id}/results' endpoint ([4764b16](https://github.com/openlayer-ai/openlayer-java/commit/4764b16756b0f9cd816995693987be6829fb9126))
+* **closes OPEN-9425:** document /rows endpoint in API reference and … ([1a6b3bf](https://github.com/openlayer-ai/openlayer-java/commit/1a6b3bfda0c4116179ab2f3631f8fc586452fe9b))
+
+
+### Bug Fixes
+
+* add missing fields ([0bec16b](https://github.com/openlayer-ai/openlayer-java/commit/0bec16be7676fbf225264de4ec2ce961ae6544d1))
+* **ci:** release-doctor — report correct token name ([ce92c93](https://github.com/openlayer-ai/openlayer-java/commit/ce92c93818225f297dd3400496614f75f75d3b78))
+* **client:** allow updating header/query affecting fields in `toBuilder()` ([2abc904](https://github.com/openlayer-ai/openlayer-java/commit/2abc9043417221d78bbae27187f9c246819d022a))
+* **client:** bump max requests per host to max requests (5 -&gt; 64) ([d52f901](https://github.com/openlayer-ai/openlayer-java/commit/d52f901967961f2d5ded480dd645aea22f575b1b))
+* **client:** disallow coercion from float to int ([77375ef](https://github.com/openlayer-ai/openlayer-java/commit/77375efd65db9facf75d8b2aa99b39d9afe0f3c0))
+* **client:** don't close client on `withOptions` usage when original is gc'd ([141e428](https://github.com/openlayer-ai/openlayer-java/commit/141e428fa7f7791af1b79183ee64bfe76fc2a588))
+* **client:** fully respect max retries ([2ba65fe](https://github.com/openlayer-ai/openlayer-java/commit/2ba65fe6381b629c7ae6cd39bf823f0257856926))
+* **client:** incorrect `Retry-After` parsing ([ce73303](https://github.com/openlayer-ai/openlayer-java/commit/ce73303bae99ab5da3feceb0930d4dac0c08504f))
+* **client:** preserve time zone in lenient date-time parsing ([3951fed](https://github.com/openlayer-ai/openlayer-java/commit/3951fed358ece855bef4e975ee25f4edd3493aba))
+* **client:** remove `@MustBeClosed` for future returning methods ([c6ebbbc](https://github.com/openlayer-ai/openlayer-java/commit/c6ebbbcc3fa3bed0b58c36f2228ebf599953b534))
+* **client:** send retry count header for max retries 0 ([2ba65fe](https://github.com/openlayer-ai/openlayer-java/commit/2ba65fe6381b629c7ae6cd39bf823f0257856926))
+* date time deserialization leniency ([9020a49](https://github.com/openlayer-ai/openlayer-java/commit/9020a49104b482b2c943eec67991b492d16abc65))
+* deserialization order ([9622bc0](https://github.com/openlayer-ai/openlayer-java/commit/9622bc0e072a6ab16b974cf92cc97e31f64b2ecf))
+* **docs:** use correct putAdditionalProperty value ([#33](https://github.com/openlayer-ai/openlayer-java/issues/33)) ([8edb19d](https://github.com/openlayer-ai/openlayer-java/commit/8edb19dbd0a52d5551f612c7b020a1a89c535162))
+* update stream data example ([01a6acb](https://github.com/openlayer-ai/openlayer-java/commit/01a6acb859853b961556dcc7e51b91a40def3461))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([f5f2c18](https://github.com/openlayer-ai/openlayer-java/commit/f5f2c189163743554902b3f3e3ad02dd4b2f08e1))
+* **ci:** limit release doctor target branches ([#17](https://github.com/openlayer-ai/openlayer-java/issues/17)) ([15b4e15](https://github.com/openlayer-ai/openlayer-java/commit/15b4e158ab9b89c77805374a30c5e5b22319a843))
+* **ci:** only run for pushes and fork pull requests ([9f2001f](https://github.com/openlayer-ai/openlayer-java/commit/9f2001f4d7a981bbddc54da2aa000e29a1bb2083))
+* **ci:** skip lint on metadata-only changes ([7bf62eb](https://github.com/openlayer-ai/openlayer-java/commit/7bf62ebcaa667e85fee97ca5ef74dec1ab91bf58))
+* **ci:** upgrade `actions/github-script` ([676a815](https://github.com/openlayer-ai/openlayer-java/commit/676a815ed1c6c91d72d73147974afcce5cc8cf2a))
+* **ci:** upgrade `actions/setup-java` ([da00776](https://github.com/openlayer-ai/openlayer-java/commit/da00776ba0b3e10e3a67b8dc2f5992618c90f5bd))
+* **closes OPEN-8576:** expose delete project endpoint ([88a190d](https://github.com/openlayer-ai/openlayer-java/commit/88a190d4980204be9546a2a7a76ab6c261c806e9))
+* **closes OPEN-8644:** address warnings on Stainless studio ([fcaebce](https://github.com/openlayer-ai/openlayer-java/commit/fcaebce16fde11d769b0bcbc65ddb74a9b929a27))
+* **closes OPEN-8647:** add endpoint to retrieve aggregated user data for inference pipelines ([4a8fade](https://github.com/openlayer-ai/openlayer-java/commit/4a8fade158902a6747ebdff0735116b215ea2406))
+* custom code changes ([#44](https://github.com/openlayer-ai/openlayer-java/issues/44)) ([c97f231](https://github.com/openlayer-ai/openlayer-java/commit/c97f2317807f5b0f05eb602f06c97082d099e956))
+* **docs:** add example project ([#71](https://github.com/openlayer-ai/openlayer-java/issues/71)) ([92b7a53](https://github.com/openlayer-ai/openlayer-java/commit/92b7a538423a5d9875eba16b421cdedf657a33b8))
+* **docs:** add example project ([#75](https://github.com/openlayer-ai/openlayer-java/issues/75)) ([449701f](https://github.com/openlayer-ai/openlayer-java/commit/449701f783ef12781d482398d2326116f2a4e82b))
+* **docs:** grammar improvements ([b4247da](https://github.com/openlayer-ai/openlayer-java/commit/b4247da66979f554f380f085faf5b14361f4b8b3))
+* **docs:** update readme ([#70](https://github.com/openlayer-ai/openlayer-java/issues/70)) ([ebe38c3](https://github.com/openlayer-ai/openlayer-java/commit/ebe38c3c81402278c42a2af94f2e959e0ad22aac))
+* **docs:** update readme ([#73](https://github.com/openlayer-ai/openlayer-java/issues/73)) ([e4abac7](https://github.com/openlayer-ai/openlayer-java/commit/e4abac77b4cfc5de991571aa11af3a7b63f3529c))
+* drop apache dependency ([9a86410](https://github.com/openlayer-ai/openlayer-java/commit/9a864103a8676869d8ec562c62aac631637947f3))
+* go live ([#6](https://github.com/openlayer-ai/openlayer-java/issues/6)) ([362fb69](https://github.com/openlayer-ai/openlayer-java/commit/362fb69783c7b4b87f4a13d9856fd35d7fd11024))
+* **internal:** allow passing args to `./scripts/test` ([e22eb3c](https://github.com/openlayer-ai/openlayer-java/commit/e22eb3c64eb0693888f6144594a701da9940ada6))
+* **internal:** bump ktfmt ([03d1fab](https://github.com/openlayer-ai/openlayer-java/commit/03d1fab22a5a46c28f73c1deee51c5f9b058338d))
+* **internal:** bump palantir-java-format ([8cd3a11](https://github.com/openlayer-ai/openlayer-java/commit/8cd3a11916616bf534c775dbdf208297a9978384))
+* **internal:** clean up maven repo artifact script and add html documentation to repo root ([53e8641](https://github.com/openlayer-ai/openlayer-java/commit/53e86410503ce720e6eae94f1cb79aa329365915))
+* **internal:** codegen related update ([b8f7dd3](https://github.com/openlayer-ai/openlayer-java/commit/b8f7dd30fe8fb7e0aed733e3e5ef8b04cb89a897))
+* **internal:** codegen related update ([c11e606](https://github.com/openlayer-ai/openlayer-java/commit/c11e606c309bb79ffbb5b769d492557b77f687a6))
+* **internal:** codegen related update ([4b4ac8d](https://github.com/openlayer-ai/openlayer-java/commit/4b4ac8d71e31355ddd9616741f2555c5e3f81964))
+* **internal:** codegen related update ([d01fae1](https://github.com/openlayer-ai/openlayer-java/commit/d01fae19fa9d8afc99dadcfd5ca15677ad3772c3))
+* **internal:** codegen related update ([82d8cbd](https://github.com/openlayer-ai/openlayer-java/commit/82d8cbd1d99ff549d6b0526253b2993a8a8b5957))
+* **internal:** codegen related update ([92a3bdf](https://github.com/openlayer-ai/openlayer-java/commit/92a3bdf0acf120399ce5df91c31dad29d195aaf4))
+* **internal:** codegen related update ([66e41f4](https://github.com/openlayer-ai/openlayer-java/commit/66e41f4f2f639dab1f30b840d3dc95064b29af8a))
+* **internal:** codegen related update ([#18](https://github.com/openlayer-ai/openlayer-java/issues/18)) ([1a0ebfe](https://github.com/openlayer-ai/openlayer-java/commit/1a0ebfe843e1f82b799e58f49656af609f39788f))
+* **internal:** codegen related update ([#52](https://github.com/openlayer-ai/openlayer-java/issues/52)) ([ee0ca36](https://github.com/openlayer-ai/openlayer-java/commit/ee0ca3691a8e2ef052d3df2b318e3195359396ad))
+* **internal:** codegen related update ([#54](https://github.com/openlayer-ai/openlayer-java/issues/54)) ([ebfe585](https://github.com/openlayer-ai/openlayer-java/commit/ebfe5851d88125c0aa74d7d3e93db7df3405d64a))
+* **internal:** codegen related update ([#58](https://github.com/openlayer-ai/openlayer-java/issues/58)) ([cacb99b](https://github.com/openlayer-ai/openlayer-java/commit/cacb99ba1c1046e9d1de51b99f087432c3e1bf07))
+* **internal:** codegen related update ([#66](https://github.com/openlayer-ai/openlayer-java/issues/66)) ([9dce8d6](https://github.com/openlayer-ai/openlayer-java/commit/9dce8d6ffbe3a03564db8c19cd0312cf33d143ff))
+* **internal:** codegen related update ([#72](https://github.com/openlayer-ai/openlayer-java/issues/72)) ([aa604fb](https://github.com/openlayer-ai/openlayer-java/commit/aa604fb7bbbf5df5f46823321fb0edf91f75125a))
+* **internal:** codegen related update ([#74](https://github.com/openlayer-ai/openlayer-java/issues/74)) ([f32b8fe](https://github.com/openlayer-ai/openlayer-java/commit/f32b8fefdd1053a7b0d1f9223957a4f2ba8c93e3))
+* **internal:** correct cache invalidation for `SKIP_MOCK_TESTS` ([02a7276](https://github.com/openlayer-ai/openlayer-java/commit/02a7276e024eecaa97c17d356d2f509a3efc765e))
+* **internal:** depend on packages directly in example ([2ba65fe](https://github.com/openlayer-ai/openlayer-java/commit/2ba65fe6381b629c7ae6cd39bf823f0257856926))
+* **internal:** expand imports ([11778da](https://github.com/openlayer-ai/openlayer-java/commit/11778dafad0c1e38ec2108b85a694c7611066852))
+* **internal:** improve maven repo docs ([71aeb5b](https://github.com/openlayer-ai/openlayer-java/commit/71aeb5b77214775d4968ba9e00725bc68c3f4412))
+* **internal:** make `OkHttp` constructor internal ([80b7734](https://github.com/openlayer-ai/openlayer-java/commit/80b7734a8abc0b1d8064e00ec661ec8398acf617))
+* **internal:** refactor release doctor script ([#19](https://github.com/openlayer-ai/openlayer-java/issues/19)) ([c5697d2](https://github.com/openlayer-ai/openlayer-java/commit/c5697d28e0e450c5e2690119142d50f5b40483fc))
+* **internal:** remove unused imports ([#65](https://github.com/openlayer-ai/openlayer-java/issues/65)) ([ee8efa5](https://github.com/openlayer-ai/openlayer-java/commit/ee8efa51b941939f2f4a775a66796363f0960228))
+* **internal:** restore release-please configuration files ([#26](https://github.com/openlayer-ai/openlayer-java/issues/26)) ([a1e98a3](https://github.com/openlayer-ai/openlayer-java/commit/a1e98a3505e24b11d2a4dffc1f9bf65fa13268f8))
+* **internal:** support uploading Maven repo artifacts to stainless package server ([5439587](https://github.com/openlayer-ai/openlayer-java/commit/54395875eaed0588a984e2f4f4dfce42ad723955))
+* **internal:** tweak CI branches ([c1520a9](https://github.com/openlayer-ai/openlayer-java/commit/c1520a9f9189ec324b5aef9717bdae9d2148ede5))
+* **internal:** update `actions/checkout` version ([7e798ae](https://github.com/openlayer-ai/openlayer-java/commit/7e798ae39e1c2013503867cba64e5037b4a1e72d))
+* **internal:** update `TestServerExtension` comment ([072130f](https://github.com/openlayer-ai/openlayer-java/commit/072130f02dbc9aeb69f7a09a58faae24ae07e420))
+* **internal:** update gitignore ([b35a3d6](https://github.com/openlayer-ai/openlayer-java/commit/b35a3d643c859f282013bde1be2e07279866cffe))
+* **internal:** update maven repo doc to include authentication ([0d5935b](https://github.com/openlayer-ai/openlayer-java/commit/0d5935b4c3fe95c01724a41e95918498396591a6))
+* **internal:** update multipart form array serialization ([9049ffa](https://github.com/openlayer-ai/openlayer-java/commit/9049ffab1273f693ba8c91ba5028fe5e5f7187ff))
+* **internal:** update retry delay tests ([40e87ce](https://github.com/openlayer-ai/openlayer-java/commit/40e87ce21188f0be8e11ceefbbedd6de92be1b3e))
+* **internal:** upgrade AssertJ ([f4798fb](https://github.com/openlayer-ai/openlayer-java/commit/f4798fb9b19024b3e86a38f8a4460558611097fc))
+* **internal:** version bump ([#3](https://github.com/openlayer-ai/openlayer-java/issues/3)) ([2e46974](https://github.com/openlayer-ai/openlayer-java/commit/2e46974aefcd77a33417b3d675bea14ccb95befd))
+* make `Properties` more resilient to `null` ([1f99443](https://github.com/openlayer-ai/openlayer-java/commit/1f99443bb66ce5c76d0d635a8137fd1f29d60699))
+* rebuild project due to codegen change ([#45](https://github.com/openlayer-ai/openlayer-java/issues/45)) ([cd40b00](https://github.com/openlayer-ai/openlayer-java/commit/cd40b0041bdf593ad5ca4927d9e4ff93eb8dc67c))
+* rebuild project due to codegen change ([#47](https://github.com/openlayer-ai/openlayer-java/issues/47)) ([bcae1b0](https://github.com/openlayer-ai/openlayer-java/commit/bcae1b02eeb6334174ad58dc1efe5258b048750e))
+* rebuild project due to codegen change ([#50](https://github.com/openlayer-ai/openlayer-java/issues/50)) ([c7db287](https://github.com/openlayer-ai/openlayer-java/commit/c7db28794e4dea84d90e88c26d22cb7b7ae43f6b))
+* remove _meta ([edc750e](https://github.com/openlayer-ai/openlayer-java/commit/edc750e5ea163def28f2d96f22171ae30c24395e))
+* sync repo ([f7f1be8](https://github.com/openlayer-ai/openlayer-java/commit/f7f1be8915e88cd472b8a5264498d430edda5dfe))
+* test on Jackson 2.14.0 to avoid encountering FasterXML/jackson-databind[#3240](https://github.com/openlayer-ai/openlayer-java/issues/3240) in tests ([9020a49](https://github.com/openlayer-ai/openlayer-java/commit/9020a49104b482b2c943eec67991b492d16abc65))
+* **test:** do not count install time for mock server timeout ([43c1d18](https://github.com/openlayer-ai/openlayer-java/commit/43c1d18cc2af66617b185520407c66be514d6671))
+* **tests:** bump steady to v0.19.4 ([70782fd](https://github.com/openlayer-ai/openlayer-java/commit/70782fda4eb5fc6d3b9a0b855b6f2a31b74fb802))
+* **tests:** bump steady to v0.19.5 ([908ffeb](https://github.com/openlayer-ai/openlayer-java/commit/908ffebe6143b08739be3c384abf8f718213347e))
+* **tests:** bump steady to v0.19.6 ([b5cc65d](https://github.com/openlayer-ai/openlayer-java/commit/b5cc65de8a475f2ffb1ed5a0528db81abe30c1b7))
+* **tests:** bump steady to v0.19.7 ([7203ca9](https://github.com/openlayer-ai/openlayer-java/commit/7203ca97fe695949b42bb137284e726af7166eab))
+* **tests:** bump steady to v0.20.1 ([e02947e](https://github.com/openlayer-ai/openlayer-java/commit/e02947edd8f9559866c04e192eb840f2597e58b7))
+* **tests:** bump steady to v0.20.2 ([3493f2d](https://github.com/openlayer-ai/openlayer-java/commit/3493f2d0d48fdb4cb91bf474bd6b6a70b76b9e0d))
+* **tests:** update prism version ([#25](https://github.com/openlayer-ai/openlayer-java/issues/25)) ([869979f](https://github.com/openlayer-ai/openlayer-java/commit/869979ff71526ecbe776d8850fdba024ad9080b5))
+* update example values in tests and docs ([#61](https://github.com/openlayer-ai/openlayer-java/issues/61)) ([9261558](https://github.com/openlayer-ai/openlayer-java/commit/9261558e69cb84bcc814dec61c061ceee18f654e))
+
+
+### Documentation
+
+* add comment for arbitrary value fields ([14034ba](https://github.com/openlayer-ai/openlayer-java/commit/14034ba66a924d5cb7a506c60d22281532a58d18))
+* add Spring AI sample application ([4cc1fb8](https://github.com/openlayer-ai/openlayer-java/commit/4cc1fb87584f47679b4e1be12be9f1d1e796481b))
+* remove or fix invalid readme examples ([3832089](https://github.com/openlayer-ai/openlayer-java/commit/38320897fe6ecdbdf46d6d09a7ea6be649730d21))
+
+
+### Styles
+
+* **internal:** make enum value definitions less verbose ([#63](https://github.com/openlayer-ai/openlayer-java/issues/63)) ([af7768b](https://github.com/openlayer-ai/openlayer-java/commit/af7768b795284d1c0ab31cd515bce153aadccc40))
+* **internal:** move enum identity methods to bottom of class ([#64](https://github.com/openlayer-ai/openlayer-java/issues/64)) ([8be700e](https://github.com/openlayer-ai/openlayer-java/commit/8be700e93d610cd40819d505da532650d719f916))
+
+
+### Refactors
+
+* **internal:** minor `ClientOptionsTest` change ([75ae750](https://github.com/openlayer-ai/openlayer-java/commit/75ae750bb6e5cfffe87a68e00b6c118d34f13b56))
+* **tests:** switch from prism to steady ([75c6133](https://github.com/openlayer-ai/openlayer-java/commit/75c613383894dc1350ee64121298d4c6756ff063))
+
 ## 0.6.2 (2026-03-20)
 
 Full Changelog: [v0.6.1...v0.6.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.6.1...v0.6.2)
