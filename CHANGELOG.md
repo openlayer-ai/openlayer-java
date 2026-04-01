@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0 (2026-04-01)
+
+Full Changelog: [v0.7.0...v0.8.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.7.0...v0.8.0)
+
+### Features
+
+* Cid/fetching endpoints ([5efb36f](https://github.com/openlayer-ai/openlayer-java/commit/5efb36f68fc0db96132ce01bb61f43fb469f2b6e))
+
 ## 0.7.0 (2026-04-01)
 
 Full Changelog: [v0.6.2...v0.7.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.6.2...v0.7.0)
