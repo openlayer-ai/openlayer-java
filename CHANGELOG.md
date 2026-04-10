@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.1 (2026-04-10)
+
+Full Changelog: [v0.8.0...v0.8.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.8.0...v0.8.1)
+
+### Documentation
+
+* **closes OPEN-9953:** expose endpoints to get and delete a row ([682a32d](https://github.com/openlayer-ai/openlayer-java/commit/682a32d4bff9c731036a5828b3423141200fb08b))
+
 ## 0.8.0 (2026-04-01)
 
 Full Changelog: [v0.7.0...v0.8.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.7.0...v0.8.0)
