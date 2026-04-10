@@ -5,13 +5,36 @@ package com.openlayer.api.services.async.inferencepipelines
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
 import com.openlayer.api.core.JsonValue
+import com.openlayer.api.models.inferencepipelines.rows.RowDeleteParams
 import com.openlayer.api.models.inferencepipelines.rows.RowListParams
+import com.openlayer.api.models.inferencepipelines.rows.RowRetrieveParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 internal class RowServiceAsyncTest {
+
+    @Test
+    fun retrieve() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val rowServiceAsync = client.inferencePipelines().rows()
+
+        val rowFuture =
+            rowServiceAsync.retrieve(
+                RowRetrieveParams.builder()
+                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .inferenceId("inferenceId")
+                    .build()
+            )
+
+        val row = rowFuture.get()
+        row.validate()
+    }
 
     @Test
     fun update() {
@@ -81,5 +104,25 @@ internal class RowServiceAsyncTest {
 
         val rows = rowsFuture.get()
         rows.validate()
+    }
+
+    @Test
+    fun delete() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val rowServiceAsync = client.inferencePipelines().rows()
+
+        val future =
+            rowServiceAsync.delete(
+                RowDeleteParams.builder()
+                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .inferenceId("inferenceId")
+                    .build()
+            )
+
+        val response = future.get()
     }
 }
