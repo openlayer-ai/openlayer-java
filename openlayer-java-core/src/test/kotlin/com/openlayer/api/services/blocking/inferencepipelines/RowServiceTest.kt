@@ -5,13 +5,35 @@ package com.openlayer.api.services.blocking.inferencepipelines
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.core.JsonValue
+import com.openlayer.api.models.inferencepipelines.rows.RowDeleteParams
 import com.openlayer.api.models.inferencepipelines.rows.RowListParams
+import com.openlayer.api.models.inferencepipelines.rows.RowRetrieveParams
 import com.openlayer.api.models.inferencepipelines.rows.RowUpdateParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 @ExtendWith(TestServerExtension::class)
 internal class RowServiceTest {
+
+    @Test
+    fun retrieve() {
+        val client =
+            OpenlayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val rowService = client.inferencePipelines().rows()
+
+        val row =
+            rowService.retrieve(
+                RowRetrieveParams.builder()
+                    .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .inferenceId("inferenceId")
+                    .build()
+            )
+
+        row.validate()
+    }
 
     @Test
     fun update() {
@@ -79,5 +101,22 @@ internal class RowServiceTest {
             )
 
         rows.validate()
+    }
+
+    @Test
+    fun delete() {
+        val client =
+            OpenlayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val rowService = client.inferencePipelines().rows()
+
+        rowService.delete(
+            RowDeleteParams.builder()
+                .inferencePipelineId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                .inferenceId("inferenceId")
+                .build()
+        )
     }
 }
