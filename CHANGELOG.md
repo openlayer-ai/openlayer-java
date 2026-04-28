@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.9.0 (2026-04-28)
+
+Full Changelog: [v0.8.1...v0.9.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.8.1...v0.9.0)
+
+### Features
+
+* support setting headers via env ([b045b8e](https://github.com/openlayer-ai/openlayer-java/commit/b045b8ee4cbc7099734674e06706d0334e70a4fe))
+
+
+### Chores
+
+* **tests:** bump steady to v0.22.1 ([277c809](https://github.com/openlayer-ai/openlayer-java/commit/277c809aa93a31be85ff7b70b5e2d801244e1c69))
+
 ## 0.8.1 (2026-04-10)
 
 Full Changelog: [v0.8.0...v0.8.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.8.0...v0.8.1)
