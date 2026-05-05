@@ -5,6 +5,7 @@ package com.openlayer.api.errors
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
+import com.openlayer.api.core.jsonMapper
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
@@ -14,7 +15,11 @@ private constructor(
     private val headers: Headers,
     private val body: JsonValue,
     cause: Throwable?,
-) : OpenlayerServiceException("$statusCode: $body", cause) {
+) :
+    OpenlayerServiceException(
+        "$statusCode: ${if (body.isMissing()) "Unknown" else jsonMapper().writeValueAsString(body)}",
+        cause,
+    ) {
 
     override fun statusCode(): Int = statusCode
 
