@@ -998,6 +998,14 @@ private constructor(
 
     private var validated: Boolean = false
 
+    /**
+     * Validates that the types of all values in this object match their expected types recursively.
+     *
+     * This method is _not_ forwards compatible with new types from the API for existing fields.
+     *
+     * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
+     *   expected type.
+     */
     fun validate(): InferencePipelineCreateResponse = apply {
         if (validated) {
             return@apply
@@ -1174,6 +1182,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Links = apply {
             if (validated) {
                 return@apply
@@ -1330,6 +1347,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Status = apply {
             if (validated) {
                 return@apply
@@ -1421,6 +1447,35 @@ private constructor(
 
         fun _json(): Optional<JsonValue> = Optional.ofNullable(_json)
 
+        /**
+         * Maps this instance's current variant to a value of type [T] using the given [visitor].
+         *
+         * Note that this method is _not_ forwards compatible with new variants from the API, unless
+         * [visitor] overrides [Visitor.unknown]. To handle variants not known to this version of
+         * the SDK gracefully, consider overriding [Visitor.unknown]:
+         * ```java
+         * import com.openlayer.api.core.JsonValue;
+         * import java.util.Optional;
+         *
+         * Optional<String> result = dataBackend.accept(new DataBackend.Visitor<Optional<String>>() {
+         *     @Override
+         *     public Optional<String> visitBigQuery(BigQueryDataBackend bigQuery) {
+         *         return Optional.of(bigQuery.toString());
+         *     }
+         *
+         *     // ...
+         *
+         *     @Override
+         *     public Optional<String> unknown(JsonValue json) {
+         *         // Or inspect the `json`.
+         *         return Optional.empty();
+         *     }
+         * });
+         * ```
+         *
+         * @throws OpenlayerInvalidDataException if [Visitor.unknown] is not overridden in [visitor]
+         *   and the current variant is unknown.
+         */
         fun <T> accept(visitor: Visitor<T>): T =
             when {
                 bigQuery != null -> visitor.visitBigQuery(bigQuery)
@@ -1434,6 +1489,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): DataBackend = apply {
             if (validated) {
                 return@apply
@@ -2020,6 +2084,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): BigQueryDataBackend = apply {
                 if (validated) {
                     return@apply
@@ -2147,6 +2221,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
@@ -2516,6 +2600,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Config = apply {
                     if (validated) {
                         return@apply
@@ -2683,6 +2777,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): PartitionType = apply {
                     if (validated) {
                         return@apply
@@ -2880,6 +2984,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): DefaultDataBackend = apply {
                 if (validated) {
                     return@apply
@@ -2994,6 +3108,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
@@ -3366,6 +3490,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): SnowflakeDataBackend = apply {
                 if (validated) {
                     return@apply
@@ -3491,6 +3625,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
@@ -3860,6 +4004,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Config = apply {
                     if (validated) {
                         return@apply
@@ -4203,6 +4357,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): DatabricksDtlDataBackend = apply {
                 if (validated) {
                     return@apply
@@ -4324,6 +4488,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
@@ -4693,6 +4867,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Config = apply {
                     if (validated) {
                         return@apply
@@ -5076,6 +5260,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): RedshiftDataBackend = apply {
                 if (validated) {
                     return@apply
@@ -5199,6 +5393,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
@@ -5568,6 +5772,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Config = apply {
                     if (validated) {
                         return@apply
@@ -5981,6 +6195,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): PostgresDataBackend = apply {
                 if (validated) {
                     return@apply
@@ -6106,6 +6330,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): BackendType = apply {
                     if (validated) {
                         return@apply
@@ -6475,6 +6709,16 @@ private constructor(
 
                 private var validated: Boolean = false
 
+                /**
+                 * Validates that the types of all values in this object match their expected types
+                 * recursively.
+                 *
+                 * This method is _not_ forwards compatible with new types from the API for existing
+                 * fields.
+                 *
+                 * @throws OpenlayerInvalidDataException if any value type in this object doesn't
+                 *   match its expected type.
+                 */
                 fun validate(): Config = apply {
                     if (validated) {
                         return@apply
@@ -7289,6 +7533,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Project = apply {
             if (validated) {
                 return@apply
@@ -7461,6 +7714,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Links = apply {
                 if (validated) {
                     return@apply
@@ -7601,6 +7864,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Source = apply {
                 if (validated) {
                     return@apply
@@ -7744,6 +8017,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): TaskType = apply {
                 if (validated) {
                     return@apply
@@ -8294,6 +8577,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): GitRepo = apply {
                 if (validated) {
                     return@apply
@@ -9178,6 +9471,15 @@ private constructor(
 
         private var validated: Boolean = false
 
+        /**
+         * Validates that the types of all values in this object match their expected types
+         * recursively.
+         *
+         * This method is _not_ forwards compatible with new types from the API for existing fields.
+         *
+         * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
+         *   expected type.
+         */
         fun validate(): Workspace = apply {
             if (validated) {
                 return@apply
@@ -9362,6 +9664,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): Status = apply {
                 if (validated) {
                     return@apply
@@ -9597,6 +9909,16 @@ private constructor(
 
             private var validated: Boolean = false
 
+            /**
+             * Validates that the types of all values in this object match their expected types
+             * recursively.
+             *
+             * This method is _not_ forwards compatible with new types from the API for existing
+             * fields.
+             *
+             * @throws OpenlayerInvalidDataException if any value type in this object doesn't match
+             *   its expected type.
+             */
             fun validate(): MonthlyUsage = apply {
                 if (validated) {
                     return@apply
