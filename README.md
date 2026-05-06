@@ -407,6 +407,21 @@ OpenlayerClient client = OpenlayerOkHttpClient.builder()
     .build();
 ```
 
+If the proxy responds with `407 Proxy Authentication Required`, supply credentials by also configuring `proxyAuthenticator`:
+
+```java
+import com.openlayer.api.client.OpenlayerClient;
+import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient;
+import com.openlayer.api.core.http.ProxyAuthenticator;
+
+OpenlayerClient client = OpenlayerOkHttpClient.builder()
+    .fromEnv()
+    .proxy(...)
+    // Or a custom implementation of `ProxyAuthenticator`.
+    .proxyAuthenticator(ProxyAuthenticator.basic("username", "password"))
+    .build();
+```
+
 ### Connection pooling
 
 To customize the underlying OkHttp connection pool, configure the client using the `maxIdleConnections` and `keepAliveDuration` methods:
