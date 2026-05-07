@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.json.JsonMapper
 import com.openlayer.api.client.OpenlayerClient
 import com.openlayer.api.client.OpenlayerClientImpl
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.core.LogLevel
 import com.openlayer.api.core.Sleeper
 import com.openlayer.api.core.Timeout
 import com.openlayer.api.core.http.Headers
@@ -276,6 +277,15 @@ class OpenlayerOkHttpClient private constructor() {
          * Defaults to 2.
          */
         fun maxRetries(maxRetries: Int) = apply { clientOptions.maxRetries(maxRetries) }
+
+        /**
+         * The level at which to log request and response information.
+         *
+         * [fromEnv] will set the level from environment variables. See [LogLevel.fromEnv].
+         *
+         * Defaults to [LogLevel.fromEnv].
+         */
+        fun logLevel(logLevel: LogLevel) = apply { clientOptions.logLevel(logLevel) }
 
         fun apiKey(apiKey: String?) = apply { clientOptions.apiKey(apiKey) }
 
