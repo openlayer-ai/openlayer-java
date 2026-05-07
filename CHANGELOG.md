@@ -1,5 +1,32 @@
 # Changelog
 
+## 0.9.0 (2026-05-07)
+
+Full Changelog: [v0.8.1...v0.9.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.8.1...v0.9.0)
+
+### Features
+
+* **client:** improve logging ([5b7b996](https://github.com/openlayer-ai/openlayer-java/commit/5b7b996f6ba51b42fe7116131caf8e03ed001389))
+* **client:** more robust error parsing ([28aef40](https://github.com/openlayer-ai/openlayer-java/commit/28aef408ee0ba8b68b4e5c3b7f8674f9538fb12c))
+* **client:** support proxy authentication ([d34e16d](https://github.com/openlayer-ai/openlayer-java/commit/d34e16d3662aafa7a814b5756838333b077095f9))
+* support setting headers via env ([b045b8e](https://github.com/openlayer-ai/openlayer-java/commit/b045b8ee4cbc7099734674e06706d0334e70a4fe))
+
+
+### Performance Improvements
+
+* **client:** create one json mapper ([74b6403](https://github.com/openlayer-ai/openlayer-java/commit/74b6403db4f6798234a9b98c73a8b59d0a88bf5b))
+
+
+### Chores
+
+* remove duplicated dokka setup ([dde1361](https://github.com/openlayer-ai/openlayer-java/commit/dde1361a5a6b2415c21f97a75b953beac1f173ad))
+* **tests:** bump steady to v0.22.1 ([277c809](https://github.com/openlayer-ai/openlayer-java/commit/277c809aa93a31be85ff7b70b5e2d801244e1c69))
+
+
+### Documentation
+
+* clarify forwards compat behavior ([d8035d8](https://github.com/openlayer-ai/openlayer-java/commit/d8035d8f9ef26a29e80d6d0399f42591c1d33414))
+
 ## 0.8.1 (2026-04-10)
 
 Full Changelog: [v0.8.0...v0.8.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.8.0...v0.8.1)
