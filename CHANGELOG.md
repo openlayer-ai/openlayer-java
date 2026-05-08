@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.9.1 (2026-05-08)
+
+Full Changelog: [v0.9.0...v0.9.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.9.0...v0.9.1)
+
+### Chores
+
+* redact api-key headers in debug logs ([2ac8d13](https://github.com/openlayer-ai/openlayer-java/commit/2ac8d137efc4fdb279dc3f0d05736deb4da50988))
+
 ## 0.9.0 (2026-05-07)
 
 Full Changelog: [v0.8.1...v0.9.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.8.1...v0.9.0)
