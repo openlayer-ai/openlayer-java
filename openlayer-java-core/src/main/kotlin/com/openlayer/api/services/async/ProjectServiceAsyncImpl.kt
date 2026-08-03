@@ -22,6 +22,8 @@ import com.openlayer.api.models.projects.ProjectCreateResponse
 import com.openlayer.api.models.projects.ProjectDeleteParams
 import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
+import com.openlayer.api.models.projects.ProjectUpdateParams
+import com.openlayer.api.models.projects.ProjectUpdateResponse
 import com.openlayer.api.services.async.projects.CommitServiceAsync
 import com.openlayer.api.services.async.projects.CommitServiceAsyncImpl
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync
@@ -64,6 +66,13 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
     ): CompletableFuture<ProjectCreateResponse> =
         // post /projects
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
+
+    override fun update(
+        params: ProjectUpdateParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ProjectUpdateResponse> =
+        // patch /projects/{projectId}
+        withRawResponse().update(params, requestOptions).thenApply { it.parse() }
 
     override fun list(
         params: ProjectListParams,
@@ -133,6 +142,40 @@ class ProjectServiceAsyncImpl internal constructor(private val clientOptions: Cl
                     errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val updateHandler: Handler<ProjectUpdateResponse> =
+            jsonHandler<ProjectUpdateResponse>(clientOptions.jsonMapper)
+
+        override fun update(
+            params: ProjectUpdateParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("projects", params._pathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { updateHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

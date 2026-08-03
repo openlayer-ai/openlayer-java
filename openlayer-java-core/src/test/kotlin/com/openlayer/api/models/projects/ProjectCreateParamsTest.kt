@@ -3,6 +3,7 @@
 package com.openlayer.api.models.projects
 
 import java.time.OffsetDateTime
+import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
@@ -31,6 +32,7 @@ internal class ProjectCreateParamsTest {
             .taskType(ProjectCreateParams.TaskType.LLM_BASE)
             .versionCount(2L)
             .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
+            .dataRetentionDays(30L)
             .description("My project description.")
             .gitRepo(
                 ProjectCreateParams.GitRepo.builder()
@@ -48,6 +50,9 @@ internal class ProjectCreateParamsTest {
                     .rootDir("rootDir")
                     .build()
             )
+            .modelDeveloper("Acme AI")
+            .addModelType("llm")
+            .purpose("Answer customer billing questions.")
             .build()
     }
 
@@ -75,6 +80,7 @@ internal class ProjectCreateParamsTest {
                 .taskType(ProjectCreateParams.TaskType.LLM_BASE)
                 .versionCount(2L)
                 .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
+                .dataRetentionDays(30L)
                 .description("My project description.")
                 .gitRepo(
                     ProjectCreateParams.GitRepo.builder()
@@ -92,6 +98,9 @@ internal class ProjectCreateParamsTest {
                         .rootDir("rootDir")
                         .build()
                 )
+                .modelDeveloper("Acme AI")
+                .addModelType("llm")
+                .purpose("Answer customer billing questions.")
                 .build()
 
         val body = params._body()
@@ -117,6 +126,7 @@ internal class ProjectCreateParamsTest {
         assertThat(body.taskType()).isEqualTo(ProjectCreateParams.TaskType.LLM_BASE)
         assertThat(body.versionCount()).isEqualTo(2L)
         assertThat(body.workspaceId()).contains("055fddb1-261f-4654-8598-f6347ee46a09")
+        assertThat(body.dataRetentionDays()).contains(30L)
         assertThat(body.description()).contains("My project description.")
         assertThat(body.gitRepo())
             .contains(
@@ -135,6 +145,9 @@ internal class ProjectCreateParamsTest {
                     .rootDir("rootDir")
                     .build()
             )
+        assertThat(body.modelDeveloper()).contains("Acme AI")
+        assertThat(body.modelTypes().getOrNull()).containsExactly("llm")
+        assertThat(body.purpose()).contains("Answer customer billing questions.")
     }
 
     @Test

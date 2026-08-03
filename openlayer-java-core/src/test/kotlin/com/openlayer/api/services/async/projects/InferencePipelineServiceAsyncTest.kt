@@ -99,6 +99,7 @@ internal class InferencePipelineServiceAsyncTest {
                             .taskType(InferencePipelineCreateParams.Project.TaskType.LLM_BASE)
                             .versionCount(2L)
                             .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
+                            .dataRetentionDays(30L)
                             .description("My project description.")
                             .gitRepo(
                                 InferencePipelineCreateParams.Project.GitRepo.builder()
@@ -116,6 +117,9 @@ internal class InferencePipelineServiceAsyncTest {
                                     .rootDir("rootDir")
                                     .build()
                             )
+                            .modelDeveloper("Acme AI")
+                            .addModelType("llm")
+                            .purpose("Answer customer billing questions.")
                             .build()
                     )
                     .totalRecordsCount(1000L)
