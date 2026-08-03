@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.10.0 (2026-08-03)
+
+Full Changelog: [v0.9.2...v0.10.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.9.2...v0.10.0)
+
+### Features
+
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([1c4e1bd](https://github.com/openlayer-ai/openlayer-java/commit/1c4e1bd16d71bd85a311e32d360ca072a90b51af))
+
+
+### Chores
+
+* **closes OPEN-11851:** expose update project endpoint ([df645bf](https://github.com/openlayer-ai/openlayer-java/commit/df645bfc1a5cbd004d80c3aae5104f4b0ab12531))
+
 ## 0.9.2 (2026-07-01)
 
 Full Changelog: [v0.9.1...v0.9.2](https://github.com/openlayer-ai/openlayer-java/compare/v0.9.1...v0.9.2)
