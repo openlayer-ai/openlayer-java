@@ -12,9 +12,11 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.Params
+import com.openlayer.api.core.checkKnown
 import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
+import com.openlayer.api.core.toImmutable
 import com.openlayer.api.errors.OpenlayerInvalidDataException
 import java.time.OffsetDateTime
 import java.util.Collections
@@ -143,6 +145,15 @@ private constructor(
     fun workspaceId(): Optional<String> = body.workspaceId()
 
     /**
+     * Number of days to retain monitoring data for this project. Null means data is retained
+     * indefinitely.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun dataRetentionDays(): Optional<Long> = body.dataRetentionDays()
+
+    /**
      * The project description.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
@@ -155,6 +166,30 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun gitRepo(): Optional<GitRepo> = body.gitRepo()
+
+    /**
+     * Who developed the model used in this project.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun modelDeveloper(): Optional<String> = body.modelDeveloper()
+
+    /**
+     * The kinds of model used in this project.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun modelTypes(): Optional<List<String>> = body.modelTypes()
+
+    /**
+     * What the system in this project is intended to do.
+     *
+     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
+     *   server responded with an unexpected value).
+     */
+    fun purpose(): Optional<String> = body.purpose()
 
     /**
      * Returns the raw JSON value of [id].
@@ -258,6 +293,14 @@ private constructor(
     fun _workspaceId(): JsonField<String> = body._workspaceId()
 
     /**
+     * Returns the raw JSON value of [dataRetentionDays].
+     *
+     * Unlike [dataRetentionDays], this method doesn't throw if the JSON field has an unexpected
+     * type.
+     */
+    fun _dataRetentionDays(): JsonField<Long> = body._dataRetentionDays()
+
+    /**
      * Returns the raw JSON value of [description].
      *
      * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
@@ -270,6 +313,27 @@ private constructor(
      * Unlike [gitRepo], this method doesn't throw if the JSON field has an unexpected type.
      */
     fun _gitRepo(): JsonField<GitRepo> = body._gitRepo()
+
+    /**
+     * Returns the raw JSON value of [modelDeveloper].
+     *
+     * Unlike [modelDeveloper], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _modelDeveloper(): JsonField<String> = body._modelDeveloper()
+
+    /**
+     * Returns the raw JSON value of [modelTypes].
+     *
+     * Unlike [modelTypes], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _modelTypes(): JsonField<List<String>> = body._modelTypes()
+
+    /**
+     * Returns the raw JSON value of [purpose].
+     *
+     * Unlike [purpose], this method doesn't throw if the JSON field has an unexpected type.
+     */
+    fun _purpose(): JsonField<String> = body._purpose()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -523,6 +587,37 @@ private constructor(
          */
         fun workspaceId(workspaceId: JsonField<String>) = apply { body.workspaceId(workspaceId) }
 
+        /**
+         * Number of days to retain monitoring data for this project. Null means data is retained
+         * indefinitely.
+         */
+        fun dataRetentionDays(dataRetentionDays: Long?) = apply {
+            body.dataRetentionDays(dataRetentionDays)
+        }
+
+        /**
+         * Alias for [Builder.dataRetentionDays].
+         *
+         * This unboxed primitive overload exists for backwards compatibility.
+         */
+        fun dataRetentionDays(dataRetentionDays: Long) =
+            dataRetentionDays(dataRetentionDays as Long?)
+
+        /** Alias for calling [Builder.dataRetentionDays] with `dataRetentionDays.orElse(null)`. */
+        fun dataRetentionDays(dataRetentionDays: Optional<Long>) =
+            dataRetentionDays(dataRetentionDays.getOrNull())
+
+        /**
+         * Sets [Builder.dataRetentionDays] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.dataRetentionDays] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun dataRetentionDays(dataRetentionDays: JsonField<Long>) = apply {
+            body.dataRetentionDays(dataRetentionDays)
+        }
+
         /** The project description. */
         fun description(description: String?) = apply { body.description(description) }
 
@@ -550,6 +645,60 @@ private constructor(
          * method is primarily for setting the field to an undocumented or not yet supported value.
          */
         fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { body.gitRepo(gitRepo) }
+
+        /** Who developed the model used in this project. */
+        fun modelDeveloper(modelDeveloper: String?) = apply { body.modelDeveloper(modelDeveloper) }
+
+        /** Alias for calling [Builder.modelDeveloper] with `modelDeveloper.orElse(null)`. */
+        fun modelDeveloper(modelDeveloper: Optional<String>) =
+            modelDeveloper(modelDeveloper.getOrNull())
+
+        /**
+         * Sets [Builder.modelDeveloper] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.modelDeveloper] with a well-typed [String] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun modelDeveloper(modelDeveloper: JsonField<String>) = apply {
+            body.modelDeveloper(modelDeveloper)
+        }
+
+        /** The kinds of model used in this project. */
+        fun modelTypes(modelTypes: List<String>?) = apply { body.modelTypes(modelTypes) }
+
+        /** Alias for calling [Builder.modelTypes] with `modelTypes.orElse(null)`. */
+        fun modelTypes(modelTypes: Optional<List<String>>) = modelTypes(modelTypes.getOrNull())
+
+        /**
+         * Sets [Builder.modelTypes] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.modelTypes] with a well-typed `List<String>` value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
+         */
+        fun modelTypes(modelTypes: JsonField<List<String>>) = apply { body.modelTypes(modelTypes) }
+
+        /**
+         * Adds a single [String] to [modelTypes].
+         *
+         * @throws IllegalStateException if the field was previously set to a non-list.
+         */
+        fun addModelType(modelType: String) = apply { body.addModelType(modelType) }
+
+        /** What the system in this project is intended to do. */
+        fun purpose(purpose: String?) = apply { body.purpose(purpose) }
+
+        /** Alias for calling [Builder.purpose] with `purpose.orElse(null)`. */
+        fun purpose(purpose: Optional<String>) = purpose(purpose.getOrNull())
+
+        /**
+         * Sets [Builder.purpose] to an arbitrary JSON value.
+         *
+         * You should usually call [Builder.purpose] with a well-typed [String] value instead. This
+         * method is primarily for setting the field to an undocumented or not yet supported value.
+         */
+        fun purpose(purpose: JsonField<String>) = apply { body.purpose(purpose) }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -724,8 +873,12 @@ private constructor(
         private val taskType: JsonField<TaskType>,
         private val versionCount: JsonField<Long>,
         private val workspaceId: JsonField<String>,
+        private val dataRetentionDays: JsonField<Long>,
         private val description: JsonField<String>,
         private val gitRepo: JsonField<GitRepo>,
+        private val modelDeveloper: JsonField<String>,
+        private val modelTypes: JsonField<List<String>>,
+        private val purpose: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -765,10 +918,20 @@ private constructor(
             @JsonProperty("workspaceId")
             @ExcludeMissing
             workspaceId: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("dataRetentionDays")
+            @ExcludeMissing
+            dataRetentionDays: JsonField<Long> = JsonMissing.of(),
             @JsonProperty("description")
             @ExcludeMissing
             description: JsonField<String> = JsonMissing.of(),
             @JsonProperty("gitRepo") @ExcludeMissing gitRepo: JsonField<GitRepo> = JsonMissing.of(),
+            @JsonProperty("modelDeveloper")
+            @ExcludeMissing
+            modelDeveloper: JsonField<String> = JsonMissing.of(),
+            @JsonProperty("modelTypes")
+            @ExcludeMissing
+            modelTypes: JsonField<List<String>> = JsonMissing.of(),
+            @JsonProperty("purpose") @ExcludeMissing purpose: JsonField<String> = JsonMissing.of(),
         ) : this(
             id,
             creatorId,
@@ -784,8 +947,12 @@ private constructor(
             taskType,
             versionCount,
             workspaceId,
+            dataRetentionDays,
             description,
             gitRepo,
+            modelDeveloper,
+            modelTypes,
+            purpose,
             mutableMapOf(),
         )
 
@@ -903,6 +1070,15 @@ private constructor(
         fun workspaceId(): Optional<String> = workspaceId.getOptional("workspaceId")
 
         /**
+         * Number of days to retain monitoring data for this project. Null means data is retained
+         * indefinitely.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun dataRetentionDays(): Optional<Long> = dataRetentionDays.getOptional("dataRetentionDays")
+
+        /**
          * The project description.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
@@ -915,6 +1091,30 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun gitRepo(): Optional<GitRepo> = gitRepo.getOptional("gitRepo")
+
+        /**
+         * Who developed the model used in this project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun modelDeveloper(): Optional<String> = modelDeveloper.getOptional("modelDeveloper")
+
+        /**
+         * The kinds of model used in this project.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun modelTypes(): Optional<List<String>> = modelTypes.getOptional("modelTypes")
+
+        /**
+         * What the system in this project is intended to do.
+         *
+         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
+         *   the server responded with an unexpected value).
+         */
+        fun purpose(): Optional<String> = purpose.getOptional("purpose")
 
         /**
          * Returns the raw JSON value of [id].
@@ -1033,6 +1233,16 @@ private constructor(
         fun _workspaceId(): JsonField<String> = workspaceId
 
         /**
+         * Returns the raw JSON value of [dataRetentionDays].
+         *
+         * Unlike [dataRetentionDays], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("dataRetentionDays")
+        @ExcludeMissing
+        fun _dataRetentionDays(): JsonField<Long> = dataRetentionDays
+
+        /**
          * Returns the raw JSON value of [description].
          *
          * Unlike [description], this method doesn't throw if the JSON field has an unexpected type.
@@ -1047,6 +1257,32 @@ private constructor(
          * Unlike [gitRepo], this method doesn't throw if the JSON field has an unexpected type.
          */
         @JsonProperty("gitRepo") @ExcludeMissing fun _gitRepo(): JsonField<GitRepo> = gitRepo
+
+        /**
+         * Returns the raw JSON value of [modelDeveloper].
+         *
+         * Unlike [modelDeveloper], this method doesn't throw if the JSON field has an unexpected
+         * type.
+         */
+        @JsonProperty("modelDeveloper")
+        @ExcludeMissing
+        fun _modelDeveloper(): JsonField<String> = modelDeveloper
+
+        /**
+         * Returns the raw JSON value of [modelTypes].
+         *
+         * Unlike [modelTypes], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("modelTypes")
+        @ExcludeMissing
+        fun _modelTypes(): JsonField<List<String>> = modelTypes
+
+        /**
+         * Returns the raw JSON value of [purpose].
+         *
+         * Unlike [purpose], this method doesn't throw if the JSON field has an unexpected type.
+         */
+        @JsonProperty("purpose") @ExcludeMissing fun _purpose(): JsonField<String> = purpose
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -1103,8 +1339,12 @@ private constructor(
             private var taskType: JsonField<TaskType>? = null
             private var versionCount: JsonField<Long>? = null
             private var workspaceId: JsonField<String>? = null
+            private var dataRetentionDays: JsonField<Long> = JsonMissing.of()
             private var description: JsonField<String> = JsonMissing.of()
             private var gitRepo: JsonField<GitRepo> = JsonMissing.of()
+            private var modelDeveloper: JsonField<String> = JsonMissing.of()
+            private var modelTypes: JsonField<MutableList<String>>? = null
+            private var purpose: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
@@ -1123,8 +1363,12 @@ private constructor(
                 taskType = body.taskType
                 versionCount = body.versionCount
                 workspaceId = body.workspaceId
+                dataRetentionDays = body.dataRetentionDays
                 description = body.description
                 gitRepo = body.gitRepo
+                modelDeveloper = body.modelDeveloper
+                modelTypes = body.modelTypes.map { it.toMutableList() }
+                purpose = body.purpose
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -1322,6 +1566,38 @@ private constructor(
                 this.workspaceId = workspaceId
             }
 
+            /**
+             * Number of days to retain monitoring data for this project. Null means data is
+             * retained indefinitely.
+             */
+            fun dataRetentionDays(dataRetentionDays: Long?) =
+                dataRetentionDays(JsonField.ofNullable(dataRetentionDays))
+
+            /**
+             * Alias for [Builder.dataRetentionDays].
+             *
+             * This unboxed primitive overload exists for backwards compatibility.
+             */
+            fun dataRetentionDays(dataRetentionDays: Long) =
+                dataRetentionDays(dataRetentionDays as Long?)
+
+            /**
+             * Alias for calling [Builder.dataRetentionDays] with `dataRetentionDays.orElse(null)`.
+             */
+            fun dataRetentionDays(dataRetentionDays: Optional<Long>) =
+                dataRetentionDays(dataRetentionDays.getOrNull())
+
+            /**
+             * Sets [Builder.dataRetentionDays] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.dataRetentionDays] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun dataRetentionDays(dataRetentionDays: JsonField<Long>) = apply {
+                this.dataRetentionDays = dataRetentionDays
+            }
+
             /** The project description. */
             fun description(description: String?) = description(JsonField.ofNullable(description))
 
@@ -1352,6 +1628,69 @@ private constructor(
              * supported value.
              */
             fun gitRepo(gitRepo: JsonField<GitRepo>) = apply { this.gitRepo = gitRepo }
+
+            /** Who developed the model used in this project. */
+            fun modelDeveloper(modelDeveloper: String?) =
+                modelDeveloper(JsonField.ofNullable(modelDeveloper))
+
+            /** Alias for calling [Builder.modelDeveloper] with `modelDeveloper.orElse(null)`. */
+            fun modelDeveloper(modelDeveloper: Optional<String>) =
+                modelDeveloper(modelDeveloper.getOrNull())
+
+            /**
+             * Sets [Builder.modelDeveloper] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.modelDeveloper] with a well-typed [String] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun modelDeveloper(modelDeveloper: JsonField<String>) = apply {
+                this.modelDeveloper = modelDeveloper
+            }
+
+            /** The kinds of model used in this project. */
+            fun modelTypes(modelTypes: List<String>?) = modelTypes(JsonField.ofNullable(modelTypes))
+
+            /** Alias for calling [Builder.modelTypes] with `modelTypes.orElse(null)`. */
+            fun modelTypes(modelTypes: Optional<List<String>>) = modelTypes(modelTypes.getOrNull())
+
+            /**
+             * Sets [Builder.modelTypes] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.modelTypes] with a well-typed `List<String>` value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun modelTypes(modelTypes: JsonField<List<String>>) = apply {
+                this.modelTypes = modelTypes.map { it.toMutableList() }
+            }
+
+            /**
+             * Adds a single [String] to [modelTypes].
+             *
+             * @throws IllegalStateException if the field was previously set to a non-list.
+             */
+            fun addModelType(modelType: String) = apply {
+                modelTypes =
+                    (modelTypes ?: JsonField.of(mutableListOf())).also {
+                        checkKnown("modelTypes", it).add(modelType)
+                    }
+            }
+
+            /** What the system in this project is intended to do. */
+            fun purpose(purpose: String?) = purpose(JsonField.ofNullable(purpose))
+
+            /** Alias for calling [Builder.purpose] with `purpose.orElse(null)`. */
+            fun purpose(purpose: Optional<String>) = purpose(purpose.getOrNull())
+
+            /**
+             * Sets [Builder.purpose] to an arbitrary JSON value.
+             *
+             * You should usually call [Builder.purpose] with a well-typed [String] value instead.
+             * This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
+             */
+            fun purpose(purpose: JsonField<String>) = apply { this.purpose = purpose }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -1413,8 +1752,12 @@ private constructor(
                     checkRequired("taskType", taskType),
                     checkRequired("versionCount", versionCount),
                     checkRequired("workspaceId", workspaceId),
+                    dataRetentionDays,
                     description,
                     gitRepo,
+                    modelDeveloper,
+                    (modelTypes ?: JsonMissing.of()).map { it.toImmutable() },
+                    purpose,
                     additionalProperties.toMutableMap(),
                 )
         }
@@ -1449,8 +1792,12 @@ private constructor(
             taskType().validate()
             versionCount()
             workspaceId()
+            dataRetentionDays()
             description()
             gitRepo().ifPresent { it.validate() }
+            modelDeveloper()
+            modelTypes()
+            purpose()
             validated = true
         }
 
@@ -1484,8 +1831,12 @@ private constructor(
                 (taskType.asKnown().getOrNull()?.validity() ?: 0) +
                 (if (versionCount.asKnown().isPresent) 1 else 0) +
                 (if (workspaceId.asKnown().isPresent) 1 else 0) +
+                (if (dataRetentionDays.asKnown().isPresent) 1 else 0) +
                 (if (description.asKnown().isPresent) 1 else 0) +
-                (gitRepo.asKnown().getOrNull()?.validity() ?: 0)
+                (gitRepo.asKnown().getOrNull()?.validity() ?: 0) +
+                (if (modelDeveloper.asKnown().isPresent) 1 else 0) +
+                (modelTypes.asKnown().getOrNull()?.size ?: 0) +
+                (if (purpose.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -1507,8 +1858,12 @@ private constructor(
                 taskType == other.taskType &&
                 versionCount == other.versionCount &&
                 workspaceId == other.workspaceId &&
+                dataRetentionDays == other.dataRetentionDays &&
                 description == other.description &&
                 gitRepo == other.gitRepo &&
+                modelDeveloper == other.modelDeveloper &&
+                modelTypes == other.modelTypes &&
+                purpose == other.purpose &&
                 additionalProperties == other.additionalProperties
         }
 
@@ -1528,8 +1883,12 @@ private constructor(
                 taskType,
                 versionCount,
                 workspaceId,
+                dataRetentionDays,
                 description,
                 gitRepo,
+                modelDeveloper,
+                modelTypes,
+                purpose,
                 additionalProperties,
             )
         }
@@ -1537,7 +1896,7 @@ private constructor(
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, description=$description, gitRepo=$gitRepo, additionalProperties=$additionalProperties}"
+            "Body{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, dataRetentionDays=$dataRetentionDays, description=$description, gitRepo=$gitRepo, modelDeveloper=$modelDeveloper, modelTypes=$modelTypes, purpose=$purpose, additionalProperties=$additionalProperties}"
     }
 
     /** Links to the project. */

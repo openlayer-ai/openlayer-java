@@ -22,6 +22,8 @@ import com.openlayer.api.models.projects.ProjectCreateResponse
 import com.openlayer.api.models.projects.ProjectDeleteParams
 import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
+import com.openlayer.api.models.projects.ProjectUpdateParams
+import com.openlayer.api.models.projects.ProjectUpdateResponse
 import com.openlayer.api.services.blocking.projects.CommitService
 import com.openlayer.api.services.blocking.projects.CommitServiceImpl
 import com.openlayer.api.services.blocking.projects.InferencePipelineService
@@ -63,6 +65,13 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
     ): ProjectCreateResponse =
         // post /projects
         withRawResponse().create(params, requestOptions).parse()
+
+    override fun update(
+        params: ProjectUpdateParams,
+        requestOptions: RequestOptions,
+    ): ProjectUpdateResponse =
+        // patch /projects/{projectId}
+        withRawResponse().update(params, requestOptions).parse()
 
     override fun list(
         params: ProjectListParams,
@@ -128,6 +137,37 @@ class ProjectServiceImpl internal constructor(private val clientOptions: ClientO
             return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val updateHandler: Handler<ProjectUpdateResponse> =
+            jsonHandler<ProjectUpdateResponse>(clientOptions.jsonMapper)
+
+        override fun update(
+            params: ProjectUpdateParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<ProjectUpdateResponse> {
+            // We check here instead of in the params builder because this can be specified
+            // positionally or in the params class.
+            checkRequired("projectId", params.projectId().getOrNull())
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.PATCH)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("projects", params._pathParam(0))
+                    .body(json(clientOptions.jsonMapper, params._body()))
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { updateHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

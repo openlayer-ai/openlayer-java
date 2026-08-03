@@ -9,12 +9,12 @@ import kotlin.jvm.optionals.getOrNull
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class ProjectCreateResponseTest {
+internal class ProjectUpdateResponseTest {
 
     @Test
     fun create() {
-        val projectCreateResponse =
-            ProjectCreateResponse.builder()
+        val projectUpdateResponse =
+            ProjectUpdateResponse.builder()
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
                 .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -23,7 +23,7 @@ internal class ProjectCreateResponseTest {
                 .goalCount(10L)
                 .inferencePipelineCount(1L)
                 .links(
-                    ProjectCreateResponse.Links.builder()
+                    ProjectUpdateResponse.Links.builder()
                         .app(
                             "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                         )
@@ -31,14 +31,14 @@ internal class ProjectCreateResponseTest {
                 )
                 .monitoringGoalCount(5L)
                 .name("My Project")
-                .source(ProjectCreateResponse.Source.WEB)
-                .taskType(ProjectCreateResponse.TaskType.LLM_BASE)
+                .source(ProjectUpdateResponse.Source.WEB)
+                .taskType(ProjectUpdateResponse.TaskType.LLM_BASE)
                 .versionCount(2L)
                 .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
                 .dataRetentionDays(30L)
                 .description("My project description.")
                 .gitRepo(
-                    ProjectCreateResponse.GitRepo.builder()
+                    ProjectUpdateResponse.GitRepo.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -58,37 +58,37 @@ internal class ProjectCreateResponseTest {
                 .purpose("Answer customer billing questions.")
                 .build()
 
-        assertThat(projectCreateResponse.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
-        assertThat(projectCreateResponse.creatorId())
+        assertThat(projectUpdateResponse.id()).isEqualTo("3fa85f64-5717-4562-b3fc-2c963f66afa6")
+        assertThat(projectUpdateResponse.creatorId())
             .contains("589ece63-49a2-41b4-98e1-10547761d4b0")
-        assertThat(projectCreateResponse.dateCreated())
+        assertThat(projectUpdateResponse.dateCreated())
             .isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-        assertThat(projectCreateResponse.dateUpdated())
+        assertThat(projectUpdateResponse.dateUpdated())
             .isEqualTo(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
-        assertThat(projectCreateResponse.developmentGoalCount()).isEqualTo(5L)
-        assertThat(projectCreateResponse.goalCount()).isEqualTo(10L)
-        assertThat(projectCreateResponse.inferencePipelineCount()).isEqualTo(1L)
-        assertThat(projectCreateResponse.links())
+        assertThat(projectUpdateResponse.developmentGoalCount()).isEqualTo(5L)
+        assertThat(projectUpdateResponse.goalCount()).isEqualTo(10L)
+        assertThat(projectUpdateResponse.inferencePipelineCount()).isEqualTo(1L)
+        assertThat(projectUpdateResponse.links())
             .isEqualTo(
-                ProjectCreateResponse.Links.builder()
+                ProjectUpdateResponse.Links.builder()
                     .app(
                         "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                     )
                     .build()
             )
-        assertThat(projectCreateResponse.monitoringGoalCount()).isEqualTo(5L)
-        assertThat(projectCreateResponse.name()).isEqualTo("My Project")
-        assertThat(projectCreateResponse.source()).contains(ProjectCreateResponse.Source.WEB)
-        assertThat(projectCreateResponse.taskType())
-            .isEqualTo(ProjectCreateResponse.TaskType.LLM_BASE)
-        assertThat(projectCreateResponse.versionCount()).isEqualTo(2L)
-        assertThat(projectCreateResponse.workspaceId())
+        assertThat(projectUpdateResponse.monitoringGoalCount()).isEqualTo(5L)
+        assertThat(projectUpdateResponse.name()).isEqualTo("My Project")
+        assertThat(projectUpdateResponse.source()).contains(ProjectUpdateResponse.Source.WEB)
+        assertThat(projectUpdateResponse.taskType())
+            .isEqualTo(ProjectUpdateResponse.TaskType.LLM_BASE)
+        assertThat(projectUpdateResponse.versionCount()).isEqualTo(2L)
+        assertThat(projectUpdateResponse.workspaceId())
             .contains("055fddb1-261f-4654-8598-f6347ee46a09")
-        assertThat(projectCreateResponse.dataRetentionDays()).contains(30L)
-        assertThat(projectCreateResponse.description()).contains("My project description.")
-        assertThat(projectCreateResponse.gitRepo())
+        assertThat(projectUpdateResponse.dataRetentionDays()).contains(30L)
+        assertThat(projectUpdateResponse.description()).contains("My project description.")
+        assertThat(projectUpdateResponse.gitRepo())
             .contains(
-                ProjectCreateResponse.GitRepo.builder()
+                ProjectUpdateResponse.GitRepo.builder()
                     .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                     .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                     .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -103,16 +103,16 @@ internal class ProjectCreateResponseTest {
                     .rootDir("rootDir")
                     .build()
             )
-        assertThat(projectCreateResponse.modelDeveloper()).contains("Acme AI")
-        assertThat(projectCreateResponse.modelTypes().getOrNull()).containsExactly("llm")
-        assertThat(projectCreateResponse.purpose()).contains("Answer customer billing questions.")
+        assertThat(projectUpdateResponse.modelDeveloper()).contains("Acme AI")
+        assertThat(projectUpdateResponse.modelTypes().getOrNull()).containsExactly("llm")
+        assertThat(projectUpdateResponse.purpose()).contains("Answer customer billing questions.")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val projectCreateResponse =
-            ProjectCreateResponse.builder()
+        val projectUpdateResponse =
+            ProjectUpdateResponse.builder()
                 .id("3fa85f64-5717-4562-b3fc-2c963f66afa6")
                 .creatorId("589ece63-49a2-41b4-98e1-10547761d4b0")
                 .dateCreated(OffsetDateTime.parse("2024-03-22T11:31:01.185Z"))
@@ -121,7 +121,7 @@ internal class ProjectCreateResponseTest {
                 .goalCount(10L)
                 .inferencePipelineCount(1L)
                 .links(
-                    ProjectCreateResponse.Links.builder()
+                    ProjectUpdateResponse.Links.builder()
                         .app(
                             "https://app.openlayer.com/myWorkspace/3fa85f64-5717-4562-b3fc-2c963f66afa6"
                         )
@@ -129,14 +129,14 @@ internal class ProjectCreateResponseTest {
                 )
                 .monitoringGoalCount(5L)
                 .name("My Project")
-                .source(ProjectCreateResponse.Source.WEB)
-                .taskType(ProjectCreateResponse.TaskType.LLM_BASE)
+                .source(ProjectUpdateResponse.Source.WEB)
+                .taskType(ProjectUpdateResponse.TaskType.LLM_BASE)
                 .versionCount(2L)
                 .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
                 .dataRetentionDays(30L)
                 .description("My project description.")
                 .gitRepo(
-                    ProjectCreateResponse.GitRepo.builder()
+                    ProjectUpdateResponse.GitRepo.builder()
                         .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                         .dateConnected(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                         .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
@@ -156,12 +156,12 @@ internal class ProjectCreateResponseTest {
                 .purpose("Answer customer billing questions.")
                 .build()
 
-        val roundtrippedProjectCreateResponse =
+        val roundtrippedProjectUpdateResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(projectCreateResponse),
-                jacksonTypeRef<ProjectCreateResponse>(),
+                jsonMapper.writeValueAsString(projectUpdateResponse),
+                jacksonTypeRef<ProjectUpdateResponse>(),
             )
 
-        assertThat(roundtrippedProjectCreateResponse).isEqualTo(projectCreateResponse)
+        assertThat(roundtrippedProjectUpdateResponse).isEqualTo(projectUpdateResponse)
     }
 }

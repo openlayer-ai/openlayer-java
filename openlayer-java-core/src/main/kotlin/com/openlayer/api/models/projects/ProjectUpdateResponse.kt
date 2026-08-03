@@ -21,7 +21,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-class ProjectCreateResponse
+class ProjectUpdateResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
@@ -452,7 +452,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [ProjectCreateResponse].
+         * Returns a mutable builder for constructing an instance of [ProjectUpdateResponse].
          *
          * The following fields are required:
          * ```java
@@ -475,7 +475,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ProjectCreateResponse]. */
+    /** A builder for [ProjectUpdateResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -501,28 +501,28 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(projectCreateResponse: ProjectCreateResponse) = apply {
-            id = projectCreateResponse.id
-            creatorId = projectCreateResponse.creatorId
-            dateCreated = projectCreateResponse.dateCreated
-            dateUpdated = projectCreateResponse.dateUpdated
-            developmentGoalCount = projectCreateResponse.developmentGoalCount
-            goalCount = projectCreateResponse.goalCount
-            inferencePipelineCount = projectCreateResponse.inferencePipelineCount
-            links = projectCreateResponse.links
-            monitoringGoalCount = projectCreateResponse.monitoringGoalCount
-            name = projectCreateResponse.name
-            source = projectCreateResponse.source
-            taskType = projectCreateResponse.taskType
-            versionCount = projectCreateResponse.versionCount
-            workspaceId = projectCreateResponse.workspaceId
-            dataRetentionDays = projectCreateResponse.dataRetentionDays
-            description = projectCreateResponse.description
-            gitRepo = projectCreateResponse.gitRepo
-            modelDeveloper = projectCreateResponse.modelDeveloper
-            modelTypes = projectCreateResponse.modelTypes.map { it.toMutableList() }
-            purpose = projectCreateResponse.purpose
-            additionalProperties = projectCreateResponse.additionalProperties.toMutableMap()
+        internal fun from(projectUpdateResponse: ProjectUpdateResponse) = apply {
+            id = projectUpdateResponse.id
+            creatorId = projectUpdateResponse.creatorId
+            dateCreated = projectUpdateResponse.dateCreated
+            dateUpdated = projectUpdateResponse.dateUpdated
+            developmentGoalCount = projectUpdateResponse.developmentGoalCount
+            goalCount = projectUpdateResponse.goalCount
+            inferencePipelineCount = projectUpdateResponse.inferencePipelineCount
+            links = projectUpdateResponse.links
+            monitoringGoalCount = projectUpdateResponse.monitoringGoalCount
+            name = projectUpdateResponse.name
+            source = projectUpdateResponse.source
+            taskType = projectUpdateResponse.taskType
+            versionCount = projectUpdateResponse.versionCount
+            workspaceId = projectUpdateResponse.workspaceId
+            dataRetentionDays = projectUpdateResponse.dataRetentionDays
+            description = projectUpdateResponse.description
+            gitRepo = projectUpdateResponse.gitRepo
+            modelDeveloper = projectUpdateResponse.modelDeveloper
+            modelTypes = projectUpdateResponse.modelTypes.map { it.toMutableList() }
+            purpose = projectUpdateResponse.purpose
+            additionalProperties = projectUpdateResponse.additionalProperties.toMutableMap()
         }
 
         /** The project id. */
@@ -850,7 +850,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ProjectCreateResponse].
+         * Returns an immutable instance of [ProjectUpdateResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -874,8 +874,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ProjectCreateResponse =
-            ProjectCreateResponse(
+        fun build(): ProjectUpdateResponse =
+            ProjectUpdateResponse(
                 checkRequired("id", id),
                 checkRequired("creatorId", creatorId),
                 checkRequired("dateCreated", dateCreated),
@@ -910,7 +910,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
      *   expected type.
      */
-    fun validate(): ProjectCreateResponse = apply {
+    fun validate(): ProjectUpdateResponse = apply {
         if (validated) {
             return@apply
         }
@@ -2025,7 +2025,7 @@ private constructor(
             return true
         }
 
-        return other is ProjectCreateResponse &&
+        return other is ProjectUpdateResponse &&
             id == other.id &&
             creatorId == other.creatorId &&
             dateCreated == other.dateCreated &&
@@ -2078,5 +2078,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ProjectCreateResponse{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, dataRetentionDays=$dataRetentionDays, description=$description, gitRepo=$gitRepo, modelDeveloper=$modelDeveloper, modelTypes=$modelTypes, purpose=$purpose, additionalProperties=$additionalProperties}"
+        "ProjectUpdateResponse{id=$id, creatorId=$creatorId, dateCreated=$dateCreated, dateUpdated=$dateUpdated, developmentGoalCount=$developmentGoalCount, goalCount=$goalCount, inferencePipelineCount=$inferencePipelineCount, links=$links, monitoringGoalCount=$monitoringGoalCount, name=$name, source=$source, taskType=$taskType, versionCount=$versionCount, workspaceId=$workspaceId, dataRetentionDays=$dataRetentionDays, description=$description, gitRepo=$gitRepo, modelDeveloper=$modelDeveloper, modelTypes=$modelTypes, purpose=$purpose, additionalProperties=$additionalProperties}"
 }
