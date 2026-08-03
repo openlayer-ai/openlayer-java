@@ -11,6 +11,8 @@ import com.openlayer.api.models.projects.ProjectCreateResponse
 import com.openlayer.api.models.projects.ProjectDeleteParams
 import com.openlayer.api.models.projects.ProjectListParams
 import com.openlayer.api.models.projects.ProjectListResponse
+import com.openlayer.api.models.projects.ProjectUpdateParams
+import com.openlayer.api.models.projects.ProjectUpdateResponse
 import com.openlayer.api.services.async.projects.CommitServiceAsync
 import com.openlayer.api.services.async.projects.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.projects.TestServiceAsync
@@ -46,6 +48,41 @@ interface ProjectServiceAsync {
         params: ProjectCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<ProjectCreateResponse>
+
+    /** Update a project's metadata. */
+    fun update(projectId: String): CompletableFuture<ProjectUpdateResponse> =
+        update(projectId, ProjectUpdateParams.none())
+
+    /** @see update */
+    fun update(
+        projectId: String,
+        params: ProjectUpdateParams = ProjectUpdateParams.none(),
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ProjectUpdateResponse> =
+        update(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+    /** @see update */
+    fun update(
+        projectId: String,
+        params: ProjectUpdateParams = ProjectUpdateParams.none(),
+    ): CompletableFuture<ProjectUpdateResponse> = update(projectId, params, RequestOptions.none())
+
+    /** @see update */
+    fun update(
+        params: ProjectUpdateParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<ProjectUpdateResponse>
+
+    /** @see update */
+    fun update(params: ProjectUpdateParams): CompletableFuture<ProjectUpdateResponse> =
+        update(params, RequestOptions.none())
+
+    /** @see update */
+    fun update(
+        projectId: String,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<ProjectUpdateResponse> =
+        update(projectId, ProjectUpdateParams.none(), requestOptions)
 
     /** List your workspace's projects. */
     fun list(): CompletableFuture<ProjectListResponse> = list(ProjectListParams.none())
@@ -131,6 +168,47 @@ interface ProjectServiceAsync {
             params: ProjectCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<ProjectCreateResponse>>
+
+        /**
+         * Returns a raw HTTP response for `patch /projects/{projectId}`, but is otherwise the same
+         * as [ProjectServiceAsync.update].
+         */
+        fun update(projectId: String): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>> =
+            update(projectId, ProjectUpdateParams.none())
+
+        /** @see update */
+        fun update(
+            projectId: String,
+            params: ProjectUpdateParams = ProjectUpdateParams.none(),
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>> =
+            update(params.toBuilder().projectId(projectId).build(), requestOptions)
+
+        /** @see update */
+        fun update(
+            projectId: String,
+            params: ProjectUpdateParams = ProjectUpdateParams.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>> =
+            update(projectId, params, RequestOptions.none())
+
+        /** @see update */
+        fun update(
+            params: ProjectUpdateParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>>
+
+        /** @see update */
+        fun update(
+            params: ProjectUpdateParams
+        ): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>> =
+            update(params, RequestOptions.none())
+
+        /** @see update */
+        fun update(
+            projectId: String,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<ProjectUpdateResponse>> =
+            update(projectId, ProjectUpdateParams.none(), requestOptions)
 
         /**
          * Returns a raw HTTP response for `get /projects`, but is otherwise the same as

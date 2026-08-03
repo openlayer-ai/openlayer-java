@@ -6,6 +6,7 @@ import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClient
 import com.openlayer.api.models.projects.ProjectCreateParams
 import com.openlayer.api.models.projects.ProjectListParams
+import com.openlayer.api.models.projects.ProjectUpdateParams
 import java.time.OffsetDateTime
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -45,6 +46,7 @@ internal class ProjectServiceTest {
                     .taskType(ProjectCreateParams.TaskType.LLM_BASE)
                     .versionCount(2L)
                     .workspaceId("055fddb1-261f-4654-8598-f6347ee46a09")
+                    .dataRetentionDays(30L)
                     .description("My project description.")
                     .gitRepo(
                         ProjectCreateParams.GitRepo.builder()
@@ -62,6 +64,34 @@ internal class ProjectServiceTest {
                             .rootDir("rootDir")
                             .build()
                     )
+                    .modelDeveloper("Acme AI")
+                    .addModelType("llm")
+                    .purpose("Answer customer billing questions.")
+                    .build()
+            )
+
+        project.validate()
+    }
+
+    @Test
+    fun update() {
+        val client =
+            OpenlayerOkHttpClient.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val projectService = client.projects()
+
+        val project =
+            projectService.update(
+                ProjectUpdateParams.builder()
+                    .projectId("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+                    .dataRetentionDays(30L)
+                    .description("My project description.")
+                    .modelDeveloper("Acme AI")
+                    .addModelType("llm")
+                    .name("My Project")
+                    .purpose("Answer customer billing questions.")
                     .build()
             )
 
