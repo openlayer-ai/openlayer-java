@@ -3,7 +3,7 @@
 <!-- x-release-please-start-version -->
 
 [![Maven Central](https://img.shields.io/maven-central/v/com.openlayer.api/openlayer-java)](https://central.sonatype.com/artifact/com.openlayer.api/openlayer-java/0.10.0)
-[![javadoc](https://javadoc.io/badge2/com.openlayer.api/openlayer-java/0.10.0/javadoc.svg)](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.10.0)
+[![javadoc](https://javadoc.io/badge2/com.openlayer.api/openlayer-java/javadoc.svg)](https://javadoc.io/doc/com.openlayer.api/openlayer-java/0.10.0)
 
 <!-- x-release-please-end -->
 
