@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.10.1 (2026-08-20)
+
+Full Changelog: [v0.10.0...v0.10.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.10.0...v0.10.1)
+
+### Bug Fixes
+
+* **docs:** link the javadoc badge so the version stays current after release ([aa54ceb](https://github.com/openlayer-ai/openlayer-java/commit/aa54ceb20bdd0634c88e29c55b8c189b014b21b4))
+
+
+### Chores
+
+* **internal:** allow the mock server port to be set with STAINLESS_MOCK_PORT ([3460d6c](https://github.com/openlayer-ai/openlayer-java/commit/3460d6cfa3b95eabb956c5af0feaa7102287b59c))
+* **internal:** codegen related update ([2733a53](https://github.com/openlayer-ai/openlayer-java/commit/2733a53794639dddf53420c065bf91f09297d9c2))
+* **internal:** codegen related update ([576f3e8](https://github.com/openlayer-ai/openlayer-java/commit/576f3e8096b8e4880923f096830b3e6f27ec2ddc))
+
 ## 0.10.0 (2026-08-03)
 
 Full Changelog: [v0.9.2...v0.10.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.9.2...v0.10.0)
