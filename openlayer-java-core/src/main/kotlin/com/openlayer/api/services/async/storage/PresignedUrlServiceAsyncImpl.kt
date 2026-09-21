@@ -17,6 +17,8 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepareAsync
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -38,6 +40,13 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
     ): CompletableFuture<PresignedUrlCreateResponse> =
         // post /storage/presigned-url
         withRawResponse().create(params, requestOptions).thenApply { it.parse() }
+
+    override fun retrieve(
+        params: PresignedUrlRetrieveParams,
+        requestOptions: RequestOptions,
+    ): CompletableFuture<PresignedUrlRetrieveResponse> =
+        // get /storage/presigned-url
+        withRawResponse().retrieve(params, requestOptions).thenApply { it.parse() }
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PresignedUrlServiceAsync.WithRawResponse {
@@ -74,6 +83,36 @@ class PresignedUrlServiceAsyncImpl internal constructor(private val clientOption
                     errorHandler.handle(response).parseable {
                         response
                             .use { createHandler.handle(it) }
+                            .also {
+                                if (requestOptions.responseValidation!!) {
+                                    it.validate()
+                                }
+                            }
+                    }
+                }
+        }
+
+        private val retrieveHandler: Handler<PresignedUrlRetrieveResponse> =
+            jsonHandler<PresignedUrlRetrieveResponse>(clientOptions.jsonMapper)
+
+        override fun retrieve(
+            params: PresignedUrlRetrieveParams,
+            requestOptions: RequestOptions,
+        ): CompletableFuture<HttpResponseFor<PresignedUrlRetrieveResponse>> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("storage", "presigned-url")
+                    .build()
+                    .prepareAsync(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            return request
+                .thenComposeAsync { clientOptions.httpClient.executeAsync(it, requestOptions) }
+                .thenApply { response ->
+                    errorHandler.handle(response).parseable {
+                        response
+                            .use { retrieveHandler.handle(it) }
                             .also {
                                 if (requestOptions.responseValidation!!) {
                                     it.validate()

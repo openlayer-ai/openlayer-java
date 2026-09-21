@@ -5,6 +5,7 @@ package com.openlayer.api.services.async.storage
 import com.openlayer.api.TestServerExtension
 import com.openlayer.api.client.okhttp.OpenlayerOkHttpClientAsync
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveParams
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
@@ -23,6 +24,24 @@ internal class PresignedUrlServiceAsyncTest {
         val presignedUrlFuture =
             presignedUrlServiceAsync.create(
                 PresignedUrlCreateParams.builder().objectName("objectName").build()
+            )
+
+        val presignedUrl = presignedUrlFuture.get()
+        presignedUrl.validate()
+    }
+
+    @Test
+    fun retrieve() {
+        val client =
+            OpenlayerOkHttpClientAsync.builder()
+                .baseUrl(TestServerExtension.BASE_URL)
+                .apiKey("My API Key")
+                .build()
+        val presignedUrlServiceAsync = client.storage().presignedUrl()
+
+        val presignedUrlFuture =
+            presignedUrlServiceAsync.retrieve(
+                PresignedUrlRetrieveParams.builder().storageUri("storageUri").build()
             )
 
         val presignedUrl = presignedUrlFuture.get()

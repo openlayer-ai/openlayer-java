@@ -4,8 +4,12 @@ package com.openlayer.api.client
 
 import com.openlayer.api.core.ClientOptions
 import com.openlayer.api.core.getPackageVersion
+import com.openlayer.api.services.async.BackgroundTaskServiceAsync
+import com.openlayer.api.services.async.BackgroundTaskServiceAsyncImpl
 import com.openlayer.api.services.async.CommitServiceAsync
 import com.openlayer.api.services.async.CommitServiceAsyncImpl
+import com.openlayer.api.services.async.GovernanceServiceAsync
+import com.openlayer.api.services.async.GovernanceServiceAsyncImpl
 import com.openlayer.api.services.async.InferencePipelineServiceAsync
 import com.openlayer.api.services.async.InferencePipelineServiceAsyncImpl
 import com.openlayer.api.services.async.ProjectServiceAsync
@@ -57,6 +61,14 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
 
     private val tests: TestServiceAsync by lazy { TestServiceAsyncImpl(clientOptionsWithUserAgent) }
 
+    private val backgroundTasks: BackgroundTaskServiceAsync by lazy {
+        BackgroundTaskServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
+    private val governance: GovernanceServiceAsync by lazy {
+        GovernanceServiceAsyncImpl(clientOptionsWithUserAgent)
+    }
+
     override fun sync(): OpenlayerClient = sync
 
     override fun withRawResponse(): OpenlayerClientAsync.WithRawResponse = withRawResponse
@@ -75,6 +87,10 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
     override fun storage(): StorageServiceAsync = storage
 
     override fun tests(): TestServiceAsync = tests
+
+    override fun backgroundTasks(): BackgroundTaskServiceAsync = backgroundTasks
+
+    override fun governance(): GovernanceServiceAsync = governance
 
     override fun close() = clientOptions.close()
 
@@ -105,6 +121,14 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
             TestServiceAsyncImpl.WithRawResponseImpl(clientOptions)
         }
 
+        private val backgroundTasks: BackgroundTaskServiceAsync.WithRawResponse by lazy {
+            BackgroundTaskServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
+        private val governance: GovernanceServiceAsync.WithRawResponse by lazy {
+            GovernanceServiceAsyncImpl.WithRawResponseImpl(clientOptions)
+        }
+
         override fun withOptions(
             modifier: Consumer<ClientOptions.Builder>
         ): OpenlayerClientAsync.WithRawResponse =
@@ -124,5 +148,9 @@ class OpenlayerClientAsyncImpl(private val clientOptions: ClientOptions) : Openl
         override fun storage(): StorageServiceAsync.WithRawResponse = storage
 
         override fun tests(): TestServiceAsync.WithRawResponse = tests
+
+        override fun backgroundTasks(): BackgroundTaskServiceAsync.WithRawResponse = backgroundTasks
+
+        override fun governance(): GovernanceServiceAsync.WithRawResponse = governance
     }
 }

@@ -7,6 +7,8 @@ import com.openlayer.api.core.RequestOptions
 import com.openlayer.api.core.http.HttpResponseFor
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveResponse
 import java.util.concurrent.CompletableFuture
 import java.util.function.Consumer
 
@@ -33,6 +35,27 @@ interface PresignedUrlServiceAsync {
         params: PresignedUrlCreateParams,
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<PresignedUrlCreateResponse>
+
+    /**
+     * Exchange a `storageUri` for a short-lived presigned url you can download the object from.
+     *
+     * Use it to collect anything the platform stored on your behalf -- for example the archive a
+     * framework export leaves behind, whose `storageUri` comes back in the background task's
+     * `outputs`.
+     *
+     * The workspace is taken from the API key, so there is nothing else to send. The url is only
+     * issued for objects your workspace owns, and `404` covers both "no such object" and "not
+     * yours".
+     */
+    fun retrieve(
+        params: PresignedUrlRetrieveParams
+    ): CompletableFuture<PresignedUrlRetrieveResponse> = retrieve(params, RequestOptions.none())
+
+    /** @see retrieve */
+    fun retrieve(
+        params: PresignedUrlRetrieveParams,
+        requestOptions: RequestOptions = RequestOptions.none(),
+    ): CompletableFuture<PresignedUrlRetrieveResponse>
 
     /**
      * A view of [PresignedUrlServiceAsync] that provides access to raw HTTP responses for each
@@ -63,5 +86,20 @@ interface PresignedUrlServiceAsync {
             params: PresignedUrlCreateParams,
             requestOptions: RequestOptions = RequestOptions.none(),
         ): CompletableFuture<HttpResponseFor<PresignedUrlCreateResponse>>
+
+        /**
+         * Returns a raw HTTP response for `get /storage/presigned-url`, but is otherwise the same
+         * as [PresignedUrlServiceAsync.retrieve].
+         */
+        fun retrieve(
+            params: PresignedUrlRetrieveParams
+        ): CompletableFuture<HttpResponseFor<PresignedUrlRetrieveResponse>> =
+            retrieve(params, RequestOptions.none())
+
+        /** @see retrieve */
+        fun retrieve(
+            params: PresignedUrlRetrieveParams,
+            requestOptions: RequestOptions = RequestOptions.none(),
+        ): CompletableFuture<HttpResponseFor<PresignedUrlRetrieveResponse>>
     }
 }
