@@ -17,6 +17,8 @@ import com.openlayer.api.core.http.parseable
 import com.openlayer.api.core.prepare
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateParams
 import com.openlayer.api.models.storage.presignedurl.PresignedUrlCreateResponse
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveParams
+import com.openlayer.api.models.storage.presignedurl.PresignedUrlRetrieveResponse
 import java.util.function.Consumer
 
 class PresignedUrlServiceImpl internal constructor(private val clientOptions: ClientOptions) :
@@ -37,6 +39,13 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
     ): PresignedUrlCreateResponse =
         // post /storage/presigned-url
         withRawResponse().create(params, requestOptions).parse()
+
+    override fun retrieve(
+        params: PresignedUrlRetrieveParams,
+        requestOptions: RequestOptions,
+    ): PresignedUrlRetrieveResponse =
+        // get /storage/presigned-url
+        withRawResponse().retrieve(params, requestOptions).parse()
 
     class WithRawResponseImpl internal constructor(private val clientOptions: ClientOptions) :
         PresignedUrlService.WithRawResponse {
@@ -71,6 +80,33 @@ class PresignedUrlServiceImpl internal constructor(private val clientOptions: Cl
             return errorHandler.handle(response).parseable {
                 response
                     .use { createHandler.handle(it) }
+                    .also {
+                        if (requestOptions.responseValidation!!) {
+                            it.validate()
+                        }
+                    }
+            }
+        }
+
+        private val retrieveHandler: Handler<PresignedUrlRetrieveResponse> =
+            jsonHandler<PresignedUrlRetrieveResponse>(clientOptions.jsonMapper)
+
+        override fun retrieve(
+            params: PresignedUrlRetrieveParams,
+            requestOptions: RequestOptions,
+        ): HttpResponseFor<PresignedUrlRetrieveResponse> {
+            val request =
+                HttpRequest.builder()
+                    .method(HttpMethod.GET)
+                    .baseUrl(clientOptions.baseUrl())
+                    .addPathSegments("storage", "presigned-url")
+                    .build()
+                    .prepare(clientOptions, params)
+            val requestOptions = requestOptions.applyDefaults(RequestOptions.from(clientOptions))
+            val response = clientOptions.httpClient.execute(request, requestOptions)
+            return errorHandler.handle(response).parseable {
+                response
+                    .use { retrieveHandler.handle(it) }
                     .also {
                         if (requestOptions.responseValidation!!) {
                             it.validate()

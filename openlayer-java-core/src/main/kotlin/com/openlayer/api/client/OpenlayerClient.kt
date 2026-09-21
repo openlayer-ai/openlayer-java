@@ -3,7 +3,9 @@
 package com.openlayer.api.client
 
 import com.openlayer.api.core.ClientOptions
+import com.openlayer.api.services.blocking.BackgroundTaskService
 import com.openlayer.api.services.blocking.CommitService
+import com.openlayer.api.services.blocking.GovernanceService
 import com.openlayer.api.services.blocking.InferencePipelineService
 import com.openlayer.api.services.blocking.ProjectService
 import com.openlayer.api.services.blocking.StorageService
@@ -59,6 +61,10 @@ interface OpenlayerClient {
 
     fun tests(): TestService
 
+    fun backgroundTasks(): BackgroundTaskService
+
+    fun governance(): GovernanceService
+
     /**
      * Closes this client, relinquishing any underlying resources.
      *
@@ -93,5 +99,9 @@ interface OpenlayerClient {
         fun storage(): StorageService.WithRawResponse
 
         fun tests(): TestService.WithRawResponse
+
+        fun backgroundTasks(): BackgroundTaskService.WithRawResponse
+
+        fun governance(): GovernanceService.WithRawResponse
     }
 }
