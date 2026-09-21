@@ -2080,8 +2080,6 @@ private constructor(
 
             @JvmField val API = of("api")
 
-            @JvmField val NULL = of("null")
-
             @JvmStatic fun of(value: String) = Source(JsonField.of(value))
         }
 
@@ -2089,7 +2087,6 @@ private constructor(
         enum class Known {
             WEB,
             API,
-            NULL,
         }
 
         /**
@@ -2104,7 +2101,6 @@ private constructor(
         enum class Value {
             WEB,
             API,
-            NULL,
             /** An enum member indicating that [Source] was instantiated with an unknown value. */
             _UNKNOWN,
         }
@@ -2120,7 +2116,6 @@ private constructor(
             when (this) {
                 WEB -> Value.WEB
                 API -> Value.API
-                NULL -> Value.NULL
                 else -> Value._UNKNOWN
             }
 
@@ -2137,7 +2132,6 @@ private constructor(
             when (this) {
                 WEB -> Known.WEB
                 API -> Known.API
-                NULL -> Known.NULL
                 else -> throw OpenlayerInvalidDataException("Unknown Source: $value")
             }
 
