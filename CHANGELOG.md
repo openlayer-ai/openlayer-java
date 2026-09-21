@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.11.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.10.1...v0.11.0) (2026-09-21)
+
+
+### Features
+
+* **governance:** add the governance write endpoints and generate governance SDK methods ([5187192](https://github.com/openlayer-ai/openlayer-java/commit/518719213a8e40ff931b03d1079f0760ed6689b3))
+
+
+### Chores
+
+* merge production main (release cut by the Stainless app) into the staging trunk ([946e4fc](https://github.com/openlayer-ai/openlayer-java/commit/946e4fcab4fe5e3c8fd7146b2a83860ac3d8e19a))
+
+
+### Documentation
+
+* **closes OPEN-9410:** expose the governance framework endpoints ([2f02772](https://github.com/openlayer-ai/openlayer-java/commit/2f0277293687b9ee4094cccbda250e1bddd1dec4))
+
 ## 0.10.1 (2026-08-20)
 
 Full Changelog: [v0.10.0...v0.10.1](https://github.com/openlayer-ai/openlayer-java/compare/v0.10.0...v0.10.1)
