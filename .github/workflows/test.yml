@@ -1,0 +1,80 @@
+# Separate from the generated ci.yml. stlc keeps workflow files across builds, but
+# `stlc build --rewrite-scaffold` would drop this one; re-add it after such a run.
+name: Tests
+on:
+  # No job-level `if:` (unlike ci.yml): a job skipped on pull_request counts as passing
+  # for required checks, and the PRs to gate (promote, release-please) are same-repo.
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  # A new PR push cancels the old run. Other runs get a group per commit: GitHub also
+  # cancels a queued run when a newer one joins its group, and a cancelled run on main
+  # would fail the required check for a good commit.
+  group: test-${{ github.event_name == 'pull_request' && github.ref || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    timeout-minutes: 30
+    name: full suite (JDK 21)
+    runs-on: ${{ startsWith(github.repository, 'stainless-sdks/') && 'depot-ubuntu-24.04' || 'ubuntu-latest' }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          persist-credentials: false
+
+      # Same JDKs as ci.yml; 21 is listed last so it becomes JAVA_HOME. No `cache: gradle`
+      # (unlike ci.yml): setup-gradle caches the Gradle home itself.
+      - name: Set up Java
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: temurin
+          java-version: |
+            8
+            21
+
+      # Not v6: its caching is a proprietary component under Gradle's Terms of Use.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@0723195856401067f7a2779048b490ace7a47d7c # v5.0.2
+
+      # scripts/test starts the Steady mock server, which is installed via npm exec.
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+
+      # --rerun: scripts/mock is not an input of the Test tasks, so with org.gradle.caching
+      # a restored build cache could replay results from before a spec change.
+      # `test` also runs the ProGuard and R8 checks in openlayer-java-proguard-test.
+      - name: Run tests
+        run: ./scripts/test --rerun
+
+      # Gradle only logs failures, so count the JUnit results: this prints what ran and
+      # fails if nothing did or anything was skipped (e.g. SKIP_MOCK_TESTS=true).
+      - name: Check test results
+        if: success() || failure()
+        shell: python3 {0}
+        run: |
+          import glob, sys, xml.etree.ElementTree as ET
+          totals = dict.fromkeys(("tests", "failures", "errors", "skipped"), 0)
+          for path in glob.glob("**/build/test-results/test/*.xml", recursive=True):
+              suite = ET.parse(path).getroot()
+              for key in totals:
+                  totals[key] += int(suite.get(key, 0))
+          print(", ".join(f"{count} {key}" for key, count in totals.items()))
+          sys.exit(1 if totals["tests"] == 0 or totals["skipped"] else 0)
+
+  # The one check to require in rulesets, so jobs can be added or renamed freely.
+  # always(), not !cancelled(): a skipped required check would count as passing.
+  required:
+    if: always()
+    needs: [test]
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "${{ needs.test.result }}" = success
