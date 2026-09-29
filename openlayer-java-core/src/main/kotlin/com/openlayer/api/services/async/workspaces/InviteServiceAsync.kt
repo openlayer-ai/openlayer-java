@@ -61,7 +61,7 @@ interface InviteServiceAsync {
     ): CompletableFuture<InviteCreateResponse> =
         create(workspaceId, InviteCreateParams.none(), requestOptions)
 
-    /** Retrieve a list of invites in a workspace. */
+    /** List the invites in a workspace. */
     fun list(workspaceId: String): CompletableFuture<InviteListResponse> =
         list(workspaceId, InviteListParams.none())
 

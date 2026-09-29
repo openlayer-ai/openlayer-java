@@ -9,7 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Retrieve a governance framework by its id. */
+/** Retrieve a framework. */
 class FrameworkRetrieveParams
 private constructor(
     private val frameworkId: String?,

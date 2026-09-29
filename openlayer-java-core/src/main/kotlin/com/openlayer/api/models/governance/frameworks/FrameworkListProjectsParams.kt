@@ -9,12 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the projects a framework applies to.
- *
- * Which projects a framework covers is determined by its `projectSelector`. A framework with an
- * empty selector applies to every project in the workspace.
- */
+/** List the projects a framework applies to. */
 class FrameworkListProjectsParams
 private constructor(
     private val frameworkId: String?,

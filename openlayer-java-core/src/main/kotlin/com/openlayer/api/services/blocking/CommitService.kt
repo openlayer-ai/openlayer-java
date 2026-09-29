@@ -27,7 +27,7 @@ interface CommitService {
 
     fun testResults(): TestResultService
 
-    /** Retrieve a project version (commit) by its id. */
+    /** Retrieve a project commit. */
     fun retrieve(projectVersionId: String): CommitRetrieveResponse =
         retrieve(projectVersionId, CommitRetrieveParams.none())
 

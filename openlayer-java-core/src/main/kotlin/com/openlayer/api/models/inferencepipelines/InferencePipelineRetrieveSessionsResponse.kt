@@ -185,6 +185,10 @@ private constructor(
     internal fun validity(): Int =
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
+    /**
+     * A session in an inference pipeline, with its activity stats: record counts, token usage,
+     * cost, latency, and its first and last records.
+     */
     class Item
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(

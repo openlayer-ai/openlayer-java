@@ -11,7 +11,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Delete inference pipeline. */
+/** Delete an inference pipeline. */
 class InferencePipelineDeleteParams
 private constructor(
     private val inferencePipelineId: String?,

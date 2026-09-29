@@ -20,11 +20,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Triggers one-off evaluation of a specific monitoring test for a custom timestamp range. This
- * allows evaluating tests for historical data or custom time periods outside the regular evaluation
- * window schedule. It also allows overwriting the existing test results.
- */
+/** Evaluate a test over a custom time range. */
 class TestEvaluateParams
 private constructor(
     private val testId: String?,

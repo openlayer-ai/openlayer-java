@@ -23,20 +23,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Create a governance rule in a workspace.
- *
- * A rule is one requirement. Its `type` decides how it is satisfied, and the two types accept
- * different fields:
- * - `platform` rules are evaluated automatically from the state of your workspace. Set
- *   `automationType` to the signal to check. Their `scope` must be `project`, and `evidenceType`
- *   and `renewalCadenceDays` must be omitted or `null`.
- * - `evidence` rules are satisfied by attaching evidence. Set `evidenceType` to the kind of
- *   evidence that satisfies them. `automationType` and `automationParams` must be omitted or
- *   `null`.
- *
- * A new rule belongs to no framework. Map it to one from the Openlayer app.
- */
+/** Create a rule in a workspace. */
 class RuleCreateParams
 private constructor(
     private val workspaceId: String?,
@@ -57,7 +44,7 @@ private constructor(
 
     /**
      * Whether the rule is evaluated once for the whole workspace, or once per project the rule's
-     * frameworks apply to.
+     * frameworks apply to. Must be `project` for platform rules. Fixed once the rule is created.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -66,7 +53,7 @@ private constructor(
 
     /**
      * `platform` rules are evaluated automatically from the state of your Openlayer workspace.
-     * `evidence` rules are satisfied by attaching evidence.
+     * `evidence` rules are satisfied by attaching evidence. Fixed once the rule is created.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
      *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -82,7 +69,8 @@ private constructor(
     fun assigneeId(): Optional<String> = body.assigneeId()
 
     /**
-     * Configuration for the platform check, when the automation takes parameters.
+     * Configuration for the platform check, when the automation takes parameters. Omit or `null`
+     * for evidence rules. Fixed once the rule is created.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -91,7 +79,8 @@ private constructor(
 
     /**
      * Which workspace signal a platform rule checks, for example `monitoring_mode_enabled`,
-     * `test_setup`, or `project_owner_set`. `null` for evidence rules.
+     * `test_setup`, or `project_owner_set`. Set it for platform rules; omit or `null` for evidence
+     * rules. Fixed once the rule is created.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -115,7 +104,8 @@ private constructor(
     fun description(): Optional<String> = body.description()
 
     /**
-     * The kind of evidence that satisfies the rule. `null` for platform rules.
+     * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or `null` for
+     * platform rules. Fixed once the rule is created.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -124,7 +114,8 @@ private constructor(
 
     /**
      * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-     * result becomes `due_soon` and then `failing`.
+     * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+     * attached. Omit or `null` for platform rules.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -293,7 +284,8 @@ private constructor(
 
         /**
          * Whether the rule is evaluated once for the whole workspace, or once per project the
-         * rule's frameworks apply to.
+         * rule's frameworks apply to. Must be `project` for platform rules. Fixed once the rule is
+         * created.
          */
         fun scope(scope: Scope) = apply { body.scope(scope) }
 
@@ -307,7 +299,7 @@ private constructor(
 
         /**
          * `platform` rules are evaluated automatically from the state of your Openlayer workspace.
-         * `evidence` rules are satisfied by attaching evidence.
+         * `evidence` rules are satisfied by attaching evidence. Fixed once the rule is created.
          */
         fun type(type: Type) = apply { body.type(type) }
 
@@ -334,7 +326,10 @@ private constructor(
          */
         fun assigneeId(assigneeId: JsonField<String>) = apply { body.assigneeId(assigneeId) }
 
-        /** Configuration for the platform check, when the automation takes parameters. */
+        /**
+         * Configuration for the platform check, when the automation takes parameters. Omit or
+         * `null` for evidence rules. Fixed once the rule is created.
+         */
         fun automationParams(automationParams: AutomationParams?) = apply {
             body.automationParams(automationParams)
         }
@@ -356,7 +351,8 @@ private constructor(
 
         /**
          * Which workspace signal a platform rule checks, for example `monitoring_mode_enabled`,
-         * `test_setup`, or `project_owner_set`. `null` for evidence rules.
+         * `test_setup`, or `project_owner_set`. Set it for platform rules; omit or `null` for
+         * evidence rules. Fixed once the rule is created.
          */
         fun automationType(automationType: String?) = apply { body.automationType(automationType) }
 
@@ -402,7 +398,10 @@ private constructor(
          */
         fun description(description: JsonField<String>) = apply { body.description(description) }
 
-        /** The kind of evidence that satisfies the rule. `null` for platform rules. */
+        /**
+         * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or `null`
+         * for platform rules. Fixed once the rule is created.
+         */
         fun evidenceType(evidenceType: EvidenceType?) = apply { body.evidenceType(evidenceType) }
 
         /** Alias for calling [Builder.evidenceType] with `evidenceType.orElse(null)`. */
@@ -422,7 +421,8 @@ private constructor(
 
         /**
          * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-         * result becomes `due_soon` and then `failing`.
+         * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+         * attached. Omit or `null` for platform rules.
          */
         fun renewalCadenceDays(renewalCadenceDays: Long?) = apply {
             body.renewalCadenceDays(renewalCadenceDays)
@@ -702,7 +702,8 @@ private constructor(
 
         /**
          * Whether the rule is evaluated once for the whole workspace, or once per project the
-         * rule's frameworks apply to.
+         * rule's frameworks apply to. Must be `project` for platform rules. Fixed once the rule is
+         * created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -711,7 +712,7 @@ private constructor(
 
         /**
          * `platform` rules are evaluated automatically from the state of your Openlayer workspace.
-         * `evidence` rules are satisfied by attaching evidence.
+         * `evidence` rules are satisfied by attaching evidence. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -727,7 +728,8 @@ private constructor(
         fun assigneeId(): Optional<String> = assigneeId.getOptional("assigneeId")
 
         /**
-         * Configuration for the platform check, when the automation takes parameters.
+         * Configuration for the platform check, when the automation takes parameters. Omit or
+         * `null` for evidence rules. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -737,7 +739,8 @@ private constructor(
 
         /**
          * Which workspace signal a platform rule checks, for example `monitoring_mode_enabled`,
-         * `test_setup`, or `project_owner_set`. `null` for evidence rules.
+         * `test_setup`, or `project_owner_set`. Set it for platform rules; omit or `null` for
+         * evidence rules. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -761,7 +764,8 @@ private constructor(
         fun description(): Optional<String> = description.getOptional("description")
 
         /**
-         * The kind of evidence that satisfies the rule. `null` for platform rules.
+         * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or `null`
+         * for platform rules. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -770,7 +774,8 @@ private constructor(
 
         /**
          * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-         * result becomes `due_soon` and then `failing`.
+         * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+         * attached. Omit or `null` for platform rules.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -956,7 +961,8 @@ private constructor(
 
             /**
              * Whether the rule is evaluated once for the whole workspace, or once per project the
-             * rule's frameworks apply to.
+             * rule's frameworks apply to. Must be `project` for platform rules. Fixed once the rule
+             * is created.
              */
             fun scope(scope: Scope) = scope(JsonField.of(scope))
 
@@ -971,7 +977,8 @@ private constructor(
 
             /**
              * `platform` rules are evaluated automatically from the state of your Openlayer
-             * workspace. `evidence` rules are satisfied by attaching evidence.
+             * workspace. `evidence` rules are satisfied by attaching evidence. Fixed once the rule
+             * is created.
              */
             fun type(type: Type) = type(JsonField.of(type))
 
@@ -999,7 +1006,10 @@ private constructor(
              */
             fun assigneeId(assigneeId: JsonField<String>) = apply { this.assigneeId = assigneeId }
 
-            /** Configuration for the platform check, when the automation takes parameters. */
+            /**
+             * Configuration for the platform check, when the automation takes parameters. Omit or
+             * `null` for evidence rules. Fixed once the rule is created.
+             */
             fun automationParams(automationParams: AutomationParams?) =
                 automationParams(JsonField.ofNullable(automationParams))
 
@@ -1022,7 +1032,8 @@ private constructor(
 
             /**
              * Which workspace signal a platform rule checks, for example `monitoring_mode_enabled`,
-             * `test_setup`, or `project_owner_set`. `null` for evidence rules.
+             * `test_setup`, or `project_owner_set`. Set it for platform rules; omit or `null` for
+             * evidence rules. Fixed once the rule is created.
              */
             fun automationType(automationType: String?) =
                 automationType(JsonField.ofNullable(automationType))
@@ -1073,7 +1084,10 @@ private constructor(
                 this.description = description
             }
 
-            /** The kind of evidence that satisfies the rule. `null` for platform rules. */
+            /**
+             * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or
+             * `null` for platform rules. Fixed once the rule is created.
+             */
             fun evidenceType(evidenceType: EvidenceType?) =
                 evidenceType(JsonField.ofNullable(evidenceType))
 
@@ -1094,7 +1108,8 @@ private constructor(
 
             /**
              * How often evidence must be renewed, in days. Once evidence is older than this, the
-             * rule result becomes `due_soon` and then `failing`.
+             * rule result becomes `due_soon` and then `failing`. The window restarts whenever
+             * evidence is attached. Omit or `null` for platform rules.
              */
             fun renewalCadenceDays(renewalCadenceDays: Long?) =
                 renewalCadenceDays(JsonField.ofNullable(renewalCadenceDays))
@@ -1311,7 +1326,7 @@ private constructor(
 
     /**
      * Whether the rule is evaluated once for the whole workspace, or once per project the rule's
-     * frameworks apply to.
+     * frameworks apply to. Must be `project` for platform rules. Fixed once the rule is created.
      */
     class Scope @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -1451,7 +1466,7 @@ private constructor(
 
     /**
      * `platform` rules are evaluated automatically from the state of your Openlayer workspace.
-     * `evidence` rules are satisfied by attaching evidence.
+     * `evidence` rules are satisfied by attaching evidence. Fixed once the rule is created.
      */
     class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -1589,7 +1604,10 @@ private constructor(
         override fun toString() = value.toString()
     }
 
-    /** Configuration for the platform check, when the automation takes parameters. */
+    /**
+     * Configuration for the platform check, when the automation takes parameters. Omit or `null`
+     * for evidence rules. Fixed once the rule is created.
+     */
     class AutomationParams
     @JsonCreator
     private constructor(
@@ -1698,7 +1716,10 @@ private constructor(
         override fun toString() = "AutomationParams{additionalProperties=$additionalProperties}"
     }
 
-    /** The kind of evidence that satisfies the rule. `null` for platform rules. */
+    /**
+     * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or `null` for
+     * platform rules. Fixed once the rule is created.
+     */
     class EvidenceType @JsonCreator private constructor(private val value: JsonField<String>) :
         Enum {
 

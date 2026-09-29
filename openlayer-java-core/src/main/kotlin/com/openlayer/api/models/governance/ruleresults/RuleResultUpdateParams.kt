@@ -22,14 +22,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Update a rule result. Only the fields you send are changed.
- *
- * Use this to assign an owner, or to exclude a single result from compliance without deactivating
- * the rule everywhere. `deactivatedReason` is required when setting `deactivated` to `true`.
- *
- * A result's `status` is computed by Openlayer and cannot be set directly.
- */
+/** Update a rule result. */
 class RuleResultUpdateParams
 private constructor(
     private val ruleResultId: String?,
@@ -65,7 +58,8 @@ private constructor(
     fun blocking(): Optional<List<Blocking>> = body.blocking()
 
     /**
-     * Whether this result is excluded from compliance calculations.
+     * Whether this result is excluded from compliance calculations. Excludes just this result,
+     * without deactivating the rule everywhere.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -73,7 +67,7 @@ private constructor(
     fun deactivated(): Optional<Boolean> = body.deactivated()
 
     /**
-     * Why the result was excluded.
+     * Why the result was excluded. Required when setting `deactivated` to `true`.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -222,7 +216,10 @@ private constructor(
          */
         fun addBlocking(blocking: Blocking) = apply { body.addBlocking(blocking) }
 
-        /** Whether this result is excluded from compliance calculations. */
+        /**
+         * Whether this result is excluded from compliance calculations. Excludes just this result,
+         * without deactivating the rule everywhere.
+         */
         fun deactivated(deactivated: Boolean) = apply { body.deactivated(deactivated) }
 
         /**
@@ -234,7 +231,7 @@ private constructor(
          */
         fun deactivated(deactivated: JsonField<Boolean>) = apply { body.deactivated(deactivated) }
 
-        /** Why the result was excluded. */
+        /** Why the result was excluded. Required when setting `deactivated` to `true`. */
         fun deactivatedReason(deactivatedReason: String?) = apply {
             body.deactivatedReason(deactivatedReason)
         }
@@ -452,7 +449,8 @@ private constructor(
         fun blocking(): Optional<List<Blocking>> = blocking.getOptional("blocking")
 
         /**
-         * Whether this result is excluded from compliance calculations.
+         * Whether this result is excluded from compliance calculations. Excludes just this result,
+         * without deactivating the rule everywhere.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -460,7 +458,7 @@ private constructor(
         fun deactivated(): Optional<Boolean> = deactivated.getOptional("deactivated")
 
         /**
-         * Why the result was excluded.
+         * Why the result was excluded. Required when setting `deactivated` to `true`.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -619,7 +617,10 @@ private constructor(
                     }
             }
 
-            /** Whether this result is excluded from compliance calculations. */
+            /**
+             * Whether this result is excluded from compliance calculations. Excludes just this
+             * result, without deactivating the rule everywhere.
+             */
             fun deactivated(deactivated: Boolean) = deactivated(JsonField.of(deactivated))
 
             /**
@@ -633,7 +634,7 @@ private constructor(
                 this.deactivated = deactivated
             }
 
-            /** Why the result was excluded. */
+            /** Why the result was excluded. Required when setting `deactivated` to `true`. */
             fun deactivatedReason(deactivatedReason: String?) =
                 deactivatedReason(JsonField.ofNullable(deactivatedReason))
 
@@ -787,7 +788,8 @@ private constructor(
         fun id(): Optional<String> = id.getOptional("id")
 
         /**
-         * The compliance status of the rule for this entity.
+         * The compliance status of the rule for this entity. Computed by Openlayer and can't be set
+         * directly.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -851,7 +853,10 @@ private constructor(
              */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
-            /** The compliance status of the rule for this entity. */
+            /**
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
+             */
             fun status(status: Status) = status(JsonField.of(status))
 
             /**
@@ -929,7 +934,10 @@ private constructor(
         internal fun validity(): Int =
             (if (id.asKnown().isPresent) 1 else 0) + (status.asKnown().getOrNull()?.validity() ?: 0)
 
-        /** The compliance status of the rule for this entity. */
+        /**
+         * The compliance status of the rule for this entity. Computed by Openlayer and can't be set
+         * directly.
+         */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
@@ -1139,7 +1147,8 @@ private constructor(
         fun id(): Optional<String> = id.getOptional("id")
 
         /**
-         * The compliance status of the rule for this entity.
+         * The compliance status of the rule for this entity. Computed by Openlayer and can't be set
+         * directly.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -1203,7 +1212,10 @@ private constructor(
              */
             fun id(id: JsonField<String>) = apply { this.id = id }
 
-            /** The compliance status of the rule for this entity. */
+            /**
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
+             */
             fun status(status: Status) = status(JsonField.of(status))
 
             /**
@@ -1281,7 +1293,10 @@ private constructor(
         internal fun validity(): Int =
             (if (id.asKnown().isPresent) 1 else 0) + (status.asKnown().getOrNull()?.validity() ?: 0)
 
-        /** The compliance status of the rule for this entity. */
+        /**
+         * The compliance status of the rule for this entity. Computed by Openlayer and can't be set
+         * directly.
+         */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**

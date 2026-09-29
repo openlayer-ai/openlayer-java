@@ -19,18 +19,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Attach evidence to a rule result, satisfying an evidence rule.
- *
- * Send the field that matches the rule's `evidenceType`: `storageUri` for an uploaded document,
- * `text` for a written statement, or `url` for a link.
- *
- * For a document, upload the file first with `POST /storage/presigned-url` and send the resulting
- * storage URI as `storageUri`.
- *
- * Attaching evidence re-evaluates the rule result. If the rule sets `renewalCadenceDays`, the
- * renewal window restarts from this evidence.
- */
+/** Attach evidence to a rule result. */
 class RuleResultCreateEvidenceParams
 private constructor(
     private val ruleResultId: String?,
@@ -58,7 +47,8 @@ private constructor(
     fun name(): Optional<String> = body.name()
 
     /**
-     * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+     * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`. Upload
+     * the file first with `POST /storage/presigned-url` and send the storage URI it returns.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -201,7 +191,11 @@ private constructor(
          */
         fun name(name: JsonField<String>) = apply { body.name(name) }
 
-        /** Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`. */
+        /**
+         * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+         * Upload the file first with `POST /storage/presigned-url` and send the storage URI it
+         * returns.
+         */
         fun storageUri(storageUri: String?) = apply { body.storageUri(storageUri) }
 
         /** Alias for calling [Builder.storageUri] with `storageUri.orElse(null)`. */
@@ -429,6 +423,8 @@ private constructor(
 
         /**
          * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+         * Upload the file first with `POST /storage/presigned-url` and send the storage URI it
+         * returns.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -562,6 +558,8 @@ private constructor(
 
             /**
              * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+             * Upload the file first with `POST /storage/presigned-url` and send the storage URI it
+             * returns.
              */
             fun storageUri(storageUri: String?) = storageUri(JsonField.ofNullable(storageUri))
 

@@ -182,6 +182,7 @@ private constructor(
     internal fun validity(): Int =
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
+    /** One project's rule result counts by status, for a single framework. */
     class Item
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(

@@ -180,6 +180,11 @@ private constructor(
     internal fun validity(): Int =
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
+    /**
+     * A single requirement Openlayer tracks. `platform` rules are evaluated automatically from the
+     * state of your workspace, and `evidence` rules are satisfied by attaching evidence. A rule can
+     * belong to several frameworks, or to none.
+     */
     class Item
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -316,7 +321,8 @@ private constructor(
 
         /**
          * Whether the rule is evaluated once for the whole workspace, or once per project the
-         * rule's frameworks apply to.
+         * rule's frameworks apply to. Must be `project` for platform rules. Fixed once the rule is
+         * created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -325,7 +331,7 @@ private constructor(
 
         /**
          * `platform` rules are evaluated automatically from the state of your Openlayer workspace.
-         * `evidence` rules are satisfied by attaching evidence.
+         * `evidence` rules are satisfied by attaching evidence. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -349,7 +355,8 @@ private constructor(
         fun assigneeId(): Optional<String> = assigneeId.getOptional("assigneeId")
 
         /**
-         * Configuration for the platform check, when the automation takes parameters.
+         * Configuration for the platform check, when the automation takes parameters. Omit or
+         * `null` for evidence rules. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -359,7 +366,8 @@ private constructor(
 
         /**
          * Which workspace signal a platform rule checks, for example `monitoring_mode_enabled`,
-         * `test_setup`, or `project_owner_set`. `null` for evidence rules.
+         * `test_setup`, or `project_owner_set`. Set it for platform rules; omit or `null` for
+         * evidence rules. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -383,7 +391,8 @@ private constructor(
         fun description(): Optional<String> = description.getOptional("description")
 
         /**
-         * The kind of evidence that satisfies the rule. `null` for platform rules.
+         * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or `null`
+         * for platform rules. Fixed once the rule is created.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -399,7 +408,8 @@ private constructor(
         fun frameworks(): Optional<List<Framework>> = frameworks.getOptional("frameworks")
 
         /**
-         * Whether the rule is managed by Openlayer and cannot be edited.
+         * Whether the rule is managed by Openlayer. These rules can't be renamed or deleted; set
+         * `deactivated` to exclude one from compliance instead.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -408,7 +418,8 @@ private constructor(
 
         /**
          * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-         * result becomes `due_soon` and then `failing`.
+         * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+         * attached. Omit or `null` for platform rules.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -757,7 +768,8 @@ private constructor(
 
             /**
              * Whether the rule is evaluated once for the whole workspace, or once per project the
-             * rule's frameworks apply to.
+             * rule's frameworks apply to. Must be `project` for platform rules. Fixed once the rule
+             * is created.
              */
             fun scope(scope: Scope) = scope(JsonField.of(scope))
 
@@ -772,7 +784,8 @@ private constructor(
 
             /**
              * `platform` rules are evaluated automatically from the state of your Openlayer
-             * workspace. `evidence` rules are satisfied by attaching evidence.
+             * workspace. `evidence` rules are satisfied by attaching evidence. Fixed once the rule
+             * is created.
              */
             fun type(type: Type) = type(JsonField.of(type))
 
@@ -814,7 +827,10 @@ private constructor(
              */
             fun assigneeId(assigneeId: JsonField<String>) = apply { this.assigneeId = assigneeId }
 
-            /** Configuration for the platform check, when the automation takes parameters. */
+            /**
+             * Configuration for the platform check, when the automation takes parameters. Omit or
+             * `null` for evidence rules. Fixed once the rule is created.
+             */
             fun automationParams(automationParams: AutomationParams?) =
                 automationParams(JsonField.ofNullable(automationParams))
 
@@ -837,7 +853,8 @@ private constructor(
 
             /**
              * Which workspace signal a platform rule checks, for example `monitoring_mode_enabled`,
-             * `test_setup`, or `project_owner_set`. `null` for evidence rules.
+             * `test_setup`, or `project_owner_set`. Set it for platform rules; omit or `null` for
+             * evidence rules. Fixed once the rule is created.
              */
             fun automationType(automationType: String?) =
                 automationType(JsonField.ofNullable(automationType))
@@ -888,7 +905,10 @@ private constructor(
                 this.description = description
             }
 
-            /** The kind of evidence that satisfies the rule. `null` for platform rules. */
+            /**
+             * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or
+             * `null` for platform rules. Fixed once the rule is created.
+             */
             fun evidenceType(evidenceType: EvidenceType?) =
                 evidenceType(JsonField.ofNullable(evidenceType))
 
@@ -933,7 +953,10 @@ private constructor(
                     }
             }
 
-            /** Whether the rule is managed by Openlayer and cannot be edited. */
+            /**
+             * Whether the rule is managed by Openlayer. These rules can't be renamed or deleted;
+             * set `deactivated` to exclude one from compliance instead.
+             */
             fun immutable(immutable: Boolean) = immutable(JsonField.of(immutable))
 
             /**
@@ -947,7 +970,8 @@ private constructor(
 
             /**
              * How often evidence must be renewed, in days. Once evidence is older than this, the
-             * rule result becomes `due_soon` and then `failing`.
+             * rule result becomes `due_soon` and then `failing`. The window restarts whenever
+             * evidence is attached. Omit or `null` for platform rules.
              */
             fun renewalCadenceDays(renewalCadenceDays: Long?) =
                 renewalCadenceDays(JsonField.ofNullable(renewalCadenceDays))
@@ -1230,7 +1254,8 @@ private constructor(
 
         /**
          * Whether the rule is evaluated once for the whole workspace, or once per project the
-         * rule's frameworks apply to.
+         * rule's frameworks apply to. Must be `project` for platform rules. Fixed once the rule is
+         * created.
          */
         class Scope @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -1373,7 +1398,7 @@ private constructor(
 
         /**
          * `platform` rules are evaluated automatically from the state of your Openlayer workspace.
-         * `evidence` rules are satisfied by attaching evidence.
+         * `evidence` rules are satisfied by attaching evidence. Fixed once the rule is created.
          */
         class Type @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
@@ -1512,7 +1537,10 @@ private constructor(
             override fun toString() = value.toString()
         }
 
-        /** Configuration for the platform check, when the automation takes parameters. */
+        /**
+         * Configuration for the platform check, when the automation takes parameters. Omit or
+         * `null` for evidence rules. Fixed once the rule is created.
+         */
         class AutomationParams
         @JsonCreator
         private constructor(
@@ -1626,7 +1654,10 @@ private constructor(
             override fun toString() = "AutomationParams{additionalProperties=$additionalProperties}"
         }
 
-        /** The kind of evidence that satisfies the rule. `null` for platform rules. */
+        /**
+         * The kind of evidence that satisfies the rule. Set it for evidence rules; omit or `null`
+         * for platform rules. Fixed once the rule is created.
+         */
         class EvidenceType @JsonCreator private constructor(private val value: JsonField<String>) :
             Enum {
 
@@ -2498,6 +2529,10 @@ private constructor(
                 "Framework{id=$id, avatar=$avatar, builtInSlug=$builtInSlug, enabled=$enabled, name=$name, additionalProperties=$additionalProperties}"
         }
 
+        /**
+         * The compliance status of one rule for one entity: a project for project-scoped rules, or
+         * the workspace for workspace-scoped rules.
+         */
         class Result
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
@@ -2621,7 +2656,8 @@ private constructor(
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
             /**
-             * Whether this result is excluded from compliance calculations.
+             * Whether this result is excluded from compliance calculations. Excludes just this
+             * result, without deactivating the rule everywhere.
              *
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -2639,7 +2675,8 @@ private constructor(
             fun ruleId(): String = ruleId.getRequired("ruleId")
 
             /**
-             * The compliance status of the rule for this entity.
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
              *
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -2717,7 +2754,7 @@ private constructor(
                 dateOfRenewal.getOptional("dateOfRenewal")
 
             /**
-             * Why the result was excluded.
+             * Why the result was excluded. Required when setting `deactivated` to `true`.
              *
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
@@ -3019,7 +3056,10 @@ private constructor(
                     this.dateUpdated = dateUpdated
                 }
 
-                /** Whether this result is excluded from compliance calculations. */
+                /**
+                 * Whether this result is excluded from compliance calculations. Excludes just this
+                 * result, without deactivating the rule everywhere.
+                 */
                 fun deactivated(deactivated: Boolean) = deactivated(JsonField.of(deactivated))
 
                 /**
@@ -3045,7 +3085,10 @@ private constructor(
                  */
                 fun ruleId(ruleId: JsonField<String>) = apply { this.ruleId = ruleId }
 
-                /** The compliance status of the rule for this entity. */
+                /**
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
+                 */
                 fun status(status: Status) = status(JsonField.of(status))
 
                 /**
@@ -3227,7 +3270,7 @@ private constructor(
                     this.dateOfRenewal = dateOfRenewal
                 }
 
-                /** Why the result was excluded. */
+                /** Why the result was excluded. Required when setting `deactivated` to `true`. */
                 fun deactivatedReason(deactivatedReason: String?) =
                     deactivatedReason(JsonField.ofNullable(deactivatedReason))
 
@@ -3417,7 +3460,10 @@ private constructor(
                     (if (projectId.asKnown().isPresent) 1 else 0) +
                     (if (statusMessage.asKnown().isPresent) 1 else 0)
 
-            /** The compliance status of the rule for this entity. */
+            /**
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
+             */
             class Status @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 
@@ -3612,7 +3658,8 @@ private constructor(
                 fun id(): Optional<String> = id.getOptional("id")
 
                 /**
-                 * The compliance status of the rule for this entity.
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
                  *
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
@@ -3677,7 +3724,10 @@ private constructor(
                      */
                     fun id(id: JsonField<String>) = apply { this.id = id }
 
-                    /** The compliance status of the rule for this entity. */
+                    /**
+                     * The compliance status of the rule for this entity. Computed by Openlayer and
+                     * can't be set directly.
+                     */
                     fun status(status: Status) = status(JsonField.of(status))
 
                     /**
@@ -3761,7 +3811,10 @@ private constructor(
                     (if (id.asKnown().isPresent) 1 else 0) +
                         (status.asKnown().getOrNull()?.validity() ?: 0)
 
-                /** The compliance status of the rule for this entity. */
+                /**
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
+                 */
                 class Status
                 @JsonCreator
                 private constructor(private val value: JsonField<String>) : Enum {
@@ -3978,7 +4031,8 @@ private constructor(
                 fun id(): Optional<String> = id.getOptional("id")
 
                 /**
-                 * The compliance status of the rule for this entity.
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
                  *
                  * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type
                  *   (e.g. if the server responded with an unexpected value).
@@ -4043,7 +4097,10 @@ private constructor(
                      */
                     fun id(id: JsonField<String>) = apply { this.id = id }
 
-                    /** The compliance status of the rule for this entity. */
+                    /**
+                     * The compliance status of the rule for this entity. Computed by Openlayer and
+                     * can't be set directly.
+                     */
                     fun status(status: Status) = status(JsonField.of(status))
 
                     /**
@@ -4127,7 +4184,10 @@ private constructor(
                     (if (id.asKnown().isPresent) 1 else 0) +
                         (status.asKnown().getOrNull()?.validity() ?: 0)
 
-                /** The compliance status of the rule for this entity. */
+                /**
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
+                 */
                 class Status
                 @JsonCreator
                 private constructor(private val value: JsonField<String>) : Enum {
@@ -4567,6 +4627,7 @@ private constructor(
                 "ResultsSummary{passing=$passing, total=$total, additionalProperties=$additionalProperties}"
         }
 
+        /** A label that groups rules across frameworks, for example by team or control family. */
         class Tag
         @JsonCreator(mode = JsonCreator.Mode.DISABLED)
         private constructor(
@@ -4649,7 +4710,7 @@ private constructor(
             fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
             /**
-             * Whether the tag is managed by Openlayer and cannot be edited or deleted.
+             * Whether the tag is managed by Openlayer. These tags can't be deleted.
              *
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
              *   unexpectedly missing or null (e.g. if the server responded with an unexpected
@@ -4868,7 +4929,7 @@ private constructor(
                     this.dateUpdated = dateUpdated
                 }
 
-                /** Whether the tag is managed by Openlayer and cannot be edited or deleted. */
+                /** Whether the tag is managed by Openlayer. These tags can't be deleted. */
                 fun immutable(immutable: Boolean) = immutable(JsonField.of(immutable))
 
                 /**

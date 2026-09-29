@@ -14,12 +14,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the rules mapped to a subsection of a framework document.
- *
- * A subsection is usually the level at which a standard states an individual requirement, so this
- * is the endpoint to use when you want to show which rules cover a specific clause.
- */
+/** List the rules mapped to a document subsection. */
 class SubsectionListRulesParams
 private constructor(
     private val frameworkId: String,

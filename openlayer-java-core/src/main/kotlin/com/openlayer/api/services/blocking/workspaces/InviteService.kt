@@ -58,7 +58,7 @@ interface InviteService {
     fun create(workspaceId: String, requestOptions: RequestOptions): InviteCreateResponse =
         create(workspaceId, InviteCreateParams.none(), requestOptions)
 
-    /** Retrieve a list of invites in a workspace. */
+    /** List the invites in a workspace. */
     fun list(workspaceId: String): InviteListResponse = list(workspaceId, InviteListParams.none())
 
     /** @see list */

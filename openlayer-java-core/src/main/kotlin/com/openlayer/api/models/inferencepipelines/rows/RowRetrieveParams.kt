@@ -10,7 +10,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Fetch a single inference pipeline row by inference ID, including OTel steps. */
+/** Retrieve a row by inference ID, including OTel steps. */
 class RowRetrieveParams
 private constructor(
     private val inferencePipelineId: String,

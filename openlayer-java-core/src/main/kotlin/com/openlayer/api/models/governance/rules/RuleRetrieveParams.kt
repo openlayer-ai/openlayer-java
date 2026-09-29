@@ -9,7 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Retrieve a governance rule by its id, including the frameworks it belongs to and its tags. */
+/** Retrieve a rule with its frameworks and tags. */
 class RuleRetrieveParams
 private constructor(
     private val ruleId: String?,

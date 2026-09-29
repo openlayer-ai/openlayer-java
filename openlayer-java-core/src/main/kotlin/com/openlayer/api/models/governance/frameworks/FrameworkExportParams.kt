@@ -19,26 +19,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Export a framework's evidence and progress as an audit-ready zip archive.
- *
- * The archive holds every evidence file uploaded against the framework's evidence-based rules, a
- * markdown report of the framework's progress and the status of all its rules (broken down by
- * documentation section when the framework has documents), and CSV manifests of rules and evidence
- * with SHA-256 checksums.
- *
- * Send `projectId` to export one project's compliance with the framework. Omit it for the
- * workspace-wide view across every project in the framework, including workspace-scoped rules.
- *
- * The export runs as a background task, so this returns `202` immediately. To collect the archive:
- * 1. Poll `GET /background-tasks/{taskId}` with the returned `taskResultId` until `complete` is
- *    `true`.
- * 2. Read `outputs.storageUri` off that task.
- * 3. Exchange it for a download link at `GET /storage/presigned-url?storageUri=<uri>`.
- *
- * Rate limited to 2 requests per minute per framework. Asking for an export while an identical one
- * is still queued returns that task rather than starting a second one.
- */
+/** Export a framework as an audit-ready zip archive. */
 class FrameworkExportParams
 private constructor(
     private val frameworkId: String?,
@@ -50,7 +31,8 @@ private constructor(
     fun frameworkId(): Optional<String> = Optional.ofNullable(frameworkId)
 
     /**
-     * Scope the export to this project. It must belong to the framework.
+     * Scope the export to this project. It must belong to the framework. Omit it for the
+     * workspace-wide view across every project in the framework, including workspace-scoped rules.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -112,7 +94,11 @@ private constructor(
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
-        /** Scope the export to this project. It must belong to the framework. */
+        /**
+         * Scope the export to this project. It must belong to the framework. Omit it for the
+         * workspace-wide view across every project in the framework, including workspace-scoped
+         * rules.
+         */
         fun projectId(projectId: String?) = apply { body.projectId(projectId) }
 
         /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */
@@ -285,7 +271,9 @@ private constructor(
         ) : this(projectId, mutableMapOf())
 
         /**
-         * Scope the export to this project. It must belong to the framework.
+         * Scope the export to this project. It must belong to the framework. Omit it for the
+         * workspace-wide view across every project in the framework, including workspace-scoped
+         * rules.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -329,7 +317,11 @@ private constructor(
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
-            /** Scope the export to this project. It must belong to the framework. */
+            /**
+             * Scope the export to this project. It must belong to the framework. Omit it for the
+             * workspace-wide view across every project in the framework, including workspace-scoped
+             * rules.
+             */
             fun projectId(projectId: String?) = projectId(JsonField.ofNullable(projectId))
 
             /** Alias for calling [Builder.projectId] with `projectId.orElse(null)`. */

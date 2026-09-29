@@ -34,12 +34,7 @@ interface ApiKeyService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): ApiKeyService
 
-    /**
-     * Create a new API key in a workspace. The full secret is returned in `secret`, only in this
-     * response. Optionally set `expiresAt`. When you authenticate with an API key that expires, the
-     * new key can't outlive it: omit `expiresAt` to inherit that expiry, and a later expiry (or
-     * `null`) is rejected with 400.
-     */
+    /** Create a new API key. */
     fun create(workspaceId: String): ApiKeyCreateResponse =
         create(workspaceId, ApiKeyCreateParams.none())
 
@@ -71,10 +66,7 @@ interface ApiKeyService {
     fun create(workspaceId: String, requestOptions: RequestOptions): ApiKeyCreateResponse =
         create(workspaceId, ApiKeyCreateParams.none(), requestOptions)
 
-    /**
-     * Retrieve one of your API keys, with its lifecycle status. The secret is never returned;
-     * `secureKey` is an obfuscated hint.
-     */
+    /** Retrieve an API key. */
     fun retrieve(apiKeyId: String, params: ApiKeyRetrieveParams): ApiKeyRetrieveResponse =
         retrieve(apiKeyId, params, RequestOptions.none())
 
@@ -96,10 +88,7 @@ interface ApiKeyService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ApiKeyRetrieveResponse
 
-    /**
-     * Rename one of your API keys. A key's expiry can't be updated; rotate the key with a new
-     * `expiresAt` instead, so extending a key's life always issues a new secret.
-     */
+    /** Rename an API key. */
     fun update(apiKeyId: String, params: ApiKeyUpdateParams): ApiKeyUpdateResponse =
         update(apiKeyId, params, RequestOptions.none())
 
@@ -120,10 +109,7 @@ interface ApiKeyService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): ApiKeyUpdateResponse
 
-    /**
-     * List the API keys you own in a workspace, with their lifecycle status. Secrets are never
-     * returned; `secureKey` is an obfuscated hint.
-     */
+    /** List your API keys in a workspace. */
     fun list(workspaceId: String): List<ApiKeyListResponse> =
         list(workspaceId, ApiKeyListParams.none())
 
@@ -155,10 +141,7 @@ interface ApiKeyService {
     fun list(workspaceId: String, requestOptions: RequestOptions): List<ApiKeyListResponse> =
         list(workspaceId, ApiKeyListParams.none(), requestOptions)
 
-    /**
-     * Delete one of your API keys. Every secret for the key stops working immediately, including a
-     * previous secret still in its rotation grace period.
-     */
+    /** Delete an API key. */
     fun delete(apiKeyId: String, params: ApiKeyDeleteParams) =
         delete(apiKeyId, params, RequestOptions.none())
 
@@ -175,14 +158,7 @@ interface ApiKeyService {
     /** @see delete */
     fun delete(params: ApiKeyDeleteParams, requestOptions: RequestOptions = RequestOptions.none())
 
-    /**
-     * Replace an API key's secret now. The new secret is returned in `secret`, only in this
-     * response. Send `expiresAt` to change the key's expiry (`null` for never); omit it to keep the
-     * current one. The previous secret keeps authenticating for `gracePeriodHours` (default 0, so
-     * it stops working immediately), and never past `expiresAt`. The key keeps its id and name.
-     * Expired keys cannot be rotated. Only one previous secret is kept, so rotating again during a
-     * grace period retires the older one immediately.
-     */
+    /** Replace an API key's secret. */
     fun rotate(apiKeyId: String, params: ApiKeyRotateParams): ApiKeyRotateResponse =
         rotate(apiKeyId, params, RequestOptions.none())
 

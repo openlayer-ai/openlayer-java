@@ -14,7 +14,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Retrieve inference pipeline. */
+/** Retrieve an inference pipeline. */
 class InferencePipelineRetrieveParams
 private constructor(
     private val inferencePipelineId: String?,

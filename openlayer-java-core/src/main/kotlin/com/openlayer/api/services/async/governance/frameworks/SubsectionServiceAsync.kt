@@ -24,12 +24,7 @@ interface SubsectionServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): SubsectionServiceAsync
 
-    /**
-     * List the rules mapped to a subsection of a framework document.
-     *
-     * A subsection is usually the level at which a standard states an individual requirement, so
-     * this is the endpoint to use when you want to show which rules cover a specific clause.
-     */
+    /** List the rules mapped to a document subsection. */
     fun listRules(
         subsectionId: String,
         params: SubsectionListRulesParams,

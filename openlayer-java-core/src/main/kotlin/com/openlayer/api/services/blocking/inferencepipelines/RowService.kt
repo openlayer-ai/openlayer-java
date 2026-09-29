@@ -30,7 +30,7 @@ interface RowService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowService
 
-    /** Fetch a single inference pipeline row by inference ID, including OTel steps. */
+    /** Retrieve a row by inference ID, including OTel steps. */
     fun retrieve(inferenceId: String, params: RowRetrieveParams): RowRetrieveResponse =
         retrieve(inferenceId, params, RequestOptions.none())
 
@@ -52,7 +52,7 @@ interface RowService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RowRetrieveResponse
 
-    /** Update an inference data point in an inference pipeline. */
+    /** Update a row in an inference pipeline. */
     fun update(inferencePipelineId: String, params: RowUpdateParams): RowUpdateResponse =
         update(inferencePipelineId, params, RequestOptions.none())
 
@@ -73,7 +73,7 @@ interface RowService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RowUpdateResponse
 
-    /** A list of rows for an inference pipeline. */
+    /** List the rows in an inference pipeline. */
     fun list(inferencePipelineId: String): RowListResponse =
         list(inferencePipelineId, RowListParams.none())
 
@@ -104,10 +104,7 @@ interface RowService {
     fun list(inferencePipelineId: String, requestOptions: RequestOptions): RowListResponse =
         list(inferencePipelineId, RowListParams.none(), requestOptions)
 
-    /**
-     * Delete a single inference pipeline row by inference ID. Only project admins can perform this
-     * action.
-     */
+    /** Delete a row by inference ID. */
     fun delete(inferenceId: String, params: RowDeleteParams) =
         delete(inferenceId, params, RequestOptions.none())
 

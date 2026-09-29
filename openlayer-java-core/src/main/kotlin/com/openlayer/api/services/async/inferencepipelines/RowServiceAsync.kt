@@ -30,7 +30,7 @@ interface RowServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RowServiceAsync
 
-    /** Fetch a single inference pipeline row by inference ID, including OTel steps. */
+    /** Retrieve a row by inference ID, including OTel steps. */
     fun retrieve(
         inferenceId: String,
         params: RowRetrieveParams,
@@ -54,7 +54,7 @@ interface RowServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RowRetrieveResponse>
 
-    /** Update an inference data point in an inference pipeline. */
+    /** Update a row in an inference pipeline. */
     fun update(
         inferencePipelineId: String,
         params: RowUpdateParams,
@@ -79,7 +79,7 @@ interface RowServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<RowUpdateResponse>
 
-    /** A list of rows for an inference pipeline. */
+    /** List the rows in an inference pipeline. */
     fun list(inferencePipelineId: String): CompletableFuture<RowListResponse> =
         list(inferencePipelineId, RowListParams.none())
 
@@ -114,10 +114,7 @@ interface RowServiceAsync {
     ): CompletableFuture<RowListResponse> =
         list(inferencePipelineId, RowListParams.none(), requestOptions)
 
-    /**
-     * Delete a single inference pipeline row by inference ID. Only project admins can perform this
-     * action.
-     */
+    /** Delete a row by inference ID. */
     fun delete(inferenceId: String, params: RowDeleteParams): CompletableFuture<Void?> =
         delete(inferenceId, params, RequestOptions.none())
 

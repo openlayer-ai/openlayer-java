@@ -20,10 +20,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Rename one of your API keys. A key's expiry can't be updated; rotate the key with a new
- * `expiresAt` instead, so extending a key's life always issues a new secret.
- */
+/** Rename an API key. */
 class ApiKeyUpdateParams
 private constructor(
     private val workspaceId: String,

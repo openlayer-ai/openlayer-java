@@ -24,12 +24,7 @@ interface SectionServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): SectionServiceAsync
 
-    /**
-     * List the rules mapped to a section of a framework document.
-     *
-     * Pass `includeSubsectionRules=true` to also return the rules mapped to the section's
-     * subsections, which is how you get every rule covering a requirement and everything under it.
-     */
+    /** List the rules mapped to a document section. */
     fun listRules(
         sectionId: String,
         params: SectionListRulesParams,

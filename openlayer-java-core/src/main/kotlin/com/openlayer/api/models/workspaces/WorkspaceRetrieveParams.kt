@@ -9,7 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Retrieve a workspace by its ID. */
+/** Retrieve a workspace. */
 class WorkspaceRetrieveParams
 private constructor(
     private val workspaceId: String?,

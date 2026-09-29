@@ -24,13 +24,7 @@ interface RuleTagService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleTagService
 
-    /**
-     * List the rule tags in a workspace.
-     *
-     * Tags group rules across frameworks, for example by team or by control family. Use the ids
-     * returned here with the `tags` filter on
-     * [List rules](/api-reference/rest/governance/list-rules).
-     */
+    /** List the rule tags in a workspace. */
     fun list(workspaceId: String): RuleTagListResponse = list(workspaceId, RuleTagListParams.none())
 
     /** @see list */

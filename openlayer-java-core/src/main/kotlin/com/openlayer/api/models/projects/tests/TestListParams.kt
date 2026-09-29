@@ -13,7 +13,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** List tests under a project. */
+/** List the tests in a project. */
 class TestListParams
 private constructor(
     private val projectId: String?,

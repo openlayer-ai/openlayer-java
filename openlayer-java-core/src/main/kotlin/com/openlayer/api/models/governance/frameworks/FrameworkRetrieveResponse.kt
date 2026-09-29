@@ -21,6 +21,10 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * A set of rules, drawn from a regulation, a standard, or your own internal policy, that Openlayer
+ * tracks compliance against. Openlayer ships built-in frameworks, and you can create your own.
+ */
 class FrameworkRetrieveResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -205,7 +209,8 @@ private constructor(
     fun href(): Optional<String> = href.getOptional("href")
 
     /**
-     * Whether the framework definition is managed by Openlayer and cannot be edited.
+     * Whether the framework definition is managed by Openlayer. For these frameworks only
+     * `enabled`, `tags`, and `projectSelector` can be changed.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -621,7 +626,10 @@ private constructor(
          */
         fun href(href: JsonField<String>) = apply { this.href = href }
 
-        /** Whether the framework definition is managed by Openlayer and cannot be edited. */
+        /**
+         * Whether the framework definition is managed by Openlayer. For these frameworks only
+         * `enabled`, `tags`, and `projectSelector` can be changed.
+         */
         fun immutable(immutable: Boolean) = immutable(JsonField.of(immutable))
 
         /**

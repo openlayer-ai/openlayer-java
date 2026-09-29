@@ -34,12 +34,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Get aggregated session data for an inference pipeline with pagination and metadata.
- *
- * Returns a list of sessions for the inference pipeline, including activity statistics such as
- * record counts, token usage, cost, latency, and the first and last records.
- */
+/** List the sessions in an inference pipeline, with their stats. */
 class InferencePipelineRetrieveSessionsParams
 private constructor(
     private val inferencePipelineId: String?,

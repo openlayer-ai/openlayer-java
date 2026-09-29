@@ -18,6 +18,10 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * A job queued by an endpoint that can't answer within one request, such as a framework export.
+ * Poll it until `complete` is `true`, then read what it produced from `outputs`.
+ */
 class BackgroundTaskRetrieveResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(

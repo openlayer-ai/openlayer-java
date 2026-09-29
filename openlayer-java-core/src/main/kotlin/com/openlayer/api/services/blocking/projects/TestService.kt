@@ -28,7 +28,7 @@ interface TestService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): TestService
 
-    /** Create a test. */
+    /** Create a test in a project. */
     fun create(projectId: String, params: TestCreateParams): TestCreateResponse =
         create(projectId, params, RequestOptions.none())
 
@@ -48,7 +48,7 @@ interface TestService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestCreateResponse
 
-    /** Update tests. */
+    /** Update tests in a project. */
     fun update(projectId: String, params: TestUpdateParams): TestUpdateResponse =
         update(projectId, params, RequestOptions.none())
 
@@ -68,7 +68,7 @@ interface TestService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): TestUpdateResponse
 
-    /** List tests under a project. */
+    /** List the tests in a project. */
     fun list(projectId: String): TestListResponse = list(projectId, TestListParams.none())
 
     /** @see list */

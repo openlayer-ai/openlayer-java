@@ -23,17 +23,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Update a governance framework.
- *
- * The most common use is activating or deactivating a framework for the workspace by setting
- * `enabled`. Rules of a disabled framework are not evaluated and do not count towards compliance.
- *
- * Frameworks that ship with Openlayer report `immutable: true`. For those, only `enabled`, `tags`,
- * and `projectSelector` can be changed -- their name and definition are managed by Openlayer.
- *
- * Only the fields you send are changed.
- */
+/** Update a framework. */
 class FrameworkUpdateParams
 private constructor(
     private val frameworkId: String?,

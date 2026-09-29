@@ -21,14 +21,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Update a governance rule. Only the fields you send are changed.
- *
- * Rules that ship with Openlayer report `immutable: true` and cannot be edited.
- *
- * A rule's `scope`, `type`, `evidenceType`, and automation are fixed once it exists -- create a new
- * rule instead of converting one.
- */
+/** Update a rule. */
 class RuleUpdateParams
 private constructor(
     private val ruleId: String?,
@@ -73,7 +66,8 @@ private constructor(
 
     /**
      * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-     * result becomes `due_soon` and then `failing`.
+     * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+     * attached. Omit or `null` for platform rules.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -241,7 +235,8 @@ private constructor(
 
         /**
          * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-         * result becomes `due_soon` and then `failing`.
+         * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+         * attached. Omit or `null` for platform rules.
          */
         fun renewalCadenceDays(renewalCadenceDays: Long?) = apply {
             body.renewalCadenceDays(renewalCadenceDays)
@@ -515,7 +510,8 @@ private constructor(
 
         /**
          * How often evidence must be renewed, in days. Once evidence is older than this, the rule
-         * result becomes `due_soon` and then `failing`.
+         * result becomes `due_soon` and then `failing`. The window restarts whenever evidence is
+         * attached. Omit or `null` for platform rules.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -684,7 +680,8 @@ private constructor(
 
             /**
              * How often evidence must be renewed, in days. Once evidence is older than this, the
-             * rule result becomes `due_soon` and then `failing`.
+             * rule result becomes `due_soon` and then `failing`. The window restarts whenever
+             * evidence is attached. Omit or `null` for platform rules.
              */
             fun renewalCadenceDays(renewalCadenceDays: Long?) =
                 renewalCadenceDays(JsonField.ofNullable(renewalCadenceDays))

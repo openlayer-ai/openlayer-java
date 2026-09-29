@@ -27,7 +27,7 @@ interface CommitServiceAsync {
 
     fun testResults(): TestResultServiceAsync
 
-    /** Retrieve a project version (commit) by its id. */
+    /** Retrieve a project commit. */
     fun retrieve(projectVersionId: String): CompletableFuture<CommitRetrieveResponse> =
         retrieve(projectVersionId, CommitRetrieveParams.none())
 

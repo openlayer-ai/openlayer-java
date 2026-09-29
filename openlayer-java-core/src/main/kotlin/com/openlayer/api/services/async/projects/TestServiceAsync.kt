@@ -28,7 +28,7 @@ interface TestServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): TestServiceAsync
 
-    /** Create a test. */
+    /** Create a test in a project. */
     fun create(projectId: String, params: TestCreateParams): CompletableFuture<TestCreateResponse> =
         create(projectId, params, RequestOptions.none())
 
@@ -50,7 +50,7 @@ interface TestServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestCreateResponse>
 
-    /** Update tests. */
+    /** Update tests in a project. */
     fun update(projectId: String, params: TestUpdateParams): CompletableFuture<TestUpdateResponse> =
         update(projectId, params, RequestOptions.none())
 
@@ -72,7 +72,7 @@ interface TestServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<TestUpdateResponse>
 
-    /** List tests under a project. */
+    /** List the tests in a project. */
     fun list(projectId: String): CompletableFuture<TestListResponse> =
         list(projectId, TestListParams.none())
 

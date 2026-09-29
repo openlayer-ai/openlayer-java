@@ -17,6 +17,10 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * Counts of rules and their results by status. Narrowed by the request's filters, so `frameworkId`
+ * gives one framework's compliance and `projectId` gives one project's.
+ */
 class RuleStatRetrieveResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
