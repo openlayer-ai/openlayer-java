@@ -1,5 +1,19 @@
 # Changelog
 
+## [0.12.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.11.0...v0.12.0) (2026-09-29)
+
+
+### Features
+
+* **api:** add API key CRUD, expiry, and rotation ([100a545](https://github.com/openlayer-ai/openlayer-java/commit/100a545c7ce042032f5b153f519dbed1c30f4beb))
+* **api:** add API key CRUD, expiry, and rotation ([5d1a7e9](https://github.com/openlayer-ai/openlayer-java/commit/5d1a7e9696b2d4182f3228db8d166ea5296893a7))
+
+
+### Chores
+
+* **stlc:** seal custom-code tracking files ([9465d0e](https://github.com/openlayer-ai/openlayer-java/commit/9465d0eefb1aba278d9f0e0608ffc478c500a7ae))
+* **stlc:** seal custom-code tracking files ([1274d6b](https://github.com/openlayer-ai/openlayer-java/commit/1274d6b40a43e103b9b0aa3ddaa2744b9b6d02c8))
+
 ## [0.11.0](https://github.com/openlayer-ai/openlayer-java/compare/v0.10.1...v0.11.0) (2026-09-21)
 
 
