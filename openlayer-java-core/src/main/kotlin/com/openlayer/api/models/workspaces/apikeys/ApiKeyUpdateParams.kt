@@ -11,40 +11,31 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.Params
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
-import java.time.OffsetDateTime
 import java.util.Collections
 import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Create a new API key in a workspace. The full secret is returned in `secret`, only in this
- * response. Optionally set `expiresAt`. When you authenticate with an API key that expires, the new
- * key can't outlive it: omit `expiresAt` to inherit that expiry, and a later expiry (or `null`) is
- * rejected with 400.
+ * Rename one of your API keys. A key's expiry can't be updated; rotate the key with a new
+ * `expiresAt` instead, so extending a key's life always issues a new secret.
  */
-class ApiKeyCreateParams
+class ApiKeyUpdateParams
 private constructor(
-    private val workspaceId: String?,
+    private val workspaceId: String,
+    private val apiKeyId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun workspaceId(): Optional<String> = Optional.ofNullable(workspaceId)
+    fun workspaceId(): String = workspaceId
 
-    /**
-     * When the key stops authenticating. `null` means the key never expires. Set when the key is
-     * created or rotated, and must be in the future. When the request is authenticated with an API
-     * key that expires, the result can't be later than that key's expiry.
-     *
-     * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
-     *   server responded with an unexpected value).
-     */
-    fun expiresAt(): Optional<OffsetDateTime> = body.expiresAt()
+    fun apiKeyId(): Optional<String> = Optional.ofNullable(apiKeyId)
 
     /**
      * The API key name.
@@ -53,13 +44,6 @@ private constructor(
      *   server responded with an unexpected value).
      */
     fun name(): Optional<String> = body.name()
-
-    /**
-     * Returns the raw JSON value of [expiresAt].
-     *
-     * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
-     */
-    fun _expiresAt(): JsonField<OffsetDateTime> = body._expiresAt()
 
     /**
      * Returns the raw JSON value of [name].
@@ -80,61 +64,50 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ApiKeyCreateParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [ApiKeyCreateParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [ApiKeyUpdateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .workspaceId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ApiKeyCreateParams]. */
+    /** A builder for [ApiKeyUpdateParams]. */
     class Builder internal constructor() {
 
         private var workspaceId: String? = null
+        private var apiKeyId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(apiKeyCreateParams: ApiKeyCreateParams) = apply {
-            workspaceId = apiKeyCreateParams.workspaceId
-            body = apiKeyCreateParams.body.toBuilder()
-            additionalHeaders = apiKeyCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = apiKeyCreateParams.additionalQueryParams.toBuilder()
+        internal fun from(apiKeyUpdateParams: ApiKeyUpdateParams) = apply {
+            workspaceId = apiKeyUpdateParams.workspaceId
+            apiKeyId = apiKeyUpdateParams.apiKeyId
+            body = apiKeyUpdateParams.body.toBuilder()
+            additionalHeaders = apiKeyUpdateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = apiKeyUpdateParams.additionalQueryParams.toBuilder()
         }
 
-        fun workspaceId(workspaceId: String?) = apply { this.workspaceId = workspaceId }
+        fun workspaceId(workspaceId: String) = apply { this.workspaceId = workspaceId }
 
-        /** Alias for calling [Builder.workspaceId] with `workspaceId.orElse(null)`. */
-        fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.getOrNull())
+        fun apiKeyId(apiKeyId: String?) = apply { this.apiKeyId = apiKeyId }
+
+        /** Alias for calling [Builder.apiKeyId] with `apiKeyId.orElse(null)`. */
+        fun apiKeyId(apiKeyId: Optional<String>) = apiKeyId(apiKeyId.getOrNull())
 
         /**
          * Sets the entire request body.
          *
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
-         * - [expiresAt]
          * - [name]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
-
-        /**
-         * When the key stops authenticating. `null` means the key never expires. Set when the key
-         * is created or rotated, and must be in the future. When the request is authenticated with
-         * an API key that expires, the result can't be later than that key's expiry.
-         */
-        fun expiresAt(expiresAt: OffsetDateTime?) = apply { body.expiresAt(expiresAt) }
-
-        /** Alias for calling [Builder.expiresAt] with `expiresAt.orElse(null)`. */
-        fun expiresAt(expiresAt: Optional<OffsetDateTime>) = expiresAt(expiresAt.getOrNull())
-
-        /**
-         * Sets [Builder.expiresAt] to an arbitrary JSON value.
-         *
-         * You should usually call [Builder.expiresAt] with a well-typed [OffsetDateTime] value
-         * instead. This method is primarily for setting the field to an undocumented or not yet
-         * supported value.
-         */
-        fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { body.expiresAt(expiresAt) }
 
         /** The API key name. */
         fun name(name: String?) = apply { body.name(name) }
@@ -268,13 +241,21 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ApiKeyCreateParams].
+         * Returns an immutable instance of [ApiKeyUpdateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .workspaceId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ApiKeyCreateParams =
-            ApiKeyCreateParams(
-                workspaceId,
+        fun build(): ApiKeyUpdateParams =
+            ApiKeyUpdateParams(
+                checkRequired("workspaceId", workspaceId),
+                apiKeyId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -285,7 +266,8 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> workspaceId ?: ""
+            0 -> workspaceId
+            1 -> apiKeyId ?: ""
             else -> ""
         }
 
@@ -296,28 +278,14 @@ private constructor(
     class Body
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
-        private val expiresAt: JsonField<OffsetDateTime>,
         private val name: JsonField<String>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
         @JsonCreator
         private constructor(
-            @JsonProperty("expiresAt")
-            @ExcludeMissing
-            expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-        ) : this(expiresAt, name, mutableMapOf())
-
-        /**
-         * When the key stops authenticating. `null` means the key never expires. Set when the key
-         * is created or rotated, and must be in the future. When the request is authenticated with
-         * an API key that expires, the result can't be later than that key's expiry.
-         *
-         * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
-         *   the server responded with an unexpected value).
-         */
-        fun expiresAt(): Optional<OffsetDateTime> = expiresAt.getOptional("expiresAt")
+            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of()
+        ) : this(name, mutableMapOf())
 
         /**
          * The API key name.
@@ -326,15 +294,6 @@ private constructor(
          *   the server responded with an unexpected value).
          */
         fun name(): Optional<String> = name.getOptional("name")
-
-        /**
-         * Returns the raw JSON value of [expiresAt].
-         *
-         * Unlike [expiresAt], this method doesn't throw if the JSON field has an unexpected type.
-         */
-        @JsonProperty("expiresAt")
-        @ExcludeMissing
-        fun _expiresAt(): JsonField<OffsetDateTime> = expiresAt
 
         /**
          * Returns the raw JSON value of [name].
@@ -364,37 +323,13 @@ private constructor(
         /** A builder for [Body]. */
         class Builder internal constructor() {
 
-            private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
             private var name: JsonField<String> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
-                expiresAt = body.expiresAt
                 name = body.name
                 additionalProperties = body.additionalProperties.toMutableMap()
-            }
-
-            /**
-             * When the key stops authenticating. `null` means the key never expires. Set when the
-             * key is created or rotated, and must be in the future. When the request is
-             * authenticated with an API key that expires, the result can't be later than that key's
-             * expiry.
-             */
-            fun expiresAt(expiresAt: OffsetDateTime?) = expiresAt(JsonField.ofNullable(expiresAt))
-
-            /** Alias for calling [Builder.expiresAt] with `expiresAt.orElse(null)`. */
-            fun expiresAt(expiresAt: Optional<OffsetDateTime>) = expiresAt(expiresAt.getOrNull())
-
-            /**
-             * Sets [Builder.expiresAt] to an arbitrary JSON value.
-             *
-             * You should usually call [Builder.expiresAt] with a well-typed [OffsetDateTime] value
-             * instead. This method is primarily for setting the field to an undocumented or not yet
-             * supported value.
-             */
-            fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply {
-                this.expiresAt = expiresAt
             }
 
             /** The API key name. */
@@ -436,7 +371,7 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Body = Body(expiresAt, name, additionalProperties.toMutableMap())
+            fun build(): Body = Body(name, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -455,7 +390,6 @@ private constructor(
                 return@apply
             }
 
-            expiresAt()
             name()
             validated = true
         }
@@ -474,9 +408,7 @@ private constructor(
          *
          * Used for best match union deserialization.
          */
-        @JvmSynthetic
-        internal fun validity(): Int =
-            (if (expiresAt.asKnown().isPresent) 1 else 0) + (if (name.asKnown().isPresent) 1 else 0)
+        @JvmSynthetic internal fun validity(): Int = (if (name.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -484,17 +416,15 @@ private constructor(
             }
 
             return other is Body &&
-                expiresAt == other.expiresAt &&
                 name == other.name &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(expiresAt, name, additionalProperties) }
+        private val hashCode: Int by lazy { Objects.hash(name, additionalProperties) }
 
         override fun hashCode(): Int = hashCode
 
-        override fun toString() =
-            "Body{expiresAt=$expiresAt, name=$name, additionalProperties=$additionalProperties}"
+        override fun toString() = "Body{name=$name, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -502,16 +432,17 @@ private constructor(
             return true
         }
 
-        return other is ApiKeyCreateParams &&
+        return other is ApiKeyUpdateParams &&
             workspaceId == other.workspaceId &&
+            apiKeyId == other.apiKeyId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(workspaceId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(workspaceId, apiKeyId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "ApiKeyCreateParams{workspaceId=$workspaceId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ApiKeyUpdateParams{workspaceId=$workspaceId, apiKeyId=$apiKeyId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }

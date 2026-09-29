@@ -19,7 +19,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-class ApiKeyCreateResponse
+class ApiKeyRotateResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
     private val id: JsonField<String>,
@@ -276,7 +276,7 @@ private constructor(
     companion object {
 
         /**
-         * Returns a mutable builder for constructing an instance of [ApiKeyCreateResponse].
+         * Returns a mutable builder for constructing an instance of [ApiKeyRotateResponse].
          *
          * The following fields are required:
          * ```java
@@ -291,7 +291,7 @@ private constructor(
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ApiKeyCreateResponse]. */
+    /** A builder for [ApiKeyRotateResponse]. */
     class Builder internal constructor() {
 
         private var id: JsonField<String>? = null
@@ -308,19 +308,19 @@ private constructor(
         private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
         @JvmSynthetic
-        internal fun from(apiKeyCreateResponse: ApiKeyCreateResponse) = apply {
-            id = apiKeyCreateResponse.id
-            dateCreated = apiKeyCreateResponse.dateCreated
-            dateLastUsed = apiKeyCreateResponse.dateLastUsed
-            dateUpdated = apiKeyCreateResponse.dateUpdated
-            secureKey = apiKeyCreateResponse.secureKey
-            status = apiKeyCreateResponse.status
-            expiresAt = apiKeyCreateResponse.expiresAt
-            lastRotatedAt = apiKeyCreateResponse.lastRotatedAt
-            name = apiKeyCreateResponse.name
-            previousKeyExpiresAt = apiKeyCreateResponse.previousKeyExpiresAt
-            secret = apiKeyCreateResponse.secret
-            additionalProperties = apiKeyCreateResponse.additionalProperties.toMutableMap()
+        internal fun from(apiKeyRotateResponse: ApiKeyRotateResponse) = apply {
+            id = apiKeyRotateResponse.id
+            dateCreated = apiKeyRotateResponse.dateCreated
+            dateLastUsed = apiKeyRotateResponse.dateLastUsed
+            dateUpdated = apiKeyRotateResponse.dateUpdated
+            secureKey = apiKeyRotateResponse.secureKey
+            status = apiKeyRotateResponse.status
+            expiresAt = apiKeyRotateResponse.expiresAt
+            lastRotatedAt = apiKeyRotateResponse.lastRotatedAt
+            name = apiKeyRotateResponse.name
+            previousKeyExpiresAt = apiKeyRotateResponse.previousKeyExpiresAt
+            secret = apiKeyRotateResponse.secret
+            additionalProperties = apiKeyRotateResponse.additionalProperties.toMutableMap()
         }
 
         /** The API key id. */
@@ -519,7 +519,7 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ApiKeyCreateResponse].
+         * Returns an immutable instance of [ApiKeyRotateResponse].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
          *
@@ -535,8 +535,8 @@ private constructor(
          *
          * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ApiKeyCreateResponse =
-            ApiKeyCreateResponse(
+        fun build(): ApiKeyRotateResponse =
+            ApiKeyRotateResponse(
                 checkRequired("id", id),
                 checkRequired("dateCreated", dateCreated),
                 checkRequired("dateLastUsed", dateLastUsed),
@@ -562,7 +562,7 @@ private constructor(
      * @throws OpenlayerInvalidDataException if any value type in this object doesn't match its
      *   expected type.
      */
-    fun validate(): ApiKeyCreateResponse = apply {
+    fun validate(): ApiKeyRotateResponse = apply {
         if (validated) {
             return@apply
         }
@@ -760,7 +760,7 @@ private constructor(
             return true
         }
 
-        return other is ApiKeyCreateResponse &&
+        return other is ApiKeyRotateResponse &&
             id == other.id &&
             dateCreated == other.dateCreated &&
             dateLastUsed == other.dateLastUsed &&
@@ -795,5 +795,5 @@ private constructor(
     override fun hashCode(): Int = hashCode
 
     override fun toString() =
-        "ApiKeyCreateResponse{id=$id, dateCreated=$dateCreated, dateLastUsed=$dateLastUsed, dateUpdated=$dateUpdated, secureKey=$secureKey, status=$status, expiresAt=$expiresAt, lastRotatedAt=$lastRotatedAt, name=$name, previousKeyExpiresAt=$previousKeyExpiresAt, secret=$secret, additionalProperties=$additionalProperties}"
+        "ApiKeyRotateResponse{id=$id, dateCreated=$dateCreated, dateLastUsed=$dateLastUsed, dateUpdated=$dateUpdated, secureKey=$secureKey, status=$status, expiresAt=$expiresAt, lastRotatedAt=$lastRotatedAt, name=$name, previousKeyExpiresAt=$previousKeyExpiresAt, secret=$secret, additionalProperties=$additionalProperties}"
 }

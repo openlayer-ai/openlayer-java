@@ -11,6 +11,7 @@ import com.openlayer.api.core.JsonField
 import com.openlayer.api.core.JsonMissing
 import com.openlayer.api.core.JsonValue
 import com.openlayer.api.core.Params
+import com.openlayer.api.core.checkRequired
 import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import com.openlayer.api.errors.OpenlayerInvalidDataException
@@ -21,20 +22,25 @@ import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
 /**
- * Create a new API key in a workspace. The full secret is returned in `secret`, only in this
- * response. Optionally set `expiresAt`. When you authenticate with an API key that expires, the new
- * key can't outlive it: omit `expiresAt` to inherit that expiry, and a later expiry (or `null`) is
- * rejected with 400.
+ * Replace an API key's secret now. The new secret is returned in `secret`, only in this response.
+ * Send `expiresAt` to change the key's expiry (`null` for never); omit it to keep the current one.
+ * The previous secret keeps authenticating for `gracePeriodHours` (default 0, so it stops working
+ * immediately), and never past `expiresAt`. The key keeps its id and name. Expired keys cannot be
+ * rotated. Only one previous secret is kept, so rotating again during a grace period retires the
+ * older one immediately.
  */
-class ApiKeyCreateParams
+class ApiKeyRotateParams
 private constructor(
-    private val workspaceId: String?,
+    private val workspaceId: String,
+    private val apiKeyId: String?,
     private val body: Body,
     private val additionalHeaders: Headers,
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    fun workspaceId(): Optional<String> = Optional.ofNullable(workspaceId)
+    fun workspaceId(): String = workspaceId
+
+    fun apiKeyId(): Optional<String> = Optional.ofNullable(apiKeyId)
 
     /**
      * When the key stops authenticating. `null` means the key never expires. Set when the key is
@@ -47,12 +53,12 @@ private constructor(
     fun expiresAt(): Optional<OffsetDateTime> = body.expiresAt()
 
     /**
-     * The API key name.
+     * Hours the previous secret keeps authenticating.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
      */
-    fun name(): Optional<String> = body.name()
+    fun gracePeriodHours(): Optional<Long> = body.gracePeriodHours()
 
     /**
      * Returns the raw JSON value of [expiresAt].
@@ -62,11 +68,12 @@ private constructor(
     fun _expiresAt(): JsonField<OffsetDateTime> = body._expiresAt()
 
     /**
-     * Returns the raw JSON value of [name].
+     * Returns the raw JSON value of [gracePeriodHours].
      *
-     * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+     * Unlike [gracePeriodHours], this method doesn't throw if the JSON field has an unexpected
+     * type.
      */
-    fun _name(): JsonField<String> = body._name()
+    fun _gracePeriodHours(): JsonField<Long> = body._gracePeriodHours()
 
     fun _additionalBodyProperties(): Map<String, JsonValue> = body._additionalProperties()
 
@@ -80,32 +87,41 @@ private constructor(
 
     companion object {
 
-        @JvmStatic fun none(): ApiKeyCreateParams = builder().build()
-
-        /** Returns a mutable builder for constructing an instance of [ApiKeyCreateParams]. */
+        /**
+         * Returns a mutable builder for constructing an instance of [ApiKeyRotateParams].
+         *
+         * The following fields are required:
+         * ```java
+         * .workspaceId()
+         * ```
+         */
         @JvmStatic fun builder() = Builder()
     }
 
-    /** A builder for [ApiKeyCreateParams]. */
+    /** A builder for [ApiKeyRotateParams]. */
     class Builder internal constructor() {
 
         private var workspaceId: String? = null
+        private var apiKeyId: String? = null
         private var body: Body.Builder = Body.builder()
         private var additionalHeaders: Headers.Builder = Headers.builder()
         private var additionalQueryParams: QueryParams.Builder = QueryParams.builder()
 
         @JvmSynthetic
-        internal fun from(apiKeyCreateParams: ApiKeyCreateParams) = apply {
-            workspaceId = apiKeyCreateParams.workspaceId
-            body = apiKeyCreateParams.body.toBuilder()
-            additionalHeaders = apiKeyCreateParams.additionalHeaders.toBuilder()
-            additionalQueryParams = apiKeyCreateParams.additionalQueryParams.toBuilder()
+        internal fun from(apiKeyRotateParams: ApiKeyRotateParams) = apply {
+            workspaceId = apiKeyRotateParams.workspaceId
+            apiKeyId = apiKeyRotateParams.apiKeyId
+            body = apiKeyRotateParams.body.toBuilder()
+            additionalHeaders = apiKeyRotateParams.additionalHeaders.toBuilder()
+            additionalQueryParams = apiKeyRotateParams.additionalQueryParams.toBuilder()
         }
 
-        fun workspaceId(workspaceId: String?) = apply { this.workspaceId = workspaceId }
+        fun workspaceId(workspaceId: String) = apply { this.workspaceId = workspaceId }
 
-        /** Alias for calling [Builder.workspaceId] with `workspaceId.orElse(null)`. */
-        fun workspaceId(workspaceId: Optional<String>) = workspaceId(workspaceId.getOrNull())
+        fun apiKeyId(apiKeyId: String?) = apply { this.apiKeyId = apiKeyId }
+
+        /** Alias for calling [Builder.apiKeyId] with `apiKeyId.orElse(null)`. */
+        fun apiKeyId(apiKeyId: Optional<String>) = apiKeyId(apiKeyId.getOrNull())
 
         /**
          * Sets the entire request body.
@@ -113,7 +129,7 @@ private constructor(
          * This is generally only useful if you are already constructing the body separately.
          * Otherwise, it's more convenient to use the top-level setters instead:
          * - [expiresAt]
-         * - [name]
+         * - [gracePeriodHours]
          */
         fun body(body: Body) = apply { this.body = body.toBuilder() }
 
@@ -136,19 +152,21 @@ private constructor(
          */
         fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { body.expiresAt(expiresAt) }
 
-        /** The API key name. */
-        fun name(name: String?) = apply { body.name(name) }
-
-        /** Alias for calling [Builder.name] with `name.orElse(null)`. */
-        fun name(name: Optional<String>) = name(name.getOrNull())
+        /** Hours the previous secret keeps authenticating. */
+        fun gracePeriodHours(gracePeriodHours: Long) = apply {
+            body.gracePeriodHours(gracePeriodHours)
+        }
 
         /**
-         * Sets [Builder.name] to an arbitrary JSON value.
+         * Sets [Builder.gracePeriodHours] to an arbitrary JSON value.
          *
-         * You should usually call [Builder.name] with a well-typed [String] value instead. This
-         * method is primarily for setting the field to an undocumented or not yet supported value.
+         * You should usually call [Builder.gracePeriodHours] with a well-typed [Long] value
+         * instead. This method is primarily for setting the field to an undocumented or not yet
+         * supported value.
          */
-        fun name(name: JsonField<String>) = apply { body.name(name) }
+        fun gracePeriodHours(gracePeriodHours: JsonField<Long>) = apply {
+            body.gracePeriodHours(gracePeriodHours)
+        }
 
         fun additionalBodyProperties(additionalBodyProperties: Map<String, JsonValue>) = apply {
             body.additionalProperties(additionalBodyProperties)
@@ -268,13 +286,21 @@ private constructor(
         }
 
         /**
-         * Returns an immutable instance of [ApiKeyCreateParams].
+         * Returns an immutable instance of [ApiKeyRotateParams].
          *
          * Further updates to this [Builder] will not mutate the returned instance.
+         *
+         * The following fields are required:
+         * ```java
+         * .workspaceId()
+         * ```
+         *
+         * @throws IllegalStateException if any required field is unset.
          */
-        fun build(): ApiKeyCreateParams =
-            ApiKeyCreateParams(
-                workspaceId,
+        fun build(): ApiKeyRotateParams =
+            ApiKeyRotateParams(
+                checkRequired("workspaceId", workspaceId),
+                apiKeyId,
                 body.build(),
                 additionalHeaders.build(),
                 additionalQueryParams.build(),
@@ -285,7 +311,8 @@ private constructor(
 
     fun _pathParam(index: Int): String =
         when (index) {
-            0 -> workspaceId ?: ""
+            0 -> workspaceId
+            1 -> apiKeyId ?: ""
             else -> ""
         }
 
@@ -297,7 +324,7 @@ private constructor(
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
         private val expiresAt: JsonField<OffsetDateTime>,
-        private val name: JsonField<String>,
+        private val gracePeriodHours: JsonField<Long>,
         private val additionalProperties: MutableMap<String, JsonValue>,
     ) {
 
@@ -306,8 +333,10 @@ private constructor(
             @JsonProperty("expiresAt")
             @ExcludeMissing
             expiresAt: JsonField<OffsetDateTime> = JsonMissing.of(),
-            @JsonProperty("name") @ExcludeMissing name: JsonField<String> = JsonMissing.of(),
-        ) : this(expiresAt, name, mutableMapOf())
+            @JsonProperty("gracePeriodHours")
+            @ExcludeMissing
+            gracePeriodHours: JsonField<Long> = JsonMissing.of(),
+        ) : this(expiresAt, gracePeriodHours, mutableMapOf())
 
         /**
          * When the key stops authenticating. `null` means the key never expires. Set when the key
@@ -320,12 +349,12 @@ private constructor(
         fun expiresAt(): Optional<OffsetDateTime> = expiresAt.getOptional("expiresAt")
 
         /**
-         * The API key name.
+         * Hours the previous secret keeps authenticating.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
          */
-        fun name(): Optional<String> = name.getOptional("name")
+        fun gracePeriodHours(): Optional<Long> = gracePeriodHours.getOptional("gracePeriodHours")
 
         /**
          * Returns the raw JSON value of [expiresAt].
@@ -337,11 +366,14 @@ private constructor(
         fun _expiresAt(): JsonField<OffsetDateTime> = expiresAt
 
         /**
-         * Returns the raw JSON value of [name].
+         * Returns the raw JSON value of [gracePeriodHours].
          *
-         * Unlike [name], this method doesn't throw if the JSON field has an unexpected type.
+         * Unlike [gracePeriodHours], this method doesn't throw if the JSON field has an unexpected
+         * type.
          */
-        @JsonProperty("name") @ExcludeMissing fun _name(): JsonField<String> = name
+        @JsonProperty("gracePeriodHours")
+        @ExcludeMissing
+        fun _gracePeriodHours(): JsonField<Long> = gracePeriodHours
 
         @JsonAnySetter
         private fun putAdditionalProperty(key: String, value: JsonValue) {
@@ -365,13 +397,13 @@ private constructor(
         class Builder internal constructor() {
 
             private var expiresAt: JsonField<OffsetDateTime> = JsonMissing.of()
-            private var name: JsonField<String> = JsonMissing.of()
+            private var gracePeriodHours: JsonField<Long> = JsonMissing.of()
             private var additionalProperties: MutableMap<String, JsonValue> = mutableMapOf()
 
             @JvmSynthetic
             internal fun from(body: Body) = apply {
                 expiresAt = body.expiresAt
-                name = body.name
+                gracePeriodHours = body.gracePeriodHours
                 additionalProperties = body.additionalProperties.toMutableMap()
             }
 
@@ -397,20 +429,20 @@ private constructor(
                 this.expiresAt = expiresAt
             }
 
-            /** The API key name. */
-            fun name(name: String?) = name(JsonField.ofNullable(name))
-
-            /** Alias for calling [Builder.name] with `name.orElse(null)`. */
-            fun name(name: Optional<String>) = name(name.getOrNull())
+            /** Hours the previous secret keeps authenticating. */
+            fun gracePeriodHours(gracePeriodHours: Long) =
+                gracePeriodHours(JsonField.of(gracePeriodHours))
 
             /**
-             * Sets [Builder.name] to an arbitrary JSON value.
+             * Sets [Builder.gracePeriodHours] to an arbitrary JSON value.
              *
-             * You should usually call [Builder.name] with a well-typed [String] value instead. This
-             * method is primarily for setting the field to an undocumented or not yet supported
-             * value.
+             * You should usually call [Builder.gracePeriodHours] with a well-typed [Long] value
+             * instead. This method is primarily for setting the field to an undocumented or not yet
+             * supported value.
              */
-            fun name(name: JsonField<String>) = apply { this.name = name }
+            fun gracePeriodHours(gracePeriodHours: JsonField<Long>) = apply {
+                this.gracePeriodHours = gracePeriodHours
+            }
 
             fun additionalProperties(additionalProperties: Map<String, JsonValue>) = apply {
                 this.additionalProperties.clear()
@@ -436,7 +468,8 @@ private constructor(
              *
              * Further updates to this [Builder] will not mutate the returned instance.
              */
-            fun build(): Body = Body(expiresAt, name, additionalProperties.toMutableMap())
+            fun build(): Body =
+                Body(expiresAt, gracePeriodHours, additionalProperties.toMutableMap())
         }
 
         private var validated: Boolean = false
@@ -456,7 +489,7 @@ private constructor(
             }
 
             expiresAt()
-            name()
+            gracePeriodHours()
             validated = true
         }
 
@@ -476,7 +509,8 @@ private constructor(
          */
         @JvmSynthetic
         internal fun validity(): Int =
-            (if (expiresAt.asKnown().isPresent) 1 else 0) + (if (name.asKnown().isPresent) 1 else 0)
+            (if (expiresAt.asKnown().isPresent) 1 else 0) +
+                (if (gracePeriodHours.asKnown().isPresent) 1 else 0)
 
         override fun equals(other: Any?): Boolean {
             if (this === other) {
@@ -485,16 +519,18 @@ private constructor(
 
             return other is Body &&
                 expiresAt == other.expiresAt &&
-                name == other.name &&
+                gracePeriodHours == other.gracePeriodHours &&
                 additionalProperties == other.additionalProperties
         }
 
-        private val hashCode: Int by lazy { Objects.hash(expiresAt, name, additionalProperties) }
+        private val hashCode: Int by lazy {
+            Objects.hash(expiresAt, gracePeriodHours, additionalProperties)
+        }
 
         override fun hashCode(): Int = hashCode
 
         override fun toString() =
-            "Body{expiresAt=$expiresAt, name=$name, additionalProperties=$additionalProperties}"
+            "Body{expiresAt=$expiresAt, gracePeriodHours=$gracePeriodHours, additionalProperties=$additionalProperties}"
     }
 
     override fun equals(other: Any?): Boolean {
@@ -502,16 +538,17 @@ private constructor(
             return true
         }
 
-        return other is ApiKeyCreateParams &&
+        return other is ApiKeyRotateParams &&
             workspaceId == other.workspaceId &&
+            apiKeyId == other.apiKeyId &&
             body == other.body &&
             additionalHeaders == other.additionalHeaders &&
             additionalQueryParams == other.additionalQueryParams
     }
 
     override fun hashCode(): Int =
-        Objects.hash(workspaceId, body, additionalHeaders, additionalQueryParams)
+        Objects.hash(workspaceId, apiKeyId, body, additionalHeaders, additionalQueryParams)
 
     override fun toString() =
-        "ApiKeyCreateParams{workspaceId=$workspaceId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
+        "ApiKeyRotateParams{workspaceId=$workspaceId, apiKeyId=$apiKeyId, body=$body, additionalHeaders=$additionalHeaders, additionalQueryParams=$additionalQueryParams}"
 }
