@@ -9,13 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Retrieve a rule result by its id.
- *
- * Alongside the status, the response carries the evaluation and renewal dates that explain it:
- * `dateLastEvaluated` and `dateOfNextEvaluation` for platform rules, `dateOfLatestEvidence` and
- * `dateOfRenewal` for evidence rules.
- */
+/** Retrieve a rule result. */
 class RuleResultRetrieveParams
 private constructor(
     private val ruleResultId: String?,

@@ -12,10 +12,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Delete one of your API keys. Every secret for the key stops working immediately, including a
- * previous secret still in its rotation grace period.
- */
+/** Delete an API key. */
 class ApiKeyDeleteParams
 private constructor(
     private val workspaceId: String,

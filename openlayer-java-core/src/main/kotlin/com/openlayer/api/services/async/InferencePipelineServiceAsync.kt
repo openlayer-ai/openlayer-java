@@ -41,7 +41,7 @@ interface InferencePipelineServiceAsync {
 
     fun testResults(): TestResultServiceAsync
 
-    /** Retrieve inference pipeline. */
+    /** Retrieve an inference pipeline. */
     fun retrieve(
         inferencePipelineId: String
     ): CompletableFuture<InferencePipelineRetrieveResponse> =
@@ -84,7 +84,7 @@ interface InferencePipelineServiceAsync {
     ): CompletableFuture<InferencePipelineRetrieveResponse> =
         retrieve(inferencePipelineId, InferencePipelineRetrieveParams.none(), requestOptions)
 
-    /** Update inference pipeline. */
+    /** Update an inference pipeline. */
     fun update(inferencePipelineId: String): CompletableFuture<InferencePipelineUpdateResponse> =
         update(inferencePipelineId, InferencePipelineUpdateParams.none())
 
@@ -121,7 +121,7 @@ interface InferencePipelineServiceAsync {
     ): CompletableFuture<InferencePipelineUpdateResponse> =
         update(inferencePipelineId, InferencePipelineUpdateParams.none(), requestOptions)
 
-    /** Delete inference pipeline. */
+    /** Delete an inference pipeline. */
     fun delete(inferencePipelineId: String): CompletableFuture<Void?> =
         delete(inferencePipelineId, InferencePipelineDeleteParams.none())
 
@@ -156,12 +156,7 @@ interface InferencePipelineServiceAsync {
     ): CompletableFuture<Void?> =
         delete(inferencePipelineId, InferencePipelineDeleteParams.none(), requestOptions)
 
-    /**
-     * Get aggregated session data for an inference pipeline with pagination and metadata.
-     *
-     * Returns a list of sessions for the inference pipeline, including activity statistics such as
-     * record counts, token usage, cost, latency, and the first and last records.
-     */
+    /** List the sessions in an inference pipeline, with their stats. */
     fun retrieveSessions(
         inferencePipelineId: String
     ): CompletableFuture<InferencePipelineRetrieveSessionsResponse> =
@@ -210,12 +205,7 @@ interface InferencePipelineServiceAsync {
             requestOptions,
         )
 
-    /**
-     * Get aggregated user data for an inference pipeline with pagination and metadata.
-     *
-     * Returns a list of users who have interacted with the inference pipeline, including their
-     * activity statistics such as session counts, record counts, token usage, and costs.
-     */
+    /** List the users of an inference pipeline, with their stats. */
     fun retrieveUsers(
         inferencePipelineId: String
     ): CompletableFuture<InferencePipelineRetrieveUsersResponse> =

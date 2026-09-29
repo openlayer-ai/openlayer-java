@@ -11,13 +11,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Delete a governance rule and its rule results.
- *
- * Only rules you created can be deleted. Rules that ship with Openlayer report `immutable: true`
- * and cannot be deleted -- exclude one from compliance by setting `deactivated` with `PUT
- * /rules/{ruleId}` instead.
- */
+/** Delete a rule and its results. */
 class RuleDeleteParams
 private constructor(
     private val ruleId: String?,

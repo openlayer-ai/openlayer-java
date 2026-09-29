@@ -9,7 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Retrieve a project version (commit) by its id. */
+/** Retrieve a project commit. */
 class CommitRetrieveParams
 private constructor(
     private val projectVersionId: String?,

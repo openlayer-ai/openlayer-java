@@ -13,12 +13,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Get a compliance roll-up for a framework, one row per project it applies to.
- *
- * Each row counts the project's rule results by status, so you can report on where a framework is
- * complete and where it is not without fetching every individual rule result.
- */
+/** List a framework's compliance stats per project. */
 class FrameworkListProjectRuleStatsParams
 private constructor(
     private val frameworkId: String?,

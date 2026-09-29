@@ -10,12 +10,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Retrieve a framework document, including its sections, subsections, and the rules mapped to each.
- *
- * Each section and subsection carries a `ruleCount`, so you can tell which requirements have rules
- * mapped to them before drilling in.
- */
+/** Retrieve a framework document with its sections and rules. */
 class DocumentRetrieveParams
 private constructor(
     private val frameworkId: String,

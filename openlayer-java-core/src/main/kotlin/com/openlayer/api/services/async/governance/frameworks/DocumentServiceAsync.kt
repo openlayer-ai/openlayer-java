@@ -26,13 +26,7 @@ interface DocumentServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): DocumentServiceAsync
 
-    /**
-     * Retrieve a framework document, including its sections, subsections, and the rules mapped to
-     * each.
-     *
-     * Each section and subsection carries a `ruleCount`, so you can tell which requirements have
-     * rules mapped to them before drilling in.
-     */
+    /** Retrieve a framework document with its sections and rules. */
     fun retrieve(
         documentId: String,
         params: DocumentRetrieveParams,
@@ -57,13 +51,7 @@ interface DocumentServiceAsync {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): CompletableFuture<DocumentRetrieveResponse>
 
-    /**
-     * List the documents attached to a framework.
-     *
-     * A document holds the text of the standard the framework is based on, split into sections and
-     * subsections. Retrieve a single document to get that structure, along with the rules mapped to
-     * each part of it.
-     */
+    /** List the documents attached to a framework. */
     fun list(frameworkId: String): CompletableFuture<DocumentListResponse> =
         list(frameworkId, DocumentListParams.none())
 

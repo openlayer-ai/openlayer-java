@@ -34,12 +34,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Get aggregated user data for an inference pipeline with pagination and metadata.
- *
- * Returns a list of users who have interacted with the inference pipeline, including their activity
- * statistics such as session counts, record counts, token usage, and costs.
- */
+/** List the users of an inference pipeline, with their stats. */
 class InferencePipelineRetrieveUsersParams
 private constructor(
     private val inferencePipelineId: String?,

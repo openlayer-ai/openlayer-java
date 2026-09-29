@@ -32,7 +32,7 @@ interface WorkspaceService {
 
     fun apiKeys(): ApiKeyService
 
-    /** Retrieve a workspace by its ID. */
+    /** Retrieve a workspace. */
     fun retrieve(workspaceId: String): WorkspaceRetrieveResponse =
         retrieve(workspaceId, WorkspaceRetrieveParams.none())
 

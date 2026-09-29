@@ -18,6 +18,11 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
+/**
+ * Evidence attached to a rule result to satisfy an evidence rule. Which field holds it depends on
+ * the rule's `evidenceType`: `storageUri` for a document, `text` for a written statement, or `url`
+ * for a link.
+ */
 class RuleResultCreateEvidenceResponse
 @JsonCreator(mode = JsonCreator.Mode.DISABLED)
 private constructor(
@@ -114,7 +119,8 @@ private constructor(
     fun name(): Optional<String> = name.getOptional("name")
 
     /**
-     * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+     * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`. Upload
+     * the file first with `POST /storage/presigned-url` and send the storage URI it returns.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -346,7 +352,11 @@ private constructor(
          */
         fun name(name: JsonField<String>) = apply { this.name = name }
 
-        /** Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`. */
+        /**
+         * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+         * Upload the file first with `POST /storage/presigned-url` and send the storage URI it
+         * returns.
+         */
         fun storageUri(storageUri: String?) = storageUri(JsonField.ofNullable(storageUri))
 
         /** Alias for calling [Builder.storageUri] with `storageUri.orElse(null)`. */

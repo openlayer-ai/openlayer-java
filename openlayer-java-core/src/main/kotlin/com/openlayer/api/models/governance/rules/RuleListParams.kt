@@ -14,17 +14,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the governance rules in a workspace.
- *
- * A rule is a single requirement Openlayer tracks. `platform` rules are evaluated automatically
- * from the state of your workspace; `evidence` rules are satisfied by attaching evidence. A rule
- * can belong to several frameworks at once, and rules that belong to none are returned too unless
- * you pass `includeUnframed=false`.
- *
- * Pass `includeResults=true` to get each rule's compliance results inline instead of fetching them
- * separately.
- */
+/** List the rules in a workspace. */
 class RuleListParams
 private constructor(
     private val workspaceId: String?,

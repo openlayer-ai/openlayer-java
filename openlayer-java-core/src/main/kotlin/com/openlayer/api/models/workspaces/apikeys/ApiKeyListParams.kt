@@ -9,10 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the API keys you own in a workspace, with their lifecycle status. Secrets are never
- * returned; `secureKey` is an obfuscated hint.
- */
+/** List your API keys in a workspace. */
 class ApiKeyListParams
 private constructor(
     private val workspaceId: String?,

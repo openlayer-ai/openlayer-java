@@ -20,7 +20,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Update an inference data point in an inference pipeline. */
+/** Update a row in an inference pipeline. */
 class RowUpdateParams
 private constructor(
     private val inferencePipelineId: String?,

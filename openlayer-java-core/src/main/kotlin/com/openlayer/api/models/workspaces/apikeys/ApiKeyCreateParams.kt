@@ -20,12 +20,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Create a new API key in a workspace. The full secret is returned in `secret`, only in this
- * response. Optionally set `expiresAt`. When you authenticate with an API key that expires, the new
- * key can't outlive it: omit `expiresAt` to inherit that expiry, and a later expiry (or `null`) is
- * rejected with 400.
- */
+/** Create a new API key. */
 class ApiKeyCreateParams
 private constructor(
     private val workspaceId: String?,
@@ -39,7 +34,9 @@ private constructor(
     /**
      * When the key stops authenticating. `null` means the key never expires. Set when the key is
      * created or rotated, and must be in the future. When the request is authenticated with an API
-     * key that expires, the result can't be later than that key's expiry.
+     * key that expires, the result can't be later than that key's expiry. On create, omit it to
+     * inherit that expiry. On rotate, omit it to keep the current one. It can't be changed with an
+     * update; rotate the key instead.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -120,7 +117,9 @@ private constructor(
         /**
          * When the key stops authenticating. `null` means the key never expires. Set when the key
          * is created or rotated, and must be in the future. When the request is authenticated with
-         * an API key that expires, the result can't be later than that key's expiry.
+         * an API key that expires, the result can't be later than that key's expiry. On create,
+         * omit it to inherit that expiry. On rotate, omit it to keep the current one. It can't be
+         * changed with an update; rotate the key instead.
          */
         fun expiresAt(expiresAt: OffsetDateTime?) = apply { body.expiresAt(expiresAt) }
 
@@ -312,7 +311,9 @@ private constructor(
         /**
          * When the key stops authenticating. `null` means the key never expires. Set when the key
          * is created or rotated, and must be in the future. When the request is authenticated with
-         * an API key that expires, the result can't be later than that key's expiry.
+         * an API key that expires, the result can't be later than that key's expiry. On create,
+         * omit it to inherit that expiry. On rotate, omit it to keep the current one. It can't be
+         * changed with an update; rotate the key instead.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -379,7 +380,8 @@ private constructor(
              * When the key stops authenticating. `null` means the key never expires. Set when the
              * key is created or rotated, and must be in the future. When the request is
              * authenticated with an API key that expires, the result can't be later than that key's
-             * expiry.
+             * expiry. On create, omit it to inherit that expiry. On rotate, omit it to keep the
+             * current one. It can't be changed with an update; rotate the key instead.
              */
             fun expiresAt(expiresAt: OffsetDateTime?) = expiresAt(JsonField.ofNullable(expiresAt))
 

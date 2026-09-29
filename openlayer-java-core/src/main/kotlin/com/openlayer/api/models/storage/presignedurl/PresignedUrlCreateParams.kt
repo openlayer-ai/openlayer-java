@@ -11,7 +11,7 @@ import com.openlayer.api.core.toImmutable
 import java.util.Objects
 import java.util.Optional
 
-/** Retrieve a presigned url to post storage artifacts. */
+/** Get a presigned url to upload a file. */
 class PresignedUrlCreateParams
 private constructor(
     private val objectName: String,

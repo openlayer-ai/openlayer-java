@@ -34,7 +34,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** A list of rows for an inference pipeline. */
+/** List the rows in an inference pipeline. */
 class RowListParams
 private constructor(
     private val inferencePipelineId: String?,

@@ -12,10 +12,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Delete a single inference pipeline row by inference ID. Only project admins can perform this
- * action.
- */
+/** Delete a row by inference ID. */
 class RowDeleteParams
 private constructor(
     private val inferencePipelineId: String,

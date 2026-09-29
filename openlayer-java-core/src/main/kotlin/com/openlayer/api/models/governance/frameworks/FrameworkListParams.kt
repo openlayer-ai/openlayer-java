@@ -14,13 +14,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the governance frameworks in a workspace.
- *
- * A framework is a set of rules -- drawn from a regulation, a standard, or your own internal policy
- * -- that Openlayer tracks compliance against. Use this endpoint to find the framework you want to
- * report on, then read its rules and rule results.
- */
+/** List the frameworks in a workspace. */
 class FrameworkListParams
 private constructor(
     private val workspaceId: String?,

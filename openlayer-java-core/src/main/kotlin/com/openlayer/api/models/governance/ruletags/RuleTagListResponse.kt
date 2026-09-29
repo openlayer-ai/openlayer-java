@@ -179,6 +179,7 @@ private constructor(
     internal fun validity(): Int =
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
+    /** A label that groups rules across frameworks, for example by team or control family. */
     class Item
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -258,7 +259,7 @@ private constructor(
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
         /**
-         * Whether the tag is managed by Openlayer and cannot be edited or deleted.
+         * Whether the tag is managed by Openlayer. These tags can't be deleted.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -463,7 +464,7 @@ private constructor(
                 this.dateUpdated = dateUpdated
             }
 
-            /** Whether the tag is managed by Openlayer and cannot be edited or deleted. */
+            /** Whether the tag is managed by Openlayer. These tags can't be deleted. */
             fun immutable(immutable: Boolean) = immutable(JsonField.of(immutable))
 
             /**

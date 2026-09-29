@@ -9,13 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the documents attached to a framework.
- *
- * A document holds the text of the standard the framework is based on, split into sections and
- * subsections. Retrieve a single document to get that structure, along with the rules mapped to
- * each part of it.
- */
+/** List the documents attached to a framework. */
 class DocumentListParams
 private constructor(
     private val frameworkId: String?,

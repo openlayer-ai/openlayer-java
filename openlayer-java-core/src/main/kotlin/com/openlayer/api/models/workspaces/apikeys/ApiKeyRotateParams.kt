@@ -21,14 +21,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Replace an API key's secret now. The new secret is returned in `secret`, only in this response.
- * Send `expiresAt` to change the key's expiry (`null` for never); omit it to keep the current one.
- * The previous secret keeps authenticating for `gracePeriodHours` (default 0, so it stops working
- * immediately), and never past `expiresAt`. The key keeps its id and name. Expired keys cannot be
- * rotated. Only one previous secret is kept, so rotating again during a grace period retires the
- * older one immediately.
- */
+/** Replace an API key's secret. */
 class ApiKeyRotateParams
 private constructor(
     private val workspaceId: String,
@@ -45,7 +38,9 @@ private constructor(
     /**
      * When the key stops authenticating. `null` means the key never expires. Set when the key is
      * created or rotated, and must be in the future. When the request is authenticated with an API
-     * key that expires, the result can't be later than that key's expiry.
+     * key that expires, the result can't be later than that key's expiry. On create, omit it to
+     * inherit that expiry. On rotate, omit it to keep the current one. It can't be changed with an
+     * update; rotate the key instead.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -53,7 +48,9 @@ private constructor(
     fun expiresAt(): Optional<OffsetDateTime> = body.expiresAt()
 
     /**
-     * Hours the previous secret keeps authenticating.
+     * Hours the previous secret keeps authenticating. The default of 0 retires it immediately. It
+     * never outlives `expiresAt`. Only one previous secret is kept, so rotating again during a
+     * grace period retires the older one immediately.
      *
      * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if the
      *   server responded with an unexpected value).
@@ -136,7 +133,9 @@ private constructor(
         /**
          * When the key stops authenticating. `null` means the key never expires. Set when the key
          * is created or rotated, and must be in the future. When the request is authenticated with
-         * an API key that expires, the result can't be later than that key's expiry.
+         * an API key that expires, the result can't be later than that key's expiry. On create,
+         * omit it to inherit that expiry. On rotate, omit it to keep the current one. It can't be
+         * changed with an update; rotate the key instead.
          */
         fun expiresAt(expiresAt: OffsetDateTime?) = apply { body.expiresAt(expiresAt) }
 
@@ -152,7 +151,11 @@ private constructor(
          */
         fun expiresAt(expiresAt: JsonField<OffsetDateTime>) = apply { body.expiresAt(expiresAt) }
 
-        /** Hours the previous secret keeps authenticating. */
+        /**
+         * Hours the previous secret keeps authenticating. The default of 0 retires it immediately.
+         * It never outlives `expiresAt`. Only one previous secret is kept, so rotating again during
+         * a grace period retires the older one immediately.
+         */
         fun gracePeriodHours(gracePeriodHours: Long) = apply {
             body.gracePeriodHours(gracePeriodHours)
         }
@@ -341,7 +344,9 @@ private constructor(
         /**
          * When the key stops authenticating. `null` means the key never expires. Set when the key
          * is created or rotated, and must be in the future. When the request is authenticated with
-         * an API key that expires, the result can't be later than that key's expiry.
+         * an API key that expires, the result can't be later than that key's expiry. On create,
+         * omit it to inherit that expiry. On rotate, omit it to keep the current one. It can't be
+         * changed with an update; rotate the key instead.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -349,7 +354,9 @@ private constructor(
         fun expiresAt(): Optional<OffsetDateTime> = expiresAt.getOptional("expiresAt")
 
         /**
-         * Hours the previous secret keeps authenticating.
+         * Hours the previous secret keeps authenticating. The default of 0 retires it immediately.
+         * It never outlives `expiresAt`. Only one previous secret is kept, so rotating again during
+         * a grace period retires the older one immediately.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -411,7 +418,8 @@ private constructor(
              * When the key stops authenticating. `null` means the key never expires. Set when the
              * key is created or rotated, and must be in the future. When the request is
              * authenticated with an API key that expires, the result can't be later than that key's
-             * expiry.
+             * expiry. On create, omit it to inherit that expiry. On rotate, omit it to keep the
+             * current one. It can't be changed with an update; rotate the key instead.
              */
             fun expiresAt(expiresAt: OffsetDateTime?) = expiresAt(JsonField.ofNullable(expiresAt))
 
@@ -429,7 +437,11 @@ private constructor(
                 this.expiresAt = expiresAt
             }
 
-            /** Hours the previous secret keeps authenticating. */
+            /**
+             * Hours the previous secret keeps authenticating. The default of 0 retires it
+             * immediately. It never outlives `expiresAt`. Only one previous secret is kept, so
+             * rotating again during a grace period retires the older one immediately.
+             */
             fun gracePeriodHours(gracePeriodHours: Long) =
                 gracePeriodHours(JsonField.of(gracePeriodHours))
 

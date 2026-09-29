@@ -181,6 +181,11 @@ private constructor(
     internal fun validity(): Int =
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
+    /**
+     * Evidence attached to a rule result to satisfy an evidence rule. Which field holds it depends
+     * on the rule's `evidenceType`: `storageUri` for a document, `text` for a written statement, or
+     * `url` for a link.
+     */
     class Item
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -280,6 +285,8 @@ private constructor(
 
         /**
          * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+         * Upload the file first with `POST /storage/presigned-url` and send the storage URI it
+         * returns.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -518,6 +525,8 @@ private constructor(
 
             /**
              * Where the uploaded file is stored. Set when the rule's `evidenceType` is `document`.
+             * Upload the file first with `POST /storage/presigned-url` and send the storage URI it
+             * returns.
              */
             fun storageUri(storageUri: String?) = storageUri(JsonField.ofNullable(storageUri))
 

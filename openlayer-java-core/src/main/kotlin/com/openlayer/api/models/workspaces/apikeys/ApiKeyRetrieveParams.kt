@@ -10,10 +10,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Retrieve one of your API keys, with its lifecycle status. The secret is never returned;
- * `secureKey` is an obfuscated hint.
- */
+/** Retrieve an API key. */
 class ApiKeyRetrieveParams
 private constructor(
     private val workspaceId: String,

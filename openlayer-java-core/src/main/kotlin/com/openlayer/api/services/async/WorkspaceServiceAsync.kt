@@ -32,7 +32,7 @@ interface WorkspaceServiceAsync {
 
     fun apiKeys(): ApiKeyServiceAsync
 
-    /** Retrieve a workspace by its ID. */
+    /** Retrieve a workspace. */
     fun retrieve(workspaceId: String): CompletableFuture<WorkspaceRetrieveResponse> =
         retrieve(workspaceId, WorkspaceRetrieveParams.none())
 

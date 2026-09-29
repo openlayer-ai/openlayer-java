@@ -24,13 +24,7 @@ interface BackgroundTaskServiceAsync {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): BackgroundTaskServiceAsync
 
-    /**
-     * Retrieve a background task's status, progress and results.
-     *
-     * Endpoints that cannot answer within one request queue a task and hand back its id -- for
-     * example `POST /frameworks/{frameworkId}/export`. Poll this endpoint until `complete` is
-     * `true`, then read what the task produced from `outputs`.
-     */
+    /** Retrieve a background task's status and outputs. */
     fun retrieve(taskId: String): CompletableFuture<BackgroundTaskRetrieveResponse> =
         retrieve(taskId, BackgroundTaskRetrieveParams.none())
 

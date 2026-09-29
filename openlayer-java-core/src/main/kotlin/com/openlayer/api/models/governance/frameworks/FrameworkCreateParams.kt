@@ -23,16 +23,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Create a custom governance framework in a workspace.
- *
- * Use this to track compliance against an internal policy, or against a standard Openlayer does not
- * ship as a built-in framework. A new framework starts with no rules -- add them from the Openlayer
- * app, or map an existing rule to it.
- *
- * A framework is created disabled unless you pass `enabled: true`. While it is disabled its rules
- * are not evaluated and do not count towards compliance.
- */
+/** Create a custom framework in a workspace. */
 class FrameworkCreateParams
 private constructor(
     private val workspaceId: String?,

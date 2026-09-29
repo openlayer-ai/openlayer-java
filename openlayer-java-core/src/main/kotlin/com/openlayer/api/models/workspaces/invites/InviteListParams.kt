@@ -9,7 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Retrieve a list of invites in a workspace. */
+/** List the invites in a workspace. */
 class InviteListParams
 private constructor(
     private val workspaceId: String?,

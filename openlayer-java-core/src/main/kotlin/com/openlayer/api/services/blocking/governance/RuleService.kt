@@ -32,20 +32,7 @@ interface RuleService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleService
 
-    /**
-     * Create a governance rule in a workspace.
-     *
-     * A rule is one requirement. Its `type` decides how it is satisfied, and the two types accept
-     * different fields:
-     * - `platform` rules are evaluated automatically from the state of your workspace. Set
-     *   `automationType` to the signal to check. Their `scope` must be `project`, and
-     *   `evidenceType` and `renewalCadenceDays` must be omitted or `null`.
-     * - `evidence` rules are satisfied by attaching evidence. Set `evidenceType` to the kind of
-     *   evidence that satisfies them. `automationType` and `automationParams` must be omitted or
-     *   `null`.
-     *
-     * A new rule belongs to no framework. Map it to one from the Openlayer app.
-     */
+    /** Create a rule in a workspace. */
     fun create(workspaceId: String, params: RuleCreateParams): RuleCreateResponse =
         create(workspaceId, params, RequestOptions.none())
 
@@ -66,9 +53,7 @@ interface RuleService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): RuleCreateResponse
 
-    /**
-     * Retrieve a governance rule by its id, including the frameworks it belongs to and its tags.
-     */
+    /** Retrieve a rule with its frameworks and tags. */
     fun retrieve(ruleId: String): RuleRetrieveResponse = retrieve(ruleId, RuleRetrieveParams.none())
 
     /** @see retrieve */
@@ -98,14 +83,7 @@ interface RuleService {
     fun retrieve(ruleId: String, requestOptions: RequestOptions): RuleRetrieveResponse =
         retrieve(ruleId, RuleRetrieveParams.none(), requestOptions)
 
-    /**
-     * Update a governance rule. Only the fields you send are changed.
-     *
-     * Rules that ship with Openlayer report `immutable: true` and cannot be edited.
-     *
-     * A rule's `scope`, `type`, `evidenceType`, and automation are fixed once it exists -- create a
-     * new rule instead of converting one.
-     */
+    /** Update a rule. */
     fun update(ruleId: String): RuleUpdateResponse = update(ruleId, RuleUpdateParams.none())
 
     /** @see update */
@@ -134,17 +112,7 @@ interface RuleService {
     fun update(ruleId: String, requestOptions: RequestOptions): RuleUpdateResponse =
         update(ruleId, RuleUpdateParams.none(), requestOptions)
 
-    /**
-     * List the governance rules in a workspace.
-     *
-     * A rule is a single requirement Openlayer tracks. `platform` rules are evaluated automatically
-     * from the state of your workspace; `evidence` rules are satisfied by attaching evidence. A
-     * rule can belong to several frameworks at once, and rules that belong to none are returned too
-     * unless you pass `includeUnframed=false`.
-     *
-     * Pass `includeResults=true` to get each rule's compliance results inline instead of fetching
-     * them separately.
-     */
+    /** List the rules in a workspace. */
     fun list(workspaceId: String): RuleListResponse = list(workspaceId, RuleListParams.none())
 
     /** @see list */
@@ -173,13 +141,7 @@ interface RuleService {
     fun list(workspaceId: String, requestOptions: RequestOptions): RuleListResponse =
         list(workspaceId, RuleListParams.none(), requestOptions)
 
-    /**
-     * Delete a governance rule and its rule results.
-     *
-     * Only rules you created can be deleted. Rules that ship with Openlayer report `immutable:
-     * true` and cannot be deleted -- exclude one from compliance by setting `deactivated` with `PUT
-     * /rules/{ruleId}` instead.
-     */
+    /** Delete a rule and its results. */
     fun delete(ruleId: String) = delete(ruleId, RuleDeleteParams.none())
 
     /** @see delete */

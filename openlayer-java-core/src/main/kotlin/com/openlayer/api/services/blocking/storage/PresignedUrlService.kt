@@ -26,7 +26,7 @@ interface PresignedUrlService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): PresignedUrlService
 
-    /** Retrieve a presigned url to post storage artifacts. */
+    /** Get a presigned url to upload a file. */
     fun create(params: PresignedUrlCreateParams): PresignedUrlCreateResponse =
         create(params, RequestOptions.none())
 
@@ -36,17 +36,7 @@ interface PresignedUrlService {
         requestOptions: RequestOptions = RequestOptions.none(),
     ): PresignedUrlCreateResponse
 
-    /**
-     * Exchange a `storageUri` for a short-lived presigned url you can download the object from.
-     *
-     * Use it to collect anything the platform stored on your behalf -- for example the archive a
-     * framework export leaves behind, whose `storageUri` comes back in the background task's
-     * `outputs`.
-     *
-     * The workspace is taken from the API key, so there is nothing else to send. The url is only
-     * issued for objects your workspace owns, and `404` covers both "no such object" and "not
-     * yours".
-     */
+    /** Get a short-lived download url for a stored object. */
     fun retrieve(params: PresignedUrlRetrieveParams): PresignedUrlRetrieveResponse =
         retrieve(params, RequestOptions.none())
 

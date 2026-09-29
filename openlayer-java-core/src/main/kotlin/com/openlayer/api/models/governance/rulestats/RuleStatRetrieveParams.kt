@@ -9,13 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * Get a compliance roll-up for a workspace: how many rules exist, and how many of their results are
- * passing, failing, pending, or due for renewal.
- *
- * Counts respect the filters you pass, so `frameworkId` gives you a single framework's overall
- * compliance and `projectId` gives you a single project's.
- */
+/** Get compliance statistics for a workspace. */
 class RuleStatRetrieveParams
 private constructor(
     private val workspaceId: String?,

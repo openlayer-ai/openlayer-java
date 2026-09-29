@@ -9,13 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the rules that belong to a framework.
- *
- * To read the compliance status of these rules, use
- * [List rule results](/api-reference/rest/governance/list-rule-results) with the `frameworkId`
- * filter, or fetch the results of an individual rule.
- */
+/** List the rules in a framework. */
 class FrameworkListRulesParams
 private constructor(
     private val frameworkId: String?,

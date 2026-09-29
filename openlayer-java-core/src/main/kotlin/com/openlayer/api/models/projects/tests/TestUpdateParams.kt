@@ -34,7 +34,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Update tests. */
+/** Update tests in a project. */
 class TestUpdateParams
 private constructor(
     private val projectId: String?,

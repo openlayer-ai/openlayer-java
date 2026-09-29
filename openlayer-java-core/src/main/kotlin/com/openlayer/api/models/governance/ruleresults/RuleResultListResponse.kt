@@ -180,6 +180,10 @@ private constructor(
     internal fun validity(): Int =
         (items.asKnown().getOrNull()?.sumOf { it.validity().toInt() } ?: 0)
 
+    /**
+     * The compliance status of one rule for one entity: a project for project-scoped rules, or the
+     * workspace for workspace-scoped rules.
+     */
     class Item
     @JsonCreator(mode = JsonCreator.Mode.DISABLED)
     private constructor(
@@ -296,7 +300,8 @@ private constructor(
         fun dateUpdated(): OffsetDateTime = dateUpdated.getRequired("dateUpdated")
 
         /**
-         * Whether this result is excluded from compliance calculations.
+         * Whether this result is excluded from compliance calculations. Excludes just this result,
+         * without deactivating the rule everywhere.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -312,7 +317,8 @@ private constructor(
         fun ruleId(): String = ruleId.getRequired("ruleId")
 
         /**
-         * The compliance status of the rule for this entity.
+         * The compliance status of the rule for this entity. Computed by Openlayer and can't be set
+         * directly.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type or is
          *   unexpectedly missing or null (e.g. if the server responded with an unexpected value).
@@ -387,7 +393,7 @@ private constructor(
         fun dateOfRenewal(): Optional<OffsetDateTime> = dateOfRenewal.getOptional("dateOfRenewal")
 
         /**
-         * Why the result was excluded.
+         * Why the result was excluded. Required when setting `deactivated` to `true`.
          *
          * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g. if
          *   the server responded with an unexpected value).
@@ -677,7 +683,10 @@ private constructor(
                 this.dateUpdated = dateUpdated
             }
 
-            /** Whether this result is excluded from compliance calculations. */
+            /**
+             * Whether this result is excluded from compliance calculations. Excludes just this
+             * result, without deactivating the rule everywhere.
+             */
             fun deactivated(deactivated: Boolean) = deactivated(JsonField.of(deactivated))
 
             /**
@@ -703,7 +712,10 @@ private constructor(
              */
             fun ruleId(ruleId: JsonField<String>) = apply { this.ruleId = ruleId }
 
-            /** The compliance status of the rule for this entity. */
+            /**
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
+             */
             fun status(status: Status) = status(JsonField.of(status))
 
             /**
@@ -880,7 +892,7 @@ private constructor(
                 this.dateOfRenewal = dateOfRenewal
             }
 
-            /** Why the result was excluded. */
+            /** Why the result was excluded. Required when setting `deactivated` to `true`. */
             fun deactivatedReason(deactivatedReason: String?) =
                 deactivatedReason(JsonField.ofNullable(deactivatedReason))
 
@@ -1065,7 +1077,10 @@ private constructor(
                 (if (projectId.asKnown().isPresent) 1 else 0) +
                 (if (statusMessage.asKnown().isPresent) 1 else 0)
 
-        /** The compliance status of the rule for this entity. */
+        /**
+         * The compliance status of the rule for this entity. Computed by Openlayer and can't be set
+         * directly.
+         */
         class Status @JsonCreator private constructor(private val value: JsonField<String>) : Enum {
 
             /**
@@ -1256,7 +1271,8 @@ private constructor(
             fun id(): Optional<String> = id.getOptional("id")
 
             /**
-             * The compliance status of the rule for this entity.
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
              *
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
@@ -1320,7 +1336,10 @@ private constructor(
                  */
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
-                /** The compliance status of the rule for this entity. */
+                /**
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
+                 */
                 fun status(status: Status) = status(JsonField.of(status))
 
                 /**
@@ -1403,7 +1422,10 @@ private constructor(
                 (if (id.asKnown().isPresent) 1 else 0) +
                     (status.asKnown().getOrNull()?.validity() ?: 0)
 
-            /** The compliance status of the rule for this entity. */
+            /**
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
+             */
             class Status @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 
@@ -1615,7 +1637,8 @@ private constructor(
             fun id(): Optional<String> = id.getOptional("id")
 
             /**
-             * The compliance status of the rule for this entity.
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
              *
              * @throws OpenlayerInvalidDataException if the JSON field has an unexpected type (e.g.
              *   if the server responded with an unexpected value).
@@ -1679,7 +1702,10 @@ private constructor(
                  */
                 fun id(id: JsonField<String>) = apply { this.id = id }
 
-                /** The compliance status of the rule for this entity. */
+                /**
+                 * The compliance status of the rule for this entity. Computed by Openlayer and
+                 * can't be set directly.
+                 */
                 fun status(status: Status) = status(JsonField.of(status))
 
                 /**
@@ -1762,7 +1788,10 @@ private constructor(
                 (if (id.asKnown().isPresent) 1 else 0) +
                     (status.asKnown().getOrNull()?.validity() ?: 0)
 
-            /** The compliance status of the rule for this entity. */
+            /**
+             * The compliance status of the rule for this entity. Computed by Openlayer and can't be
+             * set directly.
+             */
             class Status @JsonCreator private constructor(private val value: JsonField<String>) :
                 Enum {
 

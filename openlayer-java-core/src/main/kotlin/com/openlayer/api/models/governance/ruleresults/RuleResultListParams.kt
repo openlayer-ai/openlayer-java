@@ -13,13 +13,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List rule results across a workspace.
- *
- * A rule result is the compliance status of one rule for one entity: a project for project-scoped
- * rules, or the workspace itself for workspace-scoped rules. This is the endpoint to poll or export
- * when you want your current compliance state, filtered to a framework, a project, or a status.
- */
+/** List the rule results in a workspace. */
 class RuleResultListParams
 private constructor(
     private val workspaceId: String?,

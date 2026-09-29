@@ -8,15 +8,7 @@ import com.openlayer.api.core.http.Headers
 import com.openlayer.api.core.http.QueryParams
 import java.util.Objects
 
-/**
- * Exchange a `storageUri` for a short-lived presigned url you can download the object from.
- *
- * Use it to collect anything the platform stored on your behalf -- for example the archive a
- * framework export leaves behind, whose `storageUri` comes back in the background task's `outputs`.
- *
- * The workspace is taken from the API key, so there is nothing else to send. The url is only issued
- * for objects your workspace owns, and `404` covers both "no such object" and "not yours".
- */
+/** Get a short-lived download url for a stored object. */
 class PresignedUrlRetrieveParams
 private constructor(
     private val storageUri: String,
@@ -24,7 +16,10 @@ private constructor(
     private val additionalQueryParams: QueryParams,
 ) : Params {
 
-    /** The object's storage uri. */
+    /**
+     * The object's storage uri, for example `outputs.storageUri` from a framework export's
+     * background task.
+     */
     fun storageUri(): String = storageUri
 
     /** Additional headers to send with the request. */
@@ -62,7 +57,10 @@ private constructor(
             additionalQueryParams = presignedUrlRetrieveParams.additionalQueryParams.toBuilder()
         }
 
-        /** The object's storage uri. */
+        /**
+         * The object's storage uri, for example `outputs.storageUri` from a framework export's
+         * background task.
+         */
         fun storageUri(storageUri: String) = apply { this.storageUri = storageUri }
 
         fun additionalHeaders(additionalHeaders: Headers) = apply {

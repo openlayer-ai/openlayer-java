@@ -9,12 +9,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/**
- * List the evidence attached to a rule result.
- *
- * Which field carries the evidence depends on the rule's `evidenceType`: `storageUri` for uploaded
- * documents, `text` for written statements, and `url` for links.
- */
+/** List the evidence attached to a rule result. */
 class RuleResultListEvidenceParams
 private constructor(
     private val ruleResultId: String?,

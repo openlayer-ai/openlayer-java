@@ -32,13 +32,7 @@ interface RuleResultService {
      */
     fun withOptions(modifier: Consumer<ClientOptions.Builder>): RuleResultService
 
-    /**
-     * Retrieve a rule result by its id.
-     *
-     * Alongside the status, the response carries the evaluation and renewal dates that explain it:
-     * `dateLastEvaluated` and `dateOfNextEvaluation` for platform rules, `dateOfLatestEvidence` and
-     * `dateOfRenewal` for evidence rules.
-     */
+    /** Retrieve a rule result. */
     fun retrieve(ruleResultId: String): RuleResultRetrieveResponse =
         retrieve(ruleResultId, RuleResultRetrieveParams.none())
 
@@ -70,15 +64,7 @@ interface RuleResultService {
     fun retrieve(ruleResultId: String, requestOptions: RequestOptions): RuleResultRetrieveResponse =
         retrieve(ruleResultId, RuleResultRetrieveParams.none(), requestOptions)
 
-    /**
-     * Update a rule result. Only the fields you send are changed.
-     *
-     * Use this to assign an owner, or to exclude a single result from compliance without
-     * deactivating the rule everywhere. `deactivatedReason` is required when setting `deactivated`
-     * to `true`.
-     *
-     * A result's `status` is computed by Openlayer and cannot be set directly.
-     */
+    /** Update a rule result. */
     fun update(ruleResultId: String): RuleResultUpdateResponse =
         update(ruleResultId, RuleResultUpdateParams.none())
 
@@ -110,14 +96,7 @@ interface RuleResultService {
     fun update(ruleResultId: String, requestOptions: RequestOptions): RuleResultUpdateResponse =
         update(ruleResultId, RuleResultUpdateParams.none(), requestOptions)
 
-    /**
-     * List rule results across a workspace.
-     *
-     * A rule result is the compliance status of one rule for one entity: a project for
-     * project-scoped rules, or the workspace itself for workspace-scoped rules. This is the
-     * endpoint to poll or export when you want your current compliance state, filtered to a
-     * framework, a project, or a status.
-     */
+    /** List the rule results in a workspace. */
     fun list(workspaceId: String): RuleResultListResponse =
         list(workspaceId, RuleResultListParams.none())
 
@@ -149,18 +128,7 @@ interface RuleResultService {
     fun list(workspaceId: String, requestOptions: RequestOptions): RuleResultListResponse =
         list(workspaceId, RuleResultListParams.none(), requestOptions)
 
-    /**
-     * Attach evidence to a rule result, satisfying an evidence rule.
-     *
-     * Send the field that matches the rule's `evidenceType`: `storageUri` for an uploaded document,
-     * `text` for a written statement, or `url` for a link.
-     *
-     * For a document, upload the file first with `POST /storage/presigned-url` and send the
-     * resulting storage URI as `storageUri`.
-     *
-     * Attaching evidence re-evaluates the rule result. If the rule sets `renewalCadenceDays`, the
-     * renewal window restarts from this evidence.
-     */
+    /** Attach evidence to a rule result. */
     fun createEvidence(ruleResultId: String): RuleResultCreateEvidenceResponse =
         createEvidence(ruleResultId, RuleResultCreateEvidenceParams.none())
 
@@ -196,12 +164,7 @@ interface RuleResultService {
     ): RuleResultCreateEvidenceResponse =
         createEvidence(ruleResultId, RuleResultCreateEvidenceParams.none(), requestOptions)
 
-    /**
-     * List the evidence attached to a rule result.
-     *
-     * Which field carries the evidence depends on the rule's `evidenceType`: `storageUri` for
-     * uploaded documents, `text` for written statements, and `url` for links.
-     */
+    /** List the evidence attached to a rule result. */
     fun listEvidence(ruleResultId: String): RuleResultListEvidenceResponse =
         listEvidence(ruleResultId, RuleResultListEvidenceParams.none())
 

@@ -19,7 +19,7 @@ import java.util.Objects
 import java.util.Optional
 import kotlin.jvm.optionals.getOrNull
 
-/** Update inference pipeline. */
+/** Update an inference pipeline. */
 class InferencePipelineUpdateParams
 private constructor(
     private val inferencePipelineId: String?,
