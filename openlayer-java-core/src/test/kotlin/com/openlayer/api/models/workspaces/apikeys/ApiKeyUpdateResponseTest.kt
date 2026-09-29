@@ -8,18 +8,18 @@ import java.time.OffsetDateTime
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 
-internal class ApiKeyCreateResponseTest {
+internal class ApiKeyUpdateResponseTest {
 
     @Test
     fun create() {
-        val apiKeyCreateResponse =
-            ApiKeyCreateResponse.builder()
+        val apiKeyUpdateResponse =
+            ApiKeyUpdateResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dateCreated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .dateLastUsed(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .secureKey("sk-o...5PW0")
-                .status(ApiKeyCreateResponse.Status.ACTIVE)
+                .status(ApiKeyUpdateResponse.Status.ACTIVE)
                 .expiresAt(OffsetDateTime.parse("2027-01-01T00:00:00Z"))
                 .lastRotatedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .name("Secret Key")
@@ -27,36 +27,36 @@ internal class ApiKeyCreateResponseTest {
                 .secret("sk-ol-Xq3v9Rk2mPz8TnW4yL7bC1dF5hJ6")
                 .build()
 
-        assertThat(apiKeyCreateResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
-        assertThat(apiKeyCreateResponse.dateCreated())
+        assertThat(apiKeyUpdateResponse.id()).isEqualTo("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
+        assertThat(apiKeyUpdateResponse.dateCreated())
             .isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(apiKeyCreateResponse.dateLastUsed())
+        assertThat(apiKeyUpdateResponse.dateLastUsed())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(apiKeyCreateResponse.dateUpdated())
+        assertThat(apiKeyUpdateResponse.dateUpdated())
             .isEqualTo(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(apiKeyCreateResponse.secureKey()).isEqualTo("sk-o...5PW0")
-        assertThat(apiKeyCreateResponse.status()).isEqualTo(ApiKeyCreateResponse.Status.ACTIVE)
-        assertThat(apiKeyCreateResponse.expiresAt())
+        assertThat(apiKeyUpdateResponse.secureKey()).isEqualTo("sk-o...5PW0")
+        assertThat(apiKeyUpdateResponse.status()).isEqualTo(ApiKeyUpdateResponse.Status.ACTIVE)
+        assertThat(apiKeyUpdateResponse.expiresAt())
             .contains(OffsetDateTime.parse("2027-01-01T00:00:00Z"))
-        assertThat(apiKeyCreateResponse.lastRotatedAt())
+        assertThat(apiKeyUpdateResponse.lastRotatedAt())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(apiKeyCreateResponse.name()).contains("Secret Key")
-        assertThat(apiKeyCreateResponse.previousKeyExpiresAt())
+        assertThat(apiKeyUpdateResponse.name()).contains("Secret Key")
+        assertThat(apiKeyUpdateResponse.previousKeyExpiresAt())
             .contains(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
-        assertThat(apiKeyCreateResponse.secret()).contains("sk-ol-Xq3v9Rk2mPz8TnW4yL7bC1dF5hJ6")
+        assertThat(apiKeyUpdateResponse.secret()).contains("sk-ol-Xq3v9Rk2mPz8TnW4yL7bC1dF5hJ6")
     }
 
     @Test
     fun roundtrip() {
         val jsonMapper = jsonMapper()
-        val apiKeyCreateResponse =
-            ApiKeyCreateResponse.builder()
+        val apiKeyUpdateResponse =
+            ApiKeyUpdateResponse.builder()
                 .id("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
                 .dateCreated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .dateLastUsed(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .dateUpdated(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .secureKey("sk-o...5PW0")
-                .status(ApiKeyCreateResponse.Status.ACTIVE)
+                .status(ApiKeyUpdateResponse.Status.ACTIVE)
                 .expiresAt(OffsetDateTime.parse("2027-01-01T00:00:00Z"))
                 .lastRotatedAt(OffsetDateTime.parse("2019-12-27T18:11:19.117Z"))
                 .name("Secret Key")
@@ -64,12 +64,12 @@ internal class ApiKeyCreateResponseTest {
                 .secret("sk-ol-Xq3v9Rk2mPz8TnW4yL7bC1dF5hJ6")
                 .build()
 
-        val roundtrippedApiKeyCreateResponse =
+        val roundtrippedApiKeyUpdateResponse =
             jsonMapper.readValue(
-                jsonMapper.writeValueAsString(apiKeyCreateResponse),
-                jacksonTypeRef<ApiKeyCreateResponse>(),
+                jsonMapper.writeValueAsString(apiKeyUpdateResponse),
+                jacksonTypeRef<ApiKeyUpdateResponse>(),
             )
 
-        assertThat(roundtrippedApiKeyCreateResponse).isEqualTo(apiKeyCreateResponse)
+        assertThat(roundtrippedApiKeyUpdateResponse).isEqualTo(apiKeyUpdateResponse)
     }
 }
